@@ -43,7 +43,7 @@ package ageb.modules.avatar.timelineClasses
 			prevFrameButton.addEventListener(MouseEvent.CLICK, frameButton_onClick);
 			currentFrameField.addEventListener(Event.CHANGE, currentFrameField_onClick);
 			directionButtons.addEventListener(IndexChangeEvent.CHANGE, directionButtons_onChange);
-			layersField.addEventListener(IndexChangeEvent.CHANGE, layersField_onChange);
+			layersField.addEventListener(MouseEvent.CLICK, layersField_onClick);
 			fpsField.addEventListener(Event.CHANGE, fpsField_onChange);
 		}
 
@@ -58,11 +58,11 @@ package ageb.modules.avatar.timelineClasses
 		}
 
 		/**
-		 * 选中图层等于选中该图层的所有 FrameInfo
+		 * 点击列表任意项等于选择中该图层所有帧
 		 * @param event
 		 *
 		 */
-		protected function layersField_onChange(event:IndexChangeEvent):void
+		protected function layersField_onClick(event:MouseEvent):void
 		{
 			var frames:Vector.<FrameInfoEditable> = new Vector.<FrameInfoEditable>;
 

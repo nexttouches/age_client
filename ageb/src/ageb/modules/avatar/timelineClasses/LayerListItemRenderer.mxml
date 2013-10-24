@@ -60,7 +60,9 @@
 		]]>
 	</fx:Script>
 	<s:Label id="nameField"
-		width="100%"/>
+		width="100%"
+		mouseEnabled="false"
+		mouseChildren="false"/>
 	<s:DropDownList id="typeField"
 		width="70"
 		labelField="label"/>
