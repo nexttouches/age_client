@@ -94,7 +94,7 @@ package ageb.modules.avatar.op
 				// 这里需要拷贝一些数据
 				if (isSetAsKeyframe)
 				{
-					if (isCopyProps)
+					if (isCopyProps && newFrame.index > 0)
 					{
 						newFrame.texture = newFrame.prevKeyFrame.texture;
 
@@ -103,6 +103,11 @@ package ageb.modules.avatar.op
 							newFrame.box = newFrame.prevKeyFrame.box.clone1();
 						}
 					}
+					newFrame.isKeyframe = true;
+				}
+				// 第一帧强制设置为关键帧
+				else if (newFrame.index == 0 && !newFrame.isKeyframe)
+				{
 					newFrame.isKeyframe = true;
 				}
 			}

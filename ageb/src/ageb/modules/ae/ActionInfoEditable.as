@@ -5,7 +5,6 @@ package ageb.modules.ae
 	import age.assets.ActionInfo;
 	import age.assets.AvatarInfo;
 	import age.assets.FrameLayerInfo;
-	import age.physics.Body;
 	import ageb.ageb_internal;
 	import nt.assets.AssetConfig;
 	import nt.lib.util.assert;
@@ -63,6 +62,28 @@ package ageb.modules.ae
 			assert(info.parent == this, "info.parent 不为当前动作");
 			layersVectorList.removeItem(info);
 			info.parent = null;
+		}
+
+		/**
+		 * layers 整个数组被替换时广播
+		 */
+		public var onLayersChange:Signal = new Signal()
+
+		/**
+		 * 设置图层
+		 * @param newLayers
+		 * @return
+		 *
+		 */
+		public function setLayers(newLayers:Vector.<FrameLayerInfo>):void
+		{
+			layers = newLayers.concat();
+			// WORKAROUND:
+			// 直接设置 layersVectorList.source = layers 会导致组件刷新出问题
+			// 这里先 new 一个新的 VectorList
+			layersVectorList = new VectorList(layers);
+			onLayersChange.dispatch();
+			updateNumFrames();
 		}
 
 		/**

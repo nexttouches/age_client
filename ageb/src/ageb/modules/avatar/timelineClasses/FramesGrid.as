@@ -2,6 +2,7 @@ package ageb.modules.avatar.timelineClasses
 {
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import mx.collections.IList;
 	import mx.events.ResizeEvent;
 	import spark.components.Grid;
 	import spark.components.gridClasses.CellPosition;
@@ -53,11 +54,15 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		override public function set verticalScrollPosition(value:Number):void
 		{
+			const old:int = verticalScrollPosition;
 			super.verticalScrollPosition = value;
 
-			if (onVerticalScrollPositionChange != null)
+			if (old != value)
 			{
-				onVerticalScrollPositionChange(value);
+				if (onVerticalScrollPositionChange != null)
+				{
+					onVerticalScrollPositionChange(value);
+				}
 			}
 		}
 

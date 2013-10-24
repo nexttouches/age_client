@@ -3,19 +3,20 @@ package ageb.modules.avatar.timelineClasses
 	import flash.events.MouseEvent;
 	import mx.core.ClassFactory;
 	import spark.components.List;
+	import org.osflash.signals.Signal;
 
 	/**
-	 * 图层列表
+	 * 帧图层列表
 	 * @author zhanghaocong
 	 *
 	 */
-	public class LayerList extends List
+	public class FrameLayerList extends List
 	{
 		/**
 		 * 创建一个新的图层列表
 		 *
 		 */
-		public function LayerList()
+		public function FrameLayerList()
 		{
 			super();
 			setStyle("selectionColor", 0x3399ff);
@@ -25,6 +26,8 @@ package ageb.modules.avatar.timelineClasses
 			percentHeight = 100;
 		}
 
+		public var onMouseWheel:Signal = new Signal();
+
 		/**
 		 * 禁用滚轮事件
 		 * @param event
@@ -32,9 +35,7 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		protected function scroller_onMouseWheel(event:MouseEvent):void
 		{
-			event.preventDefault();
-			event.stopPropagation();
-			event.stopImmediatePropagation();
+			onMouseWheel.dispatch();
 		}
 
 		/**
@@ -44,7 +45,7 @@ package ageb.modules.avatar.timelineClasses
 		override protected function attachSkin():void
 		{
 			super.attachSkin();
-			scroller.addEventListener(MouseEvent.MOUSE_WHEEL, scroller_onMouseWheel, true, int.MAX_VALUE);
+			scroller.addEventListener(MouseEvent.MOUSE_WHEEL, scroller_onMouseWheel, false, int.MIN_VALUE);
 		}
 
 		/**
@@ -53,7 +54,7 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		override protected function detachSkin():void
 		{
-			scroller.removeEventListener(MouseEvent.MOUSE_WHEEL, scroller_onMouseWheel, true);
+			scroller.removeEventListener(MouseEvent.MOUSE_WHEEL, scroller_onMouseWheel);
 			super.detachSkin();
 		}
 	}
