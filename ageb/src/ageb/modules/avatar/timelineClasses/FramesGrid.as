@@ -2,7 +2,6 @@ package ageb.modules.avatar.timelineClasses
 {
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	import mx.collections.IList;
 	import mx.events.ResizeEvent;
 	import spark.components.Grid;
 	import spark.components.gridClasses.CellPosition;
