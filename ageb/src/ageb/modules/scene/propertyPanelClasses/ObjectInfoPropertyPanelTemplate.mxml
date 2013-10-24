@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<propertyPanelClasses:PropertyPanelContentBase 
+	label="ObjectInfo 属性"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:propertyPanelClasses="ageb.modules.scene.propertyPanelClasses.*"
+	xmlns:components="ageb.components.*"
+	xmlns:ageb="ageb.*">
+
+	<fx:Script>
+		<![CDATA[
+			import age.assets.RegionInfo;
+
+			protected function regionIDField_labelFunction(r:RegionInfo):String
+			{
+				throw new Error("尚未实现");
+			}
+
+			protected function saveProperties():void
+			{
+			}
+
+			protected function savePosition():void
+			{
+			}
+
+			protected function restoreUserData():void
+			{
+			}
+
+			protected function addRegion():void
+			{
+			}
+
+			protected function openAvatar():void
+			{
+			}
+
+			protected function saveAvatarID():void
+			{
+			}
+		]]>
+	</fx:Script>
+
+	<s:Group width="220">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<document:FormRow label="坐标">
+			<components:IntInput id="xField"
+				width="100%"
+				toolTip="x"
+				change="savePosition()"/>
+			<components:IntInput id="yField"
+				width="100%"
+				toolTip="y"
+				change="savePosition()"/>
+			<components:IntInput id="zField"
+				width="100%"
+				toolTip="z"
+				change="savePosition()"/>
+		</document:FormRow>
+		<document:FormRow label="区域">
+			<s:DropDownList id="regionIDField"
+				width="100%"
+				labelFunction="{regionIDField_labelFunction}"
+				change="saveProperties()"/>
+			<s:Button 
+				label="创建"
+				toolTip="在对象所在位置创建新区域"
+				click="addRegion()"/>
+		</document:FormRow>
+		<s:Group width="100%">
+			<s:layout>
+				<s:HorizontalLayout 
+					paddingLeft="3"
+					verticalAlign="middle"/>
+			</s:layout>
+			<s:Label 
+				width="100%"
+				text="自定义数据"/>
+			<s:Button 
+				icon="@Embed('../assets/icons/check.png')"
+				toolTip="保存"
+				click="saveProperties()"
+				skinClass="ageb.skins.IconButtonSkin"/>
+			<s:Button 
+				icon="@Embed('../assets/icons/undo.png')"
+				toolTip="恢复"
+				click="restoreUserData();"
+				skinClass="ageb.skins.IconButtonSkin"/>
+		</s:Group>
+		<s:TextArea id="userDataField"
+			width="100%" height="68"/>
+	</s:Group>
+	<s:Group width="150">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="6"/>
+		</s:layout>
+		<document:FormRow 
+			labelWidth="48"
+			label="Avatar">
+			<s:TextInput id="avatarIDField"
+				width="100%"
+				enter="saveAvatarID()"/>
+			<s:Button 
+				label="编辑"
+				click="openAvatar()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="48"
+			label="动作">
+			<s:ComboBox id="actionsField"
+				width="100%"
+				labelField="name"
+				toolTip="动作"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="48"
+			label="质量"
+			toolTip="质量决定了下落速度">
+			<components:IntInput id="massField"
+				width="100%"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="48"
+			label="弹性"
+			toolTip="0~1 之间的值表示弹性">
+			<s:NumericStepper id="elasticityField"
+				width="100%"
+				maximum="1"
+				minimum="0"
+				stepSize="0.05"/>
+		</document:FormRow>
+	</s:Group>
+	<s:Group width="150">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<document:FormRow 
+			labelWidth="60"
+			label="唯一 ID">
+			<s:TextInput id="uniqueIDField"
+				width="100%"
+				enter="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="对象 ID">
+			<s:TextInput id="objectIDField"
+				width="100%"
+				enter="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="类型">
+			<propertyPanelClasses:AutoCompleteDropdown id="typeField"
+				width="100%"
+				change="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="子类型">
+			<s:TextInput id="subtypeField"
+				width="100%"
+				enter="saveProperties()"/>
+		</document:FormRow>
+
+	</s:Group>
+	<s:Group width="150">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<document:FormRow 
+			labelWidth="60"
+			label="能级">
+			<components:IntInput id="energyLevelField"
+				width="100%"
+				change="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="等级">
+			<components:IntInput id="levelField"
+				width="100%"
+				change="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="成长 ID">
+			<components:IntInput id="growIDField"
+				width="100%"
+				change="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="AI ID">
+			<components:IntInput id="aiIDField"
+				width="100%"
+				change="saveProperties()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="60"
+			label="掉落 ID">
+			<components:IntInput id="dropIDField"
+				width="100%"
+				change="saveProperties()"/>
+		</document:FormRow>
+	</s:Group>
+
+</propertyPanelClasses:PropertyPanelContentBase>

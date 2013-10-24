@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow 
+	width="612" height="300"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:ageb="ageb.*"
+	close="onClose(event)">
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom="4"
+			paddingLeft="4"
+			paddingRight="4"
+			paddingTop="4"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import ageb.modules.Modules;
+			import ageb.utils.FlashTip;
+
+			protected function onClose(event:CloseEvent = null):void
+			{
+				if (Modules.getInstance().job.isRunning)
+				{
+					FlashTip.show("请等待队列执行完毕");
+				}
+				else
+				{
+					PopUpManager.removePopUp(this);
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:List id="entries"
+		width="100%" height="100%"
+		itemRenderer="ageb.modules.job.JobProgressItemRenderer">
+		<s:layout>
+			<s:HorizontalLayout gap="0"/>
+		</s:layout>
+	</s:List>
+</s:TitleWindow>

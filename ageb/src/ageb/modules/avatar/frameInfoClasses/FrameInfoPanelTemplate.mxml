@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<supportClasses:AvatarDocumentPanel xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	title="帧"
+	xmlns:ns="http://flex.apache.org/experimental/ns"
+	xmlns:ageb="ageb.*"
+	xmlns:supportClasses="ageb.modules.avatar.supportClasses.*"
+	xmlns:frameInfoClasses="ageb.modules.avatar.frameInfoClasses.*">
+	<supportClasses:layout>
+		<s:VerticalLayout 
+			paddingBottom="4"
+			paddingLeft="4"
+			paddingRight="4"
+			paddingTop="4"/>
+	</supportClasses:layout>
+	<mx:ViewStack id="panels"
+		width="100%" height="100%"
+		creationPolicy="all">
+		<!--- VIRTUAL -->
+		<frameInfoClasses:VirutalContent/>
+		<!--- ANIMATION -->
+		<frameInfoClasses:AnimationContent/>
+		<!--- PARTICLE -->
+		<frameInfoClasses:ParticleContent/>
+		<!--- SOUND -->
+		<frameInfoClasses:SoundContent/>
+		<!--- 没有选中任何帧时，显示 AvatarInfo -->
+		<frameInfoClasses:AvatarContent/>
+	</mx:ViewStack>
+
+
+</supportClasses:AvatarDocumentPanel>

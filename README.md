@@ -1,4 +1,4 @@
 age_client
 ==========
 
-Action Game Engine written by AS3
+Action Game Engine client written by AS3

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication 
+	backgroundAlpha="0"
+	nativeDragDrop="onNativeDragDrop(event)"
+	nativeDragEnter="onNativeDragEnter(event)"
+	invoke="onInvoke(event)"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	showStatusBar="false"
+	frameRate="60"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:ns="http://flex.apache.org/experimental/ns"
+	xmlns:components="ageb.components.*">
+	<fx:Style>
+		@namespace aeb "aeb.modules.document.*";
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		
+		/* 全局字体 */
+		global
+		{
+			fontFamily: "微软雅黑";
+		}
+		/* 老的皮肤不支持 Flex 4.10，这里做个兼容 */
+		s|DataGrid
+		{
+			skinClass: ClassReference("ageb.skins.DarkDataGridSkin")
+		}
+		/* 修正 ToolTip 字号 */
+		mx|ToolTip
+		{
+			fontSize: 12px;
+		}
+	</fx:Style>
+	<fx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			import mx.controls.Alert;
+			import mx.events.MenuEvent;
+			import ageb.modules.Modules;
+			import ageb.modules.document.Document;
+
+			final public function get modules():Modules
+			{
+				return Modules.getInstance();
+			}
+
+			protected function onInvoke(event:InvokeEvent):void
+			{
+				// 避免调试时连续的 F11 导致连续触发 InvokeEvent
+				event.currentTarget.removeEventListener(event.type, arguments.callee);
+				event.stopImmediatePropagation();
+				// 所有模块初始化
+				modules.init(this);
+				modules.job.init();
+				modules.settings.init();
+				modules.document.init();
+				modules.ae.startEngine();
+				modules.shortcut.init(appMenu..menuitem);
+				modules.tools.init();
+			}
+
+			private function menuBar_labelFunction(menu:XML):String
+			{
+				return menu.@label + (menu.hasOwnProperty("@shortcut") ? " (" + menu.@shortcut + ")" : "");
+			}
+
+			protected function menuBar_onChange(event:MenuEvent):void
+			{
+				// 有子菜单就可以退
+				if (!XML(event.item).hasSimpleContent())
+				{
+					return;
+				}
+				// 得到 command 后执行
+				var command:String = event.item.@command;
+
+				if (command)
+				{
+					const CLASS:int = 0;
+					const METHOD:int = 1;
+					var parseResult:Array = command.split(".");
+
+					try
+					{
+						Modules.getInstance()[parseResult[CLASS]][parseResult[METHOD]]();
+					}
+					catch (error:Error)
+					{
+						Alert.show(format("点击[{0}]，调用[{1}]时发生错误 [{2}]", event.label, command, error.message));
+					}
+				}
+				else
+				{
+					Alert.show(format("你点击了 [{label}]", event), "还没准备好");
+				}
+			}
+
+			protected function onNativeDragEnter(event:NativeDragEvent):void
+			{
+				NativeDragManager.dropAction = NativeDragActions.COPY;
+
+				if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
+				{
+					NativeDragManager.acceptDragDrop(this);
+				}
+			}
+
+			protected function onNativeDragDrop(event:NativeDragEvent):void
+			{
+				if (event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT))
+				{
+					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+
+					for (var i:int = 0, n:int = files.length; i < n; i++)
+					{
+						var f:File = files[i];
+						// 用 setTimeout 保证每个标签页都可以收到 show 事件
+						setTimeout(function(f:File):void
+						{
+							try
+							{
+								var doc:Document = Modules.getInstance().document.createDocument(f);
+
+								if (doc)
+								{
+									modules.document.addDocument(doc);
+								}
+							}
+							catch (error:Error)
+							{
+								Alert.show(error.message, "错误");
+							}
+						}, i * 333, files[i]);
+					}
+				}
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<fx:XMLList id="appMenu"
+			xmlns="">
+			<menuitem label="文件">
+				<menuitem 
+					label="新建…"
+					shortcut="CONTROL+N"
+					command="document.newDocument"/>
+				<menuitem 
+					label="打开…"
+					shortcut="CONTROL+O"
+					command="document.browse"/>
+				<menuitem 
+					icon="Save"
+					label="保存"
+					shortcut="CONTROL+S"
+					command="document.saveCurrent"/>
+				<menuitem 
+					label="另存为…"
+					shortcut="CONTROL+SHIFT+S"
+					command="document.saveAsCurrent"/>
+				<menuitem 
+					label="关闭"
+					shortcut="CONTROL+W"
+					command="document.closeCurrent"/>
+				<menuitem 
+					label="关闭全部"
+					shortcut="CONTROL+SHIFT+W"
+					command="document.closeAll"/>
+			</menuitem>
+			<menuitem label="编辑">
+				<menuitem 
+					label="撤销"
+					shortcut="CONTROL+Z"
+					command="document.undo"/>
+				<menuitem 
+					label="重做"
+					shortcut="CONTROL+Y"
+					command="document.redo"/>
+				<menuitem 
+					label="设置"
+					command="settings.open"/>
+			</menuitem>
+			<menuitem label="视图">
+				<menuitem 
+					label="切换图层轮廓"
+					shortcut="CONTROL+L"
+					command="ae.toggleLayerOutline"/>
+				<menuitem 
+					label="切换网格"
+					shortcut="CONTROL+K"
+					command="ae.toggleGrid"/>
+				<menuitem 
+					label="隐藏/显示 UI"
+					shortcut="BACKQUOTE"
+					command="document.toggleUIVisible"/>
+			</menuitem>
+			<menuitem label="工具">
+				<menuitem 
+					label="预览"
+					shortcut="CONTROL+ENTER"
+					command="document.preview"/>
+				<menuitem 
+					label="发布"
+					shortcut="CONTROL+SHIFT+ENTER"
+					command="document.publish"/>
+			</menuitem>
+			<menuitem label="导航">
+				<menuitem 
+					label="上一个窗口"
+					command="document.showPrev"
+					shortcut="CONTROL+SHIFT+TAB"/>
+				<menuitem 
+					label="下一个窗口"
+					command="document.showNext"
+					shortcut="CONTROL+TAB"/>
+			</menuitem>
+			<menuitem label="帮助">
+				<menuitem 
+					label="关于"
+					command="about.open"/>
+			</menuitem>
+		</fx:XMLList>
+	</fx:Declarations>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<s:Group id="header"
+		width="100%">
+		<s:layout>
+			<s:ConstraintLayout/>
+		</s:layout>
+		<mx:MenuBar id="menuBar"
+			width="100%"
+			left="0"
+			dataProvider="{appMenu}"
+			labelFunction="{menuBar_labelFunction}"
+			change="menuBar_onChange(event)">
+
+			<mx:menuBarItemRenderer>
+				<fx:Component>
+					<mx:MenuBarItem>
+
+						<fx:Script>
+							<![CDATA[
+								import ageb.skins.Icons;
+
+								public static var skins:Object;
+
+								protected override function commitProperties():void
+								{
+									super.commitProperties();
+
+									if (data && data.@icon.length() > 0)
+									{
+										icon = new Icons[data.@icon]; // icon 其实是 BitmapAsset
+										addChild(icon as DisplayObject);
+									}
+									else
+									{
+										if (icon && icon.parent)
+										{
+											removeChild(DisplayObject(icon));
+											icon = null;
+										}
+									}
+								}
+							]]>
+						</fx:Script>
+					</mx:MenuBarItem>
+				</fx:Component>
+			</mx:menuBarItemRenderer>
+		</mx:MenuBar>
+		<components:Stats 
+			right="2" top="-1"/>
+	</s:Group>
+	<!-- 标签页和视图 -->
+	<s:Group 
+		width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout 
+				paddingBottom="4"
+				paddingLeft="4"
+				paddingRight="4"/>
+		</s:layout>
+		<s:BorderContainer 
+			width="100%" height="28">
+			<s:TabBar id="tabs"
+				height="100%"
+				cornerRadius="4"
+				labelField="label"/>
+		</s:BorderContainer>
+		<document:DocumentsNav id="documentsNav"
+			width="100%" height="100%"/>
+	</s:Group>
+
+</s:WindowedApplication>

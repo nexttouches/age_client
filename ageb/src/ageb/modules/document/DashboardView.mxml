@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document:DocumentView 
+	width="100%" height="100%"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:document="ageb.modules.document.*">
+
+	<fx:Script>
+		<![CDATA[
+			import flash.filters.BitmapFilterQuality;
+			import flash.filters.GlowFilter;
+			import flash.utils.setTimeout;
+			import ageb.modules.Modules;
+
+			protected function label_onClick(event:MouseEvent):void
+			{
+				documentModule.browse();
+			}
+
+			private function openRecent():void
+			{
+				const info:String = "正在打开，请稍等…";
+				openRecentButton.label = info;
+				openRecentButton.enabled = false;
+				setTimeout(documentModule.openRecent, 100);
+			}
+
+			override protected function onAddDoc(doc:Document):void
+			{
+				if (modules.ae.isEngineReady)
+				{
+					if (sceneRenderer)
+					{
+						sceneRenderer.info = null;
+					}
+				}
+				updateOpenRecentButton();
+			}
+
+			protected function updateOpenRecentButton():void
+			{
+				var flag:Boolean = false;
+				const last:String = modules.settings.getData(modules.settings).lastDocumentPath
+
+				if (last)
+				{
+					try
+					{
+						var lastFile:File = new File(last);
+						flag = lastFile.exists && !lastFile.isDirectory;
+					}
+					catch (error:Error)
+					{
+					}
+				}
+
+				if (flag)
+				{
+					openRecentButton.label = "最近打开：" + last;
+					openRecentButton.enabled = true;
+				}
+				else
+				{
+					openRecentButton.label = "没有最近打开的文档";
+					openRecentButton.enabled = false;
+				}
+			}
+
+			protected function get documentModule():DocumentModule
+			{
+				return Modules.getInstance().document;
+			}
+		]]>
+	</fx:Script>
+
+	<document:layout>
+		<s:VerticalLayout 
+			horizontalAlign="center"
+			verticalAlign="middle"/>
+	</document:layout>
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout verticalAlign="baseline"/>
+		</s:layout>
+		<s:Label 
+			fontFamily="微软雅黑"
+			fontSize="16"
+			text="拖放动作或场景到这里"
+			click="label_onClick(event)"
+			filters="{new GlowFilter(0, 1, 6, 6, 3, BitmapFilterQuality.HIGH)}"/>
+		<s:Button 
+			label="或新建一个"
+			click="modules.document.newDocument()"/>
+	</s:Group>
+	<mx:LinkButton id="openRecentButton"
+		color="0xcccccc"
+		click="openRecent()"/>
+</document:DocumentView>

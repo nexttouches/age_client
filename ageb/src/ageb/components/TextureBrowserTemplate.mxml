@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow 
+	width="1000" height="600"
+	keyDown="onkeyDown(event)"
+	remove="onRemove(event)"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	close="onClose(event)"
+	title="浏览贴图">
+	<s:layout>
+		<s:HorizontalLayout 
+			paddingBottom="5"
+			paddingLeft="5"
+			paddingRight="5"
+			paddingTop="5"/>
+	</s:layout>
+
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import spark.events.GridSelectionEvent;
+			import org.osflash.signals.Signal;
+
+			[Bindable("texturesChange")]
+			protected var textures:XMLListCollection = new XMLListCollection();
+
+			public var onImportHere:Signal = new Signal(Vector.<String>);
+
+			public var onImportAuto:Signal = new Signal(Vector.<String>);
+
+			protected function onClose(event:Event):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+
+			public function browse():void
+			{
+			}
+
+			protected function onRemove(event:FlexEvent):void
+			{
+			}
+
+			protected function texturesField_onChange(event:GridSelectionEvent = null):void
+			{
+			}
+
+			protected function openRecent():void
+			{
+			}
+
+			protected function importAutoButton_onClick(event:MouseEvent):void
+			{
+			}
+
+			protected function importHereButton_onClick(event:MouseEvent):void
+			{
+			}
+
+			protected function onkeyDown(event:KeyboardEvent):void
+			{
+				if (event.keyCode == Keyboard.ESCAPE)
+				{
+					onClose(null);
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:Group 
+		width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<s:Group id="tl"
+			width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:TextInput id="nativePathField"
+				width="400"
+				click="browse()"
+				editable="false"/>
+			<s:Button 
+				label="浏览"
+				click="browse();"/>
+			<s:Button id="openRecentButton"
+				width="100%" height="21"
+				click="openRecent()"/>
+		</s:Group>
+		<s:BorderContainer 
+			width="100%" height="100%">
+			<s:Scroller 
+				width="100%" height="100%">
+				<s:Group id="canvas"
+					scaleX="{scaleField.value}"
+					scaleY="{scaleField.value}">
+					<s:BitmapImage id="bitmap"/>
+					<s:Group id="rectsGroup"
+						width="{bitmap.width}" height="{bitmap.height}"
+						visible="{showRectsField.selected}"/>
+				</s:Group>
+			</s:Scroller>
+		</s:BorderContainer>
+		<s:Group 
+			width="100%" height="{controlBar.height}">
+			<s:layout>
+				<s:HorizontalLayout verticalAlign="middle"/>
+			</s:layout>
+			<s:Label text="比例"/>
+			<s:NumericStepper id="scaleField"
+				maximum="16"
+				minimum="0.1"
+				snapInterval="0.1"
+				value="1"/>
+			<s:CheckBox id="showRectsField"
+				width="100%"
+				label="显示区块"
+				selected="true"/>
+			<s:Button 
+				label="全选"
+				click="texturesField.selectAll();texturesField_onChange()"/>
+			<s:Button 
+				label="不选"
+				click="texturesField.selectedIndex = -1;texturesField_onChange()"/>
+		</s:Group>
+	</s:Group>
+	<s:Group 
+		width="230" height="100%">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<s:Label 
+			height="{tl.height}"
+			verticalAlign="middle"
+			text="贴图列表"/>
+		<s:DataGrid id="texturesField"
+			width="100%" height="100%"
+			dataProvider="{textures}"
+			selectionMode="multipleRows"
+			selectionChange="texturesField_onChange(event)">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn 
+						width="80"
+						dataField="@name"
+						headerText="name"/>
+					<s:GridColumn dataField="@x"
+						headerText="x"/>
+					<s:GridColumn dataField="@y"
+						headerText="y"/>
+					<s:GridColumn dataField="@width"
+						headerText="width"/>
+					<s:GridColumn dataField="@height"
+						headerText="height"/>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Group id="controlBar"
+			width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Button id="importHereButton"
+				label="置入到当前位置"
+				click="importHereButton_onClick(event)"/>
+			<s:Button id="importAutoButton"
+				label="置入并定位"
+				click="importAutoButton_onClick(event)"/>
+			<s:Button 
+				label="取消"
+				click="onClose(event)"/>
+		</s:Group>
+	</s:Group>
+</s:TitleWindow>

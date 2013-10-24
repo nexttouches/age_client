@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document:FormPanel xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:document="ageb.modules.document.*"
+	title="对象列表">
+	<fx:Script>
+		<![CDATA[
+			import age.assets.ObjectInfo;
+			import spark.components.gridClasses.GridColumn;
+
+			public function type_labelFunction(info:ObjectInfo, column:GridColumn):String
+			{
+				return info.type + ":" + info.subtype;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<fx:Vector id="gridColumns"
+			fixed="true"
+			type="mx.collections.ArrayList">
+			<s:ArrayList>
+				<s:GridColumn dataField="texture"
+					headerText="贴图"/>
+				<s:GridColumn dataField="isFlipX"
+					headerText="X反转"/>
+				<s:GridColumn dataField="isFlipY"
+					headerText="Y反转"/>
+				<s:GridColumn 
+					width="24"
+					itemRenderer="ageb.modules.scene.TrackCell"/>
+			</s:ArrayList>
+			<s:ArrayList>
+				<s:GridColumn dataField="uniqueID"
+					headerText="唯一 ID"/>
+				<s:GridColumn dataField="regionID"
+					headerText="区域"/>
+				<s:GridColumn dataField="objectID"
+					headerText="对象ID"/>
+				<s:GridColumn 
+					labelFunction="{type_labelFunction}"
+					headerText="类型"/>
+				<s:GridColumn 
+					width="24"
+					itemRenderer="ageb.modules.scene.TrackCell"/>
+			</s:ArrayList>
+		</fx:Vector>
+
+	</fx:Declarations>
+	<s:DataGrid id="list"
+		width="100%" height="100%"
+		selectionMode="multipleRows"/>
+</document:FormPanel>

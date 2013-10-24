@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow 
+	width="400" height="300"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	title="关于"
+	close="onClose(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import ageb.modules.Modules;
+
+			protected function onClose(event:CloseEvent):void
+			{
+				modules.about.close();
+			}
+
+			private function get modules():Modules
+			{
+				return Modules.getInstance();
+			}
+		]]>
+	</fx:Script>
+</s:TitleWindow>

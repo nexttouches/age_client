@@ -1,0 +1,34 @@
+{
+   "charLayerIndex" : 1,
+   "grids" : [[0]],
+   "width" : 1000,
+   "height" : 800,
+   "depth": 800,
+   "layers" : [
+      {
+         "bgs" : [],
+         "isAutoSort" : false,
+         "isFlatten" : true,
+         "isVisible" : true,
+         "scrollRatio" : 1,
+         "type" : 0
+      },
+      {
+         "isAutoSort" : true,
+         "isFlatten" : false,
+         "isVisible" : true,
+         "objects" : [],
+         "scrollRatio" : 1,
+         "type" : 1
+      }
+   ],
+   "regions" : [
+      {
+         "height" : 0,
+         "id" : 0,
+         "width" : 0,
+         "x" : 0,
+         "y" : 0
+      }
+   ]
+}

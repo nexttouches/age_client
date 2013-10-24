@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ButtonBarButton 
+	width="22" height="22"
+	toolTip="{ToolBase(data).tooltip}"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[
+			public function get tool():ToolBase
+			{
+				return data as ToolBase;
+			}
+
+			override public function set data(value:Object):void
+			{
+				if (tool)
+				{
+					tool.removeEventListener("enabledChange", onEnabledChange);
+				}
+				super.data = value;
+
+				if (tool)
+				{
+					tool.addEventListener("enabledChange", onEnabledChange);
+					onEnabledChange();
+				}
+			}
+
+			protected function onEnabledChange(event:Event = null):void
+			{
+				enabled = tool.enabled;
+			}
+		]]>
+	</fx:Script>
+</s:ButtonBarButton>

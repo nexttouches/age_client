@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tools:ToolBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:tools="ageb.modules.tools.*"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:components="ageb.components.*">
+
+	<fx:Script>
+		<![CDATA[
+			[Bindable]
+			public var snapX:Number;
+
+			[Bindable]
+			public var snapY:Number;
+
+			[Bindable]
+			public var snapZ:Number;
+
+			[Bindable]
+			public var isSameAsWidth:Boolean;
+
+			[Bindable]
+			public var isShowRegions:Boolean;
+
+			protected function saveSnap():void
+			{
+			}
+
+			protected function saveRegionSettings():void
+			{
+			}
+		]]>
+	</fx:Script>
+
+
+	<document:FormRow 
+		width="100%"
+		labelWidth="40"
+		label="吸附 x">
+		<components:IntInput id="snapXField"
+			width="100%"
+			maximum="100000"
+			minimum="1"
+			value="{snapX}"
+			change="saveSnap()"/>
+	</document:FormRow>
+	<document:FormRow 
+		width="100%"
+		labelWidth="40"
+		label="吸附 y">
+		<components:IntInput id="snapYField"
+			width="100%"
+			maximum="100000"
+			minimum="1"
+			value="{snapY}"
+			change="saveSnap()"/>
+	</document:FormRow>
+	<document:FormRow 
+		width="100%"
+		labelWidth="40"
+		label="吸附 z">
+		<components:IntInput id="snapZField"
+			width="100%"
+			maximum="100000"
+			minimum="1"
+			value="{snapZ}"
+			change="saveSnap()"/>
+		<s:ToggleButton id="isSameAsWidthField"
+			label="与宽相同"
+			selected="{isSameAsWidth}"
+			change="saveSnap()"/>
+	</document:FormRow>
+	<document:FormRow 
+		width="100%"
+		labelWidth="40"
+		label="区域">
+		<s:ToggleButton id="isShowRegionsField"
+			label="显示分割线"
+			selected="{isShowRegions}"
+			change="saveRegionSettings()"/>
+	</document:FormRow>
+</tools:ToolBase>

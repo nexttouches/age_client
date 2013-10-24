@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document:FormPanel xmlns:fx="http://ns.adobe.com/mxml/2009"
+	title="属性"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:propertyPanelClasses="ageb.modules.scene.propertyPanelClasses.*">
+	<fx:Script>
+		<![CDATA[
+			import age.assets.BGInfo;
+			import age.assets.ObjectInfo;
+			import age.assets.RegionInfo;
+			import ageb.modules.ae.BGInfoEditable;
+			import ageb.modules.ae.ObjectInfoEditable;
+			import ageb.modules.ae.RegionInfoEditable;
+
+			public var panelDict:Dictionary = createPanelDict();
+
+			private function createPanelDict():Dictionary
+			{
+				panelDict = new Dictionary();
+				panelDict[BGInfoEditable] = 0;
+				panelDict[BGInfo] = 0;
+				panelDict[ObjectInfoEditable] = 1;
+				panelDict[ObjectInfo] = 1;
+				panelDict[RegionInfo] = 2;
+				panelDict[RegionInfoEditable] = 2;
+				return panelDict;
+			}
+		]]>
+	</fx:Script>
+	<mx:ViewStack id="panels"
+		creationPolicy="all">
+		<propertyPanelClasses:BGInfoPropertyPanel id="bgInfo"/>
+		<propertyPanelClasses:ObjectInfoPropertyPanel id="objectInfo"/>
+		<propertyPanelClasses:RegionInfoPropertyPanel id="regionInfo"/>
+	</mx:ViewStack>
+</document:FormPanel>

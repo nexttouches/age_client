@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<propertyPanelClasses:PropertyPanelContentBase 
+	label="RegionInfo 属性"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:propertyPanelClasses="ageb.modules.scene.propertyPanelClasses.*"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:components="ageb.components.*">
+
+	<fx:Script>
+		<![CDATA[
+			protected function savePosition():void
+			{
+			}
+
+			protected function saveWidth():void
+			{
+			}
+
+			protected function saveHeight():void
+			{
+			}
+		]]>
+	</fx:Script>
+	<s:Group width="220">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<document:FormRow label="坐标">
+			<components:IntInput id="xField"
+				minimum="0"
+				toolTip="x"
+				change="savePosition()"/>
+			<s:Label text=" , "/>
+			<components:IntInput id="yField"
+				enabled="false"
+				minimum="0"
+				toolTip="y"
+				change="savePosition()"/>
+		</document:FormRow>
+		<document:FormRow label="大小">
+			<components:IntInput id="widthField"
+				minimum="1"
+				toolTip="width"
+				change="saveWidth()"/>
+			<s:Label text=" , "/>
+			<components:IntInput id="heightField"
+				enabled="false"
+				minimum="1"
+				toolTip="height"
+				change="saveHeight()"/>
+		</document:FormRow>
+	</s:Group>
+
+
+</propertyPanelClasses:PropertyPanelContentBase>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	autoDrawBackground="true">
+	<s:layout>
+		<s:HorizontalLayout 
+			paddingBottom="4"
+			paddingLeft="4"
+			paddingRight="4"
+			paddingTop="4"
+			verticalAlign="middle"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import spark.events.IndexChangeEvent;
+			import ageb.modules.Modules;
+			import ageb.modules.ae.LayerInfoEditable;
+			import ageb.modules.document.SceneDocument;
+			import ageb.modules.scene.op.ChangeLayerScrollRatio;
+			import ageb.modules.scene.op.ChangeLayerType;
+			import ageb.modules.scene.op.ChangeLayerVisible;
+
+			override public function set data(value:Object):void
+			{
+				if (info)
+				{
+					scrollRatio.value = 0;
+					type.selectedIndex = 0;
+					isVisible.selected = false;
+					info.onIsVisibleChange.remove(onIsVisibleChange);
+					info.onScrollRatioChange.remove(onScrollRatioChange);
+					info.onTypeChange.remove(onTypeChange);
+					isCharLayer.visible = false;
+				}
+				super.data = value;
+
+				if (info)
+				{
+					scrollRatio.value = info.scrollRatio;
+					isCharLayer.visible = info.isCharLayer;
+					info.onIsVisibleChange.add(onIsVisibleChange);
+					info.onScrollRatioChange.add(onScrollRatioChange);
+					info.onTypeChange.add(onTypeChange);
+					onTypeChange();
+					onScrollRatioChange();
+					onIsVisibleChange();
+				}
+			}
+
+			public function get info():LayerInfoEditable
+			{
+				return data as LayerInfoEditable;
+			}
+
+			private function onIsVisibleChange():void
+			{
+				isVisible.selected = info.isVisible;
+			}
+
+			protected function changeVisible():void
+			{
+				if (!info)
+				{
+					return;
+				}
+				new ChangeLayerVisible(doc, itemIndex, isVisible.selected).execute();
+			}
+
+			private function onScrollRatioChange():void
+			{
+				scrollRatio.value = info.scrollRatio;
+			}
+
+			protected function changeScrollRatio():void
+			{
+				if (!info)
+				{
+					return;
+				}
+				new ChangeLayerScrollRatio(doc, itemIndex, scrollRatio.value).execute();
+			}
+
+			public function get doc():SceneDocument
+			{
+				return Modules.getInstance().document.currentDoc as SceneDocument;
+			}
+
+			protected function changeType():void
+			{
+				if (!info)
+				{
+					return;
+				}
+				new ChangeLayerType(doc, itemIndex, type.selectedIndex).execute();
+			}
+
+			private function onTypeChange():void
+			{
+				type.selectedIndex = info.type;
+			}
+		]]>
+	</fx:Script>
+	<s:Image id="isCharLayer"
+		source="@Embed('../assets/icons/home.png')"
+		toolTip="角色层"/>
+	<s:DropDownList id="type"
+		width="70"
+		change="changeType()">
+		<s:ArrayList>
+			<fx:Object 
+				label="背景"
+				value="0"/>
+			<fx:Object 
+				label="角色"
+				value="1"/>
+		</s:ArrayList>
+	</s:DropDownList>
+	<s:NumericStepper id="scrollRatio"
+		width="60"
+		maximum="100"
+		minimum="-100"
+		snapInterval="0.1"
+		stepSize="0.1"
+		change="changeScrollRatio()"/>
+	<s:ToggleButton id="isVisible"
+		width="22" height="22"
+		icon="@Embed('../assets/icons/cube.png')"
+		change="changeVisible()"/>
+	<s:ToggleButton 
+		width="22" height="22"
+		icon="@Embed('../assets/icons/lock.png')"/>
+</s:ItemRenderer>

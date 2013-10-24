@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group 
+	creationComplete="onCreationComplete(event)"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx">
+	<s:layout>
+		<s:HorizontalLayout verticalAlign="baseline"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import age.AGE;
+			import ageb.utils.FlashTip;
+			import nt.assets.Asset;
+			import starling.events.EnterFrameEvent;
+
+			private var frameCount:int = 0;
+
+			private var drawCount:int = 0;
+
+			private var totalTime:Number = 0;
+
+			private function getMemory():Number
+			{
+				return System.totalMemory * 0.000000954; // 1 / (1024*1024) to convert to MB
+			}
+
+			private function gc():void
+			{
+				Asset.gc();
+				FlashTip.show('已清理')
+			}
+
+			private function updateText(fps:Number, memory:Number, drawCount:int):void
+			{
+				memoryField.text = "FPS: " + fps.toFixed(fps < 100 ? 1 : 0) + " MEM: " + memory.toFixed(memory < 100 ? 1 : 0);
+			}
+
+			protected function onEnterFrame(event:EnterFrameEvent):void
+			{
+				totalTime += event.passedTime;
+				frameCount++;
+
+				if (totalTime > 1.0)
+				{
+					updateText(frameCount / totalTime, getMemory(), drawCount - 2); // DRW: ignore self
+					frameCount = totalTime = 0;
+				}
+			}
+
+			protected function onCreationComplete(event:FlexEvent = null):void
+			{
+				if (AGE.s)
+				{
+					AGE.s.root.addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
+				}
+				else
+				{
+					AGE.onStart.addOnce(function():void
+					{
+						onCreationComplete();
+					});
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:Label id="memoryField"
+		textAlign="right"
+		text="----"/>
+	<s:Button 
+		label="清理内存"
+		click="gc()"/>
+</s:Group>

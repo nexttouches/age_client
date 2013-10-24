@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<supportClasses:AvatarDocumentPanel xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:ns="http://flex.apache.org/experimental/ns"
+	skinClass="ageb.modules.avatar.timelineClasses.TimelinePanelSkin"
+	xmlns:timelineClasses="ageb.modules.avatar.timelineClasses.*"
+	xmlns:ageb="ageb.*"
+	xmlns:supportClasses="ageb.modules.avatar.supportClasses.*">
+
+	<fx:Script>
+		<![CDATA[
+			import spark.components.ButtonBar;
+			import spark.components.ComboBox;
+			import spark.components.TextInput;
+			import ageb.components.IntInput;
+
+			[SkinPart(required="true")]
+			public var actionsField:ComboBox;
+
+			[SkinPart(required="true")]
+			public var prevFrameButton:Button;
+
+			[SkinPart(required="true")]
+			public var playPauseButton:Button;
+
+			[SkinPart(required="true")]
+			public var nextFrameButton:Button;
+
+			[SkinPart(required="true")]
+			public var currentFrameField:IntInput;
+
+			[SkinPart(required="true")]
+			public var fpsField:IntInput;
+
+			[SkinPart(required="true")]
+			public var currentTimeField:TextInput;
+
+			[SkinPart(required="true")]
+			public var directionButtons:ButtonBar;
+		]]>
+	</fx:Script>
+	<supportClasses:layout>
+		<s:VerticalLayout 
+			paddingBottom="0"
+			paddingLeft="1"
+			paddingRight="1"
+			paddingTop="0"/>
+	</supportClasses:layout>
+	<s:Group 
+		width="100%" height="100%">
+		<s:layout>
+			<s:HorizontalLayout 
+				paddingBottom="0"
+				paddingLeft="0"
+				paddingRight="0"
+				paddingTop="0"
+				gap="-1"/>
+		</s:layout>
+		<s:Group 
+			width="150" height="100%">
+			<s:layout>
+				<s:VerticalLayout gap="0"/>
+			</s:layout>
+			<s:Group 
+				width="100%" height="21">
+				<s:layout>
+					<s:HorizontalLayout 
+						horizontalAlign="right"
+						paddingRight="1"
+						verticalAlign="middle"
+						gap="-1"/>
+				</s:layout>
+				<s:ToggleButton id="toggleVisibleButton"
+					width="21" height="21"
+					icon="@Embed('../assets/icons/cube.png')"
+					toolTip="隐藏所有"/>
+				<s:ToggleButton id="toggleLockButton"
+					width="21" height="21"
+					icon="@Embed('../assets/icons/lock.png')"
+					toolTip="锁定全部"/>
+			</s:Group>
+			<timelineClasses:LayerList id="layersField"/>
+			<s:Group 
+				width="100%" height="12">
+				<s:layout>
+					<s:HorizontalLayout 
+						horizontalAlign="left"
+						paddingLeft="4"
+						gap="4"/>
+				</s:layout>
+				<s:Button id="addLayerButton"
+					icon="@Embed('../assets/icons/document.png')"
+					toolTip="添加图层"
+					skinClass="ageb.skins.SmallIconButtonSkin"/>
+				<s:Button id="removeLayerButton"
+					icon="@Embed('../assets/icons/trash.png')"
+					toolTip="删除图层"
+					skinClass="ageb.skins.SmallIconButtonSkin"/>
+			</s:Group>
+		</s:Group>
+		<timelineClasses:FramesDataGrid id="framesGrid"/>
+	</s:Group>
+</supportClasses:AvatarDocumentPanel>

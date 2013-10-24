@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tools:ToolBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:tools="ageb.modules.tools.*"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:components="ageb.components.*">
+	<fx:Script>
+		<![CDATA[
+			protected function onGridSizeChange():void
+			{
+				gridWidth.value = currentSceneDocument.info.gridWidth;
+				gridHeight.value = currentSceneDocument.info.gridHeight;
+			}
+
+			protected function saveGrid():void
+			{
+			}
+
+			protected function changeBrush():void
+			{
+			}
+		]]>
+	</fx:Script>
+
+	<document:FormRow 
+		width="100%"
+		label="横纵">
+		<components:IntInput id="gridWidth"
+			width="100%"
+			textAlign="right"
+			maximum="1000"
+			minimum="1"
+			change="saveGrid()"/>
+		<s:Label 
+			width="10"
+			textAlign="center"
+			text="×"/>
+		<components:IntInput id="gridHeight"
+			width="100%"
+			maximum="1000"
+			minimum="1"
+			change="saveGrid()"/>
+	</document:FormRow>
+	<document:FormRow 
+		width="100%"
+		label="笔刷">
+		<s:ButtonBar id="brushs"
+			labelField="label"
+			change="changeBrush()"
+			creationComplete="changeBrush()"
+			requireSelection="true">
+			<s:dataProvider>
+				<s:ArrayList>
+					<fx:Object 
+						label="可走"
+						value="0"/>
+					<fx:Object 
+						label="不可走"
+						value="1"/>
+				</s:ArrayList>
+			</s:dataProvider>
+		</s:ButtonBar>
+	</document:FormRow>
+</tools:ToolBase>

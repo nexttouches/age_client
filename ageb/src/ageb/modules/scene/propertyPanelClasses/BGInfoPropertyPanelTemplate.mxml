@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<propertyPanelClasses:PropertyPanelContentBase 
+	label="BGInfo 属性"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:propertyPanelClasses="ageb.modules.scene.propertyPanelClasses.*"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:components="ageb.components.*">
+	<fx:Style>
+		@namespace propertyPanelClasses "aeb.modules.scene.propertyPanelClasses.*";
+		@namespace document "aeb.modules.document.*";
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+
+	</fx:Style>
+
+	<fx:Script>
+		<![CDATA[
+			protected function savePosition():void
+			{
+			}
+
+			protected function saveTexture():void
+			{
+			}
+
+			protected function saveIsFlipX():void
+			{
+			}
+
+			protected function saveIsFlipY():void
+			{
+			}
+
+			protected function saveParent():void
+			{
+			}
+		]]>
+	</fx:Script>
+
+	<s:Group width="220">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<document:FormRow label="坐标">
+			<components:IntInput id="xField"
+				width="100%"
+				maximum="10000"
+				minimum="-10000"
+				toolTip="x"
+				change="savePosition()"/>
+			<components:IntInput id="yField"
+				width="100%"
+				maximum="10000"
+				minimum="-10000"
+				toolTip="y"
+				change="savePosition()"/>
+		</document:FormRow>
+		<document:FormRow label="翻转">
+			<s:CheckBox id="isFlipXField"
+				width="100%"
+				label="水平"
+				change="saveIsFlipX()"/>
+			<s:CheckBox id="isFlipYField"
+				width="100%"
+				label="垂直"
+				change="saveIsFlipY()"/>
+		</document:FormRow>
+		<document:FormRow label="贴图">
+			<s:TextInput id="textureField"
+				width="100%"
+				editable="false"/>
+			<s:Button label="浏览…"/>
+		</document:FormRow>
+		<document:FormRow label="图层">
+			<s:TextInput id="parentField"
+				width="100%"
+				editable="false"/>
+			<s:Button label="浏览…"/>
+		</document:FormRow>
+		<!--<document:FormRow
+			enabled="false"
+			label="宽高"
+			toolTip="暂不支持">
+			<s:NumericStepper id="widthField"
+				width="60"/>
+			<s:NumericStepper id="heightField"
+				width="60"/>
+		</document:FormRow>-->
+	</s:Group>
+</propertyPanelClasses:PropertyPanelContentBase>

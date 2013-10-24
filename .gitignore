@@ -1,0 +1,46 @@
+﻿
+*.metadata
+# *.flexLibProperties
+# *.project
+# *.actionScriptProperties
+bin
+bin-debug
+bin-debug-*
+bin-release
+bin-release-*
+publish
+*.settings
+# .externalToolBuilders
+.autotools
+.cproject
+*.o
+/tools/apache-ant-1.8.4
+/tools/sdk
+*test0*
+*test1*
+/client/sandbox
+classes
+gametask.jar
+/gameassets/src/GameMain.html
+/gameassets/src/GameMain.swf
+/gameassets/src/playerProductInstall.swf
+/gameassets/src/swfobject.js
+/gameassets/src/GameIndex.html
+/gameassets/src/GameIndex.swf
+/gameassets/src/assets/info_config.zip
+/gameassets/src/assets/textures
+/gameassets/src/assets/ae.zip
+
+/gameassets/src/ui - 快捷方式.lnk
+
+/gameassets/src/LoginLoadingViewControllerV2.swf
+
+/gameassets/src/RoleCreatorViewControllerV2.swf
+
+/gameassets/src/LoginLoadingViewControllerV2.html
+/gameassets/src/RoleCreatorViewControllerV2.html
+
+/gamesdk/src/initializer.as.inc
+/gameassets/src/assets/ae
+/test
+asdoc-output

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer 
+	width="200" height="100%"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx">
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom="4"
+			paddingLeft="5"
+			paddingRight="4"
+			paddingTop="6"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			override protected function get down():Boolean
+			{
+				return false;
+			}
+
+			override protected function get hovered():Boolean
+			{
+				return false;
+			}
+
+			override public function get selected():Boolean
+			{
+				return false;
+			}
+
+			override public function get showsCaret():Boolean
+			{
+				return false;
+			}
+		]]>
+	</fx:Script>
+	<s:Label id="titleField"
+		width="100%"/>
+	<s:TextArea id="logField"
+		width="100%" height="100%"
+		fontFamily="Microsoft Yahei Mono, Consolas, Courier new"
+		editable="false"/>
+</s:ItemRenderer>

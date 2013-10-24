@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow 
+	width="400" height="300"
+	add="onAdd(event)"
+	creationComplete="onAdd(event)"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	title="设置"
+	close="onClose(event)"
+	xmlns:document="ageb.modules.document.*">
+	<s:layout>
+		<s:VerticalLayout 
+			paddingLeft="6"
+			paddingRight="6"
+			paddingTop="6"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+
+			protected function onClose(event:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+
+			protected function onAdd(event:FlexEvent):void
+			{
+				render();
+			}
+
+			protected function render():void
+			{
+			}
+
+			protected function browseProjectFile():void
+			{
+			}
+
+			protected function testTP():void
+			{
+			}
+
+			protected function browseTPPath():void
+			{
+			}
+
+			protected function testIM():void
+			{
+			}
+
+			protected function browseIMPath():void
+			{
+			}
+		]]>
+	</fx:Script>
+
+	<document:FormRow 
+		labelWidth="60"
+		label="项目路径 *">
+		<s:TextInput id="projectFolderField"
+			width="100%"
+			click="browseProjectFile()"
+			editable="false"/>
+		<s:Button 
+			label="浏览"
+			click="browseProjectFile()"/>
+	</document:FormRow>
+	<document:FormRow 
+		labelWidth="60"
+		label="TP 路径">
+		<s:TextInput id="tpPathField"
+			width="100%"
+			click="browseTPPath()"
+			editable="false"/>
+		<s:Button 
+			label="浏览"
+			click="browseTPPath()"/>
+		<s:Button 
+			label="测试"
+			click="testTP()"/>
+	</document:FormRow>
+	<document:FormRow 
+		labelWidth="60"
+		label="IM 路径">
+		<s:TextInput id="imPathField"
+			width="100%"
+			click="browseIMPath()"
+			editable="false"/>
+		<s:Button 
+			label="浏览"
+			click="browseIMPath()"/>
+		<s:Button 
+			label="测试"
+			click="testIM()"/>
+	</document:FormRow>
+	<s:Label id="restartTipField"
+		color="0xff0000"
+		text="带 * 设置需要重启才可生效"
+		visible="false"/>
+</s:TitleWindow>

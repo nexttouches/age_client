@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	clipAndEnableScrolling="true">
+	<s:layout>
+		<s:VerticalLayout 
+			horizontalAlign="center"
+			verticalAlign="middle"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import com.greensock.TweenLite;
+			import com.greensock.easing.Expo;
+			import mx.core.UIComponent;
+			import age.assets.BGInfo;
+			import age.assets.ObjectInfo;
+			import age.assets.SceneInfo;
+			import age.assets.TextureAsset;
+			import ageb.modules.ae.LayerInfoEditable;
+
+			protected function track(event:MouseEvent):void
+			{
+				var view:SceneDocumentView = UIComponent(UIComponent(owner).owner).parentDocument as SceneDocumentView;
+				var dx:Number, dy:Number;
+				const ratio:Number = LayerInfoEditable(data.parent).scrollRatio;
+
+				if (bgInfo)
+				{
+					dx = bgInfo.x / ratio;
+					dy = bgInfo.parent.parent.projectY(bgInfo.y, bgInfo.z) / ratio;
+					var asset:TextureAsset = TextureAsset.get(SceneInfo.folder + "/" + bgInfo.texturePath);
+
+					if (asset.isComplete)
+					{
+						dx += asset.textureAtlas.getTexture(bgInfo.textureName).width / 2;
+						dy += asset.textureAtlas.getTexture(bgInfo.textureName).height / 2;
+					}
+				}
+				else if (objectInfo)
+				{
+					dx = objectInfo.x / ratio;
+					dy = objectInfo.parent.parent.projectY(objectInfo.y, objectInfo.z) / ratio;
+				}
+				TweenLite.to(view.doc.focus, 1, { x: dx, y: dy,
+								 ease: Expo.easeOut });
+			}
+
+			final protected function get bgInfo():BGInfo
+			{
+				return data as BGInfo;
+			}
+
+			final protected function get objectInfo():ObjectInfo
+			{
+				return data as ObjectInfo;
+			}
+		]]>
+	</fx:Script>
+
+	<s:Button 
+		icon="@Embed('../assets/icons/target.png')"
+		click="track(event)"
+		skinClass="ageb.skins.IconButtonSkin"/>
+</s:GridItemRenderer>
