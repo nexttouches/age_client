@@ -10,13 +10,22 @@ package ageb.modules.scene
 	import spark.components.List;
 	import spark.layouts.supportClasses.DropLocation;
 	import ageb.modules.Modules;
-	import ageb.modules.scene.op.DragReorderLayerOP;
+	import ageb.modules.scene.op.DragReorderSceneLayerOP;
 	import ageb.utils.FlashTip;
 	import nt.lib.util.clone;
 
-	public class LayerList extends List
+	/**
+	 * 场景图层列表
+	 * @author zhanghaocong
+	 *
+	 */
+	public class SceneLayerList extends List
 	{
-		public function LayerList()
+		/**
+		 * constructor
+		 *
+		 */
+		public function SceneLayerList()
 		{
 			super();
 			allowMultipleSelection = true;
@@ -39,7 +48,9 @@ package ageb.modules.scene
 		override protected function dragDropHandler(event:DragEvent):void
 		{
 			if (event.isDefaultPrevented())
+			{
 				return;
+			}
 			// 隐藏 drop 图形
 			layout.hideDropIndicator();
 			destroyDropIndicator();
@@ -53,9 +64,9 @@ package ageb.modules.scene
 				return
 			}
 			// 下落位置
-			var dropLocation:DropLocation = layout.calculateDropLocation(event);
+			const dropLocation:DropLocation = layout.calculateDropLocation(event);
 			// 索引
-			var dropIndex:int = dropLocation.dropIndex;
+			const dropIndex:int = dropLocation.dropIndex;
 			// 更新反馈（复制 / 移动）
 			DragManager.showFeedback(event.ctrlKey ? DragManager.COPY : DragManager.MOVE);
 			// 调用封装后的重新排序方法
@@ -67,7 +78,7 @@ package ageb.modules.scene
 				caretIndex = event.dragSource.dataForFormat("caretIndex") as int;
 			var items:Vector.<Object> = dragSource.dataForFormat("itemsByIndex") as Vector.<Object>;
 			// 创建一个 OP，之后的事情全部在 OP 里做
-			var op:DragReorderLayerOP = new DragReorderLayerOP(Modules.getInstance().document.currentDoc, dropIndex, caretIndex, items, event.action, this);
+			var op:DragReorderSceneLayerOP = new DragReorderSceneLayerOP(Modules.getInstance().document.currentDoc, dropIndex, caretIndex, items, event.action, this);
 			op.execute();
 		}
 

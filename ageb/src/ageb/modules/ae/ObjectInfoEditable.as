@@ -221,6 +221,7 @@ package ageb.modules.ae
 			{
 				action.onFPSChange.remove(onFPSChange);
 				action.onNumFramesChange.remove(onNumFramesChange);
+				action.onLayersChange.remove(onActionNameChange.dispatch);
 			}
 			// 验证前使用同步的方式把 avatar 元数据载进来
 			// 如果有任何错误，将弹出 Alert
@@ -239,6 +240,7 @@ package ageb.modules.ae
 			{
 				action.onFPSChange.add(onFPSChange);
 				action.onNumFramesChange.add(onNumFramesChange);
+				action.onLayersChange.add(onActionNameChange.dispatch);
 			}
 		}
 

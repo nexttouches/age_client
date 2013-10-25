@@ -730,7 +730,6 @@ package age.assets
 		[Inline]
 		final protected function updateDurations(actionInfo:ActionInfo):void
 		{
-			assert(actionInfo.numFrames > 0, "动作的总帧数必须>0");
 			// 初始化帧信息
 			const numFrames:int = actionInfo.numFrames;
 			defaultFrameDuration = actionInfo.defautFrameDuration;

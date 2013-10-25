@@ -53,11 +53,15 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		override public function set verticalScrollPosition(value:Number):void
 		{
+			const old:int = verticalScrollPosition;
 			super.verticalScrollPosition = value;
 
-			if (onVerticalScrollPositionChange != null)
+			if (old != value)
 			{
-				onVerticalScrollPositionChange(value);
+				if (onVerticalScrollPositionChange != null)
+				{
+					onVerticalScrollPositionChange(value);
+				}
 			}
 		}
 

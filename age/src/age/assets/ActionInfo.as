@@ -142,13 +142,16 @@ package age.assets
 		 */
 		final public function updateNumFrames():void
 		{
+			var n:int = 0;
+
 			for each (var layer:FrameLayerInfo in layers)
 			{
-				if (numFrames < layer.numFrames)
+				if (n < layer.numFrames)
 				{
-					numFrames = layer.numFrames;
+					n = layer.numFrames;
 				}
 			}
+			numFrames = n;
 		}
 
 		/**

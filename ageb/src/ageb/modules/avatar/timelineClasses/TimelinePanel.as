@@ -7,7 +7,9 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.ageb_internal;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
+	import ageb.modules.avatar.op.AddFrameLayer;
 	import ageb.modules.avatar.op.ChangeActionFPS;
+	import ageb.modules.avatar.op.RemoveFrameLayer;
 	import ageb.modules.avatar.op.SelectAction;
 	import ageb.modules.document.Document;
 	import nt.lib.util.assert;
@@ -43,8 +45,16 @@ package ageb.modules.avatar.timelineClasses
 			prevFrameButton.addEventListener(MouseEvent.CLICK, frameButton_onClick);
 			currentFrameField.addEventListener(Event.CHANGE, currentFrameField_onClick);
 			directionButtons.addEventListener(IndexChangeEvent.CHANGE, directionButtons_onChange);
-			layersField.addEventListener(IndexChangeEvent.CHANGE, layersField_onChange);
+			layersField.addEventListener(MouseEvent.CLICK, layersField_onClick);
+			layersField.onMouseWheel.add(layersField_onMouseWheel);
 			fpsField.addEventListener(Event.CHANGE, fpsField_onChange);
+			addLayerButton.addEventListener(MouseEvent.CLICK, addLayerButton_onClick);
+			removeLayerButton.addEventListener(MouseEvent.CLICK, removeLayerButton_onClick);
+		}
+
+		private function layersField_onMouseWheel():void
+		{
+			framesGrid.grid.verticalScrollPosition = layersField.scroller.viewport.verticalScrollPosition;
 		}
 
 		/**
@@ -58,11 +68,11 @@ package ageb.modules.avatar.timelineClasses
 		}
 
 		/**
-		 * 选中图层等于选中该图层的所有 FrameInfo
+		 * 点击列表任意项等于选择中该图层所有帧
 		 * @param event
 		 *
 		 */
-		protected function layersField_onChange(event:IndexChangeEvent):void
+		protected function layersField_onClick(event:MouseEvent):void
 		{
 			var frames:Vector.<FrameInfoEditable> = new Vector.<FrameInfoEditable>;
 
@@ -157,6 +167,26 @@ package ageb.modules.avatar.timelineClasses
 		protected function actionsField_onChange(event:IndexChangeEvent):void
 		{
 			new SelectAction(doc, ActionInfoEditable(actionsField.selectedItem).name).execute();
+		}
+
+		/**
+		 * 添加图层
+		 * @param event
+		 *
+		 */
+		protected function addLayerButton_onClick(event:MouseEvent):void
+		{
+			new AddFrameLayer(doc).execute();
+		}
+
+		/**
+		 * 删除图层
+		 * @param event
+		 *
+		 */
+		protected function removeLayerButton_onClick(event:MouseEvent):void
+		{
+			new RemoveFrameLayer(doc, layersField.selectedIndices).execute();
 		}
 
 		/**

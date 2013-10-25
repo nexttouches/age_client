@@ -4,17 +4,23 @@ package ageb.modules.scene.op
 	import mx.core.mx_internal;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
-	import ageb.modules.scene.LayerList;
+	import ageb.modules.scene.SceneLayerList;
 
 	/**
 	 * 拖拽调整图层顺序操作
 	 * @author zhanghaocong
 	 *
 	 */
-	public class DragReorderLayerOP extends SceneOPBase
+	public class DragReorderSceneLayerOP extends SceneOPBase
 	{
+		/**
+		 * 下落位置
+		 */
 		public var dropIndex:int;
 
+		/**
+		 * 焦点
+		 */
 		public var caretIndex:int;
 
 		/**
@@ -31,7 +37,7 @@ package ageb.modules.scene.op
 		/**
 		 * 表示由哪个列表控件触发
 		 */
-		public var dragInitiator:LayerList;
+		public var dragInitiator:SceneLayerList;
 
 		/**
 		 * 旧选中索引项
@@ -74,7 +80,7 @@ package ageb.modules.scene.op
 		 * @param dragInitiator
 		 *
 		 */
-		public function DragReorderLayerOP(doc:Document, dropIndex:int, caretIndex:int, items:Vector.<Object>, action:String, dragInitiator:LayerList = null)
+		public function DragReorderSceneLayerOP(doc:Document, dropIndex:int, caretIndex:int, items:Vector.<Object>, action:String, dragInitiator:SceneLayerList = null)
 		{
 			super(doc);
 			this.dropIndex = dropIndex;
@@ -84,6 +90,10 @@ package ageb.modules.scene.op
 			this.dragInitiator = dragInitiator;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function redo():void
 		{
 			if (newSource)
@@ -117,6 +127,10 @@ package ageb.modules.scene.op
 			doc.info.onLayersChange.dispatch();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveOld():void
 		{
 			oldSelections = dragInitiator.selectedIndices.concat();
@@ -124,6 +138,10 @@ package ageb.modules.scene.op
 			oldCharLayerIndex = doc.info.charLayerIndex;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function undo():void
 		{
 			// 恢复 source
@@ -136,6 +154,10 @@ package ageb.modules.scene.op
 			doc.info.onLayersChange.dispatch();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get name():String
 		{
 			return format("移动图层 ({0}) 到 ({1})", oldSelections.toString(), dropIndex);

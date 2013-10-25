@@ -22,7 +22,7 @@
 			}
 		]]>
 	</fx:Script>
-	<scene:LayerList id="list"
+	<scene:SceneLayerList id="list"
 		width="100%" height="100%"
 		change="list_onChange(event)"/>
 	<s:Group>
