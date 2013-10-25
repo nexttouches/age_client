@@ -166,7 +166,7 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		protected function actionsField_onChange(event:IndexChangeEvent):void
 		{
-			new SelectAction(doc, ActionInfoEditable(actionsField.selectedItem).name).execute();
+			callLater(new SelectAction(doc, ActionInfoEditable(actionsField.selectedItem).name).execute);
 		}
 
 		/**
