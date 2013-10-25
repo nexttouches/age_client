@@ -178,11 +178,11 @@ package age.renderers
 			mVertexData.setPosition(1, width, 0.0);
 			mVertexData.setPosition(2, 0.0, height);
 			mVertexData.setPosition(3, width, height);
-			onVertexDataChanged();
 			// 调整原点
 			const box:Box = _info.frames[0].box;
 			pivotX = box.width * (box.pivot.x);
 			pivotY = box.height * (1 - box.pivot.y); // 坐标系不同，需要颠倒的 pivot.y
+			onVertexDataChanged();
 		}
 
 		/**
