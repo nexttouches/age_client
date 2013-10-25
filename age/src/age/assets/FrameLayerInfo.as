@@ -371,6 +371,12 @@ package age.assets
 			}
 		}
 
+		public override function empty():void
+		{
+			textures = null;
+			super.empty();
+		}
+
 		/**
 		 * 填充所有动画图层的 texture 属性
 		 *

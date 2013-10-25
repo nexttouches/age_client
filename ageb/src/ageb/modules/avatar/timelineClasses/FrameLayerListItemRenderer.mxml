@@ -13,10 +13,13 @@
 	</s:layout>
 	<fx:Script>
 		<![CDATA[
+			import spark.events.IndexChangeEvent;
 			import age.assets.FrameLayerType;
 			import ageb.modules.Modules;
 			import ageb.modules.ae.FrameLayerInfoEditable;
 			import ageb.modules.avatar.op.ChangeFrameLayerName;
+			import ageb.modules.avatar.op.ChangeFrameLayerType;
+			import ageb.modules.document.AvatarDocument;
 			import org.apache.flex.collections.ArrayList;
 
 			public static var TYPES:ArrayList;
@@ -39,22 +42,17 @@
 				{
 					typeField.selectedIndex = -1;
 					info.onNameChange.remove(onNameChange);
+					info.onTypeChange.remove(onTypeChange);
 				}
 				super.data = value;
 
 				if (info)
 				{
 					info.onNameChange.add(onNameChange);
-
-					for (var i:int = 0; i < TYPES.length; i++)
-					{
-						if (TYPES.getItemAt(i).data == info.type)
-						{
-							typeField.selectedIndex = i;
-						}
-					}
+					info.onTypeChange.add(onTypeChange);
 				}
 				onNameChange();
+				onTypeChange();
 			}
 
 			protected function get info():FrameLayerInfoEditable
@@ -92,8 +90,13 @@
 				if (isEditing)
 				{
 					isEditing = false;
-					new ChangeFrameLayerName(Modules.getInstance().document.currentDoc, info.index, nameInput.text).execute();
+					new ChangeFrameLayerName(doc, info.index, nameInput.text).execute();
 				}
+			}
+
+			protected function doChangeType(event:IndexChangeEvent):void
+			{
+				new ChangeFrameLayerType(doc, info.index, typeField.selectedItem.data).execute();
 			}
 
 			private function onNameChange():void
@@ -107,6 +110,29 @@
 				{
 					nameField.text = "";
 					nameInput.text = "";
+				}
+			}
+
+			protected function get doc():AvatarDocument
+			{
+				return Modules.getInstance().document.currentDoc as AvatarDocument
+			}
+
+			private function onTypeChange():void
+			{
+				if (info)
+				{
+					for (var i:int = 0; i < TYPES.length; i++)
+					{
+						if (TYPES.getItemAt(i).data == info.type)
+						{
+							typeField.selectedIndex = i;
+						}
+					}
+				}
+				else
+				{
+					typeField.selectedIndex = -1;
 				}
 			}
 		]]>
@@ -123,8 +149,8 @@
 			focusOut="doChangeName(event)"
 			enter="doChangeName(event)"/>
 	</s:Group>
-
 	<s:DropDownList id="typeField"
 		width="70"
-		labelField="label"/>
+		labelField="label"
+		change="doChangeType(event)"/>
 </s:ItemRenderer>

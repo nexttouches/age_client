@@ -1,9 +1,7 @@
 package ageb.modules.ae
 {
-	import mx.controls.Alert;
 	import age.assets.ObjectInfo;
 	import age.renderers.ObjectRenderer;
-	import age.renderers.WireframeLayerRenderer;
 
 	/**
 	 * 可编辑的对象渲染器<br>

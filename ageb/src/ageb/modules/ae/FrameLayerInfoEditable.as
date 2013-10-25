@@ -260,5 +260,24 @@ package ageb.modules.ae
 			name = value;
 			onNameChange.dispatch();
 		}
+
+		/**
+		 * type 发生变化时广播
+		 */
+		public var onTypeChange:Signal = new Signal();
+
+		/**
+		 * 设置图层类型<br>
+		 * 如果设置成功，将会广播 onTypeChange 和 onFramesChange
+		 * @param newType
+		 *
+		 */
+		public function setType(value:int):void
+		{
+			type = value;
+			onTypeChange.dispatch();
+			empty();
+			onFramesChange.dispatch(this);
+		}
 	}
 }

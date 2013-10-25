@@ -347,22 +347,6 @@ package age.renderers
 					alr.info = info;
 					animations.push(alr);
 					addRenderer(alr);
-
-					if (false)
-					{
-						// 残影测试
-						// 只是测试下滤镜 ：D
-						const numPasses:int = 4;
-
-						for (var p:int = 0; p < numPasses; p++)
-						{
-							alr = new animationLayerRendererClass();
-							alr.info = info;
-							animations.push(alr);
-							addRenderer(alr);
-							alr.filter = new SolidColorFilter
-						}
-					}
 				}
 				else if (info.type == FrameLayerType.SOUND)
 				{

@@ -265,7 +265,7 @@ package age.assets
 		 */
 		public function get actionInfo():ActionInfo
 		{
-			if (_avatarID || _actionName)
+			if (_avatarID && _actionName)
 			{
 				return avatarInfo.getAction(_actionName);
 			}
