@@ -59,5 +59,15 @@ package ageb.modules.avatar.timelineClasses
 				}
 			}
 		}
+
+		/**
+		 * @inheritDoc
+		 * @param willBeRecycled
+		 *
+		 */
+		override public function discard(willBeRecycled:Boolean):void
+		{
+			// Do nothing
+		}
 	}
 }
