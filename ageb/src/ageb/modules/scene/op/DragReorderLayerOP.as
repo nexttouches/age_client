@@ -4,7 +4,7 @@ package ageb.modules.scene.op
 	import mx.core.mx_internal;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
-	import ageb.modules.scene.LayerList;
+	import ageb.modules.scene.SceneLayerList;
 
 	/**
 	 * 拖拽调整图层顺序操作
@@ -31,7 +31,7 @@ package ageb.modules.scene.op
 		/**
 		 * 表示由哪个列表控件触发
 		 */
-		public var dragInitiator:LayerList;
+		public var dragInitiator:SceneLayerList;
 
 		/**
 		 * 旧选中索引项
@@ -74,7 +74,7 @@ package ageb.modules.scene.op
 		 * @param dragInitiator
 		 *
 		 */
-		public function DragReorderLayerOP(doc:Document, dropIndex:int, caretIndex:int, items:Vector.<Object>, action:String, dragInitiator:LayerList = null)
+		public function DragReorderLayerOP(doc:Document, dropIndex:int, caretIndex:int, items:Vector.<Object>, action:String, dragInitiator:SceneLayerList = null)
 		{
 			super(doc);
 			this.dropIndex = dropIndex;
