@@ -48,6 +48,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onPositionChange():void
 		{
 			x = _info.position.x;
@@ -55,11 +59,19 @@ package ageb.modules.ae
 			z = _info.position.z;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onPropertiesChange(trigger:Object = null):void
 		{
 			onAvatarIDChange();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function validateNow():void
 		{
 			super.validateNow();
@@ -78,16 +90,29 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 * @return
+		 *
+		 */
 		override protected function get nameRendererClass():Class
 		{
 			return NameRendererEditable;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onIsDraggingChange():void
 		{
 			alpha = selectableInfo.isDragging ? 0.5 : 1;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onIsSelectedChange():void
 		{
 			if (infoEditable.isSelected)
@@ -100,6 +125,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onIsSelectableChange():void
 		{
 			// Do nothing

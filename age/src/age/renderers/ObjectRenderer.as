@@ -19,13 +19,8 @@ package age.renderers
 	import starling.filters.FragmentFilter;
 
 	/**
-	 * <code>AvatarRenderer</code> 是一个 <strong>容器</strong><br>
-	 * 内部包含了若干子渲染器，用于做实际渲染<br>
-	 * <ul>
-	 * <li>通过设置 parent 决定渲染的场景图层</li>
-	 * <li>通过设置 avatarID 和 actionName 可以更改播放的动作</li>
-	 * <li>具有鼠标事件</li>
-	 * </ul>
+	 * ObjectRenderer 是 ObjectInfo 的渲染器<br>
+	 * 内部使用了多种类型的渲染器
 	 * @author zhanghaocong
 	 *
 	 */
@@ -885,7 +880,7 @@ package age.renderers
 		private var _filter:FragmentFilter;
 
 		/**
-		 * 设置或获取当前 AvatarRenderer 套用的滤镜
+		 * 设置或获取要套用的滤镜
 		 * @return
 		 *
 		 */
