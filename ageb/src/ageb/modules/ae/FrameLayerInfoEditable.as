@@ -244,5 +244,21 @@ package ageb.modules.ae
 			}
 			notifyFramesChange();
 		}
+
+		/**
+		 * name 发生变化时广播
+		 */
+		public var onNameChange:Signal = new Signal();
+
+		/**
+		 * 设置图层名字
+		 * @param value
+		 *
+		 */
+		public function setName(value:String):void
+		{
+			name = value;
+			onNameChange.dispatch();
+		}
 	}
 }

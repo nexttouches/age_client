@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer 
+	height="21"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	autoDrawBackground="true">
+	<s:layout>
+		<s:HorizontalLayout 
+			paddingLeft="2"
+			paddingRight="-1"
+			verticalAlign="middle"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import age.assets.FrameLayerType;
+			import ageb.modules.Modules;
+			import ageb.modules.ae.FrameLayerInfoEditable;
+			import ageb.modules.avatar.op.ChangeFrameLayerName;
+			import org.apache.flex.collections.ArrayList;
+
+			public static var TYPES:ArrayList;
+
+			override protected function createChildren():void
+			{
+				super.createChildren();
+
+				if (!TYPES)
+				{
+					TYPES = new ArrayList(constantsToArray(FrameLayerType));
+				}
+				typeField.dataProvider = TYPES;
+				isEditing = false;
+			}
+
+			override public function set data(value:Object):void
+			{
+				if (info)
+				{
+					typeField.selectedIndex = -1;
+					info.onNameChange.remove(onNameChange);
+				}
+				super.data = value;
+
+				if (info)
+				{
+					info.onNameChange.add(onNameChange);
+
+					for (var i:int = 0; i < TYPES.length; i++)
+					{
+						if (TYPES.getItemAt(i).data == info.type)
+						{
+							typeField.selectedIndex = i;
+						}
+					}
+				}
+				onNameChange();
+			}
+
+			protected function get info():FrameLayerInfoEditable
+			{
+				return data as FrameLayerInfoEditable;
+			}
+
+			private var _isEditing:Boolean;
+
+			public function get isEditing():Boolean
+			{
+				return _isEditing;
+			}
+
+			public function set isEditing(value:Boolean):void
+			{
+				_isEditing = value;
+				nameField.visible = !isEditing;
+				nameInput.visible = isEditing;
+
+				if (_isEditing)
+				{
+					nameInput.setFocus();
+					nameInput.selectAll();
+				}
+			}
+
+			protected function nameField_onDoubleClick(event:MouseEvent):void
+			{
+				isEditing = true;
+			}
+
+			protected function doChangeName(event:Event):void
+			{
+				if (isEditing)
+				{
+					isEditing = false;
+					new ChangeFrameLayerName(Modules.getInstance().document.currentDoc, info.index, nameInput.text).execute();
+				}
+			}
+
+			private function onNameChange():void
+			{
+				if (info)
+				{
+					nameField.text = info.name;
+					nameInput.text = info.name;
+				}
+				else
+				{
+					nameField.text = "";
+					nameInput.text = "";
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:Group 
+		width="100%" height="21">
+		<s:Label id="nameField"
+			width="100%" height="100%"
+			verticalAlign="middle"
+			doubleClickEnabled="true"
+			doubleClick="nameField_onDoubleClick(event)"/>
+		<s:TextInput id="nameInput"
+			width="100%" height="100%"
+			focusOut="doChangeName(event)"
+			enter="doChangeName(event)"/>
+	</s:Group>
+
+	<s:DropDownList id="typeField"
+		width="70"
+		labelField="label"/>
+</s:ItemRenderer>

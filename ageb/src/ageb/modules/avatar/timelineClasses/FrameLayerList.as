@@ -31,12 +31,14 @@ package ageb.modules.avatar.timelineClasses
 		{
 			super();
 			setStyle("selectionColor", 0x3399ff);
+			setStyle("horizontalScrollPolicy", "off");
+			setStyle("verticalScrollPolicy", "on");
 			allowMultipleSelection = true;
 			dragEnabled = true;
 			dragMoveEnabled = true;
 			dropEnabled = true;
 			allowMultipleSelection = true;
-			itemRenderer = new ClassFactory(LayerListItemRenderer);
+			itemRenderer = new ClassFactory(FrameLayerListItemRenderer);
 			percentWidth = 100;
 			percentHeight = 100;
 		}
