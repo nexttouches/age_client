@@ -234,12 +234,12 @@ package age.assets
 			if (_actionName != value)
 			{
 				_actionName = value;
+				validateNow();
 
 				if (_onActionNameChange)
 				{
 					_onActionNameChange.dispatch();
 				}
-				validateNow();
 			}
 		}
 

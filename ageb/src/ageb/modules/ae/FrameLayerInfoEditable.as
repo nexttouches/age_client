@@ -264,7 +264,7 @@ package ageb.modules.ae
 		/**
 		 * type 发生变化时广播
 		 */
-		public var onTypeChange:Signal = new Signal();
+		public var onTypeChange:Signal = new Signal(FrameLayerInfoEditable);
 
 		/**
 		 * 设置图层类型<br>
@@ -275,8 +275,9 @@ package ageb.modules.ae
 		public function setType(value:int):void
 		{
 			type = value;
-			onTypeChange.dispatch();
 			empty();
+			load();
+			onTypeChange.dispatch(this);
 			onFramesChange.dispatch(this);
 		}
 	}

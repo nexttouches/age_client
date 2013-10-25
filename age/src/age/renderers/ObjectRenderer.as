@@ -7,7 +7,6 @@ package age.renderers
 	import age.assets.FrameLayerInfo;
 	import age.assets.FrameLayerType;
 	import age.assets.ObjectInfo;
-	import nt.lib.reflect.Type;
 	import nt.lib.util.IDisposable;
 	import nt.lib.util.assert;
 	import org.osflash.signals.ISignal;
@@ -25,6 +24,16 @@ package age.renderers
 	 */
 	public class ObjectRenderer implements IDirectionRenderer, IDisposable, IAnimatable, ITouchable
 	{
+		/**
+		 * 当前渲染中的 avatarID
+		 */
+		protected var avatarID:String;
+
+		/**
+		 * 当前渲染中的 actionName
+		 */
+		protected var actionName:String;
+
 		/**
 		 * 设置或获取更改动作后，是否自动播放<br>
 		 * 默认 true
@@ -262,47 +271,47 @@ package age.renderers
 		 */
 		public function validateNow():void
 		{
-			if (avatarID && actionName)
+			// 清理工作
+			if (actionInfo)
 			{
-				// 先删除所有旧图层
+				// 删除所有旧图层
 				removeAllLayerRenderers();
 				avatarID = null;
 				actionName = null;
 			}
 
-			// 没有 info 就不渲了
-			if (!_info)
-			{
-				return;
-			}
-
-			// 需要刷新静态渲染器
+			// 检查是否需要刷新静态渲染器
 			if (isAvatarIDChange)
 			{
 				updateStaticRenderers(null);
 			}
+
+			// info 为 null 则放弃本次刷新
+			if (!_info)
+			{
+				return;
+			}
+			// 更新 avatarID
 			avatarID = info.avatarID;
+
+			// 如 isAvatarIDChange 则…
+			if (isAvatarIDChange)
+			{
+				updateStaticRenderers(avatarInfo);
+				isAvatarIDChange = false;
+			}
+
+			// 优化：如果 avatarID 为 null，后面的流程就不用跑了
+			if (avatarID == null)
+			{
+				return;
+			}
+			// 更新 action
 			actionName = info.actionName;
 
-			// 任意为 null
-			if (avatarID == null || actionName == null)
+			// 优化：如果 actionName 为 null，后面的流程就不用跑了
+			if (actionName == null)
 			{
-				return;
-			}
-
-			// TODO 这里的错误判断走 ObjectInfo
-			// 错误的 avatarID
-			if (!AvatarInfo.has(avatarID))
-			{
-				traceex("[{0}] avatarID 不正确：{1}", Type.of(this).shortname, avatarID);
-				return;
-			}
-			updateStaticRenderers(avatarInfo);
-
-			// 错误的 actionName
-			if (!avatarInfo.hasAction(actionName))
-			{
-				traceex("[{0}] 在 {1} 中找不到动作：{2}", Type.of(this).shortname, avatarID, actionName);
 				return;
 			}
 			addAllLayerRenderers(actionInfo);
@@ -338,7 +347,9 @@ package age.renderers
 		}
 
 		/**
-		 * 更新所有静态渲染器
+		 * 刷新静态渲染器
+		 * @param avatarInfo 要刷新的 avatarInfo，可以输入 null 以便清空静态渲染器
+		 *
 		 */
 		[Inline]
 		private function updateStaticRenderers(avatarInfo:AvatarInfo):void
@@ -1037,10 +1048,6 @@ package age.renderers
 		}
 
 		private var _direction:int;
-
-		private var avatarID:String;
-
-		private var actionName:String;
 
 		/**
 		 * @inheritDoc

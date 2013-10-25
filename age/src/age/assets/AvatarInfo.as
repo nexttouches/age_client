@@ -1,9 +1,9 @@
 package age.assets
 {
-	import nt.lib.util.assert;
+	import flash.system.Capabilities;
 
 	/**
-	 * AvatarInfo 储存了一套角色的所有动作，大小等基本信息
+	 * AvatarInfo 储存了一套角色的所有动作、大小等基本信息
 	 * @author zhanghaocong
 	 *
 	 */
@@ -15,7 +15,7 @@ package age.assets
 		public var actions:Object = {};
 
 		/**
-		 *  ID
+		 * ID
 		 */
 		public var id:String;
 
@@ -25,7 +25,7 @@ package age.assets
 		public var size:Box;
 
 		/**
-		 * 获得用于创建 AvatarInfo 具体的 Class
+		 * 获得实际用于创建 AvatarInfo 的 Class
 		 * @return
 		 *
 		 */
@@ -34,11 +34,21 @@ package age.assets
 			return ActionInfo;
 		}
 
+		/**
+		 * constructor
+		 * @param raw
+		 *
+		 */
 		public function AvatarInfo(raw:Object = null)
 		{
 			fromJSON(raw);
 		}
 
+		/**
+		 * 从 JSON 导入
+		 * @param raw
+		 *
+		 */
 		private function fromJSON(raw:Object):void
 		{
 			if (!raw)
@@ -58,6 +68,7 @@ package age.assets
 				size = new Box(0, 0, 0, 100, 174, 100, 0.5, 0, 0.5);
 			}
 
+			// 添加动作
 			for (var actionName:String in raw.actions)
 			{
 				var info:ActionInfo = new actionInfoClass(raw.actions[actionName]);
@@ -84,7 +95,13 @@ package age.assets
 		 */
 		public function getAction(name:String):ActionInfo
 		{
-			assert(hasAction(name), "动作 " + id + "/" + name + " 不存在");
+			if (Capabilities.isDebugger)
+			{
+				if (!hasAction(name))
+				{
+					trace("动作 " + id + "/" + name + " 不存在");
+				}
+			}
 			return actions[name];
 		}
 
@@ -132,21 +149,20 @@ package age.assets
 		 */
 		public static function get(id:String):AvatarInfo
 		{
-			if (!id)
-			{
-				throw new Error("id 不能是 null");
-			}
-
+			// 如尚未初始化，就报错
 			if (!_list)
 			{
 				throw new Error("尚未初始化");
 			}
 
+			// id 不在 _list 中，这将返回 null
 			if (!(id in _list))
 			{
-				throw new Error(id + " 不存在");
+				trace(id + " 不存在");
+				return null;
 			}
 
+			// 获取时动态转换成 JSON
 			if (!(_list[id] is AvatarInfo))
 			{
 				_list[id].id = id;
@@ -174,41 +190,34 @@ package age.assets
 		 */
 		public static function init(o:Object, folder:String = ""):void
 		{
-			if (_list)
+			if (list)
 			{
 				throw new Error("不能重复初始化");
 			}
 			_list = {};
-			const version:int = o.version; // AvatarInfo 文件的版本
-			var parse:Function = function():void
-			{
-				for (var key:String in o.list)
-				{
-					var raw:Object = o.list[key];
-					raw.id = key;
-					var info:AvatarInfo = new AvatarInfo(raw);
-					_list[info.id] = info;
-				}
-			}
-			parse();
-			AvatarInfo.folder = folder;
-		}
+			// AvatarInfo 文件的版本
+			// 现在没用到
+			// 迟早会用到 :D
+			const version:int = o.version;
 
-		/**
-		 * 清空所有 AvatarInfos
-		 *
-		 */
-		public static function dispose():void
-		{
-			_list = null;
-			folder = null;
+			for (var key:String in o.list)
+			{
+				var raw:Object = o.list[key];
+				raw.id = key;
+				var info:AvatarInfo = new AvatarInfo(raw);
+				list[info.id] = info;
+			}
+			AvatarInfo.folder = folder;
 		}
 
 		/**
 		 * 位于资源目录下的 avatar 子目录
 		 */
 		public static var folder:String;
+
+		/**
+		 * 按 ID 储存所有的 AvatarInfo
+		 */
+		protected static var _list:Object;
 	}
 }
-
-var _list:Object;

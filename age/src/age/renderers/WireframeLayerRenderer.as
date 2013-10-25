@@ -1,6 +1,5 @@
 package age.renderers
 {
-	import com.greensock.easing.Quad;
 	import flash.geom.Point;
 	import flash.geom.Vector3D;
 	import age.assets.Box;
@@ -14,7 +13,7 @@ package age.renderers
 	 */
 	public class WireframeLayerRenderer implements IDisplayObject3D, IDirectionRenderer
 	{
-		private var COLORS:Object = { hitBox: 0x00ff00, attackBox: 0xff0000 };
+		private var COLORS:Object = { hitBox: 0x00ff00, attackBox: 0xff0000, DEFAULT: 0xffffff };
 
 		private var color:uint;
 
@@ -151,7 +150,7 @@ package age.renderers
 
 			if (_info)
 			{
-				color = COLORS[_info.name]
+				color = COLORS[_info.name] || COLORS.DEFAULT;
 			}
 		}
 

@@ -74,14 +74,27 @@ package ageb.modules.ae
 		 */
 		override public function validateNow():void
 		{
+			// 临时变量
+			var i:int, n:int, actionInfo:ActionInfoEditable, layer:FrameLayerInfoEditable;
+			// 删除该动作的图层列表变更事件
+			actionInfo = this.actionInfo as ActionInfoEditable;
+
+			if (actionInfo)
+			{
+				actionInfo.onLayersChange.remove(onLayersChange);
+
+				for (i = 0, n = actionInfo.numLayers; i < n; i++)
+				{
+					layer = actionInfo.getLayerAt(i);
+					layer.onTypeChange.remove(onTypeChange);
+				}
+			}
 			super.validateNow();
 
 			if (!_info)
 			{
 				return;
 			}
-			const avatarID:String = info.avatarID;
-			const actionName:String = info.actionName;
 			const regionID:int = info.regionID;
 
 			// 显示一些小数据
@@ -93,6 +106,29 @@ package ageb.modules.ae
 			{
 				nameRenderer.text = "[----/----] (--)";
 			}
+			// 添加该动作的图层列表变更事件
+			actionInfo = this.actionInfo as ActionInfoEditable;
+
+			if (actionInfo)
+			{
+				actionInfo.onLayersChange.add(onLayersChange);
+
+				for (i = 0, n = actionInfo.numLayers; i < n; i++)
+				{
+					layer = actionInfo.getLayerAt(i);
+					layer.onTypeChange.add(onTypeChange);
+				}
+			}
+		}
+
+		private function onLayersChange():void
+		{
+			validateNow();
+		}
+
+		private function onTypeChange(... ignored):void
+		{
+			validateNow();
 		}
 
 		/**

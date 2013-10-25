@@ -118,7 +118,7 @@
 				return Modules.getInstance().document.currentDoc as AvatarDocument
 			}
 
-			private function onTypeChange():void
+			private function onTypeChange(... ignored):void
 			{
 				if (info)
 				{
