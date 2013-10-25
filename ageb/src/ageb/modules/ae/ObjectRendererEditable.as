@@ -75,6 +75,11 @@ package ageb.modules.ae
 		override public function validateNow():void
 		{
 			super.validateNow();
+
+			if (!_info)
+			{
+				return;
+			}
 			const avatarID:String = info.avatarID;
 			const actionName:String = info.actionName;
 			const regionID:int = info.regionID;

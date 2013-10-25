@@ -7,7 +7,6 @@ package age.renderers
 	import age.assets.FrameLayerInfo;
 	import age.assets.FrameLayerType;
 	import age.assets.ObjectInfo;
-	import age.filters.SolidColorFilter;
 	import nt.lib.reflect.Type;
 	import nt.lib.util.IDisposable;
 	import nt.lib.util.assert;
@@ -43,7 +42,7 @@ package age.renderers
 		protected var numNativeRenderers:int;
 
 		/**
-		 * 创建一个新的 AvatarRenderer
+		 * constructor
 		 *
 		 */
 		public function ObjectRenderer()
@@ -74,7 +73,7 @@ package age.renderers
 		}
 
 		/**
-		 * 获得当前 AvatarRenderer 代表的 displayObject，用于计算鼠标，场景位置等<br>
+		 * 获得当前 ObjectRenderer 代表的 displayObject，用于计算鼠标之类的逻辑<br>
 		 * 如有需求，子类可以覆盖该方法，以实现自己的位置判断
 		 * 默认返回 mouseRespoder
 		 * @see #mouseResponder
@@ -217,9 +216,12 @@ package age.renderers
 				_info.onIsStickyChange.add(onIsStickyChange);
 				_info.onAvatarIDChange.add(onAvatarIDChange);
 				_info.onActionNameChange.add(validateNow);
-				onAvatarIDChange();
-				validateNow();
-				// 立即更新
+			}
+			onAvatarIDChange();
+
+			// 立即更新
+			if (_info)
+			{
 				advanceTime(0);
 			}
 		}
@@ -260,41 +262,49 @@ package age.renderers
 		 */
 		public function validateNow():void
 		{
-			// 先删除所有旧图层
-			removeAllLayerRenderers();
+			if (avatarID && actionName)
+			{
+				// 先删除所有旧图层
+				removeAllLayerRenderers();
+				avatarID = null;
+				actionName = null;
+			}
+
+			// 没有 info 就不渲了
+			if (!_info)
+			{
+				return;
+			}
 
 			// 需要刷新静态渲染器
 			if (isAvatarIDChange)
 			{
 				updateStaticRenderers(null);
 			}
-			const _avatarID:String = info.avatarID;
-			const _actionName:String = info.actionName;
+			avatarID = info.avatarID;
+			actionName = info.actionName;
 
 			// 任意为 null
-			if (_avatarID == null || _actionName == null)
+			if (avatarID == null || actionName == null)
 			{
 				return;
 			}
 
 			// TODO 这里的错误判断走 ObjectInfo
 			// 错误的 avatarID
-			if (!AvatarInfo.has(_avatarID))
+			if (!AvatarInfo.has(avatarID))
 			{
-				traceex("[{0}] avatarID 不正确：{1}", Type.of(this).shortname, _avatarID);
+				traceex("[{0}] avatarID 不正确：{1}", Type.of(this).shortname, avatarID);
 				return;
 			}
-			const avatarInfo:AvatarInfo = AvatarInfo.get(_avatarID);
 			updateStaticRenderers(avatarInfo);
 
 			// 错误的 actionName
-			if (!avatarInfo.hasAction(_actionName))
+			if (!avatarInfo.hasAction(actionName))
 			{
-				traceex("[{0}] 在 {1} 中找不到动作：{2}", Type.of(this).shortname, _avatarID, _actionName);
+				traceex("[{0}] 在 {1} 中找不到动作：{2}", Type.of(this).shortname, avatarID, actionName);
 				return;
 			}
-			// 取出动作信息
-			const actionInfo:ActionInfo = avatarInfo.getAction(_actionName);
 			addAllLayerRenderers(actionInfo);
 
 			if (isAutoPlay)
@@ -305,6 +315,26 @@ package age.renderers
 			{
 				pause();
 			}
+		}
+
+		/**
+		 * 如果 avatarID 为空返回 null，否则返回当前渲染中的 AvatarInfo
+		 * @return
+		 *
+		 */
+		public function get avatarInfo():AvatarInfo
+		{
+			return avatarID ? AvatarInfo.get(avatarID) : null;
+		}
+
+		/**
+		 * 如果 avatarInfo 或 actionName 为空返回 null，否则返回当前渲染中的 ActionInfo
+		 * @return
+		 *
+		 */
+		public function get actionInfo():ActionInfo
+		{
+			return !actionName || !avatarInfo ? null : avatarInfo.getAction(actionName);
 		}
 
 		/**
@@ -839,6 +869,8 @@ package age.renderers
 		public function dispose():Boolean
 		{
 			assert(!_isDisposed, "不能重复释放资源");
+			// 解除关联的 ObjectInfo
+			info = null;
 			// 设置 container 为 null 之后会自动从 juggler 删除
 			parent = null;
 
@@ -853,8 +885,6 @@ package age.renderers
 			sounds = null;
 			particles = null;
 			wireframes = null;
-			// 解除关联的 ObjectInfo
-			info = null;
 
 			// 最后广播下 dispose
 			if (_onDispose)
@@ -1007,6 +1037,10 @@ package age.renderers
 		}
 
 		private var _direction:int;
+
+		private var avatarID:String;
+
+		private var actionName:String;
 
 		/**
 		 * @inheritDoc

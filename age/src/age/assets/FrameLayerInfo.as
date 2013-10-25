@@ -389,7 +389,7 @@ package age.assets
 				// 遇 "{AUTO}" 将自动设定路径
 				if (frames[i].isKeyframe)
 				{
-					if (frames[i].texturePath == AUTO)
+					if (frames[i].texture == AUTO)
 					{
 						frames[i].age_internal::setTexture(parent.parent.id + "_" + parent.name + "#" + i);
 					}

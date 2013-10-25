@@ -118,10 +118,6 @@ package age.assets
 						// 错误图片使用平铺
 						texture.repeat = bitmapData == ErrorImage.getInstance();
 					}
-					else
-					{
-						enterDebugger();
-					}
 				}
 				else
 				{

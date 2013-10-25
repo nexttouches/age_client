@@ -203,21 +203,6 @@ package age.assets
 			}
 		}
 
-		/**
-		 * 获得当前渲染的 AvatarInfo<br>
-		 * 如果 avatarID 为 null，将返回 null
-		 * @return
-		 *
-		 */
-		public function get avatarInfo():AvatarInfo
-		{
-			if (_avatarID)
-			{
-				return AvatarInfo.get(_avatarID);
-			}
-			return null;
-		}
-
 		private var _onActionNameChange:Signal;
 
 		/**
@@ -256,20 +241,6 @@ package age.assets
 				}
 				validateNow();
 			}
-		}
-
-		/**
-		 * 获得 <strong>当前</strong> 渲染的 ActionInfo
-		 * @return
-		 *
-		 */
-		public function get actionInfo():ActionInfo
-		{
-			if (_avatarID && _actionName)
-			{
-				return avatarInfo.getAction(_actionName);
-			}
-			return null;
 		}
 
 		/**
@@ -388,6 +359,26 @@ package age.assets
 				return -1;
 			}
 			return parent.index;
+		}
+
+		/**
+		* 如果 avatarID 为空返回 null，否则返回当前渲染中的 AvatarInfo
+		* @return
+		*
+		*/
+		public function get avatarInfo():AvatarInfo
+		{
+			return avatarID ? AvatarInfo.get(avatarID) : null;
+		}
+
+		/**
+		 * 如果 avatarInfo 或 actionName 为空返回 null，否则返回当前渲染中的 ActionInfo
+		 * @return
+		 *
+		 */
+		public function get actionInfo():ActionInfo
+		{
+			return !actionName || !avatarInfo ? null : avatarInfo.getAction(actionName);
 		}
 
 		/**
@@ -604,29 +595,7 @@ package age.assets
 		*/
 		public function validateNow():void
 		{
-			// 任意为 null
-			if (_avatarID == null || _actionName == null)
-			{
-				return;
-			}
-
-			// 错误的 avatarID
-			if (!AvatarInfo.has(_avatarID))
-			{
-				traceex("[{0}] avatarID 不正确：{1}", Type.of(this).shortname, _avatarID);
-				return;
-			}
-			const avatarInfo:AvatarInfo = AvatarInfo.get(_avatarID);
-
-			// 错误的 actionName
-			if (!avatarInfo.hasAction(_actionName))
-			{
-				traceex("[{0}] 在 {1} 中找不到动作：{2}", Type.of(this).shortname, _avatarID, _actionName);
-				return;
-			}
-			// 取出动作信息
-			const actionInfo:ActionInfo = avatarInfo.getAction(_actionName);
-			updateDurations(actionInfo);
+			updateDurations();
 
 			if (isAutoPlay)
 			{
@@ -728,10 +697,9 @@ package age.assets
 		*
 		*/
 		[Inline]
-		final protected function updateDurations(actionInfo:ActionInfo):void
+		final protected function updateDurations():void
 		{
-			// 初始化帧信息
-			const numFrames:int = actionInfo.numFrames;
+			const numFrames:int = actionInfo ? actionInfo.numFrames : null;
 			defaultFrameDuration = actionInfo.defautFrameDuration;
 			_isLoop = true;
 			currentTime = 0.0;
@@ -822,23 +790,6 @@ package age.assets
 		public function get onCurrentFrameChange():Signal
 		{
 			return _onCurrentFrameChange ||= new Signal(ObjectInfo);
-		}
-
-		/**
-		 * 释放资源
-		 *
-		 */
-		public function dispose():void
-		{
-			if (_onCurrentFrameChange)
-			{
-				_onCurrentFrameChange.removeAll();
-			}
-
-			if (_onLastFrame)
-			{
-				_onLastFrame.removeAll();
-			}
 		}
 
 		/**

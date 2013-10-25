@@ -227,8 +227,16 @@ package ageb.modules.ae
 			// 如果有任何错误，将弹出 Alert
 			SyncInfoLoader.loadAvatar(avatarID);
 			super.validateNow();
+
 			// 添加侦听
-			avatar = avatarInfo as AvatarInfoEditable
+			try
+			{
+				avatar = avatarInfo as AvatarInfoEditable
+			}
+			catch (error:Error)
+			{
+				return;
+			}
 
 			if (avatar)
 			{
@@ -252,7 +260,7 @@ package ageb.modules.ae
 		{
 			// 更新后，需要保留播放头
 			const cf:int = currentFrame;
-			updateDurations(actionInfo);
+			updateDurations();
 			currentFrame = cf < numFrames ? cf : numFrames - 1;
 		}
 
