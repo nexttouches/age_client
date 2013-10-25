@@ -1,4 +1,4 @@
 age_client
 ==========
 
-Action Game Engine client written by AS3
+是一款使用 AS3 开发的横版动作游戏引擎客户端
