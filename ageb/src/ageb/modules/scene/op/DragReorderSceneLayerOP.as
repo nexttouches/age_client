@@ -11,10 +11,16 @@ package ageb.modules.scene.op
 	 * @author zhanghaocong
 	 *
 	 */
-	public class DragReorderLayerOP extends SceneOPBase
+	public class DragReorderSceneLayerOP extends SceneOPBase
 	{
+		/**
+		 * 下落位置
+		 */
 		public var dropIndex:int;
 
+		/**
+		 * 焦点
+		 */
 		public var caretIndex:int;
 
 		/**
@@ -74,7 +80,7 @@ package ageb.modules.scene.op
 		 * @param dragInitiator
 		 *
 		 */
-		public function DragReorderLayerOP(doc:Document, dropIndex:int, caretIndex:int, items:Vector.<Object>, action:String, dragInitiator:SceneLayerList = null)
+		public function DragReorderSceneLayerOP(doc:Document, dropIndex:int, caretIndex:int, items:Vector.<Object>, action:String, dragInitiator:SceneLayerList = null)
 		{
 			super(doc);
 			this.dropIndex = dropIndex;
@@ -84,6 +90,10 @@ package ageb.modules.scene.op
 			this.dragInitiator = dragInitiator;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function redo():void
 		{
 			if (newSource)
@@ -117,6 +127,10 @@ package ageb.modules.scene.op
 			doc.info.onLayersChange.dispatch();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveOld():void
 		{
 			oldSelections = dragInitiator.selectedIndices.concat();
@@ -124,6 +138,10 @@ package ageb.modules.scene.op
 			oldCharLayerIndex = doc.info.charLayerIndex;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function undo():void
 		{
 			// 恢复 source
@@ -136,6 +154,10 @@ package ageb.modules.scene.op
 			doc.info.onLayersChange.dispatch();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get name():String
 		{
 			return format("移动图层 ({0}) 到 ({1})", oldSelections.toString(), dropIndex);

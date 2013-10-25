@@ -10,7 +10,7 @@ package ageb.modules.scene
 	import spark.components.List;
 	import spark.layouts.supportClasses.DropLocation;
 	import ageb.modules.Modules;
-	import ageb.modules.scene.op.DragReorderLayerOP;
+	import ageb.modules.scene.op.DragReorderSceneLayerOP;
 	import ageb.utils.FlashTip;
 	import nt.lib.util.clone;
 
@@ -78,7 +78,7 @@ package ageb.modules.scene
 				caretIndex = event.dragSource.dataForFormat("caretIndex") as int;
 			var items:Vector.<Object> = dragSource.dataForFormat("itemsByIndex") as Vector.<Object>;
 			// 创建一个 OP，之后的事情全部在 OP 里做
-			var op:DragReorderLayerOP = new DragReorderLayerOP(Modules.getInstance().document.currentDoc, dropIndex, caretIndex, items, event.action, this);
+			var op:DragReorderSceneLayerOP = new DragReorderSceneLayerOP(Modules.getInstance().document.currentDoc, dropIndex, caretIndex, items, event.action, this);
 			op.execute();
 		}
 
