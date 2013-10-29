@@ -83,6 +83,11 @@ package ageb.modules.document
 			return newAvatarDocumentPanel.onOK;
 		}
 
+		/**
+		 * @inheritDoc
+		 * @param event
+		 *
+		 */
 		override protected function closeButton_clickHandler(event:MouseEvent):void
 		{
 			super.closeButton_clickHandler(event);
