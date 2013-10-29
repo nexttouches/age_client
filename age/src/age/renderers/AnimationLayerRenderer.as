@@ -31,7 +31,6 @@ package age.renderers
 		{
 			super();
 			uniqueIndex += ZIndexHelper.ANIMATION_OFFSET;
-			// filter = new SolidColorFilter();
 		}
 
 		private var _currentFrame:int;
@@ -171,17 +170,16 @@ package age.renderers
 		[Inline]
 		final protected function adjustSize():void
 		{
-			var frame:Rectangle = _info.textures[0].frame;
-			var width:Number = frame ? frame.width : texture.width;
-			var height:Number = frame ? frame.height : texture.height;
+			// 调整原点
+			const box:Box = _info.frames[0].box;
+			const width:int = box.width;
+			const height:int = box.height;
+			pivotX = width * (box.pivot.x);
+			pivotY = height * (1 - box.pivot.y); // 坐标系不同，需要颠倒的 pivot.y
 			mVertexData.setPosition(0, 0.0, 0.0);
 			mVertexData.setPosition(1, width, 0.0);
 			mVertexData.setPosition(2, 0.0, height);
 			mVertexData.setPosition(3, width, height);
-			// 调整原点
-			const box:Box = _info.frames[0].box;
-			pivotX = box.width * (box.pivot.x);
-			pivotY = box.height * (1 - box.pivot.y); // 坐标系不同，需要颠倒的 pivot.y
 			onVertexDataChanged();
 		}
 
