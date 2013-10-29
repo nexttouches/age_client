@@ -137,7 +137,7 @@ package age.assets
 		}
 
 		/**
-		 * 验证更新总帧数
+		 * 如果图层中的帧数变化了，需要调用该方法以更新总帧数
 		 *
 		 */
 		final public function updateNumFrames():void

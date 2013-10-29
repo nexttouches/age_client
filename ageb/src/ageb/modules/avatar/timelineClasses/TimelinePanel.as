@@ -12,9 +12,12 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.components.IntInput;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
+	import ageb.modules.avatar.op.AddAction;
 	import ageb.modules.avatar.op.AddFrameLayer;
 	import ageb.modules.avatar.op.ChangeActionFPS;
+	import ageb.modules.avatar.op.RemoveAction;
 	import ageb.modules.avatar.op.RemoveFrameLayer;
+	import ageb.modules.avatar.op.RenameAction;
 	import ageb.modules.avatar.op.SelectAction;
 	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
@@ -108,19 +111,45 @@ package ageb.modules.avatar.timelineClasses
 			renameActionButton.addEventListener(MouseEvent.CLICK, renameActionButton_onClick);
 		}
 
+		/**
+		 * @private
+		 * @param event
+		 *
+		 */
 		protected function renameActionButton_onClick(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			var p:Prompt = new Prompt();
+			p.title = "动作改名";
+			p.label = "新名字";
+			p.value = actionInfo.name;
+			p.onOK.addOnce(function(newName:String):void
+			{
+				if (newName != actionInfo.name)
+				{
+					new RenameAction(doc, actionInfo, newName).execute();
+				}
+			});
+			p.show();
 		}
 
 		protected function removeActionButton_onClick(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			new RemoveAction(doc, actionInfo).execute();
 		}
 
 		protected function addActionButton_onClick(event:MouseEvent):void
 		{
-			// TODO Auto-generated method stub
+			var p:Prompt = new Prompt();
+			p.title = "新建动作";
+			p.label = "动作名";
+			p.onOK.addOnce(function(newName:String):void
+			{
+				if (newName)
+				{
+					new AddAction(doc, newName).execute();
+				}
+			});
+			p.show();
 		}
 
 		private function layersField_onMouseWheel():void
@@ -293,7 +322,7 @@ package ageb.modules.avatar.timelineClasses
 			if (avatarDoc)
 			{
 				assert(avatarDoc.avatar == objectInfo.avatarInfo);
-				actionsField.dataProvider = avatarDoc.avatar.actionsArrayList;
+				actionsField.dataProvider = avatarDoc.avatar.actionsVectorList;
 				framesGrid.avatarDoc = avatarDoc;
 				objectInfo.onCurrentFrameChange.add(onCurrentFrameChange);
 				onCurrentFrameChange(objectInfo);

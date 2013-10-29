@@ -325,5 +325,24 @@ package ageb.modules.ae
 			}
 			return null;
 		}
+
+		/**
+		 * name 发生变化时广播
+		 */
+		public var onNameChange:Signal = new Signal();
+
+		/**
+		 * 设置 name
+		 * @param value
+		 *
+		 */
+		public function setName(value:String):void
+		{
+			if (value != name)
+			{
+				name = value;
+				onNameChange.dispatch();
+			}
+		}
 	}
 }

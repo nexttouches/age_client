@@ -132,6 +132,7 @@ package ageb.modules.avatar.timelineClasses
 				return;
 			}
 
+			// FIXME 当没有任何动作时，这里的 actionInfo 将会为 null
 			// 点过头
 			if (actionInfo.numFrames <= event.newColumnIndex)
 			{

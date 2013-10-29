@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow 
+	width="200" height="100"
+	keyDown="onKeydown(event)"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	close="onClose(event)">
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom="5"
+			paddingLeft="5"
+			paddingRight="5"
+			paddingTop="5"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import ageb.modules.Modules;
+			import ageb.utils.FlashTip;
+			import org.osflash.signals.OnceSignal;
+
+			public var onOK:OnceSignal = new OnceSignal(String);
+
+			[Bindable]
+			public var value:String;
+
+			[Bindable]
+			public var label:String;
+
+			protected function okButton_onClick(event:Event):void
+			{
+				onOK.dispatch(valueField.text);
+				PopUpManager.removePopUp(this);
+			}
+
+			protected function onClose(event:Event):void
+			{
+				PopUpManager.removePopUp(this);
+				FlashTip.show("已取消");
+			}
+
+			protected function valueField_onAdd(event:Event):void
+			{
+				// 添加到舞台后总是自动聚焦
+				valueField.setFocus();
+			}
+
+			public function show(parent:DisplayObject = null):void
+			{
+				PopUpManager.addPopUp(this, parent ||= Modules.getInstance().root, true);
+				PopUpManager.centerPopUp(this);
+			}
+
+			protected function onKeydown(event:KeyboardEvent):void
+			{
+				if (event.keyCode == Keyboard.ESCAPE)
+				{
+					onClose(event);
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup 
+		width="100%"
+		verticalAlign="middle">
+		<s:Label text="{label}"/>
+		<s:TextInput id="valueField"
+			width="100%"
+			text="{value}"
+			add="valueField_onAdd(event)"
+			enter="okButton_onClick(event)"/>
+	</s:HGroup>
+	<s:HGroup 
+		width="100%"
+		horizontalAlign="center">
+		<s:Button id="okButton"
+			label="确定"
+			click="okButton_onClick(event)"/>
+		<s:Button 
+			label="取消"
+			click="onClose(event)"/>
+	</s:HGroup>
+</s:TitleWindow>
