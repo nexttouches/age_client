@@ -113,17 +113,17 @@
 					width="100%"
 					maximum="2"
 					minimum="-1"
-					stepSize="0.1"/>
+					stepSize="0.005"/>
 				<components:NumberInput id="pivotYField"
 					width="100%"
 					maximum="2"
 					minimum="-1"
-					stepSize="0.1"/>
+					stepSize="0.005"/>
 				<components:NumberInput id="pivotZField"
 					width="100%"
 					maximum="2"
 					minimum="-1"
-					stepSize="0.1"/>
+					stepSize="0.005"/>
 			</document:FormRow>
 		</skinClasses:PropertyGroup>
 		<skinClasses:PropertyGroup>
