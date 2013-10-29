@@ -298,6 +298,7 @@ package ageb.modules.document
 		{
 			var panel:NewDocumentPanel = NewDocumentPanel.show();
 			panel.onCreateScene.addOnce(newSceneDocument);
+			panel.onCreateAvatar.addOnce(newAvatarDocument);
 		}
 
 		/**
@@ -317,6 +318,16 @@ package ageb.modules.document
 			doc.state = DocumentState.NEW;
 			new NewDocument(doc).execute();
 			addDocument(doc);
+		}
+
+		/**
+		 * 根据参数创建 AvatarDocument
+		 * @param id
+		 *
+		 */
+		public function newAvatarDocument(id:String):void
+		{
+			FlashTip.show(id);
 		}
 
 		/**

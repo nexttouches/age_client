@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent 
+	width="100%" height="100%"
+	label="场景"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:document="ageb.modules.document.*"
+	xmlns:components="ageb.components.*">
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom="4"
+			paddingLeft="4"
+			paddingRight="4"
+			paddingTop="4"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import org.osflash.signals.OnceSignal;
+
+			public var onOK:OnceSignal = new OnceSignal(String, int, int);
+		]]>
+	</fx:Script>
+	<s:Group width="200">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<document:FormRow 
+			width="100%"
+			label="ID">
+			<s:TextInput id="idField"
+				width="100%"
+				text="untitled.txt"/>
+		</document:FormRow>
+		<document:FormRow 
+			width="100%"
+			label="宽度">
+			<components:IntInput id="widthField"
+				width="100%"
+				value="4000"/>
+		</document:FormRow>
+		<document:FormRow 
+			width="100%"
+			label="高度">
+			<components:IntInput id="heightField"
+				width="100%"
+				value="800"/>
+		</document:FormRow>
+		<document:FormRow 
+			width="100%"
+			label="">
+			<s:Button 
+				label="确定"
+				click="onOK.dispatch(idField.text, widthField.value, heightField.value)"/>
+		</document:FormRow>
+	</s:Group>
+</s:NavigatorContent>
