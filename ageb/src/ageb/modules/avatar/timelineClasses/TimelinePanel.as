@@ -22,6 +22,7 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
 	import nt.lib.util.assert;
+	import ageb.utils.Prompt;
 
 	/**
 	 * 时间轴面板
