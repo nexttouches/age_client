@@ -112,7 +112,7 @@ package ageb.modules.ae
 		*/
 		public function toJSON(k:*):*
 		{
-			return { id: id, actions: actions, size: size };
+			return { actions: actions, size: size };
 		}
 	}
 }

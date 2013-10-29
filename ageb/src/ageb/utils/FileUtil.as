@@ -18,9 +18,20 @@ package ageb.utils
 		}
 
 		/**
+		 * 获得相对于 File.applicationDirectory 的文件
+		 * @param path 相对路径
+		 * @return
+		 *
+		 */
+		public static function fromApplicationDirectory(path:String):File
+		{
+			return File.applicationDirectory.resolvePath(path);
+		}
+
+		/**
 		 * 根据路径获得一个 File，如出现任何错误，将返回 ifFail
-		 * @param nativePath
-		 * @param ifFail
+		 * @param nativePath 完整路径
+		 * @param ifFail 可选，失败时返回的 File
 		 * @return
 		 *
 		 */
@@ -39,7 +50,7 @@ package ageb.utils
 
 		/**
 		 * 浏览文件夹打开
-		 * @param nativePath
+		 * @param nativePath 完整路径
 		 * @param onComplete
 		 * @param ifFail
 		 * @param onCancel
@@ -90,9 +101,9 @@ package ageb.utils
 		 * 浏览单个文件打开
 		 * @param nativePath 初始目录，如不存在将使用 ifFail 目录
 		 * @param filters 文件类型过滤器
-		 * @param onComplete 完成时的回调。正确的签名是 <code>function (file:File):void;</code>，其中 <code>file</code> 是指选中的文件
+		 * @param onComplete 完成时的回调。正确的签名是 <code>function (file:File):void;</code>，其中参数 <code>file</code> 是指选中的文件
 		 * @param ifFail 可选，初始目录不存在时使用的目录，默认是桌面
-		 * @param onCancel 可选，用户点击取消时的回调。正确的签名是 <code>function (file:File):void</code>，其中 <code>file</code> 是指初始目录
+		 * @param onCancel 可选，用户点击取消时的回调。正确的签名是 <code>function (file:File):void</code>，其中参数 <code>file</code> 是指初始目录
 		 *
 		 */
 		public static function browseFile(nativePath:String, filters:Array, onComplete:Function, ifFail:File = null, onCancel:Function = null):void
@@ -140,9 +151,9 @@ package ageb.utils
 		 * 浏览多个文件打开
 		 * @param nativePath 初始目录，如不存在将使用 ifFail 目录
 		 * @param filters 文件类型过滤器
-		 * @param onComplete 完成时的回调。正确的签名是 <code>function (files:Vector.<File>):void;</code>，其中 <code>files</code> 是指选中的文件列表
+		 * @param onComplete 完成时的回调。正确的签名是 <code>function (files:Vector.<File>):void;</code>，其中参数 <code>files</code> 是指选中的文件列表
 		 * @param ifFail 可选，初始目录不存在时使用的目录，默认是桌面
-		 * @param onCancel 可选，用户点击取消时的回调。正确的签名是 <code>function (file:File):void</code>，其中 <code>file</code> 是指初始目录
+		 * @param onCancel 可选，用户点击取消时的回调。正确的签名是 <code>function (file:File):void</code>，其中参数 <code>file</code> 是指初始目录
 		 *
 		 */
 		public static function browseFileMultiple(nativePath:String, filters:Array, onComplete:Function, ifFail:File = null, onCancel:Function = null):void
@@ -189,7 +200,7 @@ package ageb.utils
 		/**
 		 * 浏览文件并保存
 		 * @param nativePath 初始目录，如不存在将使用 ifFail 目录
-		 * @param onComplete 完成时的回调。正确的签名是 <code>function (file:File):void;</code>，其中 <code>file</code> 是指选中的文件
+		 * @param onComplete 完成时的回调。正确的签名是 <code>function (file:File):void;</code>，其中参数 <code>file</code> 是指选中的文件
 		 * @param ifFail 可选，初始目录不存在时使用的目录，默认是桌面
 		 *
 		 */

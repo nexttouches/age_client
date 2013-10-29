@@ -1,9 +1,12 @@
 package ageb.modules.document
 {
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.ui.Keyboard;
 	import mx.managers.PopUpManager;
 	import spark.components.TitleWindow;
 	import ageb.modules.Modules;
+	import ageb.modules.ae.AEModule;
 	import org.osflash.signals.OnceSignal;
 
 	/**
@@ -13,6 +16,9 @@ package ageb.modules.document
 	 */
 	public class NewDocumentPanel extends TitleWindow
 	{
+		/**
+		 * @private
+		 */
 		private static var _instance:NewDocumentPanel;
 
 		/**
@@ -21,6 +27,7 @@ package ageb.modules.document
 		 */
 		public static function hide():void
 		{
+			instance.stage.focus = null
 			PopUpManager.removePopUp(instance);
 		}
 
@@ -41,14 +48,24 @@ package ageb.modules.document
 		 */
 		public static function show():NewDocumentPanel
 		{
+			if (instance.isPopUp)
+			{
+				return instance;
+			}
 			PopUpManager.addPopUp(instance, Modules.getInstance().root, true);
 			PopUpManager.centerPopUp(instance)
 			return instance;
 		}
 
+		/**
+		 * 新建场景子面板
+		 */
 		[SkinPart(required="true")]
 		public var newSceneDocumentPanel:NewSceneDocumentPanel;
 
+		/**
+		 * 新建 Avatar 子面板
+		 */
 		[SkinPart(required="true")]
 		public var newAvatarDocumentPanel:NewAvatarDocumentPanel;
 
@@ -61,6 +78,20 @@ package ageb.modules.document
 			super();
 			title = "新建";
 			setStyle("skinClass", NewDocumentPanelSkin);
+			addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		}
+
+		/**
+		 * @private
+		 * @param event
+		 *
+		 */
+		protected function onKeyDown(event:KeyboardEvent):void
+		{
+			if (event.keyCode == Keyboard.ESCAPE)
+			{
+				hide();
+			}
 		}
 
 		/**

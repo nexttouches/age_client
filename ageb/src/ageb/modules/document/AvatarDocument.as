@@ -53,8 +53,12 @@ package ageb.modules.document
 		public function AvatarDocument(file:File, raw:Object)
 		{
 			super(file, raw);
-			// 根据文件名设置 id
-			raw.id = file.name.split(".")[0];
+
+			if (file)
+			{
+				// 根据文件名设置 id
+				raw.id = file.name.split(".")[0];
+			}
 			// 创建 AvatarInfo
 			avatar = new AvatarInfoEditable(raw);
 			AvatarInfo.list[avatar.id] = avatar;

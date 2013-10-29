@@ -310,7 +310,7 @@ package ageb.modules.document
 		 */
 		public function newSceneDocument(id:String, width:int, height:int):void
 		{
-			var template:Object = FileUtil.readJSON(File.applicationDirectory.resolvePath("templates/empty_scene.txt"));
+			var template:Object = FileUtil.readJSON(FileUtil.fromApplicationDirectory("templates/empty_scene.txt"));
 			template.id = id;
 			template.width = width;
 			template.height = height;
@@ -327,7 +327,12 @@ package ageb.modules.document
 		 */
 		public function newAvatarDocument(id:String):void
 		{
-			FlashTip.show(id);
+			var template:Object = FileUtil.readJSON(FileUtil.fromApplicationDirectory("templates/empty_avatar.txt"));
+			template.id = id;
+			var doc:AvatarDocument = new AvatarDocument(null, template);
+			doc.state = DocumentState.NEW;
+			new NewDocument(doc).execute();
+			addDocument(doc);
 		}
 
 		/**

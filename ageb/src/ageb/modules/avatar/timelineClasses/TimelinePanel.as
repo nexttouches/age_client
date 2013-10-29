@@ -9,6 +9,7 @@ package ageb.modules.avatar.timelineClasses
 	import spark.events.IndexChangeEvent;
 	import age.assets.ObjectInfo;
 	import ageb.ageb_internal;
+	import ageb.prompt;
 	import ageb.components.IntInput;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
@@ -21,8 +22,8 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.avatar.op.SelectAction;
 	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
-	import nt.lib.util.assert;
 	import ageb.utils.Prompt;
+	import nt.lib.util.assert;
 
 	/**
 	 * 时间轴面板
@@ -119,40 +120,45 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		protected function renameActionButton_onClick(event:MouseEvent):void
 		{
-			var p:Prompt = new Prompt();
-			p.title = "动作改名";
-			p.label = "新名字";
-			p.value = actionInfo.name;
-			p.onOK.addOnce(function(newName:String):void
+			prompt(function(newName:String):void
 			{
-				if (newName != actionInfo.name)
+				if (newName)
 				{
 					new RenameAction(doc, actionInfo, newName).execute();
 				}
-			});
-			p.show();
+			}, "动作改名", "新名字", actionInfo.name);
 		}
 
+		/**
+		 * @private
+		 * @param event
+		 *
+		 */
 		protected function removeActionButton_onClick(event:MouseEvent):void
 		{
 			new RemoveAction(doc, actionInfo).execute();
 		}
 
+		/**
+		 * @private
+		 * @param event
+		 *
+		 */
 		protected function addActionButton_onClick(event:MouseEvent):void
 		{
-			var p:Prompt = new Prompt();
-			p.title = "新建动作";
-			p.label = "动作名";
-			p.onOK.addOnce(function(newName:String):void
+			prompt(function(newName:String):void
 			{
 				if (newName)
 				{
 					new AddAction(doc, newName).execute();
 				}
-			});
-			p.show();
+			}, "新建动作", "动作名");
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function layersField_onMouseWheel():void
 		{
 			framesGrid.grid.verticalScrollPosition = layersField.scroller.viewport.verticalScrollPosition;

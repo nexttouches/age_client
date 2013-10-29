@@ -18,6 +18,11 @@
 			import org.osflash.signals.OnceSignal;
 
 			public var onOK:OnceSignal = new OnceSignal(String);
+
+			protected function idField_onAdd(event:Event):void
+			{
+				idField.setFocus();
+			}
 		]]>
 	</fx:Script>
 	<s:Group width="200">
@@ -29,7 +34,8 @@
 			label="ID">
 			<s:TextInput id="idField"
 				width="100%"
-				text="untitled.txt"/>
+				text="untitled.txt"
+				addedToStage="idField_onAdd(event)"/>
 		</document:FormRow>
 		<document:FormRow 
 			width="100%"
