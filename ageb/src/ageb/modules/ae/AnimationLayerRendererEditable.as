@@ -16,6 +16,7 @@ package ageb.modules.ae
 			if (info)
 			{
 				info.onTexturesChange.remove(onTexturesChange);
+				infoEditable.getFrameInfoAt(0).onBoxChange.remove(adjustSize);
 			}
 			super.info = value;
 
@@ -30,7 +31,18 @@ package ageb.modules.ae
 			if (info)
 			{
 				info.onTexturesChange.remove(onTexturesChange);
+				infoEditable.getFrameInfoAt(0).onBoxChange.add(adjustSize);
 			}
+		}
+
+		/**
+		 * @private
+		 * @return
+		 *
+		 */
+		protected function get infoEditable():FrameLayerInfoEditable
+		{
+			return info as FrameLayerInfoEditable;
 		}
 
 		private function onTexturesChange():void
