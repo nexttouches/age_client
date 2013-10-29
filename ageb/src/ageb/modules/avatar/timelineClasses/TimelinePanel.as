@@ -2,15 +2,21 @@ package ageb.modules.avatar.timelineClasses
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import spark.components.Button;
+	import spark.components.ButtonBar;
+	import spark.components.ComboBox;
+	import spark.components.TextInput;
 	import spark.events.IndexChangeEvent;
 	import age.assets.ObjectInfo;
 	import ageb.ageb_internal;
+	import ageb.components.IntInput;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.avatar.op.AddFrameLayer;
 	import ageb.modules.avatar.op.ChangeActionFPS;
 	import ageb.modules.avatar.op.RemoveFrameLayer;
 	import ageb.modules.avatar.op.SelectAction;
+	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
 	import nt.lib.util.assert;
 
@@ -19,8 +25,54 @@ package ageb.modules.avatar.timelineClasses
 	 * @author zhanghaocong
 	 *
 	 */
-	public class TimelinePanel extends TimelinePanelTemplate
+	public class TimelinePanel extends AvatarDocumentPanel
 	{
+
+		[SkinPart(required="true")]
+		public var actionsField:ComboBox;
+
+		[SkinPart(required="true")]
+		public var addActionButton:Button;
+
+		[SkinPart(required="true")]
+		public var removeActionButton:Button;
+
+		[SkinPart(required="true")]
+		public var renameActionButton:Button;
+
+		[SkinPart(required="true")]
+		public var prevFrameButton:Button;
+
+		[SkinPart(required="true")]
+		public var playPauseButton:Button;
+
+		[SkinPart(required="true")]
+		public var nextFrameButton:Button;
+
+		[SkinPart(required="true")]
+		public var currentFrameField:IntInput;
+
+		[SkinPart(required="true")]
+		public var fpsField:IntInput;
+
+		[SkinPart(required="true")]
+		public var currentTimeField:TextInput;
+
+		[SkinPart(required="true")]
+		public var directionButtons:ButtonBar;
+
+		[SkinPart(required="true")]
+		public var framesGrid:FramesDataGrid;
+
+		[SkinPart(required="true")]
+		public var layersField:FrameLayerList;
+
+		[SkinPart(required="true")]
+		public var addLayerButton:Button;
+
+		[SkinPart(required="true")]
+		public var removeLayerButton:Button;
+
 		/**
 		 * 创建一个新的 TimelinePanel
 		 *
@@ -28,6 +80,7 @@ package ageb.modules.avatar.timelineClasses
 		public function TimelinePanel()
 		{
 			super();
+			setStyle("skinClass", TimelinePanelSkin);
 		}
 
 		/**
@@ -50,6 +103,24 @@ package ageb.modules.avatar.timelineClasses
 			fpsField.addEventListener(Event.CHANGE, fpsField_onChange);
 			addLayerButton.addEventListener(MouseEvent.CLICK, addLayerButton_onClick);
 			removeLayerButton.addEventListener(MouseEvent.CLICK, removeLayerButton_onClick);
+			addActionButton.addEventListener(MouseEvent.CLICK, addActionButton_onClick);
+			removeActionButton.addEventListener(MouseEvent.CLICK, removeActionButton_onClick);
+			renameActionButton.addEventListener(MouseEvent.CLICK, renameActionButton_onClick);
+		}
+
+		protected function renameActionButton_onClick(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+		}
+
+		protected function removeActionButton_onClick(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
+		}
+
+		protected function addActionButton_onClick(event:MouseEvent):void
+		{
+			// TODO Auto-generated method stub
 		}
 
 		private function layersField_onMouseWheel():void
