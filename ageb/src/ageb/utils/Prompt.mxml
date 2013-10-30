@@ -43,12 +43,12 @@
 			protected function valueField_onAdd(event:Event):void
 			{
 				// 添加到舞台后总是自动聚焦
-				valueField.setFocus();
+				callLater(valueField.setFocus);
 			}
 
 			public function show(parent:DisplayObject = null):void
 			{
-				PopUpManager.addPopUp(this, parent ||= Modules.getInstance().root, true);
+				PopUpManager.addPopUp(this, parent ||= Modules.getInstance().root as DisplayObject, true);
 				PopUpManager.centerPopUp(this);
 			}
 
@@ -68,7 +68,7 @@
 		<s:TextInput id="valueField"
 			width="100%"
 			text="{value}"
-			add="valueField_onAdd(event)"
+			addedToStage="valueField_onAdd(event)"
 			enter="okButton_onClick(event)"/>
 	</s:HGroup>
 	<s:HGroup 

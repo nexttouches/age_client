@@ -11,8 +11,14 @@ package ageb
 		{
 			p = new Prompt();
 		}
+		else if (p.isPopUp)
+		{
+			// 不可重复打开
+			return;
+		}
 		p.title = title;
 		p.label = label;
+		p.value = value;
 		p.onOK.addOnce(onOK);
 		p.show();
 	}
