@@ -36,7 +36,8 @@
 			<s:TextInput id="idField"
 				width="100%"
 				text="untitled.txt"
-				addedToStage="idField_onAdd(event)"/>
+				addedToStage="idField_onAdd(event)"
+				enter="onOK.dispatch(idField.text)"/>
 		</document:FormRow>
 		<document:FormRow 
 			width="100%"

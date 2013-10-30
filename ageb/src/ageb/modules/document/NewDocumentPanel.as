@@ -6,7 +6,6 @@ package ageb.modules.document
 	import mx.managers.PopUpManager;
 	import spark.components.TitleWindow;
 	import ageb.modules.Modules;
-	import ageb.modules.ae.AEModule;
 	import org.osflash.signals.OnceSignal;
 
 	/**
@@ -53,7 +52,7 @@ package ageb.modules.document
 				return instance;
 			}
 			PopUpManager.addPopUp(instance, Modules.getInstance().root, true);
-			PopUpManager.centerPopUp(instance)
+			PopUpManager.centerPopUp(instance);
 			return instance;
 		}
 

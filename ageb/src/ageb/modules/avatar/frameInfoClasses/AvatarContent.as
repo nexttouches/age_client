@@ -75,15 +75,7 @@ package ageb.modules.avatar.frameInfoClasses
 		override public function set frames(value:Vector.<FrameInfoEditable>):void
 		{
 			assert(value == null || value.length == 0);
-
-			if (value == null)
-			{
-				info = null;
-			}
-			else
-			{
-				info = doc.avatar;
-			}
+			info = doc.avatar;
 		}
 
 		private var _info:AvatarInfoEditable;

@@ -318,6 +318,7 @@ package ageb.modules.document
 			doc.state = DocumentState.NEW;
 			new NewDocument(doc).execute();
 			addDocument(doc);
+			NewDocumentPanel.hide();
 		}
 
 		/**
@@ -333,6 +334,7 @@ package ageb.modules.document
 			doc.state = DocumentState.NEW;
 			new NewDocument(doc).execute();
 			addDocument(doc);
+			NewDocumentPanel.hide();
 		}
 
 		/**
@@ -477,7 +479,7 @@ package ageb.modules.document
 
 			if (doc.isChanged)
 			{
-				Alert.show(format("已经修改了 {0}。要保存吗？", doc.nativePath), "保存", Alert.YES | Alert.NO | Alert.CANCEL, null, f);
+				Alert.show(format("已经修改了 {0}。要保存吗？", doc.nativePath ? doc.nativePath : doc.name), "保存", Alert.YES | Alert.NO | Alert.CANCEL, null, f);
 			}
 			else
 			{

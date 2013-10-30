@@ -1,6 +1,5 @@
 package ageb.modules.avatar.op
 {
-	import age.assets.FrameLayerInfo;
 	import age.assets.FrameLayerType;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
@@ -57,7 +56,7 @@ package ageb.modules.avatar.op
 		 */
 		override protected function saveOld():void
 		{
-			oldActionName = action.name;
+			oldActionName = action ? action.name : null;
 			target = new ActionInfoEditable();
 			target.name = actionName;
 			var layer:FrameLayerInfoEditable = new FrameLayerInfoEditable(null, target);

@@ -46,7 +46,6 @@ package ageb.modules.avatar.supportClasses
 		{
 			if (avatarDoc)
 			{
-				actionInfo = null;
 				objectInfo.onActionNameChange.remove(onActionNameChange);
 			}
 			_doc = value;
@@ -54,8 +53,8 @@ package ageb.modules.avatar.supportClasses
 			if (avatarDoc)
 			{
 				objectInfo.onActionNameChange.add(onActionNameChange);
-				onActionNameChange();
 			}
+			onActionNameChange();
 		}
 
 		private var _actionInfo:ActionInfoEditable;
@@ -81,7 +80,14 @@ package ageb.modules.avatar.supportClasses
 		 */
 		private function onActionNameChange():void
 		{
-			actionInfo = objectInfo.actionInfo as ActionInfoEditable;
+			if (objectInfo)
+			{
+				actionInfo = objectInfo.actionInfo as ActionInfoEditable;
+			}
+			else
+			{
+				actionInfo = null;
+			}
 		}
 
 		/**
@@ -107,14 +113,14 @@ package ageb.modules.avatar.supportClasses
 		}
 
 		/**
-		 * 获取当前的 ObjectInfoEditable
+		 * 从 avatarDoc 中获取当前的 ObjectInfoEditable，如果没有 avatarDoc 则返回 null
 		 * @return
 		 *
 		 */
 		[Inline]
 		final protected function get objectInfo():ObjectInfoEditable
 		{
-			return avatarDoc.object;
+			return avatarDoc ? avatarDoc.object : null;
 		}
 
 		/**

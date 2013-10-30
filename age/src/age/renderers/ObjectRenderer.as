@@ -308,12 +308,6 @@ package age.renderers
 			}
 			// 更新 action
 			actionName = info.actionName;
-
-			// 优化：如果 actionName 为 null，后面的流程就不用跑了
-			if (actionName == null)
-			{
-				return;
-			}
 			addAllLayerRenderers(actionInfo);
 
 			if (isAutoPlay)
@@ -354,6 +348,7 @@ package age.renderers
 		[Inline]
 		private function updateStaticRenderers(avatarInfo:AvatarInfo):void
 		{
+			trace("updateStaticRenderers");
 			// 鼠标（主要是大小）
 			mouseResponder.info = avatarInfo;
 			// 名字
@@ -370,6 +365,11 @@ package age.renderers
 		[Inline]
 		final protected function addAllLayerRenderers(actionInfo:ActionInfo):void
 		{
+			// 没有任何动作就撤退
+			if (!actionInfo)
+			{
+				return;
+			}
 			const layers:Vector.<FrameLayerInfo> = actionInfo.layers;
 
 			for (var i:int = 0, n:int = layers.length; i < n; i++)
@@ -810,7 +810,13 @@ package age.renderers
 			{
 				return;
 			}
-			playRenderers(_info.currentFrame);
+
+			// 使用 actionName 判断是否有动作播放中
+			// 而不是 actionInfo，这可以减少一次方法调用
+			if (actionName)
+			{
+				playRenderers(_info.currentFrame);
+			}
 
 			// 对象不在静止状态，我们更新坐标
 			if (!isSticky)
@@ -1000,13 +1006,13 @@ package age.renderers
 		 */
 		protected function validateAlpha():void
 		{
-			const resultAlpha:Number = _alpha * (_info ? _info.alpha : 1);
+			const newAlpha:Number = _alpha * (_info ? _info.alpha : 1);
 			// 应用到所有动画
 			var i:int, n:int;
 
 			for (i = 0, n = animations.length; i < n; i++)
 			{
-				animations[i].alpha = resultAlpha;
+				animations[i].alpha = newAlpha;
 			}
 		}
 
@@ -1038,7 +1044,7 @@ package age.renderers
 		 */
 		protected function validateColor():void
 		{
-			// 应用到所有动画
+			// color 属性只应用到所有动画
 			var i:int, n:int;
 
 			for (i = 0, n = animations.length; i < n; i++)

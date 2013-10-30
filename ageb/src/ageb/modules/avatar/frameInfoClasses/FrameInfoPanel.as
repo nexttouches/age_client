@@ -52,33 +52,24 @@ package ageb.modules.avatar.frameInfoClasses
 			{
 				return;
 			}
-			// 重设上一个面板的数据
-			currentPanel.frames = null;
-			currentPanel.keyframes = null;
-			currentPanel.isCrossLayer = false;
+			// 新的选中
+			const frames:Vector.<FrameInfoEditable> = actionInfo ? actionInfo.selectedFrames : null;
 
-			if (actionInfo)
+			// 长度为 0 无选中
+			if (!frames || frames.length == 0)
 			{
-				// 新的选中
-				const frames:Vector.<FrameInfoEditable> = actionInfo.selectedFrames;
-
-				// 长度为 0 无选中
-				// （actionInfo.selectedFrames 永远不会返回 null）
-				if (frames.length == 0)
-				{
-					// 选择最后一个（也就是 EmptyPanel）
-					panels.selectedIndex = panels.length - 1;
-				}
-				else
-				{
-					// 我们约定类型就是子面板索引
-					panels.selectedIndex = frames[0].keyframe.type;
-				}
-				// 填充新数据
-				currentPanel.frames = frames;
-				currentPanel.keyframes = actionInfo.selectedKeyframes;
-				currentPanel.isCrossLayer = actionInfo.isCrossLayer;
+				// 选择最后一个（也就是 AvatarContent）
+				panels.selectedIndex = panels.length - 1;
 			}
+			else
+			{
+				// 我们约定类型就是子面板索引
+				panels.selectedIndex = frames[0].keyframe.type;
+			}
+			// 填充新数据
+			currentPanel.frames = frames;
+			currentPanel.keyframes = actionInfo ? actionInfo.selectedKeyframes : null;
+			currentPanel.isCrossLayer = actionInfo ? actionInfo.isCrossLayer : false;
 			title = currentPanel.label;
 		}
 

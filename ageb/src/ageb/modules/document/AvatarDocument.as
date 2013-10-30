@@ -74,7 +74,15 @@ package ageb.modules.document
 			// 这边做个兼容处理
 			if (!avatar.hasAction(object.actionName))
 			{
-				object.actionName = avatar.firstAction.name;
+				if (avatar.numActions > 0)
+				{
+					object.actionName = avatar.firstAction.name;
+				}
+				else
+				{
+					// 一个动作也没有，空的 AvatarInfo
+					object.actionName = null;
+				}
 			}
 			object.type = ObjectType.AVATAR; // 必须设置为 AVATAR
 			object.isAutoPlay = false;

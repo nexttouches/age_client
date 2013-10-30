@@ -22,7 +22,6 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.avatar.op.SelectAction;
 	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
-	import ageb.utils.Prompt;
 	import nt.lib.util.assert;
 
 	/**
@@ -67,10 +66,10 @@ package ageb.modules.avatar.timelineClasses
 		public var directionButtons:ButtonBar;
 
 		[SkinPart(required="true")]
-		public var framesGrid:FramesDataGrid;
+		public var framesDataGrid:FramesDataGrid;
 
 		[SkinPart(required="true")]
-		public var layersField:FrameLayerList;
+		public var layerList:FrameLayerList;
 
 		[SkinPart(required="true")]
 		public var addLayerButton:Button;
@@ -95,7 +94,7 @@ package ageb.modules.avatar.timelineClasses
 		override protected function createChildren():void
 		{
 			super.createChildren();
-			framesGrid.onVerticalScrollPositionChange.add(framesGrid_onVerticalScrollPositionChange);
+			framesDataGrid.onVerticalScrollPositionChange.add(framesGrid_onVerticalScrollPositionChange);
 			actionsField.addEventListener(IndexChangeEvent.CHANGE, actionsField_onChange);
 			actionsField.addEventListener(IndexChangeEvent.CHANGING, actionsField_onChanging);
 			nextFrameButton.addEventListener(MouseEvent.CLICK, frameButton_onClick);
@@ -103,8 +102,8 @@ package ageb.modules.avatar.timelineClasses
 			prevFrameButton.addEventListener(MouseEvent.CLICK, frameButton_onClick);
 			currentFrameField.addEventListener(Event.CHANGE, currentFrameField_onClick);
 			directionButtons.addEventListener(IndexChangeEvent.CHANGE, directionButtons_onChange);
-			layersField.addEventListener(MouseEvent.CLICK, layersField_onClick);
-			layersField.onMouseWheel.add(layersField_onMouseWheel);
+			layerList.addEventListener(MouseEvent.CLICK, layersField_onClick);
+			layerList.onMouseWheel.add(layersField_onMouseWheel);
 			fpsField.addEventListener(Event.CHANGE, fpsField_onChange);
 			addLayerButton.addEventListener(MouseEvent.CLICK, addLayerButton_onClick);
 			removeLayerButton.addEventListener(MouseEvent.CLICK, removeLayerButton_onClick);
@@ -161,7 +160,7 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		private function layersField_onMouseWheel():void
 		{
-			framesGrid.grid.verticalScrollPosition = layersField.scroller.viewport.verticalScrollPosition;
+			framesDataGrid.grid.verticalScrollPosition = layerList.scroller.viewport.verticalScrollPosition;
 		}
 
 		/**
@@ -183,14 +182,18 @@ package ageb.modules.avatar.timelineClasses
 		{
 			var frames:Vector.<FrameInfoEditable> = new Vector.<FrameInfoEditable>;
 
-			if (layersField.selectedIndex != -1)
+			if (layerList.selectedIndex != -1)
 			{
-				for each (var rowIndex:int in layersField.selectedIndices)
+				for each (var rowIndex:int in layerList.selectedIndices)
 				{
 					frames = frames.concat(Vector.<FrameInfoEditable>(actionInfo.layers[rowIndex].frames));
 				}
 			}
-			actionInfo.ageb_internal::setSelectedFrames(frames, this);
+
+			if (actionInfo)
+			{
+				actionInfo.ageb_internal::setSelectedFrames(frames, this);
+			}
 		}
 
 		/**
@@ -293,7 +296,7 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		protected function removeLayerButton_onClick(event:MouseEvent):void
 		{
-			new RemoveFrameLayer(doc, layersField.selectedIndices).execute();
+			new RemoveFrameLayer(doc, layerList.selectedIndices).execute();
 		}
 
 		/**
@@ -320,7 +323,7 @@ package ageb.modules.avatar.timelineClasses
 				// 动作列表
 				actionsField.dataProvider = null;
 				// 帧网格
-				framesGrid.avatarDoc = null;
+				framesDataGrid.avatarDoc = null;
 				// 当前动作
 				actionInfo = null;
 			}
@@ -330,10 +333,10 @@ package ageb.modules.avatar.timelineClasses
 			{
 				assert(avatarDoc.avatar == objectInfo.avatarInfo);
 				actionsField.dataProvider = avatarDoc.avatar.actionsVectorList;
-				framesGrid.avatarDoc = avatarDoc;
+				framesDataGrid.avatarDoc = avatarDoc;
 				objectInfo.onCurrentFrameChange.add(onCurrentFrameChange);
-				onCurrentFrameChange(objectInfo);
 			}
+			onCurrentFrameChange(objectInfo);
 		}
 
 		/**
@@ -348,12 +351,13 @@ package ageb.modules.avatar.timelineClasses
 			{
 				// 更新选中项
 				actionsField.selectedItem = null;
+				actionsField.textInput.text = null;
 				// 当前帧
 				currentFrameField.maximum = 0;
 				// FPS
 				fpsField.value = 0;
 				// 图层列表
-				layersField.dataProvider = null;
+				layerList.dataProvider = null;
 				// 一些事件
 				actionInfo.onSelectedFramesChange.remove(onSelectedFramesChange);
 				actionInfo.onFPSChange.remove(onFPSChange);
@@ -367,13 +371,19 @@ package ageb.modules.avatar.timelineClasses
 				// 当前帧
 				currentFrameField.maximum = actionInfo.numFrames - 1; // currentFrame 从 0  开始
 				// 图层列表
-				layersField.dataProvider = actionInfo.layersVectorList;
+				layerList.dataProvider = actionInfo.layersVectorList;
 				// 一些事件
 				actionInfo.onSelectedFramesChange.add(onSelectedFramesChange);
 				onSelectedFramesChange(null);
 				actionInfo.onFPSChange.add(onFPSChange);
-				onFPSChange();
 			}
+			const hasAction:Boolean = actionInfo != null;
+			fpsField.enabled = hasAction;
+			renameActionButton.enabled = hasAction;
+			removeActionButton.enabled = hasAction;
+			removeLayerButton.enabled = hasAction;
+			addLayerButton.enabled = hasAction;
+			onFPSChange();
 		}
 
 		/**
@@ -382,7 +392,14 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		private function onFPSChange():void
 		{
-			fpsField.value = actionInfo.fps;
+			if (actionInfo)
+			{
+				fpsField.value = actionInfo.fps;
+			}
+			else
+			{
+				fpsField.value = 0;
+			}
 		}
 
 		/**
@@ -407,7 +424,7 @@ package ageb.modules.avatar.timelineClasses
 					selectedIndices.push(layerIndex);
 				}
 			}
-			layersField.selectedIndices = selectedIndices;
+			layerList.selectedIndices = selectedIndices;
 		}
 
 		/**
@@ -417,7 +434,7 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		private function framesGrid_onVerticalScrollPositionChange(value:Number):void
 		{
-			layersField.dataGroup.verticalScrollPosition = value;
+			layerList.dataGroup.verticalScrollPosition = value;
 		}
 
 		/**
@@ -427,8 +444,16 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		private function onCurrentFrameChange(target:ObjectInfo):void
 		{
-			currentFrameField.value = currentFrame;
-			currentTimeField.text = (currentFrame * actionInfo.defautFrameDuration).toFixed(3) + "s";
+			if (actionInfo)
+			{
+				currentFrameField.value = currentFrame;
+				currentTimeField.text = (currentFrame * actionInfo.defautFrameDuration).toFixed(3) + "s";
+			}
+			else
+			{
+				currentFrameField.value = 0;
+				currentTimeField.text = (0).toFixed(3) + "s";
+			}
 		}
 	}
 }

@@ -111,6 +111,12 @@ package ageb.modules.avatar.timelineClasses
 		 */
 		protected function onCaretChange(event:GridCaretEvent):void
 		{
+			// 当没有任何动作时撤退
+			if (!actionInfo)
+			{
+				return;
+			}
+
 			// 这个 newColumnIndex 就是我们要的当前帧
 			// 满足以下任一条件，当前选中帧则无效
 			// 
@@ -132,7 +138,6 @@ package ageb.modules.avatar.timelineClasses
 				return;
 			}
 
-			// FIXME 当没有任何动作时，这里的 actionInfo 将会为 null
 			// 点过头
 			if (actionInfo.numFrames <= event.newColumnIndex)
 			{
@@ -321,6 +326,7 @@ package ageb.modules.avatar.timelineClasses
 				_actionInfo.onSelectedFramesChange.remove(onSelectedFramesChange);
 			}
 			_actionInfo = value;
+			enabled = actionInfo != null;
 
 			if (_actionInfo)
 			{
