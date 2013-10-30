@@ -1,0 +1,9 @@
+{
+	"version"	: 1.0,
+	"paths"		:
+	{
+		"assets"	: "/",
+		"avatars"	: "src/avatars",
+		"scenes"	: "src/scenes"
+	}
+}

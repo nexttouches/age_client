@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:93c7043e0049ab0146a34bc3ac95c76f$ -->
+<TextureAtlas imagePath="avatar_scene.png">
+    <SubTexture name="avatar_scene" x="3" y="3" width="1000" height="800"/>
+</TextureAtlas>

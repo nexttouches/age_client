@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:0b005cdc3a4e5ad75cef029389ff9f86:1/1$ -->
+<TextureAtlas imagePath="1000_idle.png">
+    <SubTexture name="null" x="5701734" y="5701734" width="-11403465" height="-11403465"/>
+</TextureAtlas>
