@@ -385,82 +385,8 @@ package age.assets
 		 * 计算下一帧
 		 */
 		[Inline]
-		final public function advanceTime(time:Number, g:Vector3D, friction:Number, airResistance:Number, lower:Vector3D, upper:Vector3D = null):void
+		final public function advanceTime(time:Number):void
 		{
-			// 基本重力加速度
-			velocity.y -= g.y * time;
-
-			// 由 mass 提供的下落力不能超过底边界
-			if (position.y > 0)
-			{
-				if (position.y - mass * time >= 0)
-				{
-					velocity.y -= mass * time;
-				}
-				else
-				{
-					velocity.y -= position.y;
-				}
-			}
-			// 应用加速度
-			position.x += velocity.x * time;
-			position.y += velocity.y * time;
-			position.z += velocity.z * time;
-
-			// 左边界
-			if (position.x <= lower.x)
-			{
-				position.x = 0;
-				velocity.x *= -elasticity;
-			}
-
-			// 下边界
-			if (position.y <= lower.y)
-			{
-				position.y = 0;
-				// 完全贴地后，计算地面摩擦力
-				velocity.x *= friction;
-				velocity.z *= friction;
-				velocity.y *= -elasticity;
-			}
-
-			// 前边界
-			if (position.z <= lower.z)
-			{
-				position.z = 0;
-				velocity.z *= -elasticity;
-			}
-			// 空气阻力
-			velocity.scaleBy(airResistance);
-
-			// 静止判断
-			if (Math.abs(velocity.y) <= STICKY_THRESHOLD)
-			{
-				velocity.y = 0;
-			}
-
-			if (Math.abs(velocity.x) <= STICKY_THRESHOLD)
-			{
-				velocity.x = 0;
-			}
-
-			if (Math.abs(velocity.z) <= STICKY_THRESHOLD)
-			{
-				velocity.z = 0;
-			}
-			// trace(velocity);
-			isSticky = velocity.x == 0 && velocity.y == 0 && velocity.z == 0;
-
-			// 如活动中则广播 onPositionChange
-			// 请注意：ObjectRenderer 将每帧更新位置
-			// 也就是说，该事件仅供渲染器以外使用
-			if (!_isSticky)
-			{
-				if (_onPositionChange)
-				{
-					_onPositionChange.dispatch();
-				}
-			}
 			// 执行更新 currentFrame 逻辑
 			updateCurrentFrame(time);
 		}

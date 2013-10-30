@@ -301,15 +301,6 @@ package age.assets
 		public function start():void
 		{
 			AGE.physicsJuggler.add(this);
-
-			// 测试
-			for each (player in objects)
-			{
-				if (player.avatarID == "1")
-				{
-					break;
-				}
-			}
 		}
 
 		public function stop():void
@@ -326,69 +317,13 @@ package age.assets
 		 */
 		public function advanceTime(time:Number):void
 		{
-			// 下为键盘控制用于测试
-			const MOVE_SPEED:uint = 400;
-			const JUMP_POWER:uint = 1000;
 			var i:int, n:int, o:ObjectInfo;
-			const g:Vector3D = parent.g;
-			const lower:Vector3D = parent.lower;
-			const friction:Number = parent.friction;
-			const airResistance:Number = parent.airResistance;
 
 			for (i = 0, n = objects.length; i < n; i++)
 			{
 				o = objects[i];
-				o.mass = 1200;
-
-				// 模拟浮空
-				/*if (ShortcutUtil.isDown(Keyboard.B))
-				{
-					// 浮空力
-					o.velocity.y = 200;
-					// 击退力
-					o.velocity.x = 300;
-				}
-
-				if (ShortcutUtil.isDown(Keyboard.C))
-				{
-					// 浮空力
-					o.velocity.y = 200;
-					// 击退力
-					o.velocity.x = -300;
-				}*/
-				if (ShortcutUtil.isDown(Keyboard.A))
-				{
-					o.velocity.x = -MOVE_SPEED;
-				}
-				else if (ShortcutUtil.isDown(Keyboard.D))
-				{
-					o.velocity.x = MOVE_SPEED;
-				}
-				else
-				{
-					o.velocity.x = 0;
-				}
-
-				if (ShortcutUtil.isDown(Keyboard.W))
-				{
-					o.velocity.z = MOVE_SPEED;
-				}
-				else if (ShortcutUtil.isDown(Keyboard.S))
-				{
-					o.velocity.z = -MOVE_SPEED;
-				}
-				else
-				{
-					o.velocity.z = 0;
-				}
-
-				if (ShortcutUtil.isDown(Keyboard.X) && o.velocity.y == 0)
-				{
-					o.velocity.y = JUMP_POWER;
-				}
-				o.advanceTime(time, g, friction, airResistance, lower);
+				o.advanceTime(time);
 			}
-			// TODO 碰撞检测
 		}
 	}
 }
