@@ -16,6 +16,10 @@ package ageb.modules.ae
 			if (info)
 			{
 				info.onTexturesChange.remove(onTexturesChange);
+			}
+
+			if (infoEditable)
+			{
 				infoEditable.getFrameInfoAt(0).onBoxChange.remove(adjustSize);
 			}
 			super.info = value;
@@ -31,6 +35,10 @@ package ageb.modules.ae
 			if (info)
 			{
 				info.onTexturesChange.remove(onTexturesChange);
+			}
+
+			if (infoEditable)
+			{
 				infoEditable.getFrameInfoAt(0).onBoxChange.add(adjustSize);
 			}
 		}
