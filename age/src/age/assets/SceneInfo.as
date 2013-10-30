@@ -74,7 +74,7 @@ package age.assets
 
 		/**
 		 * 网格<br>
-		 * 储存形式是 [y][x]<br>
+		 * 储存形式是 [z][x]<br>
 		 * 默认值为一个网格
 		 */
 		public var grids:Array = [[ 0 ]];
