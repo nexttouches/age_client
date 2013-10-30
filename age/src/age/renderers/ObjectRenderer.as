@@ -301,14 +301,12 @@ package age.renderers
 				isAvatarIDChange = false;
 			}
 
-			// 优化：如果 avatarID 为 null，后面的流程就不用跑了
-			if (avatarID == null)
+			if (avatarID)
 			{
-				return;
+				// 更新 action
+				actionName = info.actionName;
+				addAllLayerRenderers(actionInfo);
 			}
-			// 更新 action
-			actionName = info.actionName;
-			addAllLayerRenderers(actionInfo);
 
 			if (isAutoPlay)
 			{
