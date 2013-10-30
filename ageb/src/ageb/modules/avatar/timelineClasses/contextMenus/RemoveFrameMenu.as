@@ -8,7 +8,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 	 * @author zhanghaocong
 	 *
 	 */
-	public class RemoveFrameMenu extends FrameContextMenuItem
+	public class RemoveFrameMenu extends FrameMenuItem
 	{
 		/**
 		 * constructor
@@ -17,7 +17,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		public function RemoveFrameMenu()
 		{
 			super();
-			item.caption = "删除帧";
+			contextMenuItem.caption = "删除帧";
 		}
 
 		/**
@@ -34,9 +34,9 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		 * @inheritDoc
 		 *
 		 */
-		override public function validate():void
+		override public function onShow():void
 		{
-			item.enabled = true;
+			contextMenuItem.enabled = true;
 		}
 	}
 }

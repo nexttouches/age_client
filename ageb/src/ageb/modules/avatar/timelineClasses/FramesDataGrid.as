@@ -19,6 +19,7 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.document.AvatarDocument;
 	import org.apache.flex.collections.VectorList;
 	import org.osflash.signals.Signal;
+	import ageb.modules.avatar.timelineClasses.contextMenus.FrameMenu;
 
 	/**
 	 * 时间轴帧网格
@@ -89,7 +90,7 @@ package ageb.modules.avatar.timelineClasses
 
 			if (cell && cell.selected)
 			{
-				FrameContextMenu.show(actionInfo, selectedCells);
+				FrameMenu.show(actionInfo, selectedCells);
 			}
 		}
 

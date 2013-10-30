@@ -8,7 +8,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 	 * @author zhanghaocong
 	 *
 	 */
-	public class InsertFrameMenu extends FrameContextMenuItem
+	public class InsertFrameMenu extends FrameMenuItem
 	{
 		/**
 		 * constructor
@@ -17,7 +17,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		public function InsertFrameMenu()
 		{
 			super();
-			item.caption = "插入帧";
+			contextMenuItem.caption = "插入帧";
 		}
 
 		/**
@@ -35,10 +35,10 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		 * @param event
 		 *
 		 */
-		override public function validate():void
+		override public function onShow():void
 		{
 			// 总是启用
-			item.enabled = true;
+			contextMenuItem.enabled = true;
 		}
 	}
 }

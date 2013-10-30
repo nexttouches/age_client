@@ -8,7 +8,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 	 * @author zhanghaocong
 	 *
 	 */
-	public class RemoveKeyframeMenu extends FrameContextMenuItem
+	public class RemoveKeyframeMenu extends FrameMenuItem
 	{
 		/**
 		 * constructor
@@ -17,7 +17,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		public function RemoveKeyframeMenu()
 		{
 			super();
-			item.caption = "清除关键帧";
+			contextMenuItem.caption = "清除关键帧";
 		}
 
 		/**
@@ -32,22 +32,21 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 
 		/**
 		 * @inheritDoc
-		 * @return
 		 *
 		 */
-		override public function validate():void
+		override public function onShow():void
 		{
 			if (frames.length == 0)
 			{
-				item.enabled = false;
+				contextMenuItem.enabled = false;
 			}
 			else if (frames.length == 1)
 			{
-				item.enabled = frames[0].isKeyframe;
+				contextMenuItem.enabled = frames[0].isKeyframe;
 			}
 			else
 			{
-				item.enabled = true;
+				contextMenuItem.enabled = true;
 			}
 		}
 	}

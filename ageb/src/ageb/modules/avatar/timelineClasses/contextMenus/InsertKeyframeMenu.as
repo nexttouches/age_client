@@ -3,13 +3,12 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 	import flash.events.Event;
 	import ageb.modules.avatar.op.InsertFrame;
 
-	public class InsertKeyframeMenu extends FrameContextMenuItem
+	public class InsertKeyframeMenu extends FrameMenuItem
 	{
 		public function InsertKeyframeMenu()
 		{
 			super();
-			item.caption = "插入关键帧";
-			item.separatorBefore = true;
+			contextMenuItem.caption = "插入关键帧";
 		}
 
 		/**
@@ -27,10 +26,10 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		 * @param event
 		 *
 		 */
-		override public function validate():void
+		override public function onShow():void
 		{
 			// 总是启用
-			item.enabled = true;
+			contextMenuItem.enabled = true;
 		}
 	}
 }

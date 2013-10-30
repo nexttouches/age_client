@@ -9,7 +9,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 	 *
 	 */
 	[Deprecated("请使用 InsertFrame", "aeb.modules.avatar.op.InsertFrame")]
-	public class ConvertToKeyframeMenu extends FrameContextMenuItem
+	public class ConvertToKeyframeMenu extends FrameMenuItem
 	{
 		/**
 		 * constructor
@@ -18,7 +18,7 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		public function ConvertToKeyframeMenu()
 		{
 			super();
-			item.caption = "转换为关键帧";
+			contextMenuItem.caption = "转换为关键帧";
 		}
 
 		/**
@@ -36,19 +36,19 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		 * @return
 		 *
 		 */
-		override public function validate():void
+		override public function onShow():void
 		{
 			if (frames.length == 0)
 			{
-				item.enabled = false;
+				contextMenuItem.enabled = false;
 			}
 			else if (frames.length == 1)
 			{
-				item.enabled = !frames[0].isKeyframe;
+				contextMenuItem.enabled = !frames[0].isKeyframe;
 			}
 			else
 			{
-				item.enabled = true;
+				contextMenuItem.enabled = true;
 			}
 		}
 	}
