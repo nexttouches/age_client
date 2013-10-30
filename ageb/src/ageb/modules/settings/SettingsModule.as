@@ -47,7 +47,7 @@ package ageb.modules.settings
 		 * 标记当前项目文件是否有效
 		 */
 		[Bindable]
-		public var aepVaild:Boolean;
+		public var ageprojectVaild:Boolean;
 
 		/**
 		 * 窗口标题变化时广播
@@ -106,20 +106,20 @@ package ageb.modules.settings
 		 */
 		private function checkProjectFile():void
 		{
-			var lastProjectFolderVaild:Boolean = aepVaild;
-			aepVaild = false;
-			var aep:String = getData(this).aep;
+			var lastProjectFolderVaild:Boolean = ageprojectVaild;
+			ageprojectVaild = false;
+			var ageproject:String = getData(this).ageproject;
 
-			if (aep)
+			if (ageproject)
 			{
 				try
 				{
-					var file:File = new File(aep);
+					var file:File = new File(ageproject);
 
 					if (file.exists)
 					{
 						var content:Object = FileUtil.readJSON(file);
-						aepVaild = content.version == VAILD_VERSION;
+						ageprojectVaild = content.version == VAILD_VERSION;
 
 						// 必须重启才可以生效
 						if (lastProjectFolderVaild)
@@ -139,7 +139,7 @@ package ageb.modules.settings
 				}
 			}
 
-			if (aepVaild)
+			if (ageprojectVaild)
 			{
 				render();
 			}
@@ -158,7 +158,7 @@ package ageb.modules.settings
 		 */
 		override protected function browseProjectFile():void
 		{
-			FileUtil.browseFile("", [ new FileFilter("AE 项目文件", "*.aep")], browseProjectFile_onComplete, null, setDefaults);
+			FileUtil.browseFile("", [ new FileFilter("AGE Project file", "*.ageproject")], browseProjectFile_onComplete, null, setDefaults);
 		}
 
 		/**
@@ -168,7 +168,7 @@ package ageb.modules.settings
 		 */
 		private function browseProjectFile_onComplete(f:File):void
 		{
-			getData(this).aep = f.nativePath;
+			getData(this).ageproject = f.nativePath;
 			setDefaults();
 		}
 
@@ -184,7 +184,7 @@ package ageb.modules.settings
 			{
 				return;
 			}
-			projectFolderField.text = getData(this).aep;
+			projectFolderField.text = getData(this).ageproject;
 			tpPathField.text = getData(this).tpPath;
 			imPathField.text = getData(this).imPath;
 		}
@@ -197,7 +197,7 @@ package ageb.modules.settings
 		{
 			var desc:XML = NativeApplication.nativeApplication.applicationDescriptor;
 			var ns:Namespace = desc.namespaceDeclarations()[0]; // shit namespace
-			windowTitle = format("{2} - {0} {1}", String(desc.child(new QName(ns, "name"))), String(desc.child(new QName(ns, "versionLabel"))), getData(this).aep);
+			windowTitle = format("{2} - {0} {1}", String(desc.child(new QName(ns, "name"))), String(desc.child(new QName(ns, "versionLabel"))), getData(this).ageproject);
 		}
 
 		/**

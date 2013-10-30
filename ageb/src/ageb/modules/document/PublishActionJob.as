@@ -47,7 +47,7 @@ package ageb.modules.document
 					{
 						const frame:FrameInfo = l.frames[j];
 
-						if (frame.isKeyframe)
+						if (frame.isKeyframe && !frame.isEmpty)
 						{
 							const url:String = AssetConfig.getInfo(AvatarInfo.folder + "/" + frame.texturePath + ".png").url;
 							tpParams.addFile(new File(url).nativePath);

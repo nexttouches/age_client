@@ -388,7 +388,7 @@ package ageb.modules.document
 		 */
 		public function openAvatar(avatarID:String):void
 		{
-			open(new File(settings.getData(settings).aep).parent.resolvePath("src/avatars/" + avatarID + ".txt"));
+			open(new File(settings.getData(settings).ageproject).parent.resolvePath("src/avatars/" + avatarID + ".txt"));
 		}
 
 		/**

@@ -1,7 +1,6 @@
 package ageb.modules.avatar.frameInfoClasses
 {
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import spark.components.NumericStepper;
 	import age.assets.Box;
 	import ageb.modules.ae.FrameInfoEditable;
