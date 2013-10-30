@@ -63,7 +63,6 @@ package age.renderers
 		override public function onAssetLoadComplete(asset:IAsset):void
 		{
 			setTexture(_asset.textureAtlas.getTexture(info.textureName));
-			// filter = new WaveFilter(width, height, AGE.renderJuggler);
 			isFlipX = info.isFlipX;
 			isFlipY = info.isFlipY;
 
