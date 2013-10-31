@@ -16,15 +16,24 @@ package ageb.modules.tools.sceneInfoClasses
 			name = "场景信息";
 			shortcut = "E";
 			icon = iconClass;
-			availableDocuments = new <Class>[ SceneDocument ];
+			availableDocs = new <Class>[ SceneDocument ];
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onSizeChange():void
 		{
 			sceneWidth.value = sceneDoc.info.width;
 			sceneHeight.value = sceneDoc.info.height;
 		}
 
+		/**
+		 * @inheritDoc
+		 * @param value
+		 *
+		 */
 		override public function set doc(value:Document):void
 		{
 			if (sceneDoc)
@@ -39,6 +48,11 @@ package ageb.modules.tools.sceneInfoClasses
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 * @param event
+		 *
+		 */
 		override protected function onShow(event:FlexEvent):void
 		{
 			onSizeChange();

@@ -28,7 +28,7 @@ package ageb.modules.tools
 		 * 为 null 表示都可以使用<br>
 		 * 不为 null 时，将检查数组中的元素
 		 */
-		public var availableDocuments:Vector.<Class>;
+		public var availableDocs:Vector.<Class>;
 
 		/**
 		 * 创建一个新的 ToolBase
@@ -38,13 +38,13 @@ package ageb.modules.tools
 		 * @param availableDocuments 设置该工具在哪些文档类型中可用，详见 availableDocuments 字段说明
 		 *
 		 */
-		public function ToolBase(name:String = "未命名工具", shortcut:String = null, icon:Class = null, availableDocuments:Vector.<Class> = null)
+		public function ToolBase(name:String = "未命名工具", shortcut:String = null, icon:Class = null, availableDocs:Vector.<Class> = null)
 		{
 			super();
 			this.name = name;
 			this.shortcut = shortcut;
 			this.icon = icon || DEFAULT_TOOL_ICON_CLASS;
-			this.availableDocuments = availableDocuments;
+			this.availableDocs = availableDocs;
 			percentWidth = 100;
 			percentHeight = 100;
 			addEventListener(FlexEvent.SHOW, onShow);
@@ -54,6 +54,11 @@ package ageb.modules.tools
 			loadSettings();
 		}
 
+		/**
+		 * 选择工具时调用
+		 * @param event
+		 *
+		 */
 		protected function onShow(event:FlexEvent):void
 		{
 		}

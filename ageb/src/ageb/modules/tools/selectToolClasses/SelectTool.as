@@ -4,8 +4,6 @@ package ageb.modules.tools.selectToolClasses
 	import flash.events.ContextMenuEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import flash.ui.ContextMenu;
-	import flash.ui.ContextMenuItem;
 	import flash.ui.Keyboard;
 	import mx.managers.PopUpManager;
 	import spark.skins.spark.WindowedApplicationSkin;
@@ -15,7 +13,7 @@ package ageb.modules.tools.selectToolClasses
 	import age.renderers.MouseResponder;
 	import ageb.components.TextureBrowser;
 	import ageb.modules.Modules;
-	import ageb.modules.ae.BGInfoEditable;
+	import ageb.modules.ae.*;
 	import ageb.modules.ae.ISelectableInfo;
 	import ageb.modules.ae.ISelectableRenderer;
 	import ageb.modules.ae.LayerInfoEditable;
@@ -29,7 +27,6 @@ package ageb.modules.tools.selectToolClasses
 	import ageb.modules.ae.dnd.RegionInfoDragThumb;
 	import ageb.modules.document.Document;
 	import ageb.modules.scene.op.AddBG;
-	import ageb.modules.scene.op.AddObject;
 	import ageb.modules.scene.op.MoveObject;
 	import ageb.modules.scene.op.RemoveObject;
 	import ageb.modules.tools.selectToolClasses.menus.SelectToolMenu;
@@ -95,6 +92,10 @@ package ageb.modules.tools.selectToolClasses
 		 */
 		private const DRAG_MOVE_THRESHOLD:Number = 8;
 
+		/**
+		 * constructor
+		 *
+		 */
 		public function SelectTool()
 		{
 			super();
@@ -103,6 +104,10 @@ package ageb.modules.tools.selectToolClasses
 			icon = iconClass;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set doc(value:Document):void
 		{
 			if (sceneDoc)
@@ -145,6 +150,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onRightClick(event:MouseEvent):void
 		{
 			if (isInSceneRenderer(event))
@@ -155,6 +164,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function addBgMenu_onSelect(event:ContextMenuEvent):void
 		{
 			var tb:TextureBrowser = PopUpManager.createPopUp(Modules.getInstance().root, TextureBrowser, true) as TextureBrowser;
@@ -164,16 +177,28 @@ package ageb.modules.tools.selectToolClasses
 			tb.browse();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function tb_onImportAuto(textures:Vector.<String>):void
 		{
 			importBGs(textures, true);
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function tb_onImportHere(textures:Vector.<String>):void
 		{
 			importBGs(textures, false);
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function importBGs(textures:Vector.<String>, isAutoPosition:Boolean):void
 		{
 			if (textures.length == 0)
@@ -186,6 +211,10 @@ package ageb.modules.tools.selectToolClasses
 			new AddBG(doc, textures, lr.info as LayerInfoEditable, mousePosition.x, lr.info.parent.uiToY(mousePosition.y), isAutoPosition).execute();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function removeObject():void
 		{
 			new RemoveObject(doc, selectedObjects).execute();
@@ -212,6 +241,10 @@ package ageb.modules.tools.selectToolClasses
 			return event.target is WindowedApplicationSkin;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onMouseDown(event:MouseEvent):void
 		{
 			onMouseUp(event);
@@ -225,6 +258,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onMouseUp(event:MouseEvent):void
 		{
 			if (isDragMoving)
@@ -263,6 +300,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onMouseMove(event:MouseEvent):void
 		{
 			if (isDragStart && ShortcutUtil.isLeftDown && selectedObjects.length > 0 && isInSceneRenderer(event))
@@ -388,6 +429,10 @@ package ageb.modules.tools.selectToolClasses
 			return NUDE_STEP;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function moveDown():void
 		{
 			if (selectedObjects.length > 0)
@@ -396,6 +441,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function moveUp():void
 		{
 			if (selectedObjects.length > 0)
@@ -404,6 +453,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function moveRight():void
 		{
 			if (selectedObjects.length > 0)
@@ -412,6 +465,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function moveLeft():void
 		{
 			if (selectedObjects.length > 0)
@@ -420,6 +477,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onTouch(event:TouchEvent):void
 		{
 			if (isJustDragged)
@@ -509,6 +570,10 @@ package ageb.modules.tools.selectToolClasses
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveRegionSettings():void
 		{
 			settings.isShowRegions = isShowRegionsField.selected;
@@ -516,6 +581,10 @@ package ageb.modules.tools.selectToolClasses
 			loadSettings();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveSnap():void
 		{
 			isSameAsWidth = isSameAsWidthField.selected;
@@ -536,6 +605,10 @@ package ageb.modules.tools.selectToolClasses
 			loadSettings();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function loadSettings():void
 		{
 			snapX = settings.snapX || 1;

@@ -1,10 +1,7 @@
 package ageb.modules.tools.selectToolClasses.menus
 {
-	import age.renderers.LayerRenderer;
 	import ageb.modules.Modules;
-	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.ae.LayerRendererEditable;
-	import ageb.modules.document.AvatarDocument;
 	import ageb.modules.document.SceneDocument;
 	import ageb.utils.MenuItem;
 

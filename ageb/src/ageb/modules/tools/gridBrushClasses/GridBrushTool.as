@@ -41,7 +41,7 @@ package ageb.modules.tools.gridBrushClasses
 			name = "网格刷";
 			shortcut = "Z"
 			icon = iconClass;
-			availableDocuments = new <Class>[ SceneDocument ];
+			availableDocs = new <Class>[ SceneDocument ];
 		}
 
 		/**

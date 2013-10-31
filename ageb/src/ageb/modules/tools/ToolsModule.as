@@ -62,7 +62,7 @@ package ageb.modules.tools
 
 				for each (var tool:ToolBase in tools)
 				{
-					if (tool.availableDocuments && tool.availableDocuments.indexOf(type) == -1)
+					if (tool.availableDocs && tool.availableDocs.indexOf(type) == -1)
 					{
 						if (tool.enabled)
 						{
@@ -106,7 +106,7 @@ package ageb.modules.tools
 			{
 				ShortcutUtil.register2(t.shortcut, function():void
 				{
-					if (modules.document.currentDoc && t.availableDocuments && t.availableDocuments.indexOf(modules.document.currentDoc["constructor"]) != -1)
+					if (modules.document.currentDoc && t.availableDocs && t.availableDocs.indexOf(modules.document.currentDoc["constructor"]) != -1)
 					{
 						selectedTool = t;
 					}
