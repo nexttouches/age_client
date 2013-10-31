@@ -69,7 +69,7 @@
 				change="saveProperties()"/>
 			<s:Button 
 				label="创建"
-				toolTip="在对象所在位置创建新区域"
+				toolTip="在对象所在位置创建一个宽 100 的新区域"
 				click="addRegion()"/>
 		</document:FormRow>
 		<s:Group width="100%">
