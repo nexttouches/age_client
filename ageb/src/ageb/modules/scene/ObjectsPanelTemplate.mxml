@@ -31,7 +31,7 @@
 					itemRenderer="ageb.modules.scene.TrackCell"/>
 			</s:ArrayList>
 			<s:ArrayList>
-				<s:GridColumn dataField="uniqueID"
+				<s:GridColumn dataField="id"
 					headerText="唯一 ID"/>
 				<s:GridColumn dataField="regionID"
 					headerText="区域"/>
