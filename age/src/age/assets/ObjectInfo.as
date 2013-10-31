@@ -564,7 +564,6 @@ package age.assets
 		[Inline]
 		final protected function updateDurations():void
 		{
-			// TODO 增强 actionInfo 为 null 的兼容
 			const ai:ActionInfo = actionInfo;
 			const numFrames:int = ai ? ai.numFrames : null;
 			defaultFrameDuration = ai ? ai.defautFrameDuration : 0;

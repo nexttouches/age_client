@@ -35,7 +35,6 @@ package nt.ui.dnd
 
 		public function get onDispose():ISignal
 		{
-			// TODO Auto Generated method stub
 			return null;
 		}
 	}

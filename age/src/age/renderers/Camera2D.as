@@ -287,9 +287,9 @@ package age.renderers
 		}*/
 		}
 
+		// TODO 将帧数改成持续时间
 		/**
 		 * 抖动<br>
-		 * TODO: 将帧数改成持续时间
 		 * @param intensity 剧烈程度
 		 * @param numFrames 持续帧数
 		 *

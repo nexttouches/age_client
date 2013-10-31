@@ -35,8 +35,7 @@ package ageb.modules.ae.dnd
 			}
 			else
 			{
-				// TODO
-				// 有时间实现下
+				// TODO 有时间实现下
 				/*const rt:RenderTexture = new RenderTexture(s.width, s.height, true);
 				rt.draw(s);
 				texture = rt;*/
