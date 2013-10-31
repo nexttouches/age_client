@@ -26,14 +26,14 @@
 				{
 					labelField.text = op.name;
 					op.onIsOverwritableChange.add(op_onIsOverwritableChange);
-					op_onIsOverwritableChange();
 				}
+				op_onIsOverwritableChange();
 			}
 
 			private function op_onIsOverwritableChange():void
 			{
-				alpha = op.isOverwritable ? 0.5 : 1;
-				icon.visible = op.isCurrent;
+				alpha = (op && op.isOverwritable) ? 0.5 : 1;
+				icon.visible = op && op.isCurrent;
 			}
 		]]>
 	</fx:Script>
@@ -50,5 +50,4 @@
 		source="@Embed('assets/icons/edit.png')"/>
 	<s:Label id="labelField"
 		text=""/>
-
 </s:ItemRenderer>

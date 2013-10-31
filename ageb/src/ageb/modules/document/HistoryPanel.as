@@ -2,7 +2,6 @@ package ageb.modules.document
 {
 	import mx.core.ClassFactory;
 	import spark.components.List;
-	import spark.components.ScrollSnappingMode;
 	import spark.events.IndexChangeEvent;
 	import spark.layouts.BasicLayout;
 
@@ -23,6 +22,7 @@ package ageb.modules.document
 			{
 				title = "历史记录";
 				list.dataProvider = null;
+				list.validateNow(); // 必须调用 validateNow，否则滚动条会不见
 				_doc.onHistoryCursorChange.remove(doc_onHistoryCursorChange);
 			}
 			_doc = value;
@@ -53,17 +53,12 @@ package ageb.modules.document
 			layout = new BasicLayout();
 			title = "历史记录";
 			// FIXME onRollOver 时强制聚焦
-		}
-
-		override protected function createChildren():void
-		{
-			super.createChildren();
 			list = new List();
 			list.itemRenderer = new ClassFactory(HistoryPanelItemRenderer);
 			list.percentWidth = 100;
 			list.percentHeight = 100;
-			list.scrollSnappingMode = ScrollSnappingMode.CENTER;
 			list.addEventListener(IndexChangeEvent.CHANGE, onChange);
+			list.setStyle("verticalScrollPolicy", "on");
 			addElement(list);
 		}
 
