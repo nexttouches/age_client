@@ -1,3 +1,3 @@
-cloc --exclude-dir adobe,greensock,tools,starling,deng,osflash . 
+cloc age/src ageb/src common0/src common1/src
 @echo off
 pause
