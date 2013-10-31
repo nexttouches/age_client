@@ -346,7 +346,6 @@ package age.renderers
 		[Inline]
 		private function updateStaticRenderers(avatarInfo:AvatarInfo):void
 		{
-			trace("updateStaticRenderers");
 			// 鼠标（主要是大小）
 			mouseResponder.info = avatarInfo;
 			// 名字
