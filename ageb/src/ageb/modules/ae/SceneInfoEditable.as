@@ -1,12 +1,12 @@
 package ageb.modules.ae
 {
-	import mx.collections.ArrayList;
+	import flash.filesystem.File;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
-	import age.assets.LayerInfo;
 	import age.assets.LayerType;
 	import age.assets.RegionInfo;
 	import age.assets.SceneInfo;
+	import nt.assets.AssetConfig;
 	import nt.lib.reflect.Type;
 	import nt.lib.util.assert;
 	import org.apache.flex.collections.VectorList;
@@ -410,6 +410,16 @@ package ageb.modules.ae
 		public function getLayerAt(index:int):LayerInfoEditable
 		{
 			return layers[index] as LayerInfoEditable;
+		}
+
+		/**
+		 * 期待的文件夹，也就是说该动作的所有资源应在该目录下
+		 * @return
+		 *
+		 */
+		public function get expectFolder():File
+		{
+			return new File(AssetConfig.root + "/" + SceneInfo.folder + "/" + id);
 		}
 	}
 }

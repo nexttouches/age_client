@@ -4,7 +4,6 @@ package age.assets
 	import flash.utils.getTimer;
 	import age.utils.__projectY;
 	import nt.assets.Asset;
-	import nt.lib.util.assert;
 
 	/**
 	 * SceneInfo 是场景信息<br>

@@ -2,12 +2,8 @@ package ageb.modules.ae
 {
 	import flash.filesystem.File;
 	import mx.collections.ArrayList;
-	import mx.events.CollectionEvent;
-	import mx.events.CollectionEventKind;
-	import age.assets.BGInfo;
 	import age.assets.LayerInfo;
 	import age.assets.LayerType;
-	import age.assets.ObjectInfo;
 	import age.assets.SceneInfo;
 	import nt.assets.AssetConfig;
 	import nt.lib.reflect.Type;
@@ -182,16 +178,6 @@ package ageb.modules.ae
 		override protected function get objectInfoClass():Class
 		{
 			return ObjectInfoEditable;
-		}
-
-		/**
-		 * 期待的文件夹，也就是说该动作的所有资源应在该目录下
-		 * @return
-		 *
-		 */
-		public function get expectFolder():File
-		{
-			return new File(AssetConfig.root + "/" + SceneInfo.folder + "/" + parent.id);
 		}
 
 		/**

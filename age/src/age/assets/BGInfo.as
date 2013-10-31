@@ -33,8 +33,6 @@ package age.assets
 		 */
 		public var textureName:String;
 
-		private var _texture:String;
-
 		private var _onTextureChange:Signal;
 
 		/**
@@ -46,6 +44,8 @@ package age.assets
 		{
 			return _onTextureChange ||= new Signal();
 		}
+
+		private var _texture:String;
 
 		/**
 		 * 以 texturePath#textureName 格式的字符串

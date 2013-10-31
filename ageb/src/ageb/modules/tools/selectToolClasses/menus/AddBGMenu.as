@@ -1,6 +1,8 @@
 package ageb.modules.tools.selectToolClasses.menus
 {
 	import flash.events.Event;
+	import flash.filesystem.File;
+	import flash.net.FileFilter;
 	import age.assets.LayerType;
 	import ageb.utils.FileUtil;
 
@@ -27,6 +29,17 @@ package ageb.modules.tools.selectToolClasses.menus
 		 */
 		override protected function onSelect(event:Event):void
 		{
+			FileUtil.browseFile(sceneInfo.expectFolder.nativePath, [ new FileFilter("PNG File", "*.png")], onComplete);
+		}
+
+		/**
+		 * 选中文件后调用
+		 * @param f
+		 *
+		 */
+		private function onComplete(f:File):void
+		{
+			trace(f.nativePath);
 		}
 
 		/**

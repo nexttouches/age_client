@@ -25,6 +25,12 @@ package ageb.modules.document
 		public function SceneDocument(file:File, raw:Object)
 		{
 			super(file, raw);
+
+			// 自动处理 ID
+			if (file && !("id" in raw))
+			{
+				raw.id = file.name.split(".")[0];
+			}
 			info = new SceneInfoEditable(raw);
 			focus.x = info.width / 2;
 			focus.y = info.height / 2;

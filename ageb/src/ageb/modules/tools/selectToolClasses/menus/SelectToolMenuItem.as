@@ -2,6 +2,7 @@ package ageb.modules.tools.selectToolClasses.menus
 {
 	import ageb.modules.Modules;
 	import ageb.modules.ae.LayerRendererEditable;
+	import ageb.modules.ae.SceneInfoEditable;
 	import ageb.modules.document.SceneDocument;
 	import ageb.utils.MenuItem;
 
@@ -54,6 +55,16 @@ package ageb.modules.tools.selectToolClasses.menus
 		protected function get doc():SceneDocument
 		{
 			return Modules.getInstance().document.currentDoc as SceneDocument;
+		}
+
+		/**
+		 * 当前 SceneInfoEditable
+		 * @return
+		 *
+		 */
+		protected function get sceneInfo():SceneInfoEditable
+		{
+			return doc.info;
 		}
 	}
 }
