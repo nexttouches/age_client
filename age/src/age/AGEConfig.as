@@ -9,6 +9,11 @@ package age
 	 */
 	public class AGEConfig
 	{
+		/**
+		 * constructor
+		 * @param raw
+		 *
+		 */
 		public function AGEConfig(raw:Object = null)
 		{
 			fromJSON(raw);
@@ -17,6 +22,7 @@ package age
 		/**
 		 * isDebugMode 变化时广播
 		 */
+		[Transient]
 		public var onIsDebugModeChange:Signal = new Signal();
 
 		private var _isDebugMode:Boolean;
@@ -40,6 +46,7 @@ package age
 		/**
 		 * isMute 变化时广播
 		 */
+		[Transient]
 		public var onIsMuteChange:Signal = new Signal();
 
 		private var _isMute:Boolean;
@@ -63,6 +70,7 @@ package age
 		/**
 		 * sfxVolumn 变化时广播
 		 */
+		[Transient]
 		public var onSFXVolumnChange:Signal = new Signal();
 
 		private var _sfxVolumn:Number;
@@ -86,6 +94,7 @@ package age
 		/**
 		 * bgmVolumn 变化时广播
 		 */
+		[Transient]
 		public var onBGMVolumnChange:Signal = new Signal();
 
 		private var _bgmVolumn:Number;
@@ -106,6 +115,11 @@ package age
 			onBGMVolumnChange.dispatch();
 		}
 
+		/**
+		 * 从 JSON 反序列化
+		 * @param raw
+		 *
+		 */
 		public function fromJSON(raw:Object):void
 		{
 			if (!raw)
@@ -115,11 +129,6 @@ package age
 			restore(raw, this, "isMute");
 			restore(raw, this, "sfxVolumn");
 			restore(raw, this, "bgmVolumn");
-		}
-
-		public function toJSON(k:*):*
-		{
-			return { isMute: isMute, sfxVolumn: sfxVolumn, bgmVolumn: bgmVolumn };
 		}
 	}
 }
