@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="ageb.mxml" projectUUID="3d34b028-d45b-419e-9bc4-b3e3e12fb9c7" version="11">
-  <compiler additionalCompilerArguments="-locale zh_CN -keep-as3-metadata=&quot;Skin,Translation,Native,Extended,Export&quot;" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Apache Flex 4.10.0 FP 11.8 AIR 3.8 en_US" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale zh_CN -keep-as3-metadata=&quot;Skin,Translation,Native,Extended,Export&quot;" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Apache Flex 4.10.0 FP 11.8 AIR 3.8 en_US" fteInMXComponents="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
