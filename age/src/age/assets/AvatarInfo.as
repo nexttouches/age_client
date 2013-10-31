@@ -158,7 +158,7 @@ package age.assets
 			// id 不在 _list 中，这将返回 null
 			if (!(id in _list))
 			{
-				trace(id + " 不存在");
+				trace("[AvatarInfo.get]" + id + " 不存在");
 				return null;
 			}
 
