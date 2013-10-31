@@ -60,6 +60,7 @@
 
 	<s:Button 
 		icon="@Embed('../assets/icons/target.png')"
+		toolTip="定位"
 		click="track(event)"
 		skinClass="ageb.skins.IconButtonSkin"/>
 </s:GridItemRenderer>
