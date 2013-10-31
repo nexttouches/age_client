@@ -105,7 +105,7 @@ package ageb.modules.document
 				onMouseUp(null);
 				stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 				stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-				modules.tools.selectedTool.currentDocument = doc;
+				modules.tools.selectedTool.doc = doc;
 				isSpaceDown = false;
 			}
 		}
@@ -123,7 +123,7 @@ package ageb.modules.document
 				Mouse.cursor = MouseCursor.HAND;
 				stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-				modules.tools.selectedTool.currentDocument = null;
+				modules.tools.selectedTool.doc = null;
 			}
 		}
 

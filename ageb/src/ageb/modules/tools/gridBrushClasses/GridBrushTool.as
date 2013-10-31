@@ -59,19 +59,19 @@ package ageb.modules.tools.gridBrushClasses
 		 * @param value
 		 *
 		 */
-		override public function set currentDocument(value:Document):void
+		override public function set doc(value:Document):void
 		{
-			if (currentSceneDocument)
+			if (sceneDoc)
 			{
-				currentSceneDocument.info.onGridSizeChange.remove(onGridSizeChange);
+				sceneDoc.info.onGridSizeChange.remove(onGridSizeChange);
 				sceneRenderer.removeEventListener(TouchEvent.TOUCH, onTouch);
 			}
-			super.currentDocument = value;
+			super.doc = value;
 
-			if (currentSceneDocument)
+			if (sceneDoc)
 			{
 				sceneRenderer.isShowGrid = true;
-				currentSceneDocument.info.onGridSizeChange.add(onGridSizeChange);
+				sceneDoc.info.onGridSizeChange.add(onGridSizeChange);
 				sceneRenderer.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
 		}
@@ -107,7 +107,7 @@ package ageb.modules.tools.gridBrushClasses
 			if (isLeftDown)
 			{
 				var p:Point = touch.getLocation(sceneRenderer.charLayer);
-				var info:SceneInfoEditable = currentSceneDocument.info;
+				var info:SceneInfoEditable = sceneDoc.info;
 
 				if (p.x < 0 || p.y < 0 || p.x > info.width || p.y > info.height)
 				{
@@ -119,7 +119,7 @@ package ageb.modules.tools.gridBrushClasses
 
 				if (info.getGridCell(cellX, cellY) != brushValue)
 				{
-					new ChangeSceneGridCell(currentDocument, cellX, cellY, brushValue).execute();
+					new ChangeSceneGridCell(doc, cellX, cellY, brushValue).execute();
 				}
 			}
 		}
@@ -140,7 +140,7 @@ package ageb.modules.tools.gridBrushClasses
 		 */
 		override protected function saveGrid():void
 		{
-			new ChangeSceneGridSize(currentSceneDocument, int(gridWidth.value), int(gridHeight.value)).execute();
+			new ChangeSceneGridSize(sceneDoc, int(gridWidth.value), int(gridHeight.value)).execute();
 		}
 	}
 }

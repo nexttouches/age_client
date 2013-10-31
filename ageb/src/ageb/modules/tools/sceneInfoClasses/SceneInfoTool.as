@@ -21,21 +21,21 @@ package ageb.modules.tools.sceneInfoClasses
 
 		protected function onSizeChange():void
 		{
-			sceneWidth.value = currentSceneDocument.info.width;
-			sceneHeight.value = currentSceneDocument.info.height;
+			sceneWidth.value = sceneDoc.info.width;
+			sceneHeight.value = sceneDoc.info.height;
 		}
 
-		override public function set currentDocument(value:Document):void
+		override public function set doc(value:Document):void
 		{
-			if (currentSceneDocument)
+			if (sceneDoc)
 			{
-				currentSceneDocument.info.onSizeChange.remove(onSizeChange);
+				sceneDoc.info.onSizeChange.remove(onSizeChange);
 			}
-			super.currentDocument = value;
+			super.doc = value;
 
-			if (currentSceneDocument)
+			if (sceneDoc)
 			{
-				currentSceneDocument.info.onSizeChange.add(onSizeChange);
+				sceneDoc.info.onSizeChange.add(onSizeChange);
 			}
 		}
 

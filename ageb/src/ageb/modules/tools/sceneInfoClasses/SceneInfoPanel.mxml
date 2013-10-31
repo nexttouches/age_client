@@ -14,7 +14,7 @@
 			 */
 			protected function saveSize():void
 			{
-				var op:ChangeSceneSize = new ChangeSceneSize(currentDocument, int(sceneWidth.value), int(sceneHeight.value));
+				var op:ChangeSceneSize = new ChangeSceneSize(doc, int(sceneWidth.value), int(sceneHeight.value));
 				op.execute();
 			}
 		]]>

@@ -9,8 +9,8 @@
 		<![CDATA[
 			protected function onGridSizeChange():void
 			{
-				gridWidth.value = currentSceneDocument.info.gridWidth;
-				gridHeight.value = currentSceneDocument.info.gridHeight;
+				gridWidth.value = sceneDoc.info.gridWidth;
+				gridHeight.value = sceneDoc.info.gridHeight;
 			}
 
 			protected function saveGrid():void

@@ -103,9 +103,9 @@ package ageb.modules.tools.selectToolClasses
 			icon = iconClass;
 		}
 
-		override public function set currentDocument(value:Document):void
+		override public function set doc(value:Document):void
 		{
-			if (currentSceneDocument)
+			if (sceneDoc)
 			{
 				sceneRenderer.removeEventListener(TouchEvent.TOUCH, onTouch);
 				ShortcutUtil.unregister([ Keyboard.LEFT ]);
@@ -123,9 +123,9 @@ package ageb.modules.tools.selectToolClasses
 				nativeStage.removeEventListener(MouseEvent.RIGHT_CLICK, onRightClick);
 				onMouseUp(null);
 			}
-			super.currentDocument = value;
+			super.doc = value;
 
-			if (currentSceneDocument)
+			if (sceneDoc)
 			{
 				sceneRenderer.addEventListener(TouchEvent.TOUCH, onTouch);
 				ShortcutUtil.register([ Keyboard.LEFT ], moveLeft);
@@ -151,7 +151,7 @@ package ageb.modules.tools.selectToolClasses
 			{
 				rightDownPoint.x = nativeStage.mouseX;
 				rightDownPoint.y = nativeStage.mouseY;
-				SelectToolMenu.show(sceneRenderer.getLayerAt(currentSceneDocument.info.selectedLayersIndices[0]) as LayerRendererEditable);
+				SelectToolMenu.show(sceneRenderer.getLayerAt(sceneDoc.info.selectedLayersIndices[0]) as LayerRendererEditable);
 			}
 		}
 
@@ -180,15 +180,15 @@ package ageb.modules.tools.selectToolClasses
 			{
 				return;
 			}
-			var lr:LayerRenderer = sceneRenderer.getLayerAt(currentSceneDocument.info.selectedLayersIndices[0]);
+			var lr:LayerRenderer = sceneRenderer.getLayerAt(sceneDoc.info.selectedLayersIndices[0]);
 			var mousePosition:Point = new Point(rightDownPoint.x - AGE.paddingLeft, rightDownPoint.y - AGE.paddingTop);
 			mousePosition = lr.globalToLocal(mousePosition, mousePosition);
-			new AddBG(currentDocument, textures, lr.info as LayerInfoEditable, mousePosition.x, lr.info.parent.uiToY(mousePosition.y), isAutoPosition).execute();
+			new AddBG(doc, textures, lr.info as LayerInfoEditable, mousePosition.x, lr.info.parent.uiToY(mousePosition.y), isAutoPosition).execute();
 		}
 
 		private function removeObject():void
 		{
-			new RemoveObject(currentDocument, selectedObjects).execute();
+			new RemoveObject(doc, selectedObjects).execute();
 		}
 
 		/**
@@ -246,7 +246,7 @@ package ageb.modules.tools.selectToolClasses
 					currentPoint.y = nativeStage.mouseY;
 					var dx:Number = currentPoint.x - downPoint.x;
 					var dy:Number = currentPoint.y - downPoint.y;
-					new MoveObject(currentDocument, selectedObjects, dx, -dy, -dy, snapX, snapY, snapZ, event.controlKey, true).execute();
+					new MoveObject(doc, selectedObjects, dx, -dy, -dy, snapX, snapY, snapZ, event.controlKey, true).execute();
 				}
 				else
 				{
@@ -365,12 +365,12 @@ package ageb.modules.tools.selectToolClasses
 		 */
 		final public function get selectedObjects():Vector.<ISelectableInfo>
 		{
-			return currentSceneDocument.info.selectedObjects;
+			return sceneDoc.info.selectedObjects;
 		}
 
 		final public function set selectedObjects(value:Vector.<ISelectableInfo>):void
 		{
-			currentSceneDocument.info.selectedObjects = value;
+			sceneDoc.info.selectedObjects = value;
 		}
 
 		/**
@@ -392,7 +392,7 @@ package ageb.modules.tools.selectToolClasses
 		{
 			if (selectedObjects.length > 0)
 			{
-				new MoveObject(currentDocument, selectedObjects, 0, -getNudeStep(), -getNudeStep(), 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
+				new MoveObject(doc, selectedObjects, 0, -getNudeStep(), -getNudeStep(), 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
 			}
 		}
 
@@ -400,7 +400,7 @@ package ageb.modules.tools.selectToolClasses
 		{
 			if (selectedObjects.length > 0)
 			{
-				new MoveObject(currentDocument, selectedObjects, 0, getNudeStep(), getNudeStep(), 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
+				new MoveObject(doc, selectedObjects, 0, getNudeStep(), getNudeStep(), 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
 			}
 		}
 
@@ -408,7 +408,7 @@ package ageb.modules.tools.selectToolClasses
 		{
 			if (selectedObjects.length > 0)
 			{
-				new MoveObject(currentDocument, selectedObjects, getNudeStep(), 0, 0, 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
+				new MoveObject(doc, selectedObjects, getNudeStep(), 0, 0, 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
 			}
 		}
 
@@ -416,7 +416,7 @@ package ageb.modules.tools.selectToolClasses
 		{
 			if (selectedObjects.length > 0)
 			{
-				new MoveObject(currentDocument, selectedObjects, -getNudeStep(), 0, 0, 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
+				new MoveObject(doc, selectedObjects, -getNudeStep(), 0, 0, 1, 1, 1, ShortcutUtil.isDown(Keyboard.CONTROL), true).execute();
 			}
 		}
 
@@ -436,7 +436,7 @@ package ageb.modules.tools.selectToolClasses
 			}
 			var info:ISelectableInfo, oo:ISelectableInfo;
 			var index:int;
-			var sceneInfo:SceneInfoEditable = currentSceneDocument.info;
+			var sceneInfo:SceneInfoEditable = sceneDoc.info;
 
 			// 根据点击的类型获取对应的 ISelectable
 			if (touch.target is ISelectableRenderer)

@@ -54,7 +54,7 @@ package ageb.modules.tools
 		 */
 		private function onCurrentDocumentChange():void
 		{
-			selectedTool.currentDocument = null;
+			selectedTool.doc = null;
 
 			if (modules.document.currentDoc)
 			{
@@ -78,7 +78,7 @@ package ageb.modules.tools
 				}
 			}
 			// 重新设置文档对象
-			selectedTool.currentDocument = modules.document.currentDoc;
+			selectedTool.doc = modules.document.currentDoc;
 		}
 
 		/**
@@ -144,11 +144,11 @@ package ageb.modules.tools
 			{
 				isShowTip = true;
 				selectedTool.isSelected = false;
-				selectedTool.currentDocument = null;
+				selectedTool.doc = null;
 			}
 			_selectedIndex = value;
 			selectedTool.isSelected = true;
-			selectedTool.currentDocument = modules.document.currentDoc;
+			selectedTool.doc = modules.document.currentDoc;
 
 			if (isShowTip)
 			{

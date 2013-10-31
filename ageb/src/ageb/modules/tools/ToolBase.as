@@ -105,22 +105,22 @@ package ageb.modules.tools
 			_isSelected = value;
 		}
 
-		private var _currentDocument:Document;
+		private var _doc:Document;
 
 		/**
 		 * 设置或获取当前工具关联的文档对象
 		 * @return
 		 *
 		 */
-		public function get currentDocument():Document
+		public function get doc():Document
 		{
-			return _currentDocument;
+			return _doc;
 		}
 
-		public function set currentDocument(value:Document):void
+		public function set doc(value:Document):void
 		{
-			trace("[" + name + "] currentDocument change: old=", _currentDocument, "new=", value);
-			_currentDocument = value;
+			trace("[" + name + "] doc change: old=", _doc, "new=", value);
+			_doc = value;
 		}
 
 		/**
@@ -128,9 +128,9 @@ package ageb.modules.tools
 		 * @return
 		 *
 		 */
-		public function get currentSceneDocument():SceneDocument
+		public function get sceneDoc():SceneDocument
 		{
-			return _currentDocument as SceneDocument;
+			return _doc as SceneDocument;
 		}
 
 		/**
@@ -138,9 +138,9 @@ package ageb.modules.tools
 		 * @return
 		 *
 		 */
-		public function get avatarDocument():AvatarDocument
+		public function get avatarDoc():AvatarDocument
 		{
-			return _currentDocument as AvatarDocument;
+			return _doc as AvatarDocument;
 		}
 
 		/**
