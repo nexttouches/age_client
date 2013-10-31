@@ -1,16 +1,46 @@
 package ageb.modules.document
 {
+	import flash.events.MouseEvent;
 	import mx.core.ClassFactory;
 	import spark.components.List;
 	import spark.events.IndexChangeEvent;
 	import spark.layouts.BasicLayout;
 
+	/**
+	 * 历史面板
+	 * @author zhanghaocong
+	 *
+	 */
 	public class HistoryPanel extends FormPanel
 	{
 		public var list:List;
 
+		/**
+		 * constructor
+		 *
+		 */
+		public function HistoryPanel()
+		{
+			super();
+			layout = new BasicLayout();
+			title = "历史记录";
+			list = new List();
+			list.itemRenderer = new ClassFactory(HistoryPanelItemRenderer);
+			list.percentWidth = 100;
+			list.percentHeight = 100;
+			list.addEventListener(IndexChangeEvent.CHANGE, onChange);
+			list.setStyle("verticalScrollPolicy", "on");
+			list.addEventListener(MouseEvent.ROLL_OVER, list_onRollOver);
+			addElement(list);
+		}
+
 		private var _doc:Document;
 
+		/**
+		 * 设置或获取当前关联的文档
+		 * @return
+		 *
+		 */
 		public function get doc():Document
 		{
 			return _doc;
@@ -35,6 +65,10 @@ package ageb.modules.document
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function doc_onHistoryCursorChange():void
 		{
 			// Workaround:
@@ -47,19 +81,13 @@ package ageb.modules.document
 			title = format("历史记录 ({numHistores})", _doc);
 		}
 
-		public function HistoryPanel()
+		/**
+		 * @private
+		 *
+		 */
+		protected function list_onRollOver(event:MouseEvent):void
 		{
-			super();
-			layout = new BasicLayout();
-			title = "历史记录";
-			// FIXME onRollOver 时强制聚焦
-			list = new List();
-			list.itemRenderer = new ClassFactory(HistoryPanelItemRenderer);
-			list.percentWidth = 100;
-			list.percentHeight = 100;
-			list.addEventListener(IndexChangeEvent.CHANGE, onChange);
-			list.setStyle("verticalScrollPolicy", "on");
-			addElement(list);
+			list.setFocus();
 		}
 
 		/**
