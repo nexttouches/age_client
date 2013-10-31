@@ -87,8 +87,8 @@ package ageb.modules.ae
 		{
 			if (infoEditable)
 			{
-				infoEditable.objectsArrayList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, onObjectsChange);
-				infoEditable.bgsArrayList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, onBgsChange);
+				infoEditable.objectsVectorList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, onObjectsChange);
+				infoEditable.bgsVectorList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, onBgsChange);
 			}
 			removeOutline();
 			super.info = value;
@@ -96,8 +96,8 @@ package ageb.modules.ae
 
 			if (infoEditable)
 			{
-				infoEditable.objectsArrayList.addEventListener(CollectionEvent.COLLECTION_CHANGE, onObjectsChange);
-				infoEditable.bgsArrayList.addEventListener(CollectionEvent.COLLECTION_CHANGE, onBgsChange);
+				infoEditable.objectsVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, onObjectsChange);
+				infoEditable.bgsVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, onBgsChange);
 			}
 		}
 

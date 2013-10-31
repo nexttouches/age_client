@@ -74,11 +74,11 @@ package ageb.modules.scene
 
 			if (selectedLayer.type == LayerType.BG)
 			{
-				list.dataProvider = selectedLayer.bgsArrayList;
+				list.dataProvider = selectedLayer.bgsVectorList;
 			}
 			else if (selectedLayer.type == LayerType.OBJECT)
 			{
-				list.dataProvider = selectedLayer.objectsArrayList;
+				list.dataProvider = selectedLayer.objectsVectorList;
 			}
 			list.validateNow();
 		}

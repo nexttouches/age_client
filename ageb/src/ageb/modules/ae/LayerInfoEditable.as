@@ -1,5 +1,6 @@
 package ageb.modules.ae
 {
+	import flash.filesystem.File;
 	import mx.collections.ArrayList;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
@@ -8,7 +9,9 @@ package ageb.modules.ae
 	import age.assets.LayerType;
 	import age.assets.ObjectInfo;
 	import age.assets.SceneInfo;
+	import nt.assets.AssetConfig;
 	import nt.lib.reflect.Type;
+	import org.apache.flex.collections.VectorList;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -22,12 +25,12 @@ package ageb.modules.ae
 		/**
 		 * 对应 bgs，可以直接绑定到 List 组件
 		 */
-		public var bgsArrayList:ArrayList;
+		public var bgsVectorList:VectorList;
 
 		/**
 		 * 对应 objects，可以直接绑定到 List 组件
 		 */
-		public var objectsArrayList:ArrayList;
+		public var objectsVectorList:VectorList;
 
 		/**
 		 * scrollRatio 发生变化时广播<br>
@@ -45,66 +48,14 @@ package ageb.modules.ae
 		{
 			super(raw, parent);
 			// 同步 bgs 和 objects
-			bgsArrayList = new ArrayList();
-			objectsArrayList = new ArrayList();
-			sync(bgs, bgsArrayList);
-			sync(objects, objectsArrayList);
-			bgsArrayList.addEventListener(CollectionEvent.COLLECTION_CHANGE, bgsArrayList_onChange);
-			objectsArrayList.addEventListener(CollectionEvent.COLLECTION_CHANGE, objectsArrayList_onChange);
+			bgsVectorList = new VectorList(bgs);
+			objectsVectorList = new VectorList(objects);
 
 			// 如果没有 raw 设置默认值
 			if (!raw)
 			{
 				type = LayerType.BG;
 				scrollRatio = 1;
-			}
-		}
-
-		protected function bgsArrayList_onChange(event:CollectionEvent):void
-		{
-			var info:BGInfo;
-
-			if (event.kind == CollectionEventKind.ADD)
-			{
-				for each (info in event.items)
-				{
-					bgs.push(info);
-				}
-			}
-			else if (event.kind == CollectionEventKind.REMOVE)
-			{
-				for each (info in event.items)
-				{
-					bgs.splice(bgs.indexOf(info), 1);
-				}
-			}
-			else
-			{
-				throw new Error("不支持的 kind");
-			}
-		}
-
-		protected function objectsArrayList_onChange(event:CollectionEvent):void
-		{
-			var info:ObjectInfo;
-
-			if (event.kind == CollectionEventKind.ADD)
-			{
-				for each (info in event.items)
-				{
-					objects.push(info);
-				}
-			}
-			else if (event.kind == CollectionEventKind.REMOVE)
-			{
-				for each (info in event.items)
-				{
-					objects.splice(objects.indexOf(info), 1);
-				}
-			}
-			else
-			{
-				throw new Error("不支持的 kind");
 			}
 		}
 
@@ -167,7 +118,7 @@ package ageb.modules.ae
 		 */
 		public function addObject(info:ObjectInfoEditable):void
 		{
-			objectsArrayList.addItem(info);
+			objectsVectorList.addItem(info);
 			info.parent = this;
 		}
 
@@ -178,7 +129,7 @@ package ageb.modules.ae
 		 */
 		public function removeObject(info:ObjectInfoEditable):void
 		{
-			objectsArrayList.removeItem(info);
+			objectsVectorList.removeItem(info);
 			info.parent = null;
 		}
 
@@ -189,7 +140,7 @@ package ageb.modules.ae
 		 */
 		public function addBg(info:BGInfoEditable):void
 		{
-			bgsArrayList.addItem(info);
+			bgsVectorList.addItem(info);
 			info.parent = this;
 		}
 
@@ -200,7 +151,7 @@ package ageb.modules.ae
 		 */
 		public function removeBg(info:BGInfoEditable):void
 		{
-			bgsArrayList.removeItem(info);
+			bgsVectorList.removeItem(info);
 			info.parent = null;
 		}
 
@@ -215,14 +166,32 @@ package ageb.modules.ae
 			onScrollRatioChange.dispatch();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function get bgInfoClass():Class
 		{
 			return BGInfoEditable;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function get objectInfoClass():Class
 		{
 			return ObjectInfoEditable;
+		}
+
+		/**
+		 * 期待的文件夹，也就是说该动作的所有资源应在该目录下
+		 * @return
+		 *
+		 */
+		public function get expectFolder():File
+		{
+			return new File(AssetConfig.root + "/" + SceneInfo.folder + "/" + parent.id);
 		}
 
 		/**
