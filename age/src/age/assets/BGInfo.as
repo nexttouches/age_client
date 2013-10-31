@@ -151,7 +151,7 @@ package age.assets
 					}
 				}
 
-				// 向后兼容：
+				// 向前兼容：
 				// 转化到笛卡尔坐标系
 				if (!raw.hasOwnProperty("z"))
 				{

@@ -1,11 +1,8 @@
 package age.assets
 {
 	import flash.errors.IllegalOperationError;
-	import flash.geom.Vector3D;
-	import flash.ui.Keyboard;
 	import age.AGE;
 	import nt.assets.Asset;
-	import nt.ui.util.ShortcutUtil;
 	import org.osflash.signals.Signal;
 	import starling.animation.IAnimatable;
 
