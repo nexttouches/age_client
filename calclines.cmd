@@ -1,3 +1,3 @@
-cloc --exclude-dir adobe,greensock,tools . 
+cloc --exclude-dir adobe,greensock,tools,starling,deng,osflash . 
 @echo off
 pause
