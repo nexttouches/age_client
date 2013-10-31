@@ -19,6 +19,7 @@ package ageb.modules.tools.selectToolClasses
 	import ageb.modules.ae.ISelectableInfo;
 	import ageb.modules.ae.ISelectableRenderer;
 	import ageb.modules.ae.LayerInfoEditable;
+	import ageb.modules.ae.LayerRendererEditable;
 	import ageb.modules.ae.ObjectInfoEditable;
 	import ageb.modules.ae.RegionInfoEditable;
 	import ageb.modules.ae.SceneInfoEditable;
@@ -31,6 +32,7 @@ package ageb.modules.tools.selectToolClasses
 	import ageb.modules.scene.op.AddObject;
 	import ageb.modules.scene.op.MoveObject;
 	import ageb.modules.scene.op.RemoveObject;
+	import ageb.modules.tools.selectToolClasses.menus.SelectToolMenu;
 	import nt.lib.util.assert;
 	import nt.ui.util.ShortcutUtil;
 	import starling.events.Touch;
@@ -93,23 +95,6 @@ package ageb.modules.tools.selectToolClasses
 		 */
 		private const DRAG_MOVE_THRESHOLD:Number = 8;
 
-		private var _popupMenu:ContextMenu;
-
-		public function get popupMenu():ContextMenu
-		{
-			if (!_popupMenu)
-			{
-				_popupMenu = new ContextMenu();
-				var addObjectMenu:ContextMenuItem = new ContextMenuItem("添加对象");
-				addObjectMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, addObjectMenu_onSelect)
-				_popupMenu.addItem(addObjectMenu);
-				var addBgMenu:ContextMenuItem = new ContextMenuItem("添加背景");
-				addBgMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, addBgMenu_onSelect)
-				_popupMenu.addItem(addBgMenu);
-			}
-			return _popupMenu;
-		}
-
 		public function SelectTool()
 		{
 			super();
@@ -166,7 +151,7 @@ package ageb.modules.tools.selectToolClasses
 			{
 				rightDownPoint.x = nativeStage.mouseX;
 				rightDownPoint.y = nativeStage.mouseY;
-				popupMenu.display(nativeStage, rightDownPoint.x, rightDownPoint.y);
+				SelectToolMenu.show(sceneRenderer.getLayerAt(currentSceneDocument.info.selectedLayersIndices[0]) as LayerRendererEditable);
 			}
 		}
 
@@ -199,14 +184,6 @@ package ageb.modules.tools.selectToolClasses
 			var mousePosition:Point = new Point(rightDownPoint.x - AGE.paddingLeft, rightDownPoint.y - AGE.paddingTop);
 			mousePosition = lr.globalToLocal(mousePosition, mousePosition);
 			new AddBG(currentDocument, textures, lr.info as LayerInfoEditable, mousePosition.x, lr.info.parent.uiToY(mousePosition.y), isAutoPosition).execute();
-		}
-
-		protected function addObjectMenu_onSelect(event:ContextMenuEvent):void
-		{
-			var lr:LayerRenderer = sceneRenderer.getLayerAt(currentSceneDocument.info.selectedLayersIndices[0]);
-			var mousePosition:Point = new Point(nativeStage.stage.mouseX - AGE.paddingLeft, nativeStage.stage.mouseY - AGE.paddingTop);
-			mousePosition = lr.globalToLocal(mousePosition, mousePosition);
-			new AddObject(currentDocument, lr.info as LayerInfoEditable, mousePosition.x, lr.info.parent.uiToZ(mousePosition.y)).execute();
 		}
 
 		private function removeObject():void

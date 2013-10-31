@@ -1,7 +1,10 @@
 package ageb.utils
 {
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.ui.ContextMenuItem;
+	import age.AGE;
+	import starling.display.Stage;
 
 	/**
 	 * 菜单项
@@ -61,6 +64,26 @@ package ageb.utils
 		protected function onSelect(event:Event):void
 		{
 			throw new Error("需子类实现");
+		}
+
+		/**
+		 * 原生 stage
+		 * @return
+		 *
+		 */
+		protected function get nativeStage():flash.display.Stage
+		{
+			return AGE.s.nativeStage;
+		}
+
+		/**
+		 * Starling 的 stage
+		 * @return
+		 *
+		 */
+		protected function get stage():starling.display.Stage
+		{
+			return AGE.s.stage;
 		}
 	}
 }
