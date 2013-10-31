@@ -11,7 +11,7 @@
 
 			public function type_labelFunction(info:ObjectInfo, column:GridColumn):String
 			{
-				return info.type + ":" + info.subtype;
+				return info.type.toString();
 			}
 		]]>
 	</fx:Script>

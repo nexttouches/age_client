@@ -142,69 +142,15 @@
 		<document:FormRow 
 			labelWidth="60"
 			label="唯一 ID">
-			<s:TextInput id="uniqueIDField"
-				width="100%"
-				enter="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="对象 ID">
-			<s:TextInput id="objectIDField"
-				width="100%"
-				enter="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="类型">
-			<propertyPanelClasses:AutoCompleteDropdown id="typeField"
-				width="100%"
-				change="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="子类型">
-			<s:TextInput id="subtypeField"
+			<s:TextInput id="idField"
 				width="100%"
 				enter="saveProperties()"/>
 		</document:FormRow>
 
-	</s:Group>
-	<s:Group width="150">
-		<s:layout>
-			<s:VerticalLayout/>
-		</s:layout>
 		<document:FormRow 
 			labelWidth="60"
-			label="能级">
-			<components:IntInput id="energyLevelField"
-				width="100%"
-				change="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="等级">
-			<components:IntInput id="levelField"
-				width="100%"
-				change="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="成长 ID">
-			<components:IntInput id="growIDField"
-				width="100%"
-				change="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="AI ID">
-			<components:IntInput id="aiIDField"
-				width="100%"
-				change="saveProperties()"/>
-		</document:FormRow>
-		<document:FormRow 
-			labelWidth="60"
-			label="掉落 ID">
-			<components:IntInput id="dropIDField"
+			label="类型">
+			<propertyPanelClasses:AutoCompleteDropdown id="typeField"
 				width="100%"
 				change="saveProperties()"/>
 		</document:FormRow>

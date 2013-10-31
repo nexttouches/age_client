@@ -28,16 +28,9 @@ package ageb.modules.scene.propertyPanelClasses
 			xField.value = NaN;
 			yField.value = NaN;
 			zField.value = NaN;
-			uniqueIDField.text = "";
-			objectIDField.text = "";
+			idField.text = "";
 			typeField.selectedIndex = -1;
-			subtypeField.text = "";
 			userDataField.text = "";
-			energyLevelField.value = NaN;
-			levelField.value = NaN;
-			growIDField.value = NaN;
-			aiIDField.value = NaN;
-			dropIDField.value = NaN;
 			avatarIDField.text = "";
 			actionsField.dataProvider = null;
 			massField.value = 0;
@@ -100,17 +93,10 @@ package ageb.modules.scene.propertyPanelClasses
 			{
 				return;
 			}
-			uniqueIDField.text = String(objectInfo.uniqueID);
-			objectIDField.text = String(objectInfo.objectID);
+			idField.text = objectInfo.id;
 			regionIDField.selectedItem = SceneDocument(doc).info.getRegionByID(objectInfo.regionID);
 			typeField.selectedData = objectInfo.type;
-			subtypeField.text = String(objectInfo.subtype);
 			restoreUserData();
-			energyLevelField.value = objectInfo.energyLevel;
-			levelField.value = objectInfo.level;
-			growIDField.value = objectInfo.growID;
-			aiIDField.value = objectInfo.aiID;
-			dropIDField.value = objectInfo.dropID;
 		}
 
 		private function getValue(c:*):*

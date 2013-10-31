@@ -251,17 +251,12 @@ package age.assets
 		public var name:String;
 
 		/**
-		 * 位于所在场景的唯一 ID <br>
-		 * 历史原因，现在只使用下面的 uniqueID
-		 * @see #uniqueID
+		 * 位于所在场景的 <strong>唯一 ID</strong <br>
 		 */
 		[Native]
 		[Export(exclude=null)]
 		public var id:String;
 
-		// 以下摘自 CopyItemConfig
-		// 是自定义的附加字段
-		// 根据不同的游戏，字段和字段的意思都可以不一样
 		/**
 		 * 所在区域
 		 * @see RegionInfo#id
@@ -269,20 +264,6 @@ package age.assets
 		[Extended]
 		[Export]
 		public var regionID:int;
-
-		/**
-		 * 唯一ID
-		 */
-		[Extended]
-		[Export]
-		public var uniqueID:int;
-
-		/**
-		 * 对象 ID
-		 */
-		[Extended]
-		[Export]
-		public var objectID:int;
 
 		/**
 		 * 自定义数据
@@ -298,48 +279,6 @@ package age.assets
 		[Extended]
 		[Export(exclude="-1")]
 		public var type:int = ObjectType.NONE;
-
-		/**
-		 * 子类型
-		 */
-		[Extended]
-		[Export(exclude=0)]
-		public var subtype:int = 0;
-
-		/**
-		 * 能级
-		 */
-		[Extended]
-		[Export(exclude=0)]
-		public var energyLevel:int = 0;
-
-		/**
-		 * 能力级别
-		 */
-		[Extended]
-		[Export(exclude="-1")]
-		public var level:int = -1;
-
-		/**
-		 * 成长属性ID
-		 */
-		[Extended]
-		[Export(exclude="-1")]
-		public var growID:int = -1;
-
-		/**
-		 * AI 节点 id
-		 */
-		[Extended]
-		[Export(exclude="-1")]
-		public var aiID:int = -1;
-
-		/**
-		 * 掉落包ID
-		 */
-		[Extended]
-		[Export(exclude=0)]
-		public var dropID:int = 0;
 
 		/**
 		 * 所属图层
