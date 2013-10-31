@@ -415,5 +415,16 @@ package ageb.modules.ae
 			// 刷一下 source，触发 COLLECTION_CHANGE 事件
 			regionsArrayList.source = regions;
 		}
+
+		/**
+		 * 根据索引获得图层
+		 * @param index
+		 * @return
+		 *
+		 */
+		public function getLayerAt(index:int):LayerInfoEditable
+		{
+			return layers[index] as LayerInfoEditable;
+		}
 	}
 }
