@@ -1,6 +1,7 @@
 package ageb.modules.scene.op
 {
 	import spark.components.List;
+	import age.assets.LayerInfo;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
 
@@ -21,7 +22,7 @@ package ageb.modules.scene.op
 		/**
 		 * 旧数据源中的内容
 		 */
-		public var oldSource:Array;
+		public var oldSource:Vector.<LayerInfo>;
 
 		/**
 		 * 旧主图层索引
@@ -59,7 +60,7 @@ package ageb.modules.scene.op
 			{
 				oldSelections = list.selectedIndices.concat();
 			}
-			oldSource = doc.info.layersArrayList.toArray();
+			oldSource = doc.info.layers.concat();
 			oldCharLayerIndex = doc.info.charLayerIndex;
 		}
 
@@ -67,20 +68,20 @@ package ageb.modules.scene.op
 		{
 			if (newSource)
 			{
-				doc.info.layersArrayList.source = newSource;
+				doc.info.layersVectorList.source = oldSource;
 			}
 			else
 			{
-				var charLayer:LayerInfoEditable = doc.info.layersArrayList.getItemAt(doc.info.charLayerIndex) as LayerInfoEditable;
+				var charLayer:LayerInfoEditable = doc.info.layersVectorList.getItemAt(doc.info.charLayerIndex) as LayerInfoEditable;
 				removeIndices.sort(compareValues);
 
 				for (var i:int = removeIndices.length - 1; i >= 0; i--)
 				{
-					doc.info.layersArrayList.removeItemAt(removeIndices[i]);
+					doc.info.layersVectorList.removeItemAt(removeIndices[i]);
 				}
 				// 保存好新的结果备用
-				newSource = doc.info.layersArrayList.toArray();
-				newCharLayerIndex = doc.info.layersArrayList.getItemIndex(charLayer);
+				newSource = doc.info.layersVectorList.toArray();
+				newCharLayerIndex = doc.info.layersVectorList.getItemIndex(charLayer);
 			}
 			doc.info.charLayerIndex = newCharLayerIndex;
 			doc.info.onLayersChange.dispatch();
@@ -88,7 +89,7 @@ package ageb.modules.scene.op
 
 		override public function undo():void
 		{
-			doc.info.layersArrayList.source = oldSource;
+			doc.info.layersVectorList.source = oldSource;
 
 			if (list)
 			{

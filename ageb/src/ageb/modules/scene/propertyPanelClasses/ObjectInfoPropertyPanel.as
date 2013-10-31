@@ -59,7 +59,7 @@ package ageb.modules.scene.propertyPanelClasses
 			if (objectInfo)
 			{
 				typeField.dataProvider = Modules.getInstance().settings.objectTypes;
-				regionIDField.dataProvider = SceneDocument(doc).info.regionsArrayList;
+				regionIDField.dataProvider = SceneDocument(doc).info.regionsVectorList;
 				objectInfo.onPositionChange.add(onPositionChange);
 				objectInfo.onPropertiesChange.add(onPropertiesChange);
 				objectInfo.onAvatarIDChange.add(onAvatarIDChange);

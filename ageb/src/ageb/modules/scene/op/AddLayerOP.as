@@ -21,7 +21,7 @@ package ageb.modules.scene.op
 
 		override public function redo():void
 		{
-			doc.info.layersArrayList.addItemAt(info, 0);
+			doc.info.layersVectorList.addItemAt(info, 0);
 			// 总是添加新图层到第一个位置，只需简单 ++ 就可以更改 charLayerIndex
 			doc.info.charLayerIndex++;
 			doc.info.onLayersChange.dispatch();
@@ -37,7 +37,7 @@ package ageb.modules.scene.op
 
 		override public function undo():void
 		{
-			doc.info.layersArrayList.removeItem(info);
+			doc.info.layersVectorList.removeItem(info);
 			// 总是添加新图层到第一个位置，只需简单 -- 就可以恢复 charLayerIndex
 			doc.info.charLayerIndex--;
 			doc.info.onLayersChange.dispatch();

@@ -1,10 +1,11 @@
 package ageb.modules.scene.op
 {
-	import mx.collections.ArrayList;
 	import mx.core.mx_internal;
+	import age.assets.LayerInfo;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
 	import ageb.modules.scene.SceneLayerList;
+	import org.apache.flex.collections.VectorList;
 
 	/**
 	 * 拖拽调整图层顺序操作
@@ -47,28 +48,12 @@ package ageb.modules.scene.op
 		/**
 		 * 旧数据源中的内容
 		 */
-		public var oldSource:Array;
+		public var oldSource:Vector.<LayerInfo>;
 
 		/**
 		 * 旧主图层索引
 		 */
 		public var oldCharLayerIndex:int;
-
-		/**
-		 * 新数据源中的内容<br>
-		 * 首次执行 redo 后将记录修改后的列表到该值，然后下次 redo 的时候采用直接覆盖数组的方法
-		 */
-		public var newSource:Array;
-
-		/**
-		 * 新的选中项索引
-		 */
-		public var newSelections:Vector.<int>;
-
-		/**
-		 * 新的主图层索引（如有变化）
-		 */
-		public var newCharLayerIndex:int;
 
 		/**
 		 * 创建一个新的 ReorderlayerOP
@@ -96,28 +81,10 @@ package ageb.modules.scene.op
 		 */
 		override public function redo():void
 		{
-			if (newSource)
-			{
-				dragInitiator.mx_internal::setSelectedIndices(new Vector.<int>());
-				dragInitiator.validateProperties();
-				dp.source = newSource;
-				dragInitiator.mx_internal::setSelectedIndices(newSelections, true);
-			}
-			else
-			{
-				var charLayer:LayerInfoEditable = dp.getItemAt(doc.info.charLayerIndex) as LayerInfoEditable;
-				dragInitiator.reorder(dropIndex, caretIndex, items, action, dragInitiator);
-				// 保存好新的结果
-				newSource = dp.toArray();
-				newSelections = new Vector.<int>(items.length);
-				newCharLayerIndex = dp.getItemIndex(charLayer);
-
-				for (var i:int = 0; i < items.length; i++)
-				{
-					newSelections[i] = dp.getItemIndex(items[i]);
-				}
-			}
-			doc.info.charLayerIndex = newCharLayerIndex;
+			const charLayer:LayerInfoEditable = dp.getItemAt(doc.info.charLayerIndex) as LayerInfoEditable;
+			dragInitiator.reorder(dropIndex, caretIndex, items, action, dragInitiator);
+			// charLayerIndex 可能有变化，我们更新一下
+			doc.info.charLayerIndex = dp.getItemIndex(charLayer);;
 
 			// 卷动到焦点
 			if (caretIndex != -1)
@@ -134,7 +101,7 @@ package ageb.modules.scene.op
 		override protected function saveOld():void
 		{
 			oldSelections = dragInitiator.selectedIndices.concat();
-			oldSource = dragInitiator.dataProvider.toArray();
+			oldSource = VectorList(dragInitiator.dataProvider).source.concat();
 			oldCharLayerIndex = doc.info.charLayerIndex;
 		}
 
@@ -168,9 +135,9 @@ package ageb.modules.scene.op
 		 * @return
 		 *
 		 */
-		protected function get dp():ArrayList
+		protected function get dp():VectorList
 		{
-			return dragInitiator.dataProvider as ArrayList;
+			return dragInitiator.dataProvider as VectorList;
 		}
 	}
 }

@@ -105,7 +105,7 @@ package ageb.modules.ae
 		{
 			if (infoEditable)
 			{
-				infoEditable.regionsArrayList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, regionsArrayList_onChange);
+				infoEditable.regionsVectorList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, regionsArrayList_onChange);
 				infoEditable.onSizeChange.remove(onSizeChange);
 				infoEditable.onGridSizeChange.remove(onGridSizeChange);
 				infoEditable.onGridCellChange.remove(onGridCellChange);
@@ -146,7 +146,7 @@ package ageb.modules.ae
 
 			if (infoEditable)
 			{
-				infoEditable.regionsArrayList.addEventListener(CollectionEvent.COLLECTION_CHANGE, regionsArrayList_onChange);
+				infoEditable.regionsVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, regionsArrayList_onChange);
 				infoEditable.onGridSizeChange.add(onGridSizeChange);
 				infoEditable.onSizeChange.add(onSizeChange);
 				infoEditable.onGridCellChange.add(onGridCellChange);

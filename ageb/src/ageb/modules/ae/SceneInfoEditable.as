@@ -61,13 +61,13 @@ package ageb.modules.ae
 		 * 供编辑器用的图层列表数组<br>
 		 * 可以直接绑定到 List 等控件上
 		 */
-		public var layersArrayList:ArrayList = new ArrayList();
+		public var layersVectorList:VectorList;
 
 		/**
 		 * 供编辑器用的区域列表数组<br>
 		 * 可以直接绑定到 List 等控件上
 		 */
-		public var regionsArrayList:VectorList = new VectorList();
+		public var regionsVectorList:VectorList;
 
 		/**
 		 * 创建一个新的 SceneInfoEditable
@@ -82,20 +82,22 @@ package ageb.modules.ae
 			{
 				gridCellWidth = width / gridWidth;
 				gridCellHeight = height / gridHeight;
-
-				// 同步 layers 和 layersArrayList，供组件和编辑时使用
-				for (var i:int = 0; i < layers.length; i++)
-				{
-					layersArrayList.addItem(layers[i]);
-				}
-				// 我们的 layersArrayList 将会被其他对象改变
-				// 内部侦听好事件，以便与 layers 同步
-				layersArrayList.addEventListener(CollectionEvent.COLLECTION_CHANGE, layersArrayList_onCollectionChange);
+				layersVectorList = new VectorList(layers);
+				layersVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, layersVectorList_onCollectionChange);
 				// 默认选中角色层
 				selectedLayersIndices.push(charLayerIndex);
 				// 关联 regionsArrayList
-				regionsArrayList.source = regions;
+				regionsVectorList = new VectorList(regions);
 				validate();
+			}
+		}
+
+		protected function layersVectorList_onCollectionChange(event:CollectionEvent):void
+		{
+			if (event.kind == CollectionEventKind.RESET)
+			{
+				// reset 时需要同步
+				layers = layersVectorList.source;
 			}
 		}
 
@@ -107,37 +109,6 @@ package ageb.modules.ae
 		{
 			assert(charLayerIndex < layers.length && layers[charLayerIndex], "charLayerIndex 的图层不存在");
 			assert(layers[charLayerIndex].type == LayerType.OBJECT, "charLayerIndex 的图层 type 必须为 LayerType.OBJECT");
-		}
-
-		/**
-		 * layersArrayList 变化时调用<br>
-		 * 负责同步 layers 和 layersArrayList
-		 * @param event
-		 *
-		 */
-		protected function layersArrayList_onCollectionChange(event:CollectionEvent):void
-		{
-			// 删除
-			if (event.kind == CollectionEventKind.REMOVE)
-			{
-				assert(event.items.length == 1);
-				layers.splice(event.location, 1);
-			}
-			// 增加
-			else if (event.kind == CollectionEventKind.ADD)
-			{
-				assert(event.items.length == 1);
-				layers.splice(event.location, 0, event.items[0]);
-			}
-			// 撤销时都是走这个方法
-			else if (event.kind == CollectionEventKind.RESET)
-			{
-				layers = Vector.<LayerInfo>(layersArrayList.source);
-			}
-			else
-			{
-				throw new ArgumentError("不支持的 kind");
-			}
 		}
 
 		override protected function get layerInfoClass():Class
@@ -373,6 +344,34 @@ package ageb.modules.ae
 		}
 
 		/**
+		 * 添加一个区域
+		 * @param r
+		 *
+		 */
+		public function addRegion(r:RegionInfo):void
+		{
+			// 已属其他 SceneInfo，要先删除
+			if (r.parent)
+			{
+				SceneInfoEditable(r.parent).removeRegion(r);
+			}
+			r.parent = this;
+			regionsVectorList.addItem(r);
+		}
+
+		/**
+		 * 删除一个区域
+		 * @param r
+		 *
+		 */
+		public function removeRegion(r:RegionInfo):void
+		{
+			assert(r.parent == this, "RegionInfo.parent 不是 this");
+			r.parent = null;
+			regionsVectorList.removeItem(r);
+		}
+
+		/**
 		 * 添加一个子对象<br>
 		 * 目前支持 RegionInfo
 		 * @param child
@@ -400,20 +399,6 @@ package ageb.modules.ae
 				return removeRegion(child as RegionInfo);
 			}
 			throw new ArgumentError("不支持的 child: " + Type.of(child).fullname);
-		}
-
-		override public function addRegion(r:RegionInfo):void
-		{
-			super.addRegion(r);
-			// 刷一下 source，触发 COLLECTION_CHANGE 事件
-			regionsArrayList.source = regions;
-		}
-
-		override public function removeRegion(r:RegionInfo):void
-		{
-			super.removeRegion(r);
-			// 刷一下 source，触发 COLLECTION_CHANGE 事件
-			regionsArrayList.source = regions;
 		}
 
 		/**

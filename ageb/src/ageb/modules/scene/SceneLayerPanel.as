@@ -47,7 +47,7 @@ package ageb.modules.scene
 
 			if (_doc)
 			{
-				list.dataProvider = info.layersArrayList;
+				list.dataProvider = info.layersVectorList;
 				info.onSelectedLayersIndicesChange.add(onSelectedLayersIndicesChange);
 				onSelectedLayersIndicesChange();
 			}
@@ -72,7 +72,6 @@ package ageb.modules.scene
 		 */
 		override protected function list_onChange(event:IndexChangeEvent):void
 		{
-			trace("list_onChange");
 			info.selectedLayersIndices = list.selectedIndices;
 			info.onSelectedLayersIndicesChange.dispatch(list);
 		}

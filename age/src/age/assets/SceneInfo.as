@@ -1,12 +1,9 @@
 package age.assets
 {
-	import flash.display.Scene;
-	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;
 	import flash.utils.getTimer;
 	import age.utils.__projectY;
 	import nt.assets.Asset;
-	import nt.lib.reflect.Type;
 	import nt.lib.util.assert;
 
 	/**
@@ -133,34 +130,6 @@ package age.assets
 		final public function get numLayers():int
 		{
 			return layers.length;
-		}
-
-		/**
-		 * 添加一个区域
-		 * @param r
-		 *
-		 */
-		public function addRegion(r:RegionInfo):void
-		{
-			// 已属其他 SceneInfo，要先删除
-			if (r.parent)
-			{
-				r.parent.removeRegion(r);
-			}
-			r.parent = this;
-			regions.push(r);
-		}
-
-		/**
-		 * 删除一个区域
-		 * @param r
-		 *
-		 */
-		public function removeRegion(r:RegionInfo):void
-		{
-			assert(r.parent == this, "RegionInfo.parent 不是 this");
-			r.parent = null;
-			regions.splice(regions.indexOf(r), 1);
 		}
 
 		/**
@@ -400,7 +369,9 @@ package age.assets
 				{
 					for (i = 0, n = s.regions.length; i < n; i++)
 					{
-						addRegion(new regionInfoClass(s.regions[i]));
+						var r:RegionInfo = new regionInfoClass(s.regions[i]);
+						r.parent = this;
+						regions.push(r);
 					}
 				}
 
