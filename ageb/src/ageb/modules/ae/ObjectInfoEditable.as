@@ -121,6 +121,68 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function set actionName(value:String):void
+		{
+			if (actionInfoEditable)
+			{
+				actionInfoEditable.onFPSChange.remove(onFPSChange);
+				actionInfoEditable.onNumFramesChange.remove(onNumFramesChange);
+				actionInfoEditable.onLayersChange.remove(onActionNameChange.dispatch);
+			}
+			super.actionName = value;
+
+			if (actionInfoEditable)
+			{
+				actionInfoEditable.onFPSChange.add(onFPSChange);
+				actionInfoEditable.onNumFramesChange.add(onNumFramesChange);
+				actionInfoEditable.onLayersChange.add(onActionNameChange.dispatch);
+			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		protected function get actionInfoEditable():ActionInfoEditable
+		{
+			return actionInfo as ActionInfoEditable;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function set avatarID(value:String):void
+		{
+			if (avatarInfoEditable)
+			{
+				avatarInfoEditable.onSizeChange.remove(super.validateNow);
+				avatarInfoEditable.onSizeChange.remove(onAvatarIDChange.dispatch);
+			}
+			// 设置前同步加载 avatar 信息
+			SyncInfoLoader.loadAvatar(value);
+			super.avatarID = value;
+
+			if (avatarInfoEditable)
+			{
+				avatarInfoEditable.onSizeChange.add(super.validateNow);
+				avatarInfoEditable.onSizeChange.add(onAvatarIDChange.dispatch);
+			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		protected function get avatarInfoEditable():AvatarInfoEditable
+		{
+			return avatarInfo as AvatarInfoEditable;
+		}
+
 		private var _isSelected:Boolean;
 
 		/**
@@ -190,66 +252,6 @@ package ageb.modules.ae
 		public function clone():ICloneable
 		{
 			return new ObjectInfoEditable(JSON.parse(JSON.stringify(this)));
-		}
-
-		/**
-		 * @inheritDoc
-		 *
-		 */
-		override public function validateNow():void
-		{
-			var avatar:AvatarInfoEditable, action:ActionInfoEditable;
-
-			try
-			{
-				avatar = avatarInfo as AvatarInfoEditable;
-				action = actionInfo as ActionInfoEditable;
-			}
-			catch (error:Error)
-			{
-				// ignored
-			}
-
-			// 删除侦听
-			if (avatar)
-			{
-				avatar.onSizeChange.remove(onAvatarIDChange.dispatch);
-				avatar.onSizeChange.remove(super.validateNow);
-			}
-
-			if (action)
-			{
-				action.onFPSChange.remove(onFPSChange);
-				action.onNumFramesChange.remove(onNumFramesChange);
-				action.onLayersChange.remove(onActionNameChange.dispatch);
-			}
-			// 验证前使用同步的方式把 avatar 元数据载进来
-			// 如果有任何错误，将弹出 Alert
-			SyncInfoLoader.loadAvatar(avatarID);
-			super.validateNow();
-
-			// 添加侦听
-			try
-			{
-				avatar = avatarInfo as AvatarInfoEditable
-			}
-			catch (error:Error)
-			{
-				return;
-			}
-
-			if (avatar)
-			{
-				avatar.onSizeChange.add(super.validateNow);
-				avatar.onSizeChange.add(onAvatarIDChange.dispatch);
-			}
-
-			if (action)
-			{
-				action.onFPSChange.add(onFPSChange);
-				action.onNumFramesChange.add(onNumFramesChange);
-				action.onLayersChange.add(onActionNameChange.dispatch);
-			}
 		}
 
 		/**
