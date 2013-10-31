@@ -98,6 +98,8 @@ package age.renderers
 			g.beginFill(0x999999);
 			g.lineStyle(1, 0xdddddd, lineThickness);
 			g.drawRect(lineThickness, lineThickness, width - lineThickness * 2, height - lineThickness * 2);
+			g.moveTo(0, height - lineThickness * 2);
+			g.lineTo(width - lineThickness * 2, 0);
 			g.endFill();
 			var b:BitmapData = new BitmapData(width, height, true, 0);
 			b.draw(s);
