@@ -145,7 +145,7 @@ package ageb.modules.settings
 			}
 			else
 			{
-				Alert.show("AE 项目文件不存在，请先设置", "提示", Alert.YES, null, function(event:CloseEvent):void
+				Alert.show("AGE 项目文件不存在，请先设置", "提示", Alert.YES, null, function(event:CloseEvent):void
 				{
 					browseProjectFile();
 				});
@@ -197,7 +197,7 @@ package ageb.modules.settings
 		{
 			var desc:XML = NativeApplication.nativeApplication.applicationDescriptor;
 			var ns:Namespace = desc.namespaceDeclarations()[0]; // shit namespace
-			windowTitle = format("{2} - {0} {1}", String(desc.child(new QName(ns, "name"))), String(desc.child(new QName(ns, "versionLabel"))), getData(this).ageproject);
+			windowTitle = format("{2} - {0} {1}", String(desc.child(new QName(ns, "name"))), String(desc.child(new QName(ns, "versionLabel"))), getData(this).ageproject ? getData(this).ageproject : "无项目");
 		}
 
 		/**
