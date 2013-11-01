@@ -14,6 +14,11 @@ package age.assets
 	public class BGInfo
 	{
 		/**
+		 * 背景贴图最大边长
+		 */
+		public static const MAX_SIDE_LENGTH:uint = 512;
+
+		/**
 		 * 位于所在图层的唯一 name
 		 */
 		public var name:String;

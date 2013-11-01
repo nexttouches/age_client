@@ -168,53 +168,6 @@ package ageb.modules.tools.selectToolClasses
 		 * @private
 		 *
 		 */
-		protected function addBgMenu_onSelect(event:ContextMenuEvent):void
-		{
-			var tb:TextureBrowser = PopUpManager.createPopUp(Modules.getInstance().root, TextureBrowser, true) as TextureBrowser;
-			PopUpManager.centerPopUp(tb);
-			tb.onImportAuto.addOnce(tb_onImportAuto);
-			tb.onImportHere.addOnce(tb_onImportHere);
-			tb.browse();
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function tb_onImportAuto(textures:Vector.<String>):void
-		{
-			importBGs(textures, true);
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function tb_onImportHere(textures:Vector.<String>):void
-		{
-			importBGs(textures, false);
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function importBGs(textures:Vector.<String>, isAutoPosition:Boolean):void
-		{
-			if (textures.length == 0)
-			{
-				return;
-			}
-			var lr:LayerRenderer = sceneRenderer.getLayerAt(sceneDoc.info.selectedLayersIndices[0]);
-			var mousePosition:Point = new Point(rightDownPoint.x - AGE.paddingLeft, rightDownPoint.y - AGE.paddingTop);
-			mousePosition = lr.globalToLocal(mousePosition, mousePosition);
-			new AddBG(doc, textures, lr.info as LayerInfoEditable, mousePosition.x, lr.info.parent.uiToY(mousePosition.y), isAutoPosition).execute();
-		}
-
-		/**
-		 * @private
-		 *
-		 */
 		private function removeObject():void
 		{
 			new RemoveObject(doc, selectedObjects).execute();

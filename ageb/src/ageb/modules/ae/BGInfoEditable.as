@@ -8,6 +8,8 @@ package ageb.modules.ae
 
 	public class BGInfoEditable extends BGInfo implements ISelectableInfo
 	{
+		private static var DRAG_RATIO:Vector3D = new Vector3D(1, 1, 0);
+
 		public function BGInfoEditable(raw:Object = null, parent:LayerInfo = null)
 		{
 			super(raw, parent);
@@ -122,37 +124,69 @@ package ageb.modules.ae
 			return DRAG_RATIO;
 		}
 
-		private static var DRAG_RATIO:Vector3D = new Vector3D(1, 1, 0);
-
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function clone():ICloneable
 		{
 			return new BGInfoEditable(JSON.parse(JSON.stringify(this)));
 		}
 
+		/**
+		 * isFlipX 变化时广播
+		 */
 		public var onIsFlipXChange:Signal = new Signal();
 
+		/**
+		 * 设置 isFlipX
+		 * @param value
+		 *
+		 */
 		public function setIsFlipX(value:Boolean):void
 		{
 			isFlipX = value;
 			onIsFlipXChange.dispatch();
 		}
 
+		/**
+		 * isFlipY 变化时广播
+		 */
 		public var onIsFlipYChange:Signal = new Signal();
 
+		/**
+		 * 设置是否 y 反转
+		 * @param value
+		 *
+		 */
 		public function setIsFlipY(value:Boolean):void
 		{
 			isFlipY = value;
 			onIsFlipYChange.dispatch();
 		}
 
+		/**
+		 * parent 变化时广播
+		 */
 		public var onParentChange:Signal = new Signal();
 
+		/**
+		 * 设置 parent
+		 * @param info
+		 *
+		 */
 		public function setParent(info:LayerInfo):void
 		{
 			parent = info;
 			onParentChange.dispatch();
 		}
 
+		/**
+		 *
+		 * @param k
+		 * @return
+		 *
+		 */
 		public function toJSON(k:*):*
 		{
 			return Type.of(this).superType.toObject(this, [ "textureName", "texturePath",
