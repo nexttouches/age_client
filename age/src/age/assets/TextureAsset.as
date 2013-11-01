@@ -1,7 +1,6 @@
 package age.assets
 {
 	import flash.debugger.enterDebugger;
-	import flash.utils.setTimeout;
 	import age.AGE;
 	import age.utils.updateNativeTexture;
 	import nt.assets.Asset;
@@ -10,6 +9,7 @@ package age.assets
 	import nt.assets.extensions.ImageAsset;
 	import nt.assets.extensions.LazyCallQueue;
 	import nt.assets.extensions.ProgressiveImageAsset;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -108,6 +108,7 @@ package age.assets
 						try
 						{
 							texture = Texture.fromBitmapData(bitmapData, false, false, 1);
+							Asset.vram += vram;
 						}
 						catch (error:Error)
 						{
@@ -149,6 +150,7 @@ package age.assets
 				enterDebugger();
 			}
 			_state = AssetState.DISPOSED;
+			Asset.vram -= vram;
 
 			if (_textureAtlas)
 			{
@@ -194,6 +196,16 @@ package age.assets
 		public static function get(texturePath:String):TextureAsset
 		{
 			return Asset.get(texturePath, 0, TextureAsset) as TextureAsset;
+		}
+
+		/**
+		 * 返回占用的显存
+		 * @return
+		 *
+		 */
+		public function get vram():uint
+		{
+			return texture ? texture.width * texture.height * 4 : 0;
 		}
 	}
 }

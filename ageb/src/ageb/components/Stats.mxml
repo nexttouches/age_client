@@ -21,20 +21,15 @@
 
 			private var totalTime:Number = 0;
 
-			private function getMemory():Number
-			{
-				return System.totalMemory * 0.000000954; // 1 / (1024*1024) to convert to MB
-			}
-
 			private function gc():void
 			{
-				Asset.gc();
+				Asset.gc(true);
 				FlashTip.show('已清理')
 			}
 
-			private function updateText(fps:Number, memory:Number, drawCount:int):void
+			private function updateText(fps:Number, memory:Number, drawCount:int, vram:uint):void
 			{
-				memoryField.text = "FPS: " + fps.toFixed(fps < 100 ? 1 : 0) + " MEM: " + memory.toFixed(memory < 100 ? 1 : 0);
+				memoryField.text = "FPS: " + fps.toFixed(fps < 100 ? 1 : 0) + " MEM: " + memory.toFixed(memory < 100 ? 1 : 0) + " VRAM: " + vram.toFixed(vram < 100 ? 1 : 0);
 			}
 
 			protected function onEnterFrame(event:EnterFrameEvent):void
@@ -44,7 +39,7 @@
 
 				if (totalTime > 1.0)
 				{
-					updateText(frameCount / totalTime, getMemory(), drawCount - 2); // DRW: ignore self
+					updateText(frameCount / totalTime, System.totalMemory * 0.000000954, drawCount - 2, Asset.vram * 0.000000954); // DRW: ignore self
 					frameCount = totalTime = 0;
 				}
 			}
