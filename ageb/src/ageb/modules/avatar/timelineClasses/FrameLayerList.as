@@ -37,7 +37,6 @@ package ageb.modules.avatar.timelineClasses
 			dragEnabled = true;
 			dragMoveEnabled = true;
 			dropEnabled = true;
-			allowMultipleSelection = true;
 			itemRenderer = new ClassFactory(FrameLayerListItemRenderer);
 			percentWidth = 100;
 			percentHeight = 100;
