@@ -29,6 +29,7 @@ package ageb.modules.scene
 		{
 			super();
 			allowMultipleSelection = true;
+			requireSelection = true;
 			dragEnabled = true;
 			dragMoveEnabled = true;
 			dropEnabled = true;
