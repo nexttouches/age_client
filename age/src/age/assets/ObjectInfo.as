@@ -215,7 +215,7 @@ package age.assets
 			return _onActionNameChange ||= new Signal();
 		}
 
-		private var _actionName:String = DEFAULT_ACTION_NAME;
+		private var _actionName:String;
 
 		/**
 		 * 设置或获取 actionName
@@ -413,11 +413,6 @@ package age.assets
 		 * 要排除的字段的名字
 		 */
 		public static const EXCLUDE:String = "exclude";
-
-		/**
-		 * 默认的动作名称
-		 */
-		public static const DEFAULT_ACTION_NAME:String = "idle";
 
 		/**
 		 * 速度小于等于该值时，视为静止

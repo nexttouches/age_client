@@ -25,6 +25,11 @@ package ageb.modules.document
 	public class AvatarDocument extends Document
 	{
 		/**
+		 * 默认的动作名称
+		 */
+		public static const DEFAULT_ACTION_NAME:String = "idle";
+
+		/**
 		 * AvatarInfo
 		 */
 		public var avatar:AvatarInfoEditable;
@@ -54,9 +59,9 @@ package ageb.modules.document
 		{
 			super(file, raw);
 
+			// 根据文件名设置 id
 			if (file)
 			{
-				// 根据文件名设置 id
 				raw.id = file.name.split(".")[0];
 			}
 			// 创建 AvatarInfo
@@ -72,16 +77,15 @@ package ageb.modules.document
 			// 默认动作是 idle
 			// 但是有些 Avatar 连这个动作可能也没有
 			// 这边做个兼容处理
-			if (!avatar.hasAction(object.actionName))
+			if (avatar.numActions > 0)
 			{
-				if (avatar.numActions > 0)
+				if (avatar.hasAction(DEFAULT_ACTION_NAME))
 				{
-					object.actionName = avatar.firstAction.name;
+					object.actionName = DEFAULT_ACTION_NAME;
 				}
 				else
 				{
-					// 一个动作也没有，空的 AvatarInfo
-					object.actionName = null;
+					object.actionName = avatar.firstAction.name;
 				}
 			}
 			object.type = ObjectType.AVATAR; // 必须设置为 AVATAR
