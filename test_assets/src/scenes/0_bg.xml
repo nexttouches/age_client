@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:d1e1e16ff35ce6e9be6807499e1d08d1:1/1$ -->
+<TextureAtlas imagePath="0_bg.png">
+    <SubTexture name="bg_0_0" x="4" y="4" width="512" height="512"/>
+    <SubTexture name="bg_0_1" x="4" y="522" width="512" height="48"/>
+    <SubTexture name="bg_1_0" x="522" y="4" width="442" height="512"/>
+    <SubTexture name="bg_1_1" x="522" y="522" width="442" height="48"/>
+</TextureAtlas>

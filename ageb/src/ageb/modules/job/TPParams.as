@@ -6,8 +6,17 @@ package ageb.modules.job
 	import ageb.utils.FileUtil;
 	import nt.lib.util.assert;
 
+	/**
+	 * 调用 TexturePacker 打包时使用的参数
+	 * @author zhanghaocong
+	 *
+	 */
 	public class TPParams
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function TPParams()
 		{
 		}
@@ -17,12 +26,26 @@ package ageb.modules.job
 		 */
 		public var tps:File;
 
+		/**
+		 * 贴图路径
+		 */
 		public var textureFileName:String = "";
 
+		/**
+		 * XML 路径
+		 */
 		public var dataFileName:String = "";
 
+		/**
+		 * 图片列表
+		 */
 		public var fileList:String = "";
 
+		/**
+		 * 添加一个图片
+		 * @param nativePath 图片完整路径
+		 *
+		 */
 		public function addFile(nativePath:String):void
 		{
 			fileList += ("\n<filename>" + nativePath + "</filename>");

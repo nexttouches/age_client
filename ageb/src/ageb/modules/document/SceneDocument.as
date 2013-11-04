@@ -1,9 +1,20 @@
 package ageb.modules.document
 {
+	import flash.display.Scene;
 	import flash.filesystem.File;
+	import age.assets.AvatarInfo;
+	import age.assets.LayerInfo;
+	import age.assets.LayerType;
+	import age.assets.SceneInfo;
+	import ageb.modules.ae.BGInfoEditable;
+	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.ae.SceneInfoEditable;
+	import ageb.modules.job.NativeJob;
+	import ageb.modules.job.TPJob;
+	import ageb.modules.job.TPParams;
 	import ageb.modules.scene.SceneDocumentView;
 	import ageb.utils.FlashTip;
+	import nt.assets.AssetConfig;
 
 	/**
 	 * 场景文档
@@ -78,7 +89,45 @@ package ageb.modules.document
 		 */
 		override public function preview():void
 		{
-			FlashTip.show("没做好");
+			// 场景根目录
+			const folder:File = new File(AssetConfig.getInfo(SceneInfo.folder).url);
+			// 场景 ID			
+			const id:String = info.id;
+			// 临时变量
+			var tpp:TPParams, tpps:Object = {};
+
+			// 遍历所有 BGInfo 并创建 TPParams
+			for (var i:int = 0; i < info.layers.length; i++)
+			{
+				const layer:LayerInfoEditable = info.layers[i] as LayerInfoEditable;
+
+				if (layer.type != LayerType.BG)
+				{
+					continue;
+				}
+
+				for (var j:int = 0; j < layer.bgs.length; j++)
+				{
+					const bg:BGInfoEditable = layer.bgs[j] as BGInfoEditable;
+					const atlas:String = bg.atlas;
+
+					if (!tpps[atlas])
+					{
+						tpp = new TPParams();
+						tpp.dataFileName = folder.resolvePath(atlas + ".xml").nativePath;
+						tpp.textureFileName = folder.resolvePath(atlas + ".png").nativePath;
+						tpp.tps = folder.resolvePath(atlas + ".tps");
+						tpps[atlas] = tpp;
+					}
+					TPParams(tpps[atlas]).addFile(folder.resolvePath(info.id + "/" + bg.srcWithExt).nativePath);
+				}
+			}
+
+			// 创建对应的 Job
+			for each (tpp in tpps)
+			{
+				modules.job.addJob(new TPJob(tpp));
+			}
 		}
 
 		/**

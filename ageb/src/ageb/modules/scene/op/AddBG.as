@@ -115,6 +115,7 @@ package ageb.modules.scene.op
 			// 匹配了 prefix_x_y.png 这样的文件名，执行批量导入
 			if (m)
 			{
+				const id:String = doc.info.id;
 				const folder:File = f.parent;
 				const prefix:String = m[MATCH_PREFIX];
 				const ext:String = m[MATCH_EXT];
@@ -132,7 +133,8 @@ package ageb.modules.scene.op
 						if (found.exists)
 						{
 							numFound++;
-							infos.push(createInfo(prefix, URLUtil.getFilename(found.name), x * BGInfo.MAX_SIDE_LENGTH + this.x, y * BGInfo.MAX_SIDE_LENGTH + this.y));
+							// atlas 参数需要自带 id 之前缀
+							infos.push(createInfo(id + "_" + prefix, URLUtil.getFilename(found.name), x * BGInfo.MAX_SIDE_LENGTH + this.x, this.y - y * BGInfo.MAX_SIDE_LENGTH));
 						}
 						else
 						{
@@ -149,6 +151,7 @@ package ageb.modules.scene.op
 			}
 			else
 			{
+				// 单个图片的情况，只使用场景 ID 作为图集名
 				infos.push(createInfo(doc.info.id, URLUtil.getFilename(f.name), this.x, this.y));
 			}
 		}
