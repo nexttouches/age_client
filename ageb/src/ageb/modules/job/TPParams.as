@@ -31,18 +31,20 @@ package ageb.modules.job
 		/**
 		 * 生成 *.tps 文件到指定文件
 		 * @param file
-		 * @return
+		 * @return 生成了的 tps 文件路径
 		 *
 		 */
-		public function generate():void
+		public function generate():File
 		{
+			assert(!!tps, "tps 不能为 null", ArgumentError);
 			var content:String = FileUtil.readString(File.applicationDirectory.resolvePath("data/action.tps"));
-			assert(!!content);
+			assert(!!content, "模板内容不能为 null", ArgumentError);
 			content = format(content, this);
 			var fs:FileStream = new FileStream();
 			fs.open(tps, FileMode.WRITE);
 			fs.writeUTFBytes(content);
 			fs.close();
+			return tps;
 		}
 	}
 }
