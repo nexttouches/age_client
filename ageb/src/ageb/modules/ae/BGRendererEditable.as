@@ -5,7 +5,6 @@ package ageb.modules.ae
 	import age.assets.TextureAsset;
 	import age.renderers.BGRenderer;
 	import nt.assets.IAsset;
-	import starling.events.Event;
 
 	/**
 	 * BGRenderer 编辑器版本

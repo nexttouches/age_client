@@ -1,7 +1,6 @@
 package ageb.modules.scene.op
 {
 	import flash.filesystem.File;
-	import mx.controls.Alert;
 	import age.assets.BGInfo;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.ISelectableInfo;
