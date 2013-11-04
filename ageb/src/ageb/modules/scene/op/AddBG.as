@@ -1,36 +1,97 @@
 package ageb.modules.scene.op
 {
+	import flash.filesystem.File;
+	import age.assets.BGInfo;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.ISelectableInfo;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
+	import nt.assets.util.URLUtil;
 
+	/**
+	 * 添加一个背景图的操作
+	 * @author zhanghaocong
+	 *
+	 */
 	public class AddBG extends SceneOPBase
 	{
-		public var textures:Vector.<String>;
+		/**
+		 * SLICE_PATTERN 匹配中的前缀部分
+		 */
+		private static const MATCH_PREFIX:int = 1;
 
+		/**
+		 * SLICE_PATTERN 匹配中的 x 部分
+		 */
+		private static const MATCH_X:int = 2;
+
+		/**
+		 * SLICE_PATTERN 匹配中的 y 部分
+		 */
+		private static const MATCH_Y:int = 3;
+
+		/**
+		 * SLICE_PATTERN 匹配中的扩展名部分（不含 "." ）
+		 */
+		private static const MATCH_EXT:int = 4;
+
+		/**
+		 * 用于匹配切片文件名的正则模式
+		 */
+		private static const SLICE_PATTERN:RegExp = /(.+)_(\d+)_(\d+)\.(\w+)/i;
+
+		/**
+		 * 目标图层
+		 */
 		public var parent:LayerInfoEditable;
 
+		/**
+		 * 目标坐标 x
+		 */
 		public var x:Number;
 
+		/**
+		 * 目标坐标 y
+		 */
 		public var y:Number;
 
+		/**
+		 * 本次添加的 BGInfoEditable
+		 */
 		public var infos:Vector.<BGInfoEditable>;
 
-		public var isAutoPosition:Boolean;
-
+		/**
+		 * OP 执行前的选中（撤销时使用）
+		 */
 		public var oldSelections:Vector.<ISelectableInfo>;
 
-		public function AddBG(doc:Document, textures:Vector.<String>, parent:LayerInfoEditable, x:Number = NaN, y:Number = NaN, isAutoPosition:Boolean = false)
+		/**
+		 * 要导入的贴图文件
+		 */
+		public var f:File;
+
+		/**
+		 * constructor
+		 * @param doc 目标文档
+		 * @param f 要导入的贴图文件，将自动识别 prefix_x_y.png 这样的文件格式并进行批量导入
+		 * @param parent 目标图层
+		 * @param x 可选，目标场景坐标 x，默认是 0 （左下角）
+		 * @param y 可选，目标场景坐标 y，默认是 0 （左下角）
+		 *
+		 */
+		public function AddBG(doc:Document, f:File, parent:LayerInfoEditable, x:Number = NaN, y:Number = NaN)
 		{
 			super(doc);
-			this.textures = textures;
+			this.f = f;
 			this.parent = parent;
 			this.x = x;
 			this.y = y;
-			this.isAutoPosition = isAutoPosition;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function redo():void
 		{
 			for each (var info:BGInfoEditable in infos)
@@ -41,31 +102,83 @@ package ageb.modules.scene.op
 			doc.info.setSelectedObjects(infos);
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveOld():void
 		{
 			oldSelections = doc.info.selectedObjects.concat();
 			infos = new Vector.<BGInfoEditable>();
+			const m:Array = f.name.match(SLICE_PATTERN);
 
-			for each (var texture:String in textures)
+			// 匹配了 prefix_x_y.png 这样的文件名，执行批量导入
+			if (m)
 			{
-				var info:BGInfoEditable = new BGInfoEditable();
-				info.texture = texture;
+				const id:String = doc.info.id;
+				const folder:File = f.parent;
+				const prefix:String = m[MATCH_PREFIX];
+				const ext:String = m[MATCH_EXT];
+				// 记录每行找到了几个
+				var numFound:int = 0;
 
-				if (isAutoPosition)
+				for (var y:int = 0; true; y++)
 				{
-					var position:Array = info.textureName.split("_");
-					info.x = position[0] * 512;
-					info.y = parent.parent.uiToY(position[1] * 512);
+					numFound = 0;
+
+					for (var x:int = 0; true; x++)
+					{
+						const found:File = folder.resolvePath(prefix + "_" + x + "_" + y + "." + ext);
+
+						if (found.exists)
+						{
+							numFound++;
+							// atlas 参数需要自带 id 之前缀
+							infos.push(createInfo(id + "_" + prefix, URLUtil.getFilename(found.name), x * BGInfo.MAX_SIDE_LENGTH + this.x, this.y - y * BGInfo.MAX_SIDE_LENGTH));
+						}
+						else
+						{
+							break;
+						}
+					}
+
+					// 本行一个都没有，说明是真的都没了…
+					if (numFound == 0)
+					{
+						break;
+					}
 				}
-				else
-				{
-					info.x = x;
-					info.y = y;
-				}
-				infos.push(info);
+			}
+			else
+			{
+				// 单个图片的情况，只使用场景 ID 作为图集名
+				infos.push(createInfo(doc.info.id, URLUtil.getFilename(f.name), this.x, this.y));
 			}
 		}
 
+		/**
+		 * 根据参数创建 BGInfoEditable
+		 * @param altas
+		 * @param src
+		 * @param x
+		 * @param y
+		 * @return
+		 *
+		 */
+		protected function createInfo(altas:String, src:String, x:Number, y:Number):BGInfoEditable
+		{
+			var result:BGInfoEditable = new BGInfoEditable();
+			result.x = x;
+			result.y = y;
+			result.atlas = altas;
+			result.src = src;
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function undo():void
 		{
 			doc.info.setSelectedObjects(oldSelections);
@@ -76,6 +189,10 @@ package ageb.modules.scene.op
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get name():String
 		{
 			return format("添加背景于 (图层 {0}, {1}, {2})", parent.index, x, y);

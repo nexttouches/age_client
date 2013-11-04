@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:0496b4d772f1a6983cb07bdb3abe4dcf:1/1$ -->
+<TextureAtlas imagePath="0_gatelight1.img.png">
+    <SubTexture name="gatelight1.img_0_0" x="4" y="4" width="512" height="466"/>
+    <SubTexture name="gatelight1.img_1_0" x="522" y="4" width="248" height="448" frameX="0" frameY="0" frameWidth="248" frameHeight="466"/>
+</TextureAtlas>

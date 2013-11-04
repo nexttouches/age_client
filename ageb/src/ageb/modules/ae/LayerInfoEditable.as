@@ -1,11 +1,9 @@
 package ageb.modules.ae
 {
-	import flash.filesystem.File;
 	import mx.collections.ArrayList;
 	import age.assets.LayerInfo;
 	import age.assets.LayerType;
 	import age.assets.SceneInfo;
-	import nt.assets.AssetConfig;
 	import nt.lib.reflect.Type;
 	import org.apache.flex.collections.VectorList;
 	import org.osflash.signals.Signal;
@@ -83,7 +81,7 @@ package ageb.modules.ae
 			}
 			else if (info is BGInfoEditable)
 			{
-				return addBg(info as BGInfoEditable);
+				return addBG(info as BGInfoEditable);
 			}
 			throw new ArgumentError("不支持类型 " + Type.of(info).fullname);
 		}
@@ -134,10 +132,10 @@ package ageb.modules.ae
 		 * @param info
 		 *
 		 */
-		public function addBg(info:BGInfoEditable):void
+		public function addBG(info:BGInfoEditable):void
 		{
-			bgsVectorList.addItem(info);
 			info.parent = this;
+			bgsVectorList.addItem(info);
 		}
 
 		/**

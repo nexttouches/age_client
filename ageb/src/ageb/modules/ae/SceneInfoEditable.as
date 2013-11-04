@@ -331,7 +331,7 @@ package ageb.modules.ae
 
 			for (var i:int = 0; i < ids.length - 1; i++)
 			{
-				// 第 i 和 i+1 个元素不连续
+				// 发现当前和下一个元素不连续
 				// 返回第 i 个元素的值 + 1
 				if (ids[i] + 1 != ids[i + 1])
 				{

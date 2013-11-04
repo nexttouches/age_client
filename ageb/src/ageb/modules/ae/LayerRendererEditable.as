@@ -29,7 +29,7 @@ package ageb.modules.ae
 
 		public function LayerRendererEditable(bgRendererClass:Class = null, objectRendererClass:Class = null)
 		{
-			super(bgRendererClass || BgRendererEditable, objectRendererClass || ObjectRendererEditable);
+			super(bgRendererClass || BGRendererEditable, objectRendererClass || ObjectRendererEditable);
 			widthField.pivotX = widthField.width / 2;
 			widthField.pivotY = widthField.height;
 			widthField.hAlign = HAlign.CENTER;

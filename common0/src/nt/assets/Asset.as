@@ -9,7 +9,6 @@ package nt.assets
 	import flash.system.Capabilities;
 	import flash.system.System;
 	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
 	import nt.assets.util.URLUtil;
@@ -41,25 +40,16 @@ package nt.assets
 		 */
 		public var priority:int;
 
-		private var m_name:String;
-
-		public function Asset(path:String, priority:int, name:String = "")
+		/**
+		 * constructor
+		 *
+		 */
+		public function Asset(path:String, priority:int)
 		{
 			this.path = path;
 			this.priority = priority;
 			_state = AssetState.NotLoaded;
 			_bytesTotal = info.size;
-			this.m_name = name;
-		}
-
-		public function set name(value:String):void
-		{
-			this.m_name = value;
-		}
-
-		public function get name():String
-		{
-			return this.m_name;
 		}
 
 		/**
@@ -90,16 +80,15 @@ package nt.assets
 			_state = AssetState.Loading;
 			addStream();
 			raw = new ByteArray();
+
 			try
 			{
 				stream.load(new URLRequest(info.url));
-			} 
-			catch(error:Error) 
+			}
+			catch (error:Error)
 			{
 				onIOError(null);
 			}
-			
-			
 		}
 
 		/**
@@ -140,6 +129,10 @@ package nt.assets
 			stream = null;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onProgress(event:ProgressEvent):void
 		{
 			_bytesLoaded = event.bytesLoaded;
@@ -151,6 +144,10 @@ package nt.assets
 			notifyLoadProgress();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onSecurityError(event:SecurityErrorEvent):void
 		{
 			_state = AssetState.Error;
@@ -158,6 +155,10 @@ package nt.assets
 			notifyLoadError();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onIOError(event:IOErrorEvent):void
 		{
 			_state = AssetState.Error;
@@ -165,6 +166,10 @@ package nt.assets
 			notifyLoadError();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onComplete(event:Event):void
 		{
 			stream.readBytes(raw);
@@ -191,15 +196,23 @@ package nt.assets
 			trace("[Asset] 已释放 " + path);
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function removeRaw():void
 		{
 			raw.clear();
 			raw = null;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function removeRef():void
 		{
-			delete assetList[path];
+			delete assets[path];
 		}
 
 		/**
@@ -212,6 +225,10 @@ package nt.assets
 			return AssetConfig.getInfo(path);
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get isDisposable():Boolean
 		{
 			return numUsers == 0;
@@ -257,6 +274,10 @@ package nt.assets
 			}
 		}
 
+		/**
+		 * 提示所有用户资源已释放
+		 *
+		 */
 		protected function notifyDispose():void
 		{
 			// 通知所有 user
@@ -266,11 +287,18 @@ package nt.assets
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function toString():String
 		{
 			return path;
 		}
 
+		/**
+		 * 已注册的扩展名
+		 */
 		private static var registeredExtensions:Object = {};
 
 		/**
@@ -288,6 +316,11 @@ package nt.assets
 			registeredExtensions[extension] = assetClass;
 		}
 
+		/**
+		 * 反注册扩展名
+		 * @param extension
+		 *
+		 */
 		public static function unregister(extension:String):void
 		{
 			if (!registeredExtensions[extension])
@@ -316,7 +349,7 @@ package nt.assets
 		/**
 		 * 所有的 Asset 都会在这里建立引用，直到 dispose 被调用
 		 */
-		public static var assetList:Object = {};
+		public static var assets:Object = {};
 
 		/**
 		 * 根据路径从 assetList 获得指定的 Asset，如不存在会自动创建
@@ -329,57 +362,83 @@ package nt.assets
 		 */
 		public static function get(path:String, priority:int = 0, assetClass:Class = null, params:Object = null):Asset
 		{
-			if (!assetList[path])
+			if (!assets[path])
 			{
 				if (!assetClass)
 				{
 					assetClass = getAssetClass(URLUtil.getExtension(path));
 				}
-				assetList[path] = new assetClass(path, priority);
+				assets[path] = new assetClass(path, priority);
 
 				// 额外增加复制属性的参数
 				if (params)
 				{
 					for (var key:String in params)
 					{
-						assetList[path][key] = params[key];
+						assets[path][key] = params[key];
 					}
 				}
 			}
 			else
 			{
 				// trace("[Asset] reusing " + path);
-				Asset(assetList[path]).priority = priority;
+				Asset(assets[path]).priority = priority;
 			}
-			return assetList[path];
+			return assets[path];
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get isSuccess():Boolean
 		{
 			return _state == AssetState.Loaded;
 		}
 
-		private static var lastGC:int = 0;
-
+		/**
+		* 是否错误
+		* @return
+		*
+		*/
 		public function get isError():Boolean
 		{
 			return _state == AssetState.Error;
 		}
 
-		public static function gcByCritcal():Boolean
+		/**
+		 * 记录上一次 GC 的时间
+		 */
+		private static var lastGC:int = 0;
+
+		/**
+		 * gc
+		 * @param isForce 是否强制释放
+		 *
+		 */
+		public static function gc(isForce:Boolean):void
 		{
+			if (isForce)
+			{
+				forceGC();
+				return;
+			}
+
 			if (System.totalMemory > GC_CRITCAL)
 			{
 				if (lastGC + GC_CD <= getTimer())
 				{
-					gc();
-					return true;
+					forceGC();
 				}
 			}
-			return false;
 		}
 
-		public static function gc(reason:String = null):void
+		/**
+		 * 强制 gc
+		 * @param reason
+		 *
+		 */
+		private static function forceGC(reason:String = null):void
 		{
 			if (Capabilities.isDebugger)
 			{
@@ -396,10 +455,10 @@ package nt.assets
 			var a:AbstractAsset;
 			var keys:Vector.<String> = new Vector.<String>;
 
-			for (var path:String in assetList)
+			for (var path:String in assets)
 			{
 				numAssetsBefore++;
-				a = assetList[path];
+				a = assets[path];
 
 				if (a.isDisposable)
 				{
@@ -417,22 +476,22 @@ package nt.assets
 
 			for each (path in keys)
 			{
-				a = assetList[path];
+				a = assets[path];
 
 				if (Capabilities.isDebugger)
 				{
 					trace("[释放]", a);
 				}
 				a.dispose();
-				assetList[path] = null;
-				delete assetList[path];
+				assets[path] = null;
+				delete assets[path];
 			} //end for key
 
 			if (Capabilities.isDebugger)
 			{
 				var numAssetsAfter:int = 0;
 
-				for each (a in assetList)
+				for each (a in assets)
 				{
 					numAssetsAfter++;
 				}
@@ -445,6 +504,11 @@ package nt.assets
 				}, 20);
 			}
 		}
+
+		/**
+		 * 资源占用的显存
+		 */
+		public static var vram:uint = 0;
 	}
 }
 

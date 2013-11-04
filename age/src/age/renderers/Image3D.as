@@ -45,7 +45,6 @@ package age.renderers
 		{
 			_direction = value;
 			scaleX = Math.abs(scaleX) * (value == Direction.RIGHT ? 1 : -1);
-			// scaleX = (value == Direction.RIGHT ? 1 : -1);
 		}
 
 		/**

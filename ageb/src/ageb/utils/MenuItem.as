@@ -14,6 +14,16 @@ package ageb.utils
 	public class MenuItem
 	{
 		/**
+		 * 菜单打开时的鼠标 x
+		 */
+		public var mouseX:Number;
+
+		/**
+		 * 菜单打开时的鼠标 y
+		 */
+		public var mouseY:Number;
+
+		/**
 		 * constructor
 		 *
 		 */

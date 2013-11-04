@@ -23,12 +23,12 @@ package ageb.modules.job
 		/**
 		 * 当前任务关联的 tp
 		 */
-		protected var tp:TexturePacker;
+		public var tp:TexturePacker;
 
 		/**
 		 * 当前任务关联的 im
 		 */
-		protected var im:ImageMagick;
+		public var im:ImageMagick;
 
 		/**
 		 * 任务名称

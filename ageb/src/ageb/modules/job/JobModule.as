@@ -238,14 +238,6 @@ package ageb.modules.job
 			executeNext();
 		}
 
-		public function addScene(info:SceneInfo):void
-		{
-			for (var i:int = 0, n:int = info.layers.length; i < n; i++)
-			{
-				// addLayer(info.layers[i]);
-			}
-		}
-
 		/**
 		 * 任务状态
 		 * @return

@@ -1,5 +1,6 @@
 package age.assets
 {
+	import flash.display.Scene;
 	import flash.geom.Vector3D;
 	import flash.utils.getTimer;
 	import age.utils.__projectY;
@@ -279,6 +280,16 @@ package age.assets
 		 * 场景贴图的子文件夹
 		 */
 		public static var folder:String;
+
+		/**
+		 * 获得相对于 folder 的路径
+		 * @param args
+		 *
+		 */
+		public static function resolvePath(... args):String
+		{
+			return folder + "/" + args.join("/");
+		}
 
 		/**
 		 * 从 JSON 中转换出场景列表

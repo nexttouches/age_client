@@ -1,16 +1,32 @@
 package ageb.modules.ae
 {
 	import age.assets.BGInfo;
+	import age.assets.SceneInfo;
+	import age.assets.TextureAsset;
 	import age.renderers.BGRenderer;
+	import nt.assets.IAsset;
 
-	public class BgRendererEditable extends BGRenderer implements ISelectableRenderer
+	/**
+	 * BGRenderer 编辑器版本
+	 * @author zhanghaocong
+	 *
+	 */
+	public class BGRendererEditable extends BGRenderer implements ISelectableRenderer
 	{
-		public function BgRendererEditable()
+		/**
+		 * constructor
+		 *
+		 */
+		public function BGRendererEditable()
 		{
 			super();
 			touchable = true;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set info(value:BGInfo):void
 		{
 			if (infoEditable)
@@ -35,19 +51,34 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * 记录原 alpha
+		 */
 		private var originAlpha:Number;
 
-		private function onIsDraggingChange():void
-		{
-			super.alpha = originAlpha * (selectableInfo.isDragging ? 0.5 : 1);
-		}
-
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set alpha(value:Number):void
 		{
 			super.alpha = value;
 			originAlpha = value;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
+		private function onIsDraggingChange():void
+		{
+			super.alpha = originAlpha * (selectableInfo.isDragging ? 0.5 : 1);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
 		private function onXYChange():void
 		{
 			x = _info.x;
@@ -55,16 +86,28 @@ package ageb.modules.ae
 			z = _info.z;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onIsFlipXChange():void
 		{
 			isFlipX = info.isFlipX;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onIsFlipYChange():void
 		{
 			isFlipY = info.isFlipY;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onIsSelectedChange():void
 		{
 			if (infoEditable.isSelected)
@@ -77,14 +120,47 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		final protected function get infoEditable():BGInfoEditable
 		{
 			return _info as BGInfoEditable;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		final public function get selectableInfo():ISelectableInfo
 		{
 			return _info as ISelectableInfo;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override protected function getAsset():TextureAsset
+		{
+			return TextureAsset.get(SceneInfo.folder + "/" + _info.parent.parent.id + "/" + infoEditable.src);
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function onAssetLoadComplete(asset:IAsset):void
+		{
+			setTexture(_asset.texture);
+			isFlipX = info.isFlipX;
+			isFlipY = info.isFlipY;
+
+			if (_onAttach)
+			{
+				_onAttach.dispatch(this);
+			}
 		}
 	}
 }

@@ -1,21 +1,22 @@
 package age.renderers
 {
-	import age.AGE;
 	import age.assets.BGInfo;
 	import age.assets.SceneInfo;
 	import age.assets.TextureAsset;
-	import age.filters.WaveFilter;
 	import nt.assets.IAsset;
 	import starling.events.Event;
 
 	/**
-	 * BGRenderer 是基于 BaseRenderer 的基本渲染器<br/>
-	 * 用于渲染场景背景图片
+	 * BGRenderer 用于渲染场景静态图片
 	 * @author zhanghaocong
 	 *
 	 */
 	public class BGRenderer extends TextureRenderer
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function BGRenderer()
 		{
 			super();
@@ -52,14 +53,31 @@ package age.renderers
 				x = _info.x;
 				y = _info.y;
 				z = _info.z;
-				asset = TextureAsset.get(SceneInfo.folder + "/" + _info.texturePath);
+				asset = getAsset();
 				asset.useThumb = false;
 				asset.load();
 			}
 		}
 
+		/**
+		 * 获得本次需要使用的资源
+		 * @return
+		 *
+		 */
+		protected function getAsset():TextureAsset
+		{
+			return TextureAsset.get(SceneInfo.folder + "/" + _info.texturePath);
+		}
+
+		/**
+		 * BGRenderer 每当渲染时广播该事件
+		 */
 		public var onRender:Function;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function onAssetLoadComplete(asset:IAsset):void
 		{
 			setTexture(_asset.textureAtlas.getTexture(info.textureName));

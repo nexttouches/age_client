@@ -15,17 +15,29 @@ package age
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 
+	/**
+	 * AGE 全局变量
+	 * @author zhanghaocong
+	 *
+	 */
 	public class AGE
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function AGE()
 		{
 		}
 
 		/**
-		 * AGE 的版本
+		 * 版本
 		 */
-		public static const VERSION:String = "0.5.0";
+		public static const VERSION:String = "0.8.0";
 
+		/**
+		 * 配置
+		 */
 		public static var config:AGEConfig = new AGEConfig();
 
 		public static var paddingTop:Number = 0;
@@ -41,6 +53,10 @@ package age
 		 */
 		public static var camera:Camera2D = new Camera2D();
 
+		/**
+		 * @private
+		 *
+		 */
 		private static var _s:Engine;
 
 		/**
@@ -119,6 +135,10 @@ package age
 			_s.juggler.add(camera);
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private static function onIsDebugModeChange():void
 		{
 			if (config.isDebugMode)
@@ -131,6 +151,12 @@ package age
 			}
 		}
 
+		/**
+		 * 更新 viewport
+		 * @param width
+		 * @param height
+		 *
+		 */
 		private static function updateViewport(width:Number, height:Number):void
 		{
 			const viewport:Rectangle = new Rectangle(paddingLeft, paddingTop, width - paddingLeft - paddingRight, height - paddingTop - paddingBottom);
@@ -139,6 +165,10 @@ package age
 			_s.viewPort = viewport;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected static function stage_onMouseDown(event:MouseEvent):void
 		{
 			// 鼠标下有任何原生对象则屏蔽掉 Starling 的触摸事件
@@ -150,6 +180,11 @@ package age
 
 		private static var _isBlockNativeMouseDown:Boolean
 
+		/**
+		 * 是否阻止鼠标穿透到 Starling
+		 * @return
+		 *
+		 */
 		public static function get isBlockNativeMouseDown():Boolean
 		{
 			return _isBlockNativeMouseDown;
@@ -171,6 +206,11 @@ package age
 
 		private static var _now:Number;
 
+		/**
+		 * 设置或获取当前时间
+		 * @return
+		 *
+		 */
 		public static function get now():Number
 		{
 			return _s.now;
@@ -199,11 +239,21 @@ package age
 			_s.dispose();
 		}
 
+		/**
+		 * 舞台高
+		 * @return
+		 *
+		 */
 		public static function get stageWidth():int
 		{
 			return _s.stage.stageWidth;
 		}
 
+		/**
+		 * 舞台宽
+		 * @return
+		 *
+		 */
 		public static function get stageHeight():int
 		{
 			return _s.stage.stageHeight;
@@ -211,6 +261,11 @@ package age
 
 		private static var _onStart:Signal;
 
+		/**
+		 * 启动时广播
+		 * @return
+		 *
+		 */
 		public static function get onStart():Signal
 		{
 			return _onStart ||= new Signal();

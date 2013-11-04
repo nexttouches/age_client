@@ -2,6 +2,7 @@ package ageb.modules.job
 {
 	import flash.desktop.NativeProcess;
 	import flash.desktop.NativeProcessStartupInfo;
+	import flash.events.NativeProcessExitEvent;
 	import flash.filesystem.File;
 	import ageb.modules.Modules;
 
@@ -12,6 +13,11 @@ package ageb.modules.job
 	 */
 	public class ImageMagick extends NativeProcess
 	{
+		/**
+		 * 退出代码
+		 */
+		public var exitCode:Number = NaN;
+
 		public function get executable():String
 		{
 			return Modules.getInstance().settings.getData().imPath;
@@ -24,6 +30,16 @@ package ageb.modules.job
 		 */
 		public function ImageMagick()
 		{
+			addEventListener(NativeProcessExitEvent.EXIT, onExit);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		protected function onExit(event:NativeProcessExitEvent):void
+		{
+			exitCode = event.exitCode;
 		}
 
 		/**

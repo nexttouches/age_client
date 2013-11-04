@@ -55,18 +55,20 @@ package ageb.utils
 			assert(!isShow, "不可重复调用 show");
 			isShow = true;
 			// 在菜单外部点击时调用 onMenuClose
-			stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onMenuClose, true, int.MAX_VALUE);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMenuClose, true, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onMenuClose, true, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.MOUSE_DOWN, onMenuClose, true, int.MAX_VALUE);
 
 			for (var i:int = 0; i < items.length; i++)
 			{
+				items[i].mouseX = nativeStage.mouseX;
+				items[i].mouseY = nativeStage.mouseY;
 				items[i].onShow();
 			}
 			// 请注意：
 			// 调用 display 后会临时中断 as 执行过程
 			// 必须放在最后
 			// 否则后面的代码可能不会跑
-			contextMenu.display(stage, stage.mouseX, stage.mouseY);
+			contextMenu.display(nativeStage, nativeStage.mouseX, nativeStage.mouseY);
 		}
 
 		/**
@@ -77,12 +79,14 @@ package ageb.utils
 		protected function onMenuClose(... ignored):void
 		{
 			isShow = false;
-			stage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onMenuClose, true);
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMenuClose, true);
+			nativeStage.removeEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onMenuClose, true);
+			nativeStage.removeEventListener(MouseEvent.MOUSE_DOWN, onMenuClose, true);
 
 			for (var i:int = 0; i < items.length; i++)
 			{
 				items[i].onClose();
+				items[i].mouseX = NaN;
+				items[i].mouseY = NaN;
 			}
 		}
 
@@ -142,7 +146,7 @@ package ageb.utils
 		 * @return
 		 *
 		 */
-		protected function get stage():Stage
+		protected function get nativeStage():Stage
 		{
 			return AGE.s.nativeStage;
 		}

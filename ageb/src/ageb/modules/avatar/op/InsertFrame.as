@@ -46,7 +46,6 @@ package ageb.modules.avatar.op
 		override public function redo():void
 		{
 			var i:int, n:int, layer:FrameLayerInfoEditable;
-			var numFrames:int = oldNumFrames;
 			n = cells.length
 
 			// 插入帧
@@ -118,14 +117,8 @@ package ageb.modules.avatar.op
 			{
 				layer = info.getLayerAt(insertPositions[i].rowIndex);
 				layer.notifyFramesChange();
-
-				// 修改后的图层帧长度
-				if (layer.numFrames > numFrames)
-				{
-					numFrames = layer.numFrames;
-				}
 			}
-			info.numFrames = numFrames;
+			info.updateNumFrames();
 		}
 
 		/**

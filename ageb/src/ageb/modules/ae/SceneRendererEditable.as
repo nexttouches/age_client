@@ -1,18 +1,10 @@
 package ageb.modules.ae
 {
-	import flash.filesystem.File;
-	import flash.filesystem.FileMode;
-	import flash.filesystem.FileStream;
 	import flash.geom.Point;
-	import mx.controls.Alert;
 	import mx.events.CollectionEvent;
 	import age.assets.SceneInfo;
-	import age.assets.TextureAtlasConfig;
 	import age.renderers.MouseResponder;
 	import age.renderers.SceneRenender;
-	import nt.assets.Asset;
-	import nt.assets.AssetConfig;
-	import nt.assets.AssetInfo;
 	import starling.display.DisplayObject;
 
 	/**
@@ -22,6 +14,10 @@ package ageb.modules.ae
 	 */
 	public class SceneRendererEditable extends SceneRenender
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function SceneRendererEditable(layerRendererClass:Class = null)
 		{
 			super(LayerRendererEditable);
@@ -54,6 +50,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function addLayers():void
 		{
 			super.addLayers();
@@ -86,6 +86,11 @@ package ageb.modules.ae
 
 		private var _isShowRegions:Boolean;
 
+		/**
+		 * 设置或获取是否显示区域
+		 * @return
+		 *
+		 */
 		public function get isShowRegions():Boolean
 		{
 			return _isShowRegions;
@@ -101,6 +106,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set info(value:SceneInfo):void
 		{
 			if (infoEditable)
@@ -114,33 +123,33 @@ package ageb.modules.ae
 
 			if (value)
 			{
-				// 因为没有打包好的 atlas 等文件
-				// 这里先做预加载操作
-				// 完成后再调用 super.info = value
-				var bgAssets:Vector.<Asset> = value.getBGAssets();
-				var uniqueHelper:Object = {};
-
-				for each (var a:Asset in bgAssets)
-				{
-					uniqueHelper[a.path] = true;
-				}
-				var fs:FileStream = new FileStream();
-
-				for (var path:String in uniqueHelper)
-				{
-					var ai:AssetInfo = AssetConfig.getInfo(path + ".xml")
-					var f:File = new File(ai.url);
-
-					if (!f.exists)
-					{
-						Alert.show("找不到指定的文件 " + f.nativePath);
-						continue;
-					}
-					fs.open(f, FileMode.READ);
-					var content:String = fs.readUTFBytes(fs.bytesAvailable);
-					fs.close();
-					TextureAtlasConfig.addAtlas(ai.path.split(".")[0], XML(content));
-				}
+//				// 因为没有打包好的 atlas 等文件
+//				// 这里先做预加载操作
+//				// 完成后再调用 super.info = value
+//				var bgAssets:Vector.<Asset> = value.getBGAssets();
+//				var uniqueHelper:Object = {};
+//
+//				for each (var a:Asset in bgAssets)
+//				{
+//					uniqueHelper[a.path] = true;
+//				}
+//				var fs:FileStream = new FileStream();
+//
+//				for (var path:String in uniqueHelper)
+//				{
+//					var ai:AssetInfo = AssetConfig.getInfo(path + ".xml")
+//					var f:File = new File(ai.url);
+//
+//					if (!f.exists)
+//					{
+//						Alert.show("找不到指定的文件 " + f.nativePath);
+//						continue;
+//					}
+//					fs.open(f, FileMode.READ);
+//					var content:String = fs.readUTFBytes(fs.bytesAvailable);
+//					fs.close();
+//					TextureAtlasConfig.addAtlas(ai.path.split(".")[0], XML(content));
+//				}
 			}
 			super.info = value;
 
@@ -155,6 +164,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function regionsArrayList_onChange(event:CollectionEvent):void
 		{
 			if (_isShowRegions)
@@ -163,6 +176,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onLayersChange():void
 		{
 			// 刷新全部图层
@@ -170,6 +187,10 @@ package ageb.modules.ae
 			addLayers();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onGridCellChange(x:int, y:int, value:int):void
 		{
 			if (_isShowGrid)
@@ -178,6 +199,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onGridSizeChange():void
 		{
 			if (_isShowGrid)
@@ -187,6 +212,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onSizeChange():void
 		{
 			// 尺寸变化时，重新绘制图层轮廓
@@ -198,6 +227,10 @@ package ageb.modules.ae
 			onGridSizeChange();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function get infoEditable():SceneInfoEditable
 		{
 			return info as SceneInfoEditable;

@@ -1,17 +1,10 @@
 package age.renderers
 {
-	import flash.events.MouseEvent;
 	import age.assets.TextureAsset;
 	import nt.assets.IAsset;
 	import nt.assets.extensions.IProgressiveImageAssetUser;
 	import nt.assets.extensions.ProgressiveImageAsset;
-	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
-	import starling.textures.Texture;
 
 	/**
 	 * TextureRenderer 是基于 Image 的基本贴图渲染器<br/>
@@ -20,6 +13,10 @@ package age.renderers
 	 */
 	public class TextureRenderer extends Image3D implements IProgressiveImageAssetUser
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function TextureRenderer()
 		{
 			super();
@@ -27,6 +24,11 @@ package age.renderers
 
 		protected var _onAttach:Signal;
 
+		/**
+		 * 贴图显示时调用
+		 * @return
+		 *
+		 */
 		public function get onAttach():Signal
 		{
 			return _onAttach ||= new Signal(AnimationLayerRenderer);
@@ -55,6 +57,11 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * 设置新贴图
+		 * @param newAsset
+		 *
+		 */
 		protected function attach(newAsset:TextureAsset):void
 		{
 			if (_asset)
@@ -75,22 +82,42 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetDispose(asset:IAsset):void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetLoadComplete(asset:IAsset):void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetLoadError(asset:IAsset):void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onBitmapDataChange(asset:ProgressiveImageAsset):void
 		{
 		}

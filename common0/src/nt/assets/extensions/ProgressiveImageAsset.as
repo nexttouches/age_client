@@ -70,12 +70,11 @@ package nt.assets.extensions
 		 * constructor
 		 * @param path
 		 * @param priority
-		 * @param name
 		 *
 		 */
-		public function ProgressiveImageAsset(path:String, priority:int, name:String = "")
+		public function ProgressiveImageAsset(path:String, priority:int)
 		{
-			super(path, priority, name);
+			super(path, priority);
 			// 分别创建小图和大图
 			full = createFull();
 			full.addUser(this);
