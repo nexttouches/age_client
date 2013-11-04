@@ -3,6 +3,7 @@ package ageb.modules.document
 	import flash.filesystem.File;
 	import ageb.modules.ae.SceneInfoEditable;
 	import ageb.modules.scene.SceneDocumentView;
+	import ageb.utils.FlashTip;
 
 	/**
 	 * 场景文档
@@ -69,6 +70,24 @@ package ageb.modules.document
 		override public function get viewClass():Class
 		{
 			return SceneDocumentView;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function preview():void
+		{
+			FlashTip.show("没做好");
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function publish():void
+		{
+			FlashTip.show("没做好");
 		}
 	}
 }
