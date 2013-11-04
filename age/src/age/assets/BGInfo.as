@@ -29,7 +29,7 @@ package age.assets
 		public var id:String;
 
 		/**
-		 * 贴图的路径（*.png 文件）
+		 * 贴图的路径
 		 */
 		public var texturePath:String;
 
