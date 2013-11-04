@@ -1,22 +1,17 @@
 package ageb.modules.tools.selectToolClasses
 {
 	import flash.display.Stage;
-	import flash.events.ContextMenuEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
-	import mx.managers.PopUpManager;
 	import spark.skins.spark.WindowedApplicationSkin;
 	import age.AGE;
 	import age.renderers.GridCellRenderer;
 	import age.renderers.LayerRenderer;
 	import age.renderers.MouseResponder;
-	import ageb.components.TextureBrowser;
-	import ageb.modules.Modules;
-	import ageb.modules.ae.*;
+	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.ISelectableInfo;
 	import ageb.modules.ae.ISelectableRenderer;
-	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.ae.LayerRendererEditable;
 	import ageb.modules.ae.ObjectInfoEditable;
 	import ageb.modules.ae.RegionInfoEditable;
@@ -26,7 +21,6 @@ package ageb.modules.tools.selectToolClasses
 	import ageb.modules.ae.dnd.ObjectDragThumb;
 	import ageb.modules.ae.dnd.RegionInfoDragThumb;
 	import ageb.modules.document.Document;
-	import ageb.modules.scene.op.AddBG;
 	import ageb.modules.scene.op.MoveObject;
 	import ageb.modules.scene.op.RemoveObject;
 	import ageb.modules.tools.selectToolClasses.menus.SelectToolMenu;

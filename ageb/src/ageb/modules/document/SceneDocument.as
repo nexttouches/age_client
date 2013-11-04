@@ -26,7 +26,8 @@ package ageb.modules.document
 		{
 			super(file, raw);
 
-			// 自动处理 ID
+			// 根据文件名动态识别 ID，raw 将不储存 ID
+			// 这实现了通过改文件名改 ID 的功能
 			if (file && !("id" in raw))
 			{
 				raw.id = file.name.split(".")[0];
