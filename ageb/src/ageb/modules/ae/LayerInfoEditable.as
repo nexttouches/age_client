@@ -83,7 +83,7 @@ package ageb.modules.ae
 			}
 			else if (info is BGInfoEditable)
 			{
-				return addBg(info as BGInfoEditable);
+				return addBG(info as BGInfoEditable);
 			}
 			throw new ArgumentError("不支持类型 " + Type.of(info).fullname);
 		}
@@ -134,10 +134,10 @@ package ageb.modules.ae
 		 * @param info
 		 *
 		 */
-		public function addBg(info:BGInfoEditable):void
+		public function addBG(info:BGInfoEditable):void
 		{
-			bgsVectorList.addItem(info);
 			info.parent = this;
+			bgsVectorList.addItem(info);
 		}
 
 		/**

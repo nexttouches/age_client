@@ -36,6 +36,13 @@
 			protected function saveParent():void
 			{
 			}
+
+			protected function browseSrc():void
+			{
+			}
+
+			[Bindable]
+			public var labelWidth:int = 60;
 		]]>
 	</fx:Script>
 
@@ -43,7 +50,9 @@
 		<s:layout>
 			<s:VerticalLayout/>
 		</s:layout>
-		<document:FormRow label="坐标">
+		<document:FormRow 
+			labelWidth="{labelWidth}"
+			label="坐标">
 			<components:IntInput id="xField"
 				width="100%"
 				maximum="10000"
@@ -57,7 +66,9 @@
 				toolTip="y"
 				change="savePosition()"/>
 		</document:FormRow>
-		<document:FormRow label="翻转">
+		<document:FormRow 
+			labelWidth="{labelWidth}"
+			label="翻转">
 			<s:CheckBox id="isFlipXField"
 				width="100%"
 				label="水平"
@@ -67,13 +78,24 @@
 				label="垂直"
 				change="saveIsFlipY()"/>
 		</document:FormRow>
-		<document:FormRow label="贴图">
-			<s:TextInput id="textureField"
-				width="100%"
-				editable="false"/>
-			<s:Button label="浏览…"/>
+		<document:FormRow 
+			labelWidth="{labelWidth}"
+			label="贴图集">
+			<s:TextInput id="atlasField"
+				width="100%"/>
 		</document:FormRow>
-		<document:FormRow label="图层">
+		<document:FormRow 
+			labelWidth="{labelWidth}"
+			label="源文件">
+			<s:TextInput id="srcField"
+				width="100%"/>
+			<s:Button 
+				label="浏览…"
+				click="browseSrc()"/>
+		</document:FormRow>
+		<document:FormRow 
+			labelWidth="{labelWidth}"
+			label="图层">
 			<s:TextInput id="parentField"
 				width="100%"
 				editable="false"/>

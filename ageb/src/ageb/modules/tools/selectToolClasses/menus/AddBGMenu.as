@@ -11,9 +11,12 @@ package ageb.modules.tools.selectToolClasses.menus
 	import age.assets.LayerType;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.scene.op.AddBG;
+	import ageb.modules.scene.op.SliceJob;
 	import ageb.utils.FileUtil;
 	import ageb.utils.FlashTip;
 	import ageb.utils.ImageUtil;
+	import nt.assets.util.URLUtil;
+	import nt.lib.util.assert;
 
 	/**
 	 * 添加背景菜单
@@ -53,6 +56,12 @@ package ageb.modules.tools.selectToolClasses.menus
 		 */
 		override protected function onSelect(event:Event):void
 		{
+			// sceneInfo.expectFolder 如不存在则创建
+			// 对于手动改 json 的场景，极有可能出现这种情况
+			if (!sceneInfo.expectFolder.exists)
+			{
+				sceneInfo.expectFolder.createDirectory();
+			}
 			// 浏览图片
 			FileUtil.browseFile(sceneInfo.expectFolder.nativePath, [ new FileFilter("PNG File", "*.png")], onComplete, null, onCancel);
 		}
@@ -61,7 +70,7 @@ package ageb.modules.tools.selectToolClasses.menus
 		 * @private
 		 *
 		 */
-		private function onCancel():void
+		private function onCancel(... ignored):void
 		{
 			// 处理完毕后解引用
 			info = null;
@@ -100,24 +109,63 @@ package ageb.modules.tools.selectToolClasses.menus
 						FlashTip.show("已取消");
 						return;
 					}
-					doImport(f);
+					doImport(f, true);
 				})
 			}
 			else
 			{
-				doImport(f);
+				doImport(f, false);
 			}
 		}
 
 		/**
 		 * 执行导入操作
-		 * @param event 允许接受一个 CloseEvent，并且当 event.detail 不为 Alert.YES 时取消操作
+		 * @param f 导入的图片
+		 * @param isNeedSlice 是否需要先切片
 		 */
-		private function doImport(f:File):void
+		private function doImport(f:File, isNeedSlice:Boolean):void
+		{
+			// 需要切片
+			if (isNeedSlice)
+			{
+				const job:SliceJob = new SliceJob(f);
+				job.onExit.addOnce(job_onExit);
+				job.execute();
+				return;
+			}
+			invokeOp(f);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		protected function invokeOp(f:File):void
 		{
 			new AddBG(doc, f, info, x, y).execute();
-			// 处理完毕后解引用
+			// 调用 op 后解引用
 			info = null;
+		}
+
+		/**
+		 * 切片任务退出时调用
+		 * @param target
+		 *
+		 */
+		private function job_onExit(job:SliceJob):void
+		{
+			// 出现任何错误则打开 Alert，也不会继续后面的操作
+			if (job.im.exitCode != 0)
+			{
+				Alert.show(job.stderr.join(), "调用 ImageMagick 时发生错误")
+			}
+			else
+			{
+				const f:File = job.f;
+				const firstSlice:File = f.parent.resolvePath(URLUtil.getFilename(f.name) + "_0_0." + f.extension);
+				assert(firstSlice.exists)
+				invokeOp(firstSlice);
+			}
 		}
 
 		/**

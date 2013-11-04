@@ -100,7 +100,7 @@ package ageb.modules.document
 			bg.z = 0;
 			bg.isSelectable = false; // 背景只是看看，不需可选
 			bg.texture = "avatar_scene.png#avatar_scene";
-			LayerInfoEditable(scene.layers[0]).addBg(bg);
+			LayerInfoEditable(scene.layers[0]).addBG(bg);
 			const position:Vector3D = object.position;
 			focus.x = position.x;
 			focus.y = scene.projectY(position.y, position.z);

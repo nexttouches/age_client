@@ -114,33 +114,33 @@ package ageb.modules.ae
 
 			if (value)
 			{
-				// 因为没有打包好的 atlas 等文件
-				// 这里先做预加载操作
-				// 完成后再调用 super.info = value
-				var bgAssets:Vector.<Asset> = value.getBGAssets();
-				var uniqueHelper:Object = {};
-
-				for each (var a:Asset in bgAssets)
-				{
-					uniqueHelper[a.path] = true;
-				}
-				var fs:FileStream = new FileStream();
-
-				for (var path:String in uniqueHelper)
-				{
-					var ai:AssetInfo = AssetConfig.getInfo(path + ".xml")
-					var f:File = new File(ai.url);
-
-					if (!f.exists)
-					{
-						Alert.show("找不到指定的文件 " + f.nativePath);
-						continue;
-					}
-					fs.open(f, FileMode.READ);
-					var content:String = fs.readUTFBytes(fs.bytesAvailable);
-					fs.close();
-					TextureAtlasConfig.addAtlas(ai.path.split(".")[0], XML(content));
-				}
+//				// 因为没有打包好的 atlas 等文件
+//				// 这里先做预加载操作
+//				// 完成后再调用 super.info = value
+//				var bgAssets:Vector.<Asset> = value.getBGAssets();
+//				var uniqueHelper:Object = {};
+//
+//				for each (var a:Asset in bgAssets)
+//				{
+//					uniqueHelper[a.path] = true;
+//				}
+//				var fs:FileStream = new FileStream();
+//
+//				for (var path:String in uniqueHelper)
+//				{
+//					var ai:AssetInfo = AssetConfig.getInfo(path + ".xml")
+//					var f:File = new File(ai.url);
+//
+//					if (!f.exists)
+//					{
+//						Alert.show("找不到指定的文件 " + f.nativePath);
+//						continue;
+//					}
+//					fs.open(f, FileMode.READ);
+//					var content:String = fs.readUTFBytes(fs.bytesAvailable);
+//					fs.close();
+//					TextureAtlasConfig.addAtlas(ai.path.split(".")[0], XML(content));
+//				}
 			}
 			super.info = value;
 

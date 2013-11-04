@@ -34,6 +34,7 @@ package ageb.modules.scene
 			dragMoveEnabled = true;
 			dropEnabled = true;
 			itemRenderer = new ClassFactory(LayerInfoItemRenderer);
+			setStyle("selectionColor", 0x3399ff);
 		}
 
 		private function compareValues(a:int, b:int):int
