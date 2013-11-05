@@ -253,13 +253,10 @@ package age.renderers
 				for (var x:int = 0; x < gridResolution.x; x++)
 				{
 					var cell:GridCellRenderer = new gridCellClass();
+					cell.projectY = info.parent.projectY;
 					cell.cellX = x;
 					cell.cellZ = z;
 					cell.size = cellSize;
-					cell.projectY = info.parent.projectY;
-					cell.x = x * cellSize.x;
-					cell.y = 0;
-					cell.z = z * cellSize.z;
 					cell.value = _info.parent.grids[z][x];
 					gridCellRenderers[z].push(cell);
 					addChild(cell);

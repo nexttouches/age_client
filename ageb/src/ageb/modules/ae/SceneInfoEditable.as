@@ -196,15 +196,15 @@ package ageb.modules.ae
 		}
 
 		/**
-		 * 根据 x y 获得网格值
+		 * 根据 x z 获得网格值
 		 * @param x
-		 * @param y
+		 * @param z
 		 * @return
 		 *
 		 */
-		public function getGridCell(x:int, y:int):int
+		public function getGridCell(x:int, z:int):int
 		{
-			return grids[y][x];
+			return grids[z][x];
 		}
 
 		/**

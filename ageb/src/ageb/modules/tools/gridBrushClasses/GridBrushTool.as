@@ -107,16 +107,23 @@ package ageb.modules.tools.gridBrushClasses
 
 			if (isLeftDown)
 			{
-				var p:Point = touch.getLocation(sceneRenderer.charLayer);
-				var info:SceneInfoEditable = sceneDoc.info;
+				const mouse:Point = touch.getLocation(sceneRenderer.charLayer);
+				const info:SceneInfoEditable = sceneDoc.info;
 
-				if (p.x < 0 || p.y < 0 || p.x > info.width || p.y > info.height)
+				if (mouse.x < 0 || mouse.y < 0 || mouse.x > info.width || mouse.y > info.height)
 				{
 					return;
 				}
-				// 除以网格宽高就可以算出网格位置
-				var cellX:int = p.x / info.gridCellSize.x;
-				var cellZ:int = info.uiToZ(p.y) / info.gridCellSize.z;
+				const scene:Vector3D = new Vector3D(mouse.x, info.uiToY(mouse.y), info.uiToZ(mouse.y));
+
+				// 判断是否点击范围超过了 depth
+				if (scene.z > info.depth)
+				{
+					return;
+				}
+				// 除以网格宽高可以快速算出网格位置
+				var cellZ:int = scene.z / info.gridCellSize.z;
+				var cellX:int = scene.x / info.gridCellSize.x;
 
 				if (info.getGridCell(cellX, cellZ) != brushValue)
 				{

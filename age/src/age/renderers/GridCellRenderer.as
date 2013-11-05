@@ -64,6 +64,11 @@ package age.renderers
 
 		private var _size:Vector3D;
 
+		/**
+		 * 设置或获取当前网格的大小
+		 * @return
+		 *
+		 */
 		public function get size():Vector3D
 		{
 			return _size;
@@ -72,6 +77,11 @@ package age.renderers
 		public function set size(value:Vector3D):void
 		{
 			_size = value;
+			x = cellX * _size.x;
+			y = 0;
+			z = cellZ * _size.z;
+			readjustSize();
+			pivotY = texture.height;
 		}
 
 		/**
@@ -128,6 +138,8 @@ package age.renderers
 		 */
 		public function updateDetail(visibleRect:Rectangle):void
 		{
+			return;
+
 			// 左边界
 			if (x + width < visibleRect.x)
 			{
