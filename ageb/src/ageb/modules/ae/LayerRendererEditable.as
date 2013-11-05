@@ -3,7 +3,10 @@ package ageb.modules.ae
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
 	import age.assets.LayerInfo;
+	import age.assets.LayerType;
+	import age.renderers.BGRenderer;
 	import age.renderers.LayerRenderer;
+	import age.renderers.Quad3D;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 
@@ -15,18 +18,22 @@ package ageb.modules.ae
 	 */
 	public class LayerRendererEditable extends LayerRenderer
 	{
-		private var top:ArrangableQuad = new ArrangableQuad(1, 1, 0xffff00);
+		private var top:Quad3D = new Quad3D(1, 1, 0xffff00);
 
-		private var left:ArrangableQuad = new ArrangableQuad(1, 1, 0xffff00);
+		private var left:Quad3D = new Quad3D(1, 1, 0xffff00);
 
-		private var right:ArrangableQuad = new ArrangableQuad(1, 1, 0xffff00);
+		private var right:Quad3D = new Quad3D(1, 1, 0xffff00);
 
-		private var bottom:ArrangableQuad = new ArrangableQuad(1, 1, 0xffff00);
+		private var bottom:Quad3D = new Quad3D(1, 1, 0xffff00);
 
 		private var widthField:ArrangableTextField = new ArrangableTextField();
 
 		private var heightField:ArrangableTextField = new ArrangableTextField();
 
+		/**
+		 * constructor
+		 *
+		 */
 		public function LayerRendererEditable(bgRendererClass:Class = null, objectRendererClass:Class = null)
 		{
 			super(bgRendererClass || BGRendererEditable, objectRendererClass || ObjectRendererEditable);
@@ -64,12 +71,31 @@ package ageb.modules.ae
 		{
 			if (info)
 			{
-				top.width = info.scaledWidth;
-				left.height = info.scaledHeight;
-				right.height = left.height;
-				right.x = top.width;
-				bottom.width = top.width;
-				bottom.y = left.height;
+				const w:Number = info.scaledWidth;
+				const h:Number = info.scaledHeight;
+				top.projectY = info.parent.projectY;
+				left.projectY = info.parent.projectY;
+				right.projectY = info.parent.projectY;
+				bottom.projectY = info.parent.projectY;
+				// top
+				top.draw(w, 1);
+				top.x = 0;
+				top.y = h;
+				// left
+				left.draw(1, h);
+				left.pivotY = h;
+				left.x = 0;
+				left.y = 0;
+				// right
+				right.draw(1, h);
+				right.pivotY = h;
+				right.y = 0;
+				right.x = w;
+				// bottom
+				bottom.draw(w, 1);
+				bottom.x = 0;
+				bottom.y = 0;
+				// 其他文本框
 				widthField.text = format("{0} ({1})", top.width.toFixed(3), info.scrollRatio.toFixed(2));
 				widthField.x = top.width / 2;
 				heightField.text = left.height.toFixed(3) + " (" + info.scrollRatio.toFixed(2) + ")";
@@ -83,6 +109,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set info(value:LayerInfo):void
 		{
 			if (infoEditable)
@@ -101,6 +131,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onBgsChange(event:CollectionEvent):void
 		{
 			var info:BGInfoEditable;
@@ -121,6 +155,10 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onObjectsChange(event:CollectionEvent):void
 		{
 			var info:ObjectInfoEditable;
@@ -170,19 +208,54 @@ package ageb.modules.ae
 			top.isVisibleLocked = left.isVisibleLocked = right.isVisibleLocked = bottom.isVisibleLocked = widthField.isVisibleLocked = heightField.isVisibleLocked = true;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function get gridCellClass():Class
 		{
 			return GridCellRendererEditable;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function get infoEditable():LayerInfoEditable
 		{
 			return _info as LayerInfoEditable;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function get regionInfoRendererClass():Class
 		{
 			return RegionInfoRendererEditable;
+		}
+
+		/**
+		 * 更新背景图的位置
+		 *
+		 */
+		public function updateBGPositions():void
+		{
+			if (_info.type == LayerType.OBJECT)
+			{
+				return;
+			}
+
+			for (var i:int = 0, n:int = numChildren; i < n; i++)
+			{
+				const bg:BGRenderer = getChildAt(i) as BGRenderer;
+
+				if (!bg)
+				{
+					continue;
+				}
+				bg.z = bg.z;
+			}
 		}
 	}
 }
