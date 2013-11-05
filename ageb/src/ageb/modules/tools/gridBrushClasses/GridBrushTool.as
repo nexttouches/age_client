@@ -1,12 +1,13 @@
 package ageb.modules.tools.gridBrushClasses
 {
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
 	import mx.events.FlexEvent;
 	import ageb.modules.ae.SceneInfoEditable;
 	import ageb.modules.document.Document;
 	import ageb.modules.document.SceneDocument;
 	import ageb.modules.scene.op.ChangeSceneGridCell;
-	import ageb.modules.scene.op.ChangeSceneGridSize;
+	import ageb.modules.scene.op.ChangeSceneGridResolution;
 	import ageb.utils.FlashTip;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -51,7 +52,7 @@ package ageb.modules.tools.gridBrushClasses
 		 */
 		override protected function onShow(event:FlexEvent):void
 		{
-			onGridSizeChange();
+			onGridResolutionChange();
 		}
 
 		/**
@@ -63,7 +64,7 @@ package ageb.modules.tools.gridBrushClasses
 		{
 			if (sceneDoc)
 			{
-				sceneDoc.info.onGridSizeChange.remove(onGridSizeChange);
+				sceneDoc.info.onGridResolutionChange.remove(onGridResolutionChange);
 				sceneRenderer.removeEventListener(TouchEvent.TOUCH, onTouch);
 			}
 			super.doc = value;
@@ -71,7 +72,7 @@ package ageb.modules.tools.gridBrushClasses
 			if (sceneDoc)
 			{
 				sceneRenderer.isShowGrid = true;
-				sceneDoc.info.onGridSizeChange.add(onGridSizeChange);
+				sceneDoc.info.onGridResolutionChange.add(onGridResolutionChange);
 				sceneRenderer.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
 		}
@@ -114,12 +115,12 @@ package ageb.modules.tools.gridBrushClasses
 					return;
 				}
 				// 除以网格宽高就可以算出网格位置
-				var cellX:int = p.x / info.gridCellWidth;
-				var cellY:int = p.y / info.gridCellHeight;
+				var cellX:int = p.x / info.gridCellSize.x;
+				var cellZ:int = info.uiToZ(p.y) / info.gridCellSize.z;
 
-				if (info.getGridCell(cellX, cellY) != brushValue)
+				if (info.getGridCell(cellX, cellZ) != brushValue)
 				{
-					new ChangeSceneGridCell(doc, cellX, cellY, brushValue).execute();
+					new ChangeSceneGridCell(doc, cellX, cellZ, brushValue).execute();
 				}
 			}
 		}
@@ -140,7 +141,7 @@ package ageb.modules.tools.gridBrushClasses
 		 */
 		override protected function saveGrid():void
 		{
-			new ChangeSceneGridSize(sceneDoc, int(gridWidth.value), int(gridHeight.value)).execute();
+			new ChangeSceneGridResolution(sceneDoc, new Vector3D(int(gridWidth.value), 0, int(gridDepth.value))).execute();
 		}
 	}
 }

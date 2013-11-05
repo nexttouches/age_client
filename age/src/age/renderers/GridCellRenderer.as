@@ -4,7 +4,7 @@ package age.renderers
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.geom.Rectangle;
-	import starling.display.Image;
+	import flash.geom.Vector3D;
 	import starling.textures.Texture;
 
 	/**
@@ -12,7 +12,7 @@ package age.renderers
 	 * @author zhanghaocong
 	 *
 	 */
-	public class GridCellRenderer extends Image implements IArrangeable, IDetailRenderer
+	public class GridCellRenderer extends Image3D implements IDetailRenderer
 	{
 		/**
 		 * 网格 Y
@@ -20,13 +20,18 @@ package age.renderers
 		public var cellX:int;
 
 		/**
-		 * 网格 X
+		 * 网格 Z
 		 */
-		public var cellY:int;
+		public var cellZ:int;
 
-		public function GridCellRenderer(texture:Texture = null)
+		/**
+		 * constructor
+		 *
+		 */
+		public function GridCellRenderer()
 		{
-			super(texture || sharedTexture);
+			super();
+			texture = sharedTexture;
 			alpha = 0.5;
 		}
 
@@ -55,6 +60,18 @@ package age.renderers
 			{
 				color = 0xffffff;
 			}
+		}
+
+		private var _size:Vector3D;
+
+		public function get size():Vector3D
+		{
+			return _size;
+		}
+
+		public function set size(value:Vector3D):void
+		{
+			_size = value;
 		}
 
 		/**
@@ -106,11 +123,6 @@ package age.renderers
 			sharedTexture = Texture.fromBitmapData(b, false);
 		}
 
-		public function get zIndex():int
-		{
-			return 0;
-		}
-
 		/**
 		 * @inhertDoc
 		 *
@@ -125,25 +137,23 @@ package age.renderers
 			}
 
 			// 上边界
-			if (y + height < visibleRect.y)
+			/*if (y + height < visibleRect.y)
 			{
 				visible = false;
 				return;
-			}
-
+			}*/
 			// 右边界
 			if (x - width > visibleRect.right)
 			{
 				visible = false;
 				return;
 			}
-
 			// 下边界
-			if (y - height > visibleRect.bottom)
+			/*if (y - height > visibleRect.bottom)
 			{
 				visible = false;
 				return;
-			}
+			}*/
 			visible = true;
 		}
 	}

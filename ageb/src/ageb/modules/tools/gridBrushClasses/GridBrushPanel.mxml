@@ -7,10 +7,10 @@
 	xmlns:components="ageb.components.*">
 	<fx:Script>
 		<![CDATA[
-			protected function onGridSizeChange():void
+			protected function onGridResolutionChange():void
 			{
-				gridWidth.value = sceneDoc.info.gridWidth;
-				gridHeight.value = sceneDoc.info.gridHeight;
+				gridWidth.value = sceneDoc.info.gridResolution.x;
+				gridDepth.value = sceneDoc.info.gridResolution.z;
 			}
 
 			protected function saveGrid():void
@@ -36,7 +36,7 @@
 			width="10"
 			textAlign="center"
 			text="×"/>
-		<components:IntInput id="gridHeight"
+		<components:IntInput id="gridDepth"
 			width="100%"
 			maximum="1000"
 			minimum="1"

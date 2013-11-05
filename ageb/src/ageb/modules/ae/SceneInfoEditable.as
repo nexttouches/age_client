@@ -1,6 +1,7 @@
 package ageb.modules.ae
 {
 	import flash.filesystem.File;
+	import flash.geom.Vector3D;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
 	import age.assets.LayerType;
@@ -31,9 +32,14 @@ package ageb.modules.ae
 		public var onSizeChange:Signal = new Signal();
 
 		/**
-		 * 网格尺寸变化时触发
+		 * 网格分辨率变化时触发
 		 */
-		public var onGridSizeChange:Signal = new Signal();
+		public var onGridResolutionChange:Signal = new Signal();
+
+		/**
+		 * 每个格子大小
+		 */
+		public var gridCellSize:Vector3D;
 
 		/**
 		 * 格子值变化时触发<br>
@@ -46,16 +52,6 @@ package ageb.modules.ae
 		 * 图层列表发生变化时（添加 / 删除）触发
 		 */
 		public var onLayersChange:Signal = new Signal();
-
-		/**
-		 * 每个格子的宽度
-		 */
-		public var gridCellWidth:Number;
-
-		/**
-		 * 每个格子的高度
-		 */
-		public var gridCellHeight:Number;
 
 		/**
 		 * 供编辑器用的图层列表数组<br>
@@ -80,8 +76,7 @@ package ageb.modules.ae
 
 			if (raw)
 			{
-				gridCellWidth = width / gridWidth;
-				gridCellHeight = height / gridHeight;
+				gridCellSize = new Vector3D(width / gridResolution.x, 0, height / gridResolution.z);
 				layersVectorList = new VectorList(layers);
 				layersVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, layersVectorList_onCollectionChange);
 				// 默认选中角色层
@@ -111,11 +106,19 @@ package ageb.modules.ae
 			assert(layers[charLayerIndex].type == LayerType.OBJECT, "charLayerIndex 的图层 type 必须为 LayerType.OBJECT");
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function get layerInfoClass():Class
 		{
 			return LayerInfoEditable;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function get regionInfoClass():Class
 		{
 			return RegionInfoEditable;
@@ -136,18 +139,15 @@ package ageb.modules.ae
 		}
 
 		/**
-		 * 设置地图的网格宽高，然后发送 onGridSizeChange<br>
-		 * @param gridWidth
-		 * @param gridHeight
+		 * 设置地图的网格宽高
+		 * @param gridResolution 新的网格分辨率
 		 * @param grids 可选，要填充的网格数据；默认是空的网格
 		 *
 		 */
-		public function setGridSize(gridWidth:Number, gridHeight:Number, grids:Array = null):void
+		public function setGridResolution(gridResolution:Vector3D, grids:Array = null):void
 		{
-			this.gridWidth = gridWidth;
-			this.gridHeight = gridHeight;
-			gridCellWidth = width / gridWidth;
-			gridCellHeight = height / gridHeight;
+			this.gridResolution = gridResolution;
+			gridCellSize = new Vector3D(width / gridResolution.x, 0, height / gridResolution.z);
 
 			if (grids == null)
 			{
@@ -157,7 +157,7 @@ package ageb.modules.ae
 			{
 				this.grids = grids;
 			}
-			onGridSizeChange.dispatch();
+			onGridResolutionChange.dispatch();
 		}
 
 		/**
@@ -166,13 +166,13 @@ package ageb.modules.ae
 		 */
 		private function resetGridCells():void
 		{
-			grids = new Array(gridHeight);
+			grids = new Array(gridResolution.z);
 
-			for (var i:int = 0; i < gridHeight; i++)
+			for (var i:int = 0; i < gridResolution.z; i++)
 			{
-				grids[i] = new Array(gridWidth);
+				grids[i] = new Array(gridResolution.x);
 
-				for (var j:int = 0; j < gridWidth; j++)
+				for (var j:int = 0; j < gridResolution.x; j++)
 				{
 					grids[i][j] = 1;
 				}

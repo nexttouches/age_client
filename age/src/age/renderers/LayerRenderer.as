@@ -1,6 +1,7 @@
 package age.renderers
 {
 	import flash.geom.Rectangle;
+	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
 	import age.AGE;
 	import age.assets.BGInfo;
@@ -240,27 +241,27 @@ package age.renderers
 				return;
 			}
 			removeGridCellRenderer();
-			// 格子宽高
-			var cellWidth:Number = _info.scaledWidth / _info.parent.gridWidth;
-			var cellHeight:Number = _info.scaledHeight / _info.parent.gridHeight;
-			GridCellRenderer.updateTexture(cellWidth, cellHeight);
+			const gridResolution:Vector3D = _info.parent.gridResolution;
+			const cellSize:Vector3D = new Vector3D(_info.scaledWidth / gridResolution.x, 0, _info.scaledDepth / gridResolution.z);
+			GridCellRenderer.updateTexture(cellSize.x, cellSize.z / 2);
 
 			// 循环创建 GridCellRenderer
-			for (var i:int = 0; i < _info.parent.gridHeight; i++)
+			for (var z:int = 0; z < gridResolution.z; z++)
 			{
 				gridCellRenderers.push(new Vector.<GridCellRenderer>);
 
-				for (var j:int = 0; j < _info.parent.gridWidth; j++)
+				for (var x:int = 0; x < gridResolution.x; x++)
 				{
 					var cell:GridCellRenderer = new gridCellClass();
-					cell.cellX = j;
-					cell.cellY = i;
-					cell.width = cellWidth;
-					cell.height = cellHeight;
-					cell.x = j * cellWidth;
-					cell.y = i * cellHeight;
-					cell.value = _info.parent.grids[i][j];
-					gridCellRenderers[i].push(cell);
+					cell.cellX = x;
+					cell.cellZ = z;
+					cell.size = cellSize;
+					cell.projectY = info.parent.projectY;
+					cell.x = x * cellSize.x;
+					cell.y = 0;
+					cell.z = z * cellSize.z;
+					cell.value = _info.parent.grids[z][x];
+					gridCellRenderers[z].push(cell);
 					addChild(cell);
 				}
 			}
