@@ -4,25 +4,46 @@ package ageb.modules.scene.propertyPanelClasses
 	import spark.components.NumericStepper;
 	import spark.components.TextArea;
 	import spark.components.TextInput;
+	import age.assets.AvatarInfo;
 	import age.assets.RegionInfo;
 	import ageb.modules.Modules;
 	import ageb.modules.ae.ISelectableInfo;
 	import ageb.modules.ae.ObjectInfoEditable;
 	import ageb.modules.document.SceneDocument;
 	import ageb.modules.scene.op.AddRegion;
+	import ageb.modules.scene.op.ChangeActionName;
 	import ageb.modules.scene.op.ChangeAvatarID;
 	import ageb.modules.scene.op.ChangeObjectProperties;
 	import ageb.modules.scene.op.MoveObject;
 	import nt.lib.reflect.Property;
 	import nt.lib.reflect.Type;
+	import org.apache.flex.collections.VectorList;
 
+	/**
+	 * ObjectInfo 属性面板
+	 * @author zhanghaocong
+	 *
+	 */
 	public class ObjectInfoPropertyPanel extends ObjectInfoPropertyPanelTemplate
 	{
+		/**
+		 * 动作列表，每次更换 objectInfo 时重设
+		 */
+		private var actions:VectorList;
+
+		/**
+		 * constructor
+		 *
+		 */
 		public function ObjectInfoPropertyPanel()
 		{
 			super();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function resetAllFields():void
 		{
 			xField.value = NaN;
@@ -37,41 +58,90 @@ package ageb.modules.scene.propertyPanelClasses
 			elasticityField.value = 0;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set infos(value:Vector.<ISelectableInfo>):void
 		{
 			if (objectInfo)
 			{
+				actions = null;
 				typeField.dataProvider = null;
 				regionIDField.dataProvider = null;
 				objectInfo.onPositionChange.remove(onPositionChange);
 				objectInfo.onPropertiesChange.remove(onPropertiesChange);
 				objectInfo.onAvatarIDChange.remove(onAvatarIDChange);
+				objectInfo.onActionNameChange.remove(onActionNameChange);
 			}
 			super.infos = value;
 
 			if (objectInfo)
 			{
+				initActionsField();
 				typeField.dataProvider = Modules.getInstance().settings.objectTypes;
 				regionIDField.dataProvider = SceneDocument(doc).info.regionsVectorList;
 				objectInfo.onPositionChange.add(onPositionChange);
 				objectInfo.onPropertiesChange.add(onPropertiesChange);
 				objectInfo.onAvatarIDChange.add(onAvatarIDChange);
+				objectInfo.onActionNameChange.add(onActionNameChange);
 				onPositionChange();
 				onPropertiesChange();
 				onAvatarIDChange();
+				onActionNameChange();
 			}
 		}
 
+		/**
+		 * 初始化 actionsFieid
+		 *
+		 */
+		private function initActionsField():void
+		{
+			actions = new VectorList(new Vector.<String>);
+			const ai:AvatarInfo = objectInfo.avatarInfo;
+
+			if (ai)
+			{
+				for (var actionName:String in ai.actions)
+				{
+					actions.addItem(actionName);
+				}
+			}
+			actionsField.dataProvider = actions;
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function onActionNameChange():void
+		{
+			actionsField.selectedItem = objectInfo.actionName
+		}
+
+		/**
+		 * @private
+		 *
+		 */
 		private function onAvatarIDChange():void
 		{
 			avatarIDField.text = objectInfo.avatarID;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function regionIDField_labelFunction(r:RegionInfo):String
 		{
 			return r.toString();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveProperties():void
 		{
 			var props:Object = {};
@@ -87,6 +157,10 @@ package ageb.modules.scene.propertyPanelClasses
 			new ChangeObjectProperties(doc, infos, props).execute();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onPropertiesChange(trigger:Object = null):void
 		{
 			if (trigger == this)
@@ -99,6 +173,10 @@ package ageb.modules.scene.propertyPanelClasses
 			restoreUserData();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function getValue(c:*):*
 		{
 			// 类型判断
@@ -131,11 +209,19 @@ package ageb.modules.scene.propertyPanelClasses
 			throw new ArgumentError("无法匹配指定的组件 " + c);
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function restoreUserData():void
 		{
 			userDataField.text = objectInfo.userData;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onPositionChange():void
 		{
 			if (!objectInfo)
@@ -147,16 +233,28 @@ package ageb.modules.scene.propertyPanelClasses
 			zField.value = objectInfo.position.z;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveAvatarID():void
 		{
 			new ChangeAvatarID(doc, infos, avatarIDField.text).execute();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function savePosition():void
 		{
 			new MoveObject(doc, infos, xField.value - objectInfo.position.x, yField.value - objectInfo.position.y, zField.value - objectInfo.position.z).execute();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function addRegion():void
 		{
 			var op:AddRegion = new AddRegion(doc, objectInfo.position.x);
@@ -168,14 +266,31 @@ package ageb.modules.scene.propertyPanelClasses
 			saveProperties();
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		final protected function get objectInfo():ObjectInfoEditable
 		{
 			return info as ObjectInfoEditable;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function openAvatar():void
 		{
 			Modules.getInstance().document.openAvatar(objectInfo.avatarID);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		override protected function saveActionName():void
+		{
+			new ChangeActionName(doc, infos, actionsField.selectedItem).execute();
 		}
 	}
 }

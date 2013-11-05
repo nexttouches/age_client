@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>sparrow</string>
         <key>textureFileName</key>
-        <filename>D:\age\age_client\test_assets\src\avatars\1000_idle.png</filename>
+        <filename>D:\age\age_client\test_assets\src\avatars\1000_walk.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -93,7 +93,7 @@
             </struct>
         </struct>
         <key>dataFileName</key>
-        <filename>D:\age\age_client\test_assets\src\avatars\1000_idle.xml</filename>
+        <filename>D:\age\age_client\test_assets\src\avatars\1000_walk.xml</filename>
         <key>multiPack</key>
         <false/>
         <key>mainExtension</key>
@@ -130,8 +130,7 @@
         </struct>
         <key>fileList</key>
         <array>
-<filename>D:\age\age_client\test_assets\src\avatars\1000\idle\0.png</filename>
-<filename>D:\age\age_client\test_assets\src\avatars\1000\idle\2.png</filename>
+<filename>D:\age\age_client\test_assets\src\avatars\1000\walk\0.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
