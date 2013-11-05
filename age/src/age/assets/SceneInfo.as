@@ -1,6 +1,5 @@
 package age.assets
 {
-	import flash.display.Scene;
 	import flash.geom.Vector3D;
 	import flash.utils.getTimer;
 	import age.utils.__projectY;
