@@ -30,11 +30,12 @@ package nt.ui.util
 		/**
 		 * 初始化快捷键小工具
 		 * @param stage 用于侦听 keyDown 和 keyUp 的 stage
-		 *
+		 * @param excludes 全局设置不会激活快捷键的类
 		 */
-		public static function init(stage:Stage):void
+		public static function init(stage:Stage, excludes:Vector.<Class>):void
 		{
 			ShortcutUtil.stage = stage;
+			ShortcutUtil.excludes = excludes;
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onkeyUp);
 			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, onMiddleMouseDown, false, int.MAX_VALUE);
@@ -288,5 +289,10 @@ package nt.ui.util
 		 * 有些快捷键会用到
 		 */
 		public static var isMiddleDown:Boolean;
+
+		/**
+		 * 当 focus 在这些对象时，将不会激活快捷键，除非强制指定
+		 */
+		public static var excludes:Vector.<Class>;
 	}
 }
