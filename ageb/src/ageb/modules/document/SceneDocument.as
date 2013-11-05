@@ -1,15 +1,11 @@
 package ageb.modules.document
 {
-	import flash.display.Scene;
 	import flash.filesystem.File;
-	import age.assets.AvatarInfo;
-	import age.assets.LayerInfo;
 	import age.assets.LayerType;
 	import age.assets.SceneInfo;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.ae.SceneInfoEditable;
-	import ageb.modules.job.NativeJob;
 	import ageb.modules.job.TPJob;
 	import ageb.modules.job.TPParams;
 	import ageb.modules.scene.SceneDocumentView;

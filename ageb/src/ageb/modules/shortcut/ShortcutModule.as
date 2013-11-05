@@ -1,10 +1,7 @@
 package ageb.modules.shortcut
 {
-	import flash.ui.Keyboard;
-	import mx.managers.PopUpManager;
-	import mx.managers.PopUpManagerChildList;
-	import spark.components.Panel;
-	import spark.components.TitleWindow;
+	import flash.text.TextField;
+	import spark.core.IEditableText;
 	import ageb.modules.ModuleBase;
 	import nt.ui.util.ShortcutUtil;
 
@@ -17,7 +14,7 @@ package ageb.modules.shortcut
 
 		public function init(shortcuts:XMLList):void
 		{
-			ShortcutUtil.init(modules.root.stage);
+			ShortcutUtil.init(modules.root.stage, new <Class>[ IEditableText, TextField ]);
 
 			for each (var menu:XML in shortcuts)
 			{

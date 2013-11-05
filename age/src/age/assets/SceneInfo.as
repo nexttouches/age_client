@@ -1,6 +1,5 @@
 package age.assets
 {
-	import flash.display.Scene;
 	import flash.geom.Vector3D;
 	import flash.utils.getTimer;
 	import age.utils.__projectY;
@@ -70,21 +69,16 @@ package age.assets
 		public var charLayerIndex:int = 0;
 
 		/**
-		 * 网格<br>
+		 * 寻路网格<br>
 		 * 储存形式是 [z][x]<br>
 		 * 默认值为一个网格
 		 */
 		public var grids:Array = [[ 0 ]];
 
 		/**
-		 * 网格宽
+		 * 网格大小
 		 */
-		public var gridWidth:int = 0;
-
-		/**
-		 * 网格高
-		 */
-		public var gridHeight:int = 0;
+		public var gridResolution:Vector3D;
 
 		/**
 		 * 区域列表
@@ -355,12 +349,7 @@ package age.assets
 
 				if (grids)
 				{
-					gridHeight = grids.length;
-
-					if (gridHeight > 0) // 高度为 0，宽度无效
-					{
-						gridWidth = grids[0].length;
-					}
+					gridResolution = new Vector3D(grids.length > 0 ? grids[0].length : 0, 0, grids.length);
 				}
 				var i:int, n:int;
 

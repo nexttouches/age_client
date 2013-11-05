@@ -116,7 +116,7 @@ package ageb.modules.ae
 			{
 				infoEditable.regionsVectorList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, regionsArrayList_onChange);
 				infoEditable.onSizeChange.remove(onSizeChange);
-				infoEditable.onGridSizeChange.remove(onGridSizeChange);
+				infoEditable.onGridResolutionChange.remove(onGridSizeChange);
 				infoEditable.onGridCellChange.remove(onGridCellChange);
 				infoEditable.onLayersChange.remove(onLayersChange);
 			}
@@ -156,7 +156,7 @@ package ageb.modules.ae
 			if (infoEditable)
 			{
 				infoEditable.regionsVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, regionsArrayList_onChange);
-				infoEditable.onGridSizeChange.add(onGridSizeChange);
+				infoEditable.onGridResolutionChange.add(onGridSizeChange);
 				infoEditable.onSizeChange.add(onSizeChange);
 				infoEditable.onGridCellChange.add(onGridCellChange);
 				infoEditable.onLayersChange.add(onLayersChange);
@@ -218,9 +218,11 @@ package ageb.modules.ae
 		 */
 		private function onSizeChange():void
 		{
-			// 尺寸变化时，重新绘制图层轮廓
+			// 尺寸变化时，重新绘制图层轮廓，重新调整 BG 位置
+			// 其中对象每帧都会自动改，无需设置
 			forEachLayers(function(l:LayerRendererEditable):void
 			{
+				l.updateBGPositions();
 				l.addOutline();
 			});
 			// 也需要重新绘制网格

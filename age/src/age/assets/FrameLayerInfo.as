@@ -266,7 +266,7 @@ package age.assets
 				const asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.texturePath);
 
 				// 检查是否有子贴图，为 null 或空字符串表示没有子贴图
-				if (keyframe.textureName)
+				if (keyframe.textureName && asset.textureAtlas)
 				{
 					newTextures[i] = asset.textureAtlas.getTexture(keyframe.textureName);
 				}

@@ -1,13 +1,21 @@
 package ageb.modules.ae
 {
 	import age.renderers.GridCellRenderer;
-	import starling.textures.Texture;
 
+	/**
+	 * GridCellRenderer 编辑器专用版
+	 * @author zhanghaocong
+	 *
+	 */
 	public class GridCellRendererEditable extends GridCellRenderer
 	{
-		public function GridCellRendererEditable(texture:Texture = null)
+		/**
+		 * constructor
+		 *
+		 */
+		public function GridCellRendererEditable()
 		{
-			super(texture);
+			super();
 			touchable = true;
 		}
 	}

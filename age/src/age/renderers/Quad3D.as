@@ -114,5 +114,20 @@ package age.renderers
 			_projectY = null;
 			super.dispose();
 		}
+
+		/**
+		* 标记 visible 是否已经锁定<br>
+		* 一旦锁定，将不能操作 visible 属性
+		*/
+		public var isVisibleLocked:Boolean = false;
+
+		override public function set visible(value:Boolean):void
+		{
+			if (isVisibleLocked)
+			{
+				return;
+			}
+			super.visible = value;
+		}
 	}
 }

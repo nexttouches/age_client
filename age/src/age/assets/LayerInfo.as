@@ -282,6 +282,20 @@ package age.assets
 		}
 
 		/**
+		 * 缩放后的深度
+		 * @return
+		 *
+		 */
+		public function get scaledDepth():Number
+		{
+			if (!parent)
+			{
+				throw new IllegalOperationError("没有 parent，无法计算 scaledDepth");
+			}
+			return parent.depth * scrollRatio;
+		}
+
+		/**
 		 * 获取图层相对于所在 SceneRenderer 的位置
 		 * @return
 		 *
@@ -295,17 +309,23 @@ package age.assets
 			return parent.layers.indexOf(this);
 		}
 
+		/**
+		 * 启动物理模拟
+		 *
+		 */
 		public function start():void
 		{
 			AGE.physicsJuggler.add(this);
 		}
 
+		/**
+		 * 停止物理模拟
+		 *
+		 */
 		public function stop():void
 		{
 			AGE.physicsJuggler.remove(this);
 		}
-
-		private var player:ObjectInfo;
 
 		/**
 		 * @inheritDoc

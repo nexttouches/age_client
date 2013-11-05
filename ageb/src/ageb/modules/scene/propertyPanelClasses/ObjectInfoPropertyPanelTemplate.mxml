@@ -11,6 +11,7 @@
 
 	<fx:Script>
 		<![CDATA[
+			import spark.events.IndexChangeEvent;
 			import age.assets.RegionInfo;
 
 			protected function regionIDField_labelFunction(r:RegionInfo):String
@@ -39,6 +40,10 @@
 			}
 
 			protected function saveAvatarID():void
+			{
+			}
+
+			protected function saveActionName():void
 			{
 			}
 		]]>
@@ -115,7 +120,8 @@
 			<s:ComboBox id="actionsField"
 				width="100%"
 				labelField="name"
-				toolTip="动作"/>
+				toolTip="动作"
+				change="saveActionName()"/>
 		</document:FormRow>
 		<document:FormRow 
 			labelWidth="48"
@@ -146,7 +152,6 @@
 				width="100%"
 				enter="saveProperties()"/>
 		</document:FormRow>
-
 		<document:FormRow 
 			labelWidth="60"
 			label="类型">
