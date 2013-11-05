@@ -131,7 +131,7 @@
         <key>fileList</key>
         <array>
 <filename>D:\age\age_client\test_assets\src\avatars\1000\idle\0.png</filename>
-<filename>D:\age\age_client\test_assets\src\avatars\1000\idle\2.png</filename>
+<filename>D:\age\age_client\test_assets\src\avatars\1000\idle\1.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -1,6 +1,5 @@
 package age.renderers
 {
-	import flash.geom.Rectangle;
 	import age.assets.Box;
 	import age.assets.FrameLayerInfo;
 	import nt.assets.IAsset;
@@ -21,7 +20,7 @@ package age.renderers
 		/**
 		 * 缓存当前 info 是否已加载好
 		 */
-		private var info_isComplete:Boolean
+		protected var info_isComplete:Boolean
 
 		/**
 		 * 创建一个新的 FrameLayerRenderer

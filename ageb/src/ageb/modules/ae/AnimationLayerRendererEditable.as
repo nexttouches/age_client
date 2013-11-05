@@ -34,7 +34,7 @@ package ageb.modules.ae
 
 			if (info)
 			{
-				info.onTexturesChange.remove(onTexturesChange);
+				info.onTexturesChange.add(onTexturesChange);
 			}
 
 			if (infoEditable)
@@ -53,8 +53,13 @@ package ageb.modules.ae
 			return info as FrameLayerInfoEditable;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onTexturesChange():void
 		{
+			info_isComplete = info.isComplete && info.textures != null;
 			// 强制刷新一下当前贴图
 			currentFrame = currentFrame;
 		}
