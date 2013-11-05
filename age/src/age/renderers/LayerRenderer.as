@@ -243,7 +243,7 @@ package age.renderers
 			removeGridCellRenderer();
 			const gridResolution:Vector3D = _info.parent.gridResolution;
 			const cellSize:Vector3D = new Vector3D(_info.scaledWidth / gridResolution.x, 0, _info.scaledDepth / gridResolution.z);
-			GridCellRenderer.updateTexture(cellSize.x, cellSize.z / 2);
+			GridCellRenderer.updateTexture(cellSize);
 
 			// 循环创建 GridCellRenderer
 			for (var z:int = 0; z < gridResolution.z; z++)

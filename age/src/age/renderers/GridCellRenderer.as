@@ -80,13 +80,11 @@ package age.renderers
 		public static var sharedTexture:Texture;
 
 		/**
-		* 根据参数刷新网格贴图
-		* @param width
-		* @param height
-		* @return
-		*
-		*/
-		public static function updateTexture(width:Number, height:Number):void
+		 * 根据参数刷新网格贴图
+		 * @param cellSize
+		 *
+		 */
+		public static function updateTexture(cellSize:Vector3D):void
 		{
 			// 删掉原来的
 			if (sharedTexture)
@@ -94,31 +92,32 @@ package age.renderers
 				sharedTexture.dispose();
 				sharedTexture = null;
 			}
+			cellSize = cellSize.clone();
+			cellSize.z /= 2; // ÷ 2 得到透视后的大小
 			// 检查任意一边不能超过 2048
 			const max:Number = 2048;
 			var scale:Number = 1;
 
-			if (width > max)
+			if (cellSize.x > max)
 			{
-				scale = max / width;
+				scale = max / cellSize.x;
 			}
 
-			if (height > max && height > width)
+			if (cellSize.z > max && cellSize.z > cellSize.x)
 			{
-				scale = max / height;
+				scale = max / cellSize.z;
 			}
-			width *= scale;
-			height *= scale;
+			cellSize.scaleBy(scale);
 			const lineThickness:Number = 1;
 			var s:Shape = new Shape();
 			var g:Graphics = s.graphics;
 			g.beginFill(0x999999);
 			g.lineStyle(1, 0xdddddd, lineThickness);
-			g.drawRect(lineThickness, lineThickness, width - lineThickness * 2, height - lineThickness * 2);
-			g.moveTo(0, height - lineThickness * 2);
-			g.lineTo(width - lineThickness * 2, 0);
+			g.drawRect(lineThickness, lineThickness, cellSize.x - lineThickness * 2, cellSize.z - lineThickness * 2);
+			g.moveTo(0, cellSize.z - lineThickness * 2);
+			g.lineTo(cellSize.x - lineThickness * 2, 0);
 			g.endFill();
-			var b:BitmapData = new BitmapData(width, height, true, 0);
+			var b:BitmapData = new BitmapData(cellSize.x, cellSize.z, true, 0);
 			b.draw(s);
 			sharedTexture = Texture.fromBitmapData(b, false);
 		}
