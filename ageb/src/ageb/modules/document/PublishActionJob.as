@@ -49,7 +49,7 @@ package ageb.modules.document
 
 						if (frame.isKeyframe && !frame.isEmpty)
 						{
-							const url:String = AssetConfig.getInfo(AvatarInfo.folder + "/" + frame.texturePath + ".png").url;
+							const url:String = AssetConfig.getInfo(AvatarInfo.folder + "/" + frame.assetPath + ".png").url;
 							tpParams.addFile(new File(url).nativePath);
 						}
 					}

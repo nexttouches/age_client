@@ -3,6 +3,7 @@ package ageb.modules.ae
 	import age.data.ActionInfo;
 	import age.data.FrameInfo;
 	import age.data.FrameLayerInfo;
+	import age.data.FrameLayerType;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -43,7 +44,7 @@ package ageb.modules.ae
 		override public function addFrameFromRaw(raw:Object):void
 		{
 			super.addFrameFromRaw(raw);
-			const info:FrameInfoEditable = frames[frames.length - 1] as FrameInfoEditable;
+			const info:FrameInfoEditable = lastFrame;
 			info.onTextureChange.add(reloadAssets);
 			info.onIsKeyframeChange.add(reloadAssets);
 		}
@@ -55,6 +56,7 @@ package ageb.modules.ae
 		private function reloadAssets(... ignored):void
 		{
 			addAnimationAssets();
+			addSoundAssets();
 			load();
 		}
 

@@ -220,7 +220,7 @@ package ageb.modules.avatar.frameInfoClasses
 		{
 			if (keyframe && keyframe.texture)
 			{
-				ta = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.texturePath);
+				ta = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.assetPath);
 				ta.useThumb = false;
 				ta.load();
 			}

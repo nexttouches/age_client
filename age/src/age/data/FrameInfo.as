@@ -44,15 +44,20 @@ package age.data
 		public var textureName:String;
 
 		/**
-		 * 贴图路径
+		 * 资源路径，根据帧类型不同，该字段储存了不同的数据<br>
+		 * <table>
+		 * <tr><th>类型</th><th>说明</th></tr>
+		 * <tr><td>声音</td><td>MP3 的路径</td></tr>
+		 * <tr><td>动画</td><td>贴图的路径</td></tr>
+		 * </table>
 		 */
-		public var texturePath:String
+		public var assetPath:String
 
 		private var _texture:String;
 
 		/**
 		 * 贴图路径，是 folder/texturePath#textureName 格式的字符串，# 后是子贴图的名字<br>
-		 * 设置后，将自动分解到 textureName 和 texturePath 中
+		 * 设置后，将自动分解到 textureName 和 assetPath 中
 		 */
 		public function get texture():String
 		{
@@ -82,7 +87,7 @@ package age.data
 			if (_texture)
 			{
 				textureName = null;
-				texturePath = null;
+				assetPath = null;
 			}
 			_texture = value;
 			parseTexture(_texture);
@@ -98,7 +103,7 @@ package age.data
 			if (texture)
 			{
 				var s:Array = texture.split("#");
-				texturePath = s[0];
+				assetPath = s[0];
 				textureName = s[1];
 			}
 		}
@@ -287,6 +292,10 @@ package age.data
 			else if (type == FrameLayerType.ANIMATION)
 			{
 				return !(texture && box);
+			}
+			else if (type == FrameLayerType.SOUND)
+			{
+				return !(assetPath);
 			}
 			throw new Error("没有捕捉到 type: " + type);
 			return false;

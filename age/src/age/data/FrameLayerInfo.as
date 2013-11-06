@@ -263,7 +263,7 @@ package age.data
 				{
 					continue;
 				}
-				const asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.texturePath);
+				const asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.assetPath);
 
 				// 检查是否有子贴图，为 null 或空字符串表示没有子贴图
 				if (keyframe.textureName && asset.textureAtlas)
@@ -329,7 +329,7 @@ package age.data
 				}
 				else if (type == FrameLayerType.SOUND)
 				{
-					throw new Error("没做好");
+					addSoundAssets();
 				}
 				else if (type == FrameLayerType.PARTICLE)
 				{
@@ -344,6 +344,17 @@ package age.data
 			super.load(queue);
 		}
 
+		[Inline]
+		final protected function addSoundAssets():void
+		{
+			if (type != FrameLayerType.SOUND)
+			{
+				return;
+			}
+			// 总之先清空
+			empty();
+		}
+
 		/**
 		 * 添加图层类型为 ANIMATION 需要的资源
 		 *
@@ -351,9 +362,14 @@ package age.data
 		[Inline]
 		final protected function addAnimationAssets():void
 		{
+			if (type != FrameLayerType.ANIMATION)
+			{
+				return;
+			}
 			// 总之先清空
 			empty();
 			// 检查所有 FrameInfo.texture 属性是否需要自动填充
+			// TODO 迟早要删
 			fillFramesTexture();
 
 			for (var i:int = 0, n:int = frames.length; i < n; i++)
@@ -363,7 +379,7 @@ package age.data
 					// 判断是否有贴图
 					if (frames[i].texture)
 					{
-						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].texturePath);
+						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].assetPath);
 						asset.useThumb = isTextureUseThumb;
 						addAsset(asset);
 					}
@@ -371,8 +387,13 @@ package age.data
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public override function empty():void
 		{
+			sounds = null;
 			textures = null;
 			super.empty();
 		}
