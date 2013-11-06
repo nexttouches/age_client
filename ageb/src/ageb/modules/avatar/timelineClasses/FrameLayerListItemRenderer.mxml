@@ -14,7 +14,7 @@
 	<fx:Script>
 		<![CDATA[
 			import spark.events.IndexChangeEvent;
-			import age.assets.FrameLayerType;
+			import age.data.FrameLayerType;
 			import ageb.modules.Modules;
 			import ageb.modules.ae.FrameLayerInfoEditable;
 			import ageb.modules.avatar.op.ChangeFrameLayerName;

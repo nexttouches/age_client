@@ -2,8 +2,8 @@ package ageb.modules.ae
 {
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
-	import age.assets.AvatarInfo;
-	import age.assets.Box;
+	import age.data.AvatarInfo;
+	import age.data.Box;
 	import nt.lib.util.assert;
 	import org.apache.flex.collections.VectorList;
 	import org.osflash.signals.Signal;

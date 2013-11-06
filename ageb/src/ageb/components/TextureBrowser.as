@@ -8,8 +8,8 @@ package ageb.components
 	import mx.events.CollectionEvent;
 	import mx.events.FlexEvent;
 	import spark.events.GridSelectionEvent;
-	import age.assets.TextureAsset;
-	import age.assets.TextureAtlasConfig;
+	import age.data.TextureAsset;
+	import age.data.TextureAtlasConfig;
 	import ageb.modules.Modules;
 	import ageb.utils.FileUtil;
 	import ageb.utils.FlashTip;

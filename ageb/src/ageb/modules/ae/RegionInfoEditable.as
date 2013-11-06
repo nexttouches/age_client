@@ -1,7 +1,7 @@
 package ageb.modules.ae
 {
 	import flash.geom.Vector3D;
-	import age.assets.RegionInfo;
+	import age.data.RegionInfo;
 	import nt.lib.util.assert;
 	import org.osflash.signals.Signal;
 

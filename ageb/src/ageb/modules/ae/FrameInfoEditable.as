@@ -1,8 +1,8 @@
 package ageb.modules.ae
 {
 	import flash.geom.Vector3D;
-	import age.assets.Box;
-	import age.assets.FrameInfo;
+	import age.data.Box;
+	import age.data.FrameInfo;
 	import org.osflash.signals.Signal;
 
 	/**

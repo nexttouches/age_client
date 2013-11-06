@@ -9,8 +9,8 @@ package ageb.modules.avatar.frameInfoClasses
 	import spark.components.Group;
 	import spark.components.TextInput;
 	import spark.primitives.BitmapImage;
-	import age.assets.AvatarInfo;
-	import age.assets.TextureAsset;
+	import age.data.AvatarInfo;
+	import age.data.TextureAsset;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.avatar.op.ChangeFrameTexture;

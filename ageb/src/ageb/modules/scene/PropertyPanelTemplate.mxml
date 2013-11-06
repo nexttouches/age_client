@@ -7,9 +7,9 @@
 	xmlns:propertyPanelClasses="ageb.modules.scene.propertyPanelClasses.*">
 	<fx:Script>
 		<![CDATA[
-			import age.assets.BGInfo;
-			import age.assets.ObjectInfo;
-			import age.assets.RegionInfo;
+			import age.data.BGInfo;
+			import age.data.ObjectInfo;
+			import age.data.RegionInfo;
 			import ageb.modules.ae.BGInfoEditable;
 			import ageb.modules.ae.ObjectInfoEditable;
 			import ageb.modules.ae.RegionInfoEditable;

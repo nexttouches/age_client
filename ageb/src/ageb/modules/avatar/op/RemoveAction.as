@@ -1,6 +1,6 @@
 package ageb.modules.avatar.op
 {
-	import age.assets.ActionInfo;
+	import age.data.ActionInfo;
 	import ageb.modules.document.Document;
 
 	/**

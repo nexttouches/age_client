@@ -4,7 +4,7 @@ package age.renderers
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.system.Capabilities;
-	import age.assets.SceneInfo;
+	import age.data.SceneInfo;
 	import org.osflash.signals.Signal;
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;

@@ -1,6 +1,6 @@
 package ageb.modules.avatar.op
 {
-	import age.assets.FrameLayerInfo;
+	import age.data.FrameLayerInfo;
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.ae.FrameLayerInfoEditable;
 	import ageb.modules.document.Document;

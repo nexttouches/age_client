@@ -6,7 +6,7 @@ package ageb.modules.job
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
 	import mx.managers.PopUpManager;
-	import age.assets.SceneInfo;
+	import age.data.SceneInfo;
 	import ageb.modules.ModuleBase;
 	import ageb.utils.FlashTip;
 	import nt.lib.util.assert;

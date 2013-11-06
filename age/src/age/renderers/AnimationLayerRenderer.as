@@ -1,7 +1,7 @@
 package age.renderers
 {
-	import age.assets.Box;
-	import age.assets.FrameLayerInfo;
+	import age.data.Box;
+	import age.data.FrameLayerInfo;
 	import nt.assets.IAsset;
 	import nt.assets.IAssetUser;
 

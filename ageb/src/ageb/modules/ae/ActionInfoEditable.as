@@ -2,9 +2,9 @@ package ageb.modules.ae
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	import age.assets.ActionInfo;
-	import age.assets.AvatarInfo;
-	import age.assets.FrameLayerInfo;
+	import age.data.ActionInfo;
+	import age.data.AvatarInfo;
+	import age.data.FrameLayerInfo;
 	import ageb.ageb_internal;
 	import nt.assets.AssetConfig;
 	import nt.lib.util.assert;

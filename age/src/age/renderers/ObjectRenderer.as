@@ -2,11 +2,11 @@ package age.renderers
 {
 	import flash.geom.Vector3D;
 	import age.AGE;
-	import age.assets.ActionInfo;
-	import age.assets.AvatarInfo;
-	import age.assets.FrameLayerInfo;
-	import age.assets.FrameLayerType;
-	import age.assets.ObjectInfo;
+	import age.data.ActionInfo;
+	import age.data.AvatarInfo;
+	import age.data.FrameLayerInfo;
+	import age.data.FrameLayerType;
+	import age.data.ObjectInfo;
 	import nt.lib.util.IDisposable;
 	import nt.lib.util.assert;
 	import org.osflash.signals.ISignal;

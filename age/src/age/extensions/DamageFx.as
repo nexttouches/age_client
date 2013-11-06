@@ -3,7 +3,7 @@ package age.extensions
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	import age.AGE;
-	import age.assets.TextureAsset;
+	import age.data.TextureAsset;
 	import age.renderers.SceneRenender;
 	import starling.animation.IAnimatable;
 	import starling.display.MovieClip;

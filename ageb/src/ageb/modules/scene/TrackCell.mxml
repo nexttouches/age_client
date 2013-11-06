@@ -13,10 +13,10 @@
 			import com.greensock.TweenLite;
 			import com.greensock.easing.Expo;
 			import mx.core.UIComponent;
-			import age.assets.BGInfo;
-			import age.assets.ObjectInfo;
-			import age.assets.SceneInfo;
-			import age.assets.TextureAsset;
+			import age.data.BGInfo;
+			import age.data.ObjectInfo;
+			import age.data.SceneInfo;
+			import age.data.TextureAsset;
 			import ageb.modules.ae.LayerInfoEditable;
 
 			protected function track(event:MouseEvent):void

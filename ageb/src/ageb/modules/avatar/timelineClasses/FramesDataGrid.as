@@ -9,7 +9,7 @@ package ageb.modules.avatar.timelineClasses
 	import spark.components.gridClasses.GridSelectionMode;
 	import spark.events.GridCaretEvent;
 	import spark.events.GridSelectionEvent;
-	import age.assets.ObjectInfo;
+	import age.data.ObjectInfo;
 	import ageb.ageb_internal;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;

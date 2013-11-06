@@ -1,8 +1,8 @@
 package age.renderers
 {
 	import flash.filters.GlowFilter;
-	import age.assets.AvatarInfo;
-	import age.assets.Box;
+	import age.data.AvatarInfo;
+	import age.data.Box;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.utils.HAlign;

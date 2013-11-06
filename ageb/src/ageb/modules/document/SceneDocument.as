@@ -1,8 +1,8 @@
 package ageb.modules.document
 {
 	import flash.filesystem.File;
-	import age.assets.LayerType;
-	import age.assets.SceneInfo;
+	import age.data.LayerType;
+	import age.data.SceneInfo;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.ae.SceneInfoEditable;

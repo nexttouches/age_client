@@ -4,9 +4,9 @@ package ageb.modules.ae
 	import flash.geom.Vector3D;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
-	import age.assets.LayerType;
-	import age.assets.RegionInfo;
-	import age.assets.SceneInfo;
+	import age.data.LayerType;
+	import age.data.RegionInfo;
+	import age.data.SceneInfo;
 	import nt.assets.AssetConfig;
 	import nt.lib.reflect.Type;
 	import nt.lib.util.assert;

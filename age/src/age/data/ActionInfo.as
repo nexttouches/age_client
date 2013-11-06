@@ -1,4 +1,4 @@
-package age.assets
+package age.data
 {
 	import nt.lib.util.assert;
 	import org.osflash.signals.Signal;

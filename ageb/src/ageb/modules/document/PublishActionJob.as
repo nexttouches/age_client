@@ -2,11 +2,11 @@ package ageb.modules.document
 {
 	import flash.events.NativeProcessExitEvent;
 	import flash.filesystem.File;
-	import age.assets.ActionInfo;
-	import age.assets.AvatarInfo;
-	import age.assets.FrameInfo;
-	import age.assets.FrameLayerInfo;
-	import age.assets.FrameLayerType;
+	import age.data.ActionInfo;
+	import age.data.AvatarInfo;
+	import age.data.FrameInfo;
+	import age.data.FrameLayerInfo;
+	import age.data.FrameLayerType;
 	import ageb.modules.job.NativeJob;
 	import nt.assets.AssetConfig;
 

@@ -4,8 +4,8 @@ package age.renderers
 	import flash.display.BlendMode;
 	import flash.display.Shape;
 	import flash.filters.BlurFilter;
-	import age.assets.AvatarInfo;
-	import age.assets.Box;
+	import age.data.AvatarInfo;
+	import age.data.Box;
 	import starling.events.Event;
 	import starling.textures.Texture;
 

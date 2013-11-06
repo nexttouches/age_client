@@ -1,7 +1,7 @@
 package ageb.modules.ae
 {
 	import flash.geom.Point;
-	import age.assets.RegionInfo;
+	import age.data.RegionInfo;
 	import age.renderers.RegionInfoRenderer;
 	import starling.display.DisplayObject;
 

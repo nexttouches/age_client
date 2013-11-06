@@ -1,9 +1,9 @@
 package ageb.modules.ae
 {
 	import mx.collections.ArrayList;
-	import age.assets.LayerInfo;
-	import age.assets.LayerType;
-	import age.assets.SceneInfo;
+	import age.data.LayerInfo;
+	import age.data.LayerType;
+	import age.data.SceneInfo;
 	import nt.lib.reflect.Type;
 	import org.apache.flex.collections.VectorList;
 	import org.osflash.signals.Signal;

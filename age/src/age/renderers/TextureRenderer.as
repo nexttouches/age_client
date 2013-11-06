@@ -1,6 +1,6 @@
 package age.renderers
 {
-	import age.assets.TextureAsset;
+	import age.data.TextureAsset;
 	import nt.assets.IAsset;
 	import nt.assets.extensions.IProgressiveImageAssetUser;
 	import nt.assets.extensions.ProgressiveImageAsset;

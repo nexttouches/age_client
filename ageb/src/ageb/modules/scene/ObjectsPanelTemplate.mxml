@@ -6,7 +6,7 @@
 	title="对象列表">
 	<fx:Script>
 		<![CDATA[
-			import age.assets.ObjectInfo;
+			import age.data.ObjectInfo;
 			import spark.components.gridClasses.GridColumn;
 
 			public function type_labelFunction(info:ObjectInfo, column:GridColumn):String

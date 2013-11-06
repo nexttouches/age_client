@@ -1,7 +1,7 @@
 package ageb.modules.ae
 {
-	import age.assets.FrameInfo;
-	import age.assets.FrameLayerInfo;
+	import age.data.FrameInfo;
+	import age.data.FrameLayerInfo;
 	import age.renderers.WireframeLayerRenderer;
 
 	/**

@@ -4,8 +4,8 @@ package ageb.modules.ae
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import spark.components.Alert;
-	import age.assets.AvatarInfo;
-	import age.assets.TextureAtlasConfig;
+	import age.data.AvatarInfo;
+	import age.data.TextureAtlasConfig;
 	import nt.assets.AssetConfig;
 
 	/**

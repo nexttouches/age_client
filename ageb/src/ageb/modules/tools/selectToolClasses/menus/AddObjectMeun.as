@@ -3,7 +3,7 @@ package ageb.modules.tools.selectToolClasses.menus
 	import flash.events.Event;
 	import flash.geom.Point;
 	import age.AGE;
-	import age.assets.LayerType;
+	import age.data.LayerType;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.scene.op.AddObject;
 

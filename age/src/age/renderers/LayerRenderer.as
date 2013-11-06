@@ -4,11 +4,11 @@ package age.renderers
 	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
 	import age.AGE;
-	import age.assets.BGInfo;
-	import age.assets.LayerInfo;
-	import age.assets.LayerType;
-	import age.assets.ObjectInfo;
-	import age.assets.RegionInfo;
+	import age.data.BGInfo;
+	import age.data.LayerInfo;
+	import age.data.LayerType;
+	import age.data.ObjectInfo;
+	import age.data.RegionInfo;
 	import nt.lib.util.assert;
 	import starling.animation.IAnimatable;
 	import starling.display.DisplayObject;

@@ -4,7 +4,7 @@ package age.renderers
 	import flash.media.Sound;
 	import flash.system.Capabilities;
 	import age.AGE;
-	import age.assets.TextureAsset;
+	import age.data.TextureAsset;
 	import nt.assets.IAsset;
 	import nt.assets.extensions.ProgressiveImageAsset;
 	import org.osflash.signals.Signal;

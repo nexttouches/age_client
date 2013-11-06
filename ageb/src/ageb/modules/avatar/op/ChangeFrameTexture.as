@@ -2,7 +2,7 @@ package ageb.modules.avatar.op
 {
 	import flash.filesystem.File;
 	import flash.utils.Dictionary;
-	import age.assets.Box;
+	import age.data.Box;
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.document.Document;
 	import ageb.utils.FileUtil;

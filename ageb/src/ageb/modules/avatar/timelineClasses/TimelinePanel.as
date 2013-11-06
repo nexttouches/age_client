@@ -7,7 +7,7 @@ package ageb.modules.avatar.timelineClasses
 	import spark.components.ComboBox;
 	import spark.components.TextInput;
 	import spark.events.IndexChangeEvent;
-	import age.assets.ObjectInfo;
+	import age.data.ObjectInfo;
 	import ageb.ageb_internal;
 	import ageb.prompt;
 	import ageb.components.IntInput;

@@ -4,8 +4,8 @@ package ageb.modules.scene.propertyPanelClasses
 	import spark.components.NumericStepper;
 	import spark.components.TextArea;
 	import spark.components.TextInput;
-	import age.assets.AvatarInfo;
-	import age.assets.RegionInfo;
+	import age.data.AvatarInfo;
+	import age.data.RegionInfo;
 	import ageb.modules.Modules;
 	import ageb.modules.ae.ISelectableInfo;
 	import ageb.modules.ae.ObjectInfoEditable;

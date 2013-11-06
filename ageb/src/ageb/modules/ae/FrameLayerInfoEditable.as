@@ -1,8 +1,8 @@
 package ageb.modules.ae
 {
-	import age.assets.ActionInfo;
-	import age.assets.FrameInfo;
-	import age.assets.FrameLayerInfo;
+	import age.data.ActionInfo;
+	import age.data.FrameInfo;
+	import age.data.FrameLayerInfo;
 	import org.osflash.signals.Signal;
 
 	/**

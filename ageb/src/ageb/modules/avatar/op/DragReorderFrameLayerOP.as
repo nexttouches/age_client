@@ -1,7 +1,7 @@
 package ageb.modules.avatar.op
 {
 	import mx.core.mx_internal;
-	import age.assets.FrameLayerInfo;
+	import age.data.FrameLayerInfo;
 	import ageb.modules.avatar.timelineClasses.FrameLayerList;
 	import ageb.modules.document.Document;
 

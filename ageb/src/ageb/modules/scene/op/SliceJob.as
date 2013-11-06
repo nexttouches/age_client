@@ -2,7 +2,7 @@ package ageb.modules.scene.op
 {
 	import flash.events.NativeProcessExitEvent;
 	import flash.filesystem.File;
-	import age.assets.BGInfo;
+	import age.data.BGInfo;
 	import ageb.modules.job.NativeJob;
 	import nt.assets.util.URLUtil;
 

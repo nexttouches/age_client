@@ -2,7 +2,7 @@ package ageb.modules.avatar.frameInfoClasses
 {
 	import flash.events.Event;
 	import spark.components.NumericStepper;
-	import age.assets.Box;
+	import age.data.Box;
 	import ageb.modules.ae.AvatarInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.avatar.op.ChangeAvatarSize;

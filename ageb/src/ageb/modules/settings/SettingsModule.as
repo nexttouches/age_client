@@ -9,9 +9,9 @@ package ageb.modules.settings
 	import mx.controls.Alert;
 	import mx.events.CloseEvent;
 	import mx.managers.PopUpManager;
-	import age.assets.AvatarInfo;
-	import age.assets.ObjectType;
-	import age.assets.SceneInfo;
+	import age.data.AvatarInfo;
+	import age.data.ObjectType;
+	import age.data.SceneInfo;
 	import ageb.modules.Modules;
 	import ageb.utils.FileUtil;
 	import nt.assets.AssetConfig;

@@ -2,7 +2,7 @@ package ageb.modules.scene
 {
 	import spark.events.GridSelectionEvent;
 	import spark.events.IndexChangeEvent;
-	import age.assets.LayerType;
+	import age.data.LayerType;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
 	import ageb.modules.document.SceneDocument;

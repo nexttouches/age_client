@@ -1,4 +1,4 @@
-package age.assets
+package age.data
 {
 	import flash.debugger.enterDebugger;
 	import age.AGE;

@@ -2,7 +2,7 @@ package age.renderers
 {
 	import flash.filters.GlowFilter;
 	import flash.geom.Rectangle;
-	import age.assets.RegionInfo;
+	import age.data.RegionInfo;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;

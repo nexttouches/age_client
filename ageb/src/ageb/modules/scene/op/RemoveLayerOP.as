@@ -1,7 +1,7 @@
 package ageb.modules.scene.op
 {
 	import spark.components.List;
-	import age.assets.LayerInfo;
+	import age.data.LayerInfo;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.document.Document;
 

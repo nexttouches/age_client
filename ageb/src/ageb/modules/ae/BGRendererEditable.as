@@ -1,8 +1,8 @@
 package ageb.modules.ae
 {
-	import age.assets.BGInfo;
-	import age.assets.SceneInfo;
-	import age.assets.TextureAsset;
+	import age.data.BGInfo;
+	import age.data.SceneInfo;
+	import age.data.TextureAsset;
 	import age.renderers.BGRenderer;
 	import nt.assets.IAsset;
 

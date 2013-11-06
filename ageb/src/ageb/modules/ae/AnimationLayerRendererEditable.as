@@ -1,6 +1,6 @@
 package ageb.modules.ae
 {
-	import age.assets.FrameLayerInfo;
+	import age.data.FrameLayerInfo;
 	import age.renderers.AnimationLayerRenderer;
 	import nt.assets.Asset;
 

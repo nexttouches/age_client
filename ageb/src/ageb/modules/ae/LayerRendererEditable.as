@@ -2,8 +2,8 @@ package ageb.modules.ae
 {
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
-	import age.assets.LayerInfo;
-	import age.assets.LayerType;
+	import age.data.LayerInfo;
+	import age.data.LayerType;
 	import age.renderers.BGRenderer;
 	import age.renderers.LayerRenderer;
 	import age.renderers.Quad3D;

@@ -2,7 +2,7 @@ package ageb.modules.ae
 {
 	import flash.geom.Point;
 	import mx.events.CollectionEvent;
-	import age.assets.SceneInfo;
+	import age.data.SceneInfo;
 	import age.renderers.MouseResponder;
 	import age.renderers.SceneRenender;
 	import starling.display.DisplayObject;

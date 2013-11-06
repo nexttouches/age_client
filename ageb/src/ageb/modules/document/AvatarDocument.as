@@ -5,9 +5,9 @@ package ageb.modules.document
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.geom.Vector3D;
-	import age.assets.ActionInfo;
-	import age.assets.AvatarInfo;
-	import age.assets.ObjectType;
+	import age.data.ActionInfo;
+	import age.data.AvatarInfo;
+	import age.data.ObjectType;
 	import ageb.modules.ae.AvatarInfoEditable;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.IParent;

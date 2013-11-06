@@ -2,9 +2,9 @@ package age.renderers
 {
 	import flash.geom.Point;
 	import flash.geom.Vector3D;
-	import age.assets.Box;
-	import age.assets.FrameInfo;
-	import age.assets.FrameLayerInfo;
+	import age.data.Box;
+	import age.data.FrameInfo;
+	import age.data.FrameLayerInfo;
 
 	/**
 	 * 线框渲染器

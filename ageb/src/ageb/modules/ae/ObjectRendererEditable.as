@@ -1,6 +1,6 @@
 package ageb.modules.ae
 {
-	import age.assets.ObjectInfo;
+	import age.data.ObjectInfo;
 	import age.renderers.ObjectRenderer;
 
 	/**

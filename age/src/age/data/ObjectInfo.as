@@ -1,4 +1,4 @@
-package age.assets
+package age.data
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;

@@ -1,4 +1,4 @@
-package age.assets
+package age.data
 {
 	import flash.geom.Vector3D;
 	import flash.utils.getTimer;

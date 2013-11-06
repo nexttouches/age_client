@@ -7,8 +7,8 @@ package ageb.modules.tools.selectToolClasses.menus
 	import mx.controls.Alert;
 	import mx.events.CloseEvent;
 	import age.AGE;
-	import age.assets.BGInfo;
-	import age.assets.LayerType;
+	import age.data.BGInfo;
+	import age.data.LayerType;
 	import ageb.modules.ae.LayerInfoEditable;
 	import ageb.modules.scene.op.AddBG;
 	import ageb.modules.scene.op.SliceJob;

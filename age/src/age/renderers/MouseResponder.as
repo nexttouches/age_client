@@ -1,8 +1,8 @@
 package age.renderers
 {
 	import flash.events.MouseEvent;
-	import age.assets.AvatarInfo;
-	import age.assets.Box;
+	import age.data.AvatarInfo;
+	import age.data.Box;
 	import org.osflash.signals.Signal;
 	import starling.events.Event;
 	import starling.events.Touch;

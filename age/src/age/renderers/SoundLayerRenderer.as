@@ -1,6 +1,6 @@
 package age.renderers
 {
-	import age.assets.FrameLayerInfo;
+	import age.data.FrameLayerInfo;
 	import nt.lib.util.IDisposable;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
