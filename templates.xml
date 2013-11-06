@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="com.adobe.flexide.as.core.codetemplates.action_script" deleted="false" description="插入 @inheritDoc" enabled="true" name="q1">		/**&#13;
+		 * @inheritDoc&#13;
+		 *&#13;
+		 */</template><template autoinsert="true" context="com.adobe.flexide.as.core.codetemplates.action_script" deleted="false" description="插入 @private" enabled="true" name="q2">		/**&#13;
+		 * @private&#13;
+		 *&#13;
+		 */&#13;
+</template><template autoinsert="true" context="com.adobe.flexide.as.core.codetemplates.action_script" deleted="false" description="插入 constructor" enabled="true" name="q3">		/**&#13;
+		 * constructor&#13;
+		 * &#13;
+		 */&#13;
+</template></templates>
