@@ -8,6 +8,7 @@ package ageb.modules.document
 	import age.data.ActionInfo;
 	import age.data.AvatarInfo;
 	import age.data.ObjectType;
+	import age.data.SceneInfo;
 	import ageb.modules.ae.AvatarInfoEditable;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.IParent;
@@ -16,6 +17,9 @@ package ageb.modules.document
 	import ageb.modules.ae.SceneInfoEditable;
 	import ageb.modules.avatar.AvatarDocumentView;
 	import ageb.utils.FileUtil;
+	import nt.assets.Asset;
+	import nt.assets.AssetConfig;
+	import nt.assets.AssetInfo;
 
 	/**
 	 * Avatar 文档
@@ -68,7 +72,10 @@ package ageb.modules.document
 			avatar = new AvatarInfoEditable(raw);
 			AvatarInfo.list[avatar.id] = avatar;
 			// 创建 SceneInfo
-			scene = new SceneInfoEditable(FileUtil.readJSON(File.applicationDirectory.resolvePath("templates/avatar_scene.txt")));
+			const sceneRaw:Object = FileUtil.readJSON(new File(AssetConfig.getInfo(SceneInfo.resolvePath("avatar_scene.txt")).url));
+			// 设置固定的 ID
+			sceneRaw.id = "avatar_scene";
+			scene = new SceneInfoEditable(sceneRaw);
 			// 创建 ObjectInfo，并添加到 SceneInfo 中
 			object = new ObjectInfoEditable();
 			object.position.setTo(scene.width / 2, 0, scene.depth / 2);

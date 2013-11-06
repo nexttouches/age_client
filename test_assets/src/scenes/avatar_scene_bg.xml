@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:f5d5097c2fe1b5b5d42092f61aba74e2:1/1$ -->
+<TextureAtlas imagePath="avatar_scene_bg.png">
+    <SubTexture name="bg_0_0" x="4" y="4" width="2" height="512" frameX="-499" frameY="0" frameWidth="512" frameHeight="512"/>
+    <SubTexture name="bg_0_1" x="12" y="4" width="512" height="288"/>
+    <SubTexture name="bg_1_0" x="506" y="298" width="1" height="1" frameX="0" frameY="0" frameWidth="488" frameHeight="512"/>
+    <SubTexture name="bg_1_1" x="12" y="298" width="488" height="2" frameX="0" frameY="-87" frameWidth="488" frameHeight="288"/>
+</TextureAtlas>

@@ -3,9 +3,11 @@
 	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:mx="library://ns.adobe.com/flex/mx"
 	xmlns:tools="ageb.modules.tools.*"
-	xmlns:document="ageb.modules.document.*" xmlns:components="ageb.components.*">
+	xmlns:document="ageb.modules.document.*"
+	xmlns:components="ageb.components.*">
 	<fx:Script>
 		<![CDATA[
+			import age.data.Box;
 			import ageb.modules.scene.op.ChangeSceneSize;
 
 			/**
@@ -14,24 +16,24 @@
 			 */
 			protected function saveSize():void
 			{
-				var op:ChangeSceneSize = new ChangeSceneSize(doc, int(sceneWidth.value), int(sceneHeight.value));
-				op.execute();
+				new ChangeSceneSize(doc, new Box(0, 0, 0, int(xField.value), int(yField.value), int(zField.value))).execute();
 			}
 		]]>
 	</fx:Script>
 	<document:FormRow 
 		width="100%"
 		label="大小">
-		<components:IntInput id="sceneWidth"
+		<components:IntInput id="xField"
 			width="100%"
 			maximum="100000"
 			minimum="1"
 			change="saveSize()"/>
-		<s:Label 
-			width="10"
-			textAlign="center"
-			text="×"/>
-		<components:IntInput id="sceneHeight"
+		<components:IntInput id="yField"
+			width="100%"
+			maximum="5000"
+			minimum="1"
+			change="saveSize()"/>
+		<components:IntInput id="zField"
 			width="100%"
 			maximum="5000"
 			minimum="1"

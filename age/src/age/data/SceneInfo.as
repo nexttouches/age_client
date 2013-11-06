@@ -2,8 +2,9 @@ package age.data
 {
 	import flash.geom.Vector3D;
 	import flash.utils.getTimer;
-	import age.utils.__projectY;
 	import nt.assets.Asset;
+	import nt.lib.util.Vector3DUtil;
+	import nt.lib.util.assert;
 
 	/**
 	 * SceneInfo 是场景信息<br>
@@ -13,6 +14,20 @@ package age.data
 	public class SceneInfo
 	{
 		/**
+		 * 默认场景大小
+		 */
+		public static const DEFAULT_SIZE:Number = 400;
+
+		/**
+		 * 创建一个新的 SceneInfo
+		 * @param raw
+		 */
+		public function SceneInfo(raw:Object = null)
+		{
+			fromJSON(raw);
+		}
+
+		/**
 		 * ID
 		 */
 		public var id:String;
@@ -20,22 +35,22 @@ package age.data
 		/**
 		 * 宽
 		 */
-		public var width:uint = 0;
+		public var width:Number = DEFAULT_SIZE;
 
 		/**
 		 * 高
 		 */
-		public var height:uint = 0;
+		public var height:Number = DEFAULT_SIZE;
 
 		/**
 		 * 深
 		 */
-		public var depth:Number = 0;
+		public var depth:Number = DEFAULT_SIZE;
 
 		/**
-		 * 场景的下标，这里可以视作左下角位置
+		 * 场景大小，默认是边长为 400 的正方形
 		 */
-		public var lower:Vector3D = new Vector3D();
+		public var size:Box = new Box(0, 0, 0, DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_SIZE);
 
 		/**
 		 * 地面摩擦力
@@ -97,8 +112,7 @@ package age.data
 		}
 
 		/**
-		 * 用于创建 RegionInfo 的类<br>
-		 * 默认值 RegionInfo
+		 * 用于创建 RegionInfo 的类，默认值 RegionInfo
 		 * @return
 		 *
 		 */
@@ -108,16 +122,7 @@ package age.data
 		}
 
 		/**
-		 * 创建一个新的 SceneInfo
-		 * @param raw
-		 */
-		public function SceneInfo(raw:Object = null)
-		{
-			fromJSON(raw);
-		}
-
-		/**
-		 * 获得图层数目
+		 * 图层数目
 		 * @return
 		 *
 		 */
@@ -230,7 +235,7 @@ package age.data
 		 */
 		public function projectY(y:Number, z:Number):Number
 		{
-			return __projectY(y, z, height);
+			return height - y - z * 0.5;
 		}
 
 		/**
@@ -322,10 +327,9 @@ package age.data
 		public function toJSON(k:*):*
 		{
 			// 这里输出的 JSON 并不记录 ID，这可以确保修改文件名就可以改场景 ID
-			var result:Object = { width: width, height: height, depth: depth,
+			var result:Object = { size: size,
 					charLayerIndex: charLayerIndex, grids: grids, layers: layers,
-					regions: regions, g: [ g.x, g.y, g.z ], lower: [ lower.x, lower.y,
-																	 lower.z ], friction: friction };
+					regions: regions, g: [ g.x, g.y, g.z ]};
 			return result;
 		}
 
@@ -336,57 +340,58 @@ package age.data
 		 */
 		public function fromJSON(s:*):void
 		{
-			if (s)
+			if (!s)
 			{
-				var started:Number = getTimer();
-				id = s.id;
-				width = s.width;
-				height = s.height;
-				depth = s.depth || s.height;
-				charLayerIndex = s.charLayerIndex;
-				grids = s.grids; // 这里要当心 raw.grids 被修改。方便起见先这么做，应该没什么问题
-				restore(s, this, "friction");
-
-				if (grids)
-				{
-					gridResolution = new Vector3D(grids.length > 0 ? grids[0].length : 0, 0, grids.length);
-				}
-				var i:int, n:int;
-
-				// 图层
-				for (i = 0, n = s.layers.length; i < n; i++)
-				{
-					var layerInfo:LayerInfo = new layerInfoClass(s.layers[i], this);
-					layerInfo.parent = this;
-					layers.push(layerInfo);
-				}
-				// 标记角色层
-				layers[charLayerIndex].isCharLayer = true;
-
-				// 区域
-				if (s.regions)
-				{
-					for (i = 0, n = s.regions.length; i < n; i++)
-					{
-						var r:RegionInfo = new regionInfoClass(s.regions[i]);
-						r.parent = this;
-						regions.push(r);
-					}
-				}
-
-				// g
-				if (s.g)
-				{
-					g = new Vector3D(s.g[0], s.g[1], s.g[2]);
-				}
-
-				// 下标
-				if (s.lower)
-				{
-					lower = new Vector3D(s.lower[0], s.lower[1], s.lower[2]);
-				}
-				trace("[SceneInfo] 反序列化耗时", getTimer() - started + "ms");
+				return;
 			}
+			var i:int, n:int;
+			var started:Number = getTimer();
+			assert("id" in s, "源数据中必须包含 id", ArgumentError);
+			id = s.id;
+
+			// 场景尺寸（可选）
+			if ("size" in s)
+			{
+				size.fromJSON(s.size);
+				// 下面 3 个属性用于快速访问
+				width = size.width;
+				height = size.height;
+				depth = size.depth;
+			}
+			// 主图层
+			restore(s, this, "charLayerIndex");
+			// 网格
+			restore(s, this, "grids"); // 这里要当心 raw.grids 被修改。方便起见先这么做，应该没什么问题
+			gridResolution = new Vector3D(grids.length > 0 ? grids[0].length : 0, 0, grids.length);
+
+			// 图层
+			for (i = 0, n = s.layers.length; i < n; i++)
+			{
+				var layerInfo:LayerInfo = new layerInfoClass(s.layers[i], this);
+				layerInfo.parent = this;
+				layers.push(layerInfo);
+			}
+			// 标记角色层
+			layers[charLayerIndex].isCharLayer = true;
+
+			// 区域
+			if (s.regions)
+			{
+				for (i = 0, n = s.regions.length; i < n; i++)
+				{
+					var r:RegionInfo = new regionInfoClass(s.regions[i]);
+					r.parent = this;
+					regions.push(r);
+				}
+			}
+
+			// g
+			if ("g" in s)
+			{
+				g = Vector3DUtil.fromArray(s.g);
+			}
+			restore(s, this, "friction");
+			trace("[SceneInfo] 反序列化耗时", getTimer() - started + "ms");
 		}
 	}
 }

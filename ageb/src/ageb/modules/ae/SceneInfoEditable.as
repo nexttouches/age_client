@@ -4,6 +4,7 @@ package ageb.modules.ae
 	import flash.geom.Vector3D;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
+	import age.data.Box;
 	import age.data.LayerType;
 	import age.data.RegionInfo;
 	import age.data.SceneInfo;
@@ -126,15 +127,15 @@ package ageb.modules.ae
 
 		/**
 		 * 设置地图的宽高，然后发送 onSizeChange
-		 * @param width
-		 * @param height
+		 * @param size
 		 *
 		 */
-		public function setSize(width:Number, height:Number, depth:Number = NaN):void
+		public function setSize(size:Box):void
 		{
-			this.width = width;
-			this.height = height;
-			this.depth = isNaN(depth) ? height : depth;
+			this.size = size;
+			width = size.width;
+			height = size.height;
+			depth = size.depth;
 			onSizeChange.dispatch();
 		}
 

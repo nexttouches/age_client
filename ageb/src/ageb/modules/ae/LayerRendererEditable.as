@@ -26,6 +26,8 @@ package ageb.modules.ae
 
 		private var bottom:Quad3D = new Quad3D(1, 1, 0xffff00);
 
+		private var far:Quad3D = new Quad3D(1, 1, 0xffff00);
+
 		private var widthField:ArrangableTextField = new ArrangableTextField();
 
 		private var heightField:ArrangableTextField = new ArrangableTextField();
@@ -73,10 +75,12 @@ package ageb.modules.ae
 			{
 				const w:Number = info.scaledWidth;
 				const h:Number = info.scaledHeight;
+				const d:Number = info.scaledDepth;
 				top.projectY = info.parent.projectY;
 				left.projectY = info.parent.projectY;
 				right.projectY = info.parent.projectY;
 				bottom.projectY = info.parent.projectY;
+				far.projectY = info.parent.projectY;
 				// top
 				top.draw(w, 1);
 				top.x = 0;
@@ -95,6 +99,11 @@ package ageb.modules.ae
 				bottom.draw(w, 1);
 				bottom.x = 0;
 				bottom.y = 0;
+				// far
+				far.draw(w, 1);
+				far.x = 0;
+				far.y = 0;
+				far.z = d;
 				// 其他文本框
 				widthField.text = format("{0} ({1})", top.width.toFixed(3), info.scrollRatio.toFixed(2));
 				widthField.x = top.width / 2;
@@ -104,6 +113,7 @@ package ageb.modules.ae
 				addChild(left);
 				addChild(right);
 				addChild(bottom);
+				addChild(far);
 				addChild(widthField);
 				addChild(heightField);
 			}

@@ -1,5 +1,6 @@
 package ageb.modules.scene.op
 {
+	import age.data.Box;
 	import ageb.modules.document.Document;
 
 	/**
@@ -9,13 +10,9 @@ package ageb.modules.scene.op
 	 */
 	public class ChangeSceneSize extends SceneOPBase
 	{
-		public var width:Number;
+		public var oldSize:Box;
 
-		public var height:Number;
-
-		public var oldWidth:Number;
-
-		public var oldHeight:Number;
+		public var size:Box;
 
 		/**
 		 * 创建一个新的 ChangeSceneSize
@@ -24,32 +21,46 @@ package ageb.modules.scene.op
 		 * @param height
 		 *
 		 */
-		public function ChangeSceneSize(doc:Document, width:Number, height:Number)
+		public function ChangeSceneSize(doc:Document, size:Box)
 		{
 			super(doc);
-			this.width = width;
-			this.height = height;
+			this.size = size;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function saveOld():void
 		{
-			oldWidth = doc.info.width;
-			oldHeight = doc.info.height;
+			oldSize = doc.info.size.clone1();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function redo():void
 		{
-			doc.info.setSize(width, height);
+			doc.info.setSize(size);
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function undo():void
 		{
-			doc.info.setSize(oldWidth, oldHeight);
+			doc.info.setSize(oldSize);
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get name():String
 		{
-			return format("修改场景大小 ({width}×{height})", this);
+			return format("修改场景大小 ({width},{height},{depth})", size);
 		}
 	}
 }

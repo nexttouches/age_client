@@ -4,12 +4,21 @@ package ageb.modules.tools.sceneInfoClasses
 	import ageb.modules.document.Document;
 	import ageb.modules.document.SceneDocument;
 
+	/**
+	 * 场景信息工具
+	 * @author zhanghaocong
+	 *
+	 */
 	public class SceneInfoTool extends SceneInfoPanel
 	{
 
 		[Embed(source="../assets/icons/window.png")]
 		private var iconClass:Class;
 
+		/**
+		 * constructor
+		 *
+		 */
 		public function SceneInfoTool()
 		{
 			super();
@@ -25,13 +34,13 @@ package ageb.modules.tools.sceneInfoClasses
 		 */
 		protected function onSizeChange():void
 		{
-			sceneWidth.value = sceneDoc.info.width;
-			sceneHeight.value = sceneDoc.info.height;
+			xField.value = sceneDoc.info.width;
+			yField.value = sceneDoc.info.height;
+			zField.value = sceneDoc.info.depth;
 		}
 
 		/**
 		 * @inheritDoc
-		 * @param value
 		 *
 		 */
 		override public function set doc(value:Document):void
@@ -50,7 +59,6 @@ package ageb.modules.tools.sceneInfoClasses
 
 		/**
 		 * @inheritDoc
-		 * @param event
 		 *
 		 */
 		override protected function onShow(event:FlexEvent):void
