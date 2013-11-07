@@ -7,6 +7,7 @@ package age.data
 	import nt.assets.AssetLoadQueue;
 	import nt.assets.IAsset;
 	import nt.assets.IAssetUser;
+	import nt.assets.extensions.SoundAsset;
 	import nt.lib.reflect.Type;
 	import org.osflash.signals.Signal;
 	import starling.textures.Texture;
@@ -246,6 +247,22 @@ package age.data
 		}
 
 		/**
+		 * @inheritDoc
+		 * @param user
+		 *
+		 */
+		override public function removeUser(user:IAssetUser):void
+		{
+			super.removeUser(user);
+
+			// 一旦没有用户了，就解掉所有资源的引用
+			if (numUsers == 0)
+			{
+				dispose();
+			}
+		}
+
+		/**
 		 * 初始化（填充） textures 数组
 		 *
 		 */
@@ -263,7 +280,7 @@ package age.data
 				{
 					continue;
 				}
-				const asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.assetPath);
+				const asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.texturePath);
 
 				// 检查是否有子贴图，为 null 或空字符串表示没有子贴图
 				if (keyframe.textureName && asset.textureAtlas)
@@ -279,22 +296,6 @@ package age.data
 		}
 
 		/**
-		 * @inheritDoc
-		 * @param user
-		 *
-		 */
-		override public function removeUser(user:IAssetUser):void
-		{
-			super.removeUser(user);
-
-			// 一旦没有用户了，就解掉所有资源的引用
-			if (numUsers == 0)
-			{
-				dispose();
-			}
-		}
-
-		/**
 		 * 初始化粒子相关资源
 		 *
 		 */
@@ -304,12 +305,27 @@ package age.data
 		}
 
 		/**
-		 * 初始化（填充） sounds
+		 * 初始化（填充） sounds 数组
 		 *
 		 */
 		final protected function initSounds():void
 		{
-			enterDebugger();
+			const n:uint = frames.length;
+			var newSounds:Vector.<Sound> = new Vector.<Sound>(n, true);
+			var keyframe:FrameInfo;
+
+			for (var i:int = 0; i < n; i++)
+			{
+				keyframe = frames[i].keyframe;
+
+				if (!keyframe.sound)
+				{
+					continue;
+				}
+				const asset:SoundAsset = SoundAsset.get(AvatarInfo.folder + "/" + frames[i].soundPath);
+				newSounds[i] = asset.sound;
+			}
+			sounds = newSounds;
 		}
 
 		/**
@@ -353,6 +369,19 @@ package age.data
 			}
 			// 总之先清空
 			empty();
+
+			for (var i:int = 0, n:int = frames.length; i < n; i++)
+			{
+				if (frames[i].isKeyframe)
+				{
+					// 判断是否有贴图
+					if (frames[i].sound)
+					{
+						const asset:SoundAsset = SoundAsset.get(AvatarInfo.folder + "/" + frames[i].soundPath);
+						addAsset(asset);
+					}
+				}
+			}
 		}
 
 		/**
@@ -379,7 +408,7 @@ package age.data
 					// 判断是否有贴图
 					if (frames[i].texture)
 					{
-						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].assetPath);
+						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].texturePath);
 						asset.useThumb = isTextureUseThumb;
 						addAsset(asset);
 					}

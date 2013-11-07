@@ -200,6 +200,16 @@ package ageb.modules.ae
 		 * @return
 		 *
 		 */
+		override protected function get soundLayerRendererClass():Class
+		{
+			return SoundLayerRendererEditable;
+		}
+
+		/**
+		 * @inheritDoc
+		 * @return
+		 *
+		 */
 		override protected function get wireframeLayerRendererClass():Class
 		{
 			return WireframeLayerRendererEditable;

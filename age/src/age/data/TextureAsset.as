@@ -9,7 +9,6 @@ package age.data
 	import nt.assets.extensions.ImageAsset;
 	import nt.assets.extensions.LazyCallQueue;
 	import nt.assets.extensions.ProgressiveImageAsset;
-	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 

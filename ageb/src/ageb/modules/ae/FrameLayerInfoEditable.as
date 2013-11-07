@@ -45,6 +45,7 @@ package ageb.modules.ae
 		{
 			super.addFrameFromRaw(raw);
 			const info:FrameInfoEditable = lastFrame;
+			info.onSoundChange.add(reloadAssets);
 			info.onTextureChange.add(reloadAssets);
 			info.onIsKeyframeChange.add(reloadAssets);
 		}
@@ -99,6 +100,7 @@ package ageb.modules.ae
 				frames.splice(index, 0, info);
 			}
 			info.parent = this;
+			info.onSoundChange.add(reloadAssets);
 			info.onTextureChange.add(reloadAssets);
 			info.onIsKeyframeChange.add(reloadAssets);
 			onAddFrame.dispatch(info, index);
@@ -124,12 +126,14 @@ package ageb.modules.ae
 			}
 			const oldInfo:FrameInfoEditable = frames[index] as FrameInfoEditable;
 			oldInfo.onTextureChange.remove(reloadAssets);
+			oldInfo.onSoundChange.remove(reloadAssets);
 			oldInfo.onIsKeyframeChange.remove(reloadAssets);
 			oldInfo.parent = null;
 			frames[index] = info;
 			info.parent = this;
 			info.onTextureChange.add(reloadAssets);
 			info.onIsKeyframeChange.add(reloadAssets);
+			info.onSoundChange.add(reloadAssets);
 			onReplaceFrame.dispatch(oldInfo, info, index);
 		}
 
@@ -199,6 +203,7 @@ package ageb.modules.ae
 			}
 			const info:FrameInfoEditable = frames.splice(index, 1)[0];
 			info.parent = null;
+			info.onSoundChange.remove(reloadAssets);
 			info.onTextureChange.remove(reloadAssets);
 			info.onIsKeyframeChange.remove(reloadAssets);
 			onRemoveFrame.dispatch(info, index);
@@ -232,6 +237,7 @@ package ageb.modules.ae
 			{
 				info = frames[i] as FrameInfoEditable;
 				info.parent = null;
+				info.onSoundChange.remove(reloadAssets);
 				info.onTextureChange.remove(reloadAssets);
 				info.onIsKeyframeChange.remove(reloadAssets);
 			}
@@ -241,6 +247,7 @@ package ageb.modules.ae
 			{
 				info = frames[i] as FrameInfoEditable;
 				info.parent = this;
+				info.onSoundChange.add(reloadAssets);
 				info.onTextureChange.add(reloadAssets);
 				info.onIsKeyframeChange.add(reloadAssets);
 			}

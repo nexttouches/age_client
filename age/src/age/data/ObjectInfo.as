@@ -523,9 +523,6 @@ package age.data
 						_onCurrentFrameChange.dispatch(this);
 					}
 
-					// 声音是一定会播的
-					// TODO 该操作应由渲染器完成
-					// playSound(_currentFrame);
 					if (breakAfterFrame)
 					{
 						break;
@@ -752,9 +749,6 @@ package age.data
 					currentTime += getFrameDuration(i);
 				}
 
-				// TODO 通知渲染器需要立即更新贴图等
-				// playRenderers(_currentFrame);
-				// playSound(_currentFrame);
 				if (_onCurrentFrameChange)
 				{
 					_onCurrentFrameChange.dispatch(this);

@@ -50,8 +50,20 @@ package ageb.modules.ae
 			{
 				texture = texture.replace("#", "/");
 				texture = texture.replace("_", "/");
-				assetPath = texture;
+				texturePath = texture;
 				textureName = "";
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override protected function parseSound(sound:String):void
+		{
+			if (sound)
+			{
+				soundPath = sound.replace(/_/g, "/") + ".mp3";
 			}
 		}
 
@@ -264,25 +276,6 @@ package ageb.modules.ae
 		public function get keyframeEditable():FrameInfoEditable
 		{
 			return keyframe as FrameInfoEditable;
-		}
-
-		/**
-		 * 通过调用 setAssetPath 设置 assetPath 时广播
-		 */
-		public var onAssetPathChange:Signal = new Signal;
-
-		/**
-		 * 设置 assetPath
-		 * @param value
-		 *
-		 */
-		public function setAssetPath(value:String):void
-		{
-			if (value != assetPath)
-			{
-				assetPath = value;
-				onAssetPathChange.dispatch();
-			}
 		}
 	}
 }

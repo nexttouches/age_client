@@ -40,5 +40,16 @@ package nt.assets.extensions
 			_state = AssetState.Loaded;
 			notifyLoadComplete();
 		}
+
+		/**
+		* 根据路径获得 SoundAsset，该路径相对于 AssetConfig.root
+		* @param relativePath
+		* @return
+		*
+		*/
+		public static function get(relativePath:String):SoundAsset
+		{
+			return Asset.get(relativePath, 0, SoundAsset) as SoundAsset;
+		}
 	}
 }

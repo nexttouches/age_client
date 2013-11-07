@@ -3,19 +3,26 @@ package ageb.modules.avatar.frameInfoClasses
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
-	import flash.text.ReturnKeyLabel;
+	import mx.controls.Alert;
+	import mx.events.CloseEvent;
 	import spark.components.Button;
 	import spark.components.TextInput;
+	import age.data.AvatarInfo;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
+	import ageb.modules.avatar.op.ChangeFrameSound;
 	import ageb.utils.FileUtil;
+	import ageb.utils.FlashTip;
+	import nt.assets.IAsset;
+	import nt.assets.IAssetUser;
+	import nt.assets.extensions.SoundAsset;
 
 	/**
 	 * 类型为 SOUND 的 FrameInfo 的面板
 	 * @author zhanghaocong
 	 *
 	 */
-	public class SoundContent extends FrameInfoPanelContent
+	public class SoundContent extends FrameInfoPanelContent implements IAssetUser
 	{
 
 		[SkinPart(required="true")]
@@ -63,9 +70,40 @@ package ageb.modules.avatar.frameInfoClasses
 		 */
 		private function onBrowseComplete(f:File):void
 		{
-			if (expectFolder.nativePath != f.parent.nativePath)
+			if (expectFolder.nativePath == f.parent.nativePath)
 			{
+				doChangeSound(f);
 			}
+			else
+			{
+				Alert.show("选择的资源不在期待目录中，要复制过去吗？", "提示", Alert.YES | Alert.CANCEL, null, function(event:CloseEvent):void
+				{
+					if (event.detail == Alert.YES)
+					{
+						try
+						{
+							doChangeSound(f);
+						}
+						catch (e:Error)
+						{
+							Alert.show("执行过程中发生错误，操作已取消\n（" + e.message + "）", "错误");
+						}
+					}
+					else
+					{
+						FlashTip.show("操作已取消");
+					}
+				});
+			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function doChangeSound(source:File):void
+		{
+			new ChangeFrameSound(doc, keyframes, expectFolder, source).execute();
 		}
 
 		/**
@@ -78,7 +116,13 @@ package ageb.modules.avatar.frameInfoClasses
 			{
 				return;
 			}
-			// TODO 播放该帧的 MP3
+
+			if (keyframe.sound)
+			{
+				isPlay = true;
+				sa = SoundAsset.get(AvatarInfo.folder + "/" + keyframe.soundPath);
+				sa.load();
+			}
 		}
 
 		/**
@@ -90,26 +134,26 @@ package ageb.modules.avatar.frameInfoClasses
 		{
 			if (keyframe)
 			{
-				keyframe.onAssetPathChange.remove(onAssetPathChange);
+				keyframe.onSoundChange.remove(onSoundPathChange);
 			}
 			super.keyframes = value;
 
 			if (keyframe)
 			{
-				keyframe.onAssetPathChange.add(onAssetPathChange);
+				keyframe.onSoundChange.add(onSoundPathChange);
 			}
-			onAssetPathChange();
+			onSoundPathChange();
 		}
 
 		/**
 		 * @private
 		 *
 		 */
-		private function onAssetPathChange():void
+		private function onSoundPathChange():void
 		{
 			if (keyframe)
 			{
-				assetPathField.text = keyframe.assetPath;
+				assetPathField.text = keyframe.sound;
 			}
 			else
 			{
@@ -135,6 +179,77 @@ package ageb.modules.avatar.frameInfoClasses
 		public function get expectFolder():File
 		{
 			return ActionInfoEditable(keyframe.parent.parent).expectFolder;
+		}
+
+		private var _sa:SoundAsset;
+
+		private var isPlay:Boolean;
+
+		/**
+		 * 声音资源
+		 * @return
+		 *
+		 */
+		public function get sa():SoundAsset
+		{
+			return _sa;
+		}
+
+		public function set sa(value:SoundAsset):void
+		{
+			if (_sa)
+			{
+				_sa.removeUser(this);
+			}
+			_sa = value;
+
+			if (_sa)
+			{
+				_sa.addUser(this);
+
+				if (_sa.isComplete)
+				{
+					onAssetLoadComplete(_sa);
+				}
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetDispose(asset:IAsset):void
+		{
+			_sa = null;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadComplete(asset:IAsset):void
+		{
+			if (isPlay)
+			{
+				isPlay = false;
+				_sa.sound.play();
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadError(asset:IAsset):void
+		{
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
+		{
 		}
 	}
 }

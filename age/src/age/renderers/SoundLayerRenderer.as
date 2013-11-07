@@ -1,16 +1,18 @@
 package age.renderers
 {
 	import age.data.FrameLayerInfo;
+	import nt.assets.IAsset;
+	import nt.assets.IAssetUser;
 	import nt.lib.util.IDisposable;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	/**
-	 * 声音图层是虚拟图层，并不出现在场景中
+	 * 声音图层是虚拟图层，并不显示在场景中
 	 * @author zhanghaocong
 	 *
 	 */
-	public class SoundLayerRenderer implements IDisposable
+	public class SoundLayerRenderer implements IDisposable, IAssetUser
 	{
 		/**
 		 * constructor
@@ -35,7 +37,14 @@ package age.renderers
 		public function set currentFrame(value:int):void
 		{
 			_currentFrame = value;
-			trace("[SoundLayerRenderer]", _currentFrame);
+
+			if (info_isComplete)
+			{
+				if (_info.sounds[_currentFrame])
+				{
+					_info.sounds[_currentFrame].play();
+				}
+			}
 		}
 
 		private var _info:FrameLayerInfo;
@@ -52,7 +61,26 @@ package age.renderers
 
 		public function set info(value:FrameLayerInfo):void
 		{
+			if (_info)
+			{
+				info_isComplete = false;
+				_info.removeUser(this);
+			}
 			_info = value;
+
+			if (_info)
+			{
+				_info.addUser(this);
+
+				if (_info.isComplete)
+				{
+					onAssetLoadComplete(_info);
+				}
+				else
+				{
+					_info.load();
+				}
+			}
 		}
 
 		private var _isDisposed:Boolean;
@@ -64,6 +92,7 @@ package age.renderers
 		 */
 		public function dispose():Boolean
 		{
+			info = null;
 			return _isDisposed = true;
 		}
 
@@ -79,6 +108,8 @@ package age.renderers
 
 		private var _onDispose:Signal;
 
+		protected var info_isComplete:Boolean;
+
 		/**
 		 * @inheritDoc
 		 * @return
@@ -87,6 +118,40 @@ package age.renderers
 		public function get onDispose():ISignal
 		{
 			return _onDispose ||= new Signal();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetDispose(asset:IAsset):void
+		{
+			_info = null;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadComplete(asset:IAsset):void
+		{
+			info_isComplete = true;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadError(asset:IAsset):void
+		{
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
+		{
 		}
 	}
 }

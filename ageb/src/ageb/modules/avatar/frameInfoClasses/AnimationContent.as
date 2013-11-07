@@ -158,7 +158,7 @@ package ageb.modules.avatar.frameInfoClasses
 			}
 			else
 			{
-				Alert.show("选择的图片不在动作目录中，要复制过去吗？", "提示", Alert.YES | Alert.CANCEL, null, function(event:CloseEvent):void
+				Alert.show("选择的资源不在期待目录中，要复制过去吗？", "提示", Alert.YES | Alert.CANCEL, null, function(event:CloseEvent):void
 				{
 					if (event.detail == Alert.YES)
 					{
@@ -220,7 +220,7 @@ package ageb.modules.avatar.frameInfoClasses
 		{
 			if (keyframe && keyframe.texture)
 			{
-				ta = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.assetPath);
+				ta = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.texturePath);
 				ta.useThumb = false;
 				ta.load();
 			}

@@ -96,6 +96,7 @@ package ageb.modules.avatar.op
 					if (isCopyProps && newFrame.index > 0)
 					{
 						newFrame.texture = newFrame.prevKeyFrame.texture;
+						newFrame.sound = newFrame.prevKeyFrame.sound;
 
 						if (newFrame.prevKeyFrame.box)
 						{

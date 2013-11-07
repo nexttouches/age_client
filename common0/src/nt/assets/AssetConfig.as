@@ -45,6 +45,17 @@ package nt.assets
 		public static var isPathIsURL:Boolean;
 
 		/**
+		 * 获得相对于 AssetConfig.root 的路径
+		 * @param args
+		 * @return
+		 *
+		 */
+		public static function resolvePath(... args):String
+		{
+			return AssetConfig.root + args.join("/");
+		}
+
+		/**
 		 * 设置或获取是否启用无缓存模式
 		 */
 		public static var noCache:Boolean = false;

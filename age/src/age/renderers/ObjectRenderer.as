@@ -213,6 +213,7 @@ package age.renderers
 				_info.onIsStickyChange.remove(onIsStickyChange);
 				_info.onAvatarIDChange.remove(onAvatarIDChange);
 				_info.onActionNameChange.remove(validateNow);
+				_info.onCurrentFrameChange.remove(onCurrentFrameChange);
 			}
 			_info = value;
 
@@ -225,6 +226,7 @@ package age.renderers
 				_info.onIsStickyChange.add(onIsStickyChange);
 				_info.onAvatarIDChange.add(onAvatarIDChange);
 				_info.onActionNameChange.add(validateNow);
+				_info.onCurrentFrameChange.add(onCurrentFrameChange);
 			}
 			onAvatarIDChange();
 
@@ -233,6 +235,16 @@ package age.renderers
 			{
 				advanceTime(0);
 			}
+		}
+
+		/**
+		 * 当前帧变化时广播
+		 * @param target
+		 *
+		 */
+		private function onCurrentFrameChange(target:ObjectInfo):void
+		{
+			playSound(_info.currentFrame);
 		}
 
 		/**
@@ -383,7 +395,7 @@ package age.renderers
 				}
 				else if (info.type == FrameLayerType.SOUND)
 				{
-					var slr:SoundLayerRenderer = new SoundLayerRenderer();
+					var slr:SoundLayerRenderer = new soundLayerRendererClass();
 					slr.info = info;
 					sounds.push(slr);
 				}
@@ -696,6 +708,16 @@ package age.renderers
 		}
 
 		/**
+		 * 获得实际用于创建 SoundLayerRenderer 的类
+		 * @return
+		 *
+		 */
+		protected function get soundLayerRendererClass():Class
+		{
+			return SoundLayerRenderer;
+		}
+
+		/**
 		 * onMouseDown
 		 * @return
 		 *
@@ -808,6 +830,7 @@ package age.renderers
 				return;
 			}
 
+			// FIXME 避免无用的 playRenderers 调用
 			// 使用 actionName 判断是否有动作播放中
 			// 而不是 actionInfo，这可以减少一次方法调用
 			if (actionName)

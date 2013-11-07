@@ -39,25 +39,77 @@ package age.data
 		public var isKeyframe:Boolean;
 
 		/**
+		 * 当前帧声音具体 MP3 路径
+		 */
+		public var soundPath:String;
+
+		private var _onSoundChange:Signal;
+
+		/**
+		 * soundPath 发生变化时广播
+		 * @return
+		 *
+		 */
+		public function get onSoundChange():Signal
+		{
+			return _onSoundChange ||= new Signal;
+		}
+
+		private var _sound:String;
+
+		/**
+		 * 声音，是 avatarID_actionName#sound 这样的格式
+		 */
+		public function get sound():String
+		{
+			return _sound;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sound(value:String):void
+		{
+			if (value != _sound)
+			{
+				_sound = value;
+				parseSound(_sound);
+
+				if (_onSoundChange)
+				{
+					_onSoundChange.dispatch();
+				}
+			}
+		}
+
+		/**
+		 * 将 sound 分解成 soundPath
+		 * @param sound
+		 *
+		 */
+		protected function parseSound(sound:String):void
+		{
+			if (sound)
+			{
+				soundPath = sound + ".mp3";
+			}
+		}
+
+		/**
 		 * 子贴图名称
 		 */
 		public var textureName:String;
 
 		/**
-		 * 资源路径，根据帧类型不同，该字段储存了不同的数据<br>
-		 * <table>
-		 * <tr><th>类型</th><th>说明</th></tr>
-		 * <tr><td>声音</td><td>MP3 的路径</td></tr>
-		 * <tr><td>动画</td><td>贴图的路径</td></tr>
-		 * </table>
+		 * 贴图路径
 		 */
-		public var assetPath:String
+		public var texturePath:String
 
 		private var _texture:String;
 
 		/**
 		 * 贴图路径，是 folder/texturePath#textureName 格式的字符串，# 后是子贴图的名字<br>
-		 * 设置后，将自动分解到 textureName 和 assetPath 中
+		 * 设置后，将自动分解到 textureName 和 texturePath 中
 		 */
 		public function get texture():String
 		{
@@ -87,7 +139,7 @@ package age.data
 			if (_texture)
 			{
 				textureName = null;
-				assetPath = null;
+				texturePath = null;
 			}
 			_texture = value;
 			parseTexture(_texture);
@@ -103,7 +155,7 @@ package age.data
 			if (texture)
 			{
 				var s:Array = texture.split("#");
-				assetPath = s[0];
+				texturePath = s[0];
 				textureName = s[1];
 			}
 		}
@@ -295,7 +347,7 @@ package age.data
 			}
 			else if (type == FrameLayerType.SOUND)
 			{
-				return !(assetPath);
+				return !(sound);
 			}
 			throw new Error("没有捕捉到 type: " + type);
 			return false;
@@ -320,6 +372,7 @@ package age.data
 		{
 			if (s)
 			{
+				restore(s, this, "sound");
 				restore(s, this, "texture");
 				restore(s, this, "isKeyframe");
 
@@ -340,6 +393,7 @@ package age.data
 		public function toJSON(k:*):*
 		{
 			var result:Object = {};
+			export(this, result, "sound", null);
 			export(this, result, "box", null);
 			export(this, result, "texture", null);
 			export(this, result, "isKeyframe", false);
