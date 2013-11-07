@@ -11,7 +11,8 @@ package ageb.modules.avatar.op
 	public class FrameOpBase extends AvatarOPBase
 	{
 		/**
-		 * 本次操作的帧列表
+		 * 本次操作的帧列表<br>
+		 * 根据具体操作的不同，可以传递普通帧列表或关键帧列表
 		 */
 		protected var frames:Vector.<FrameInfoEditable>;
 
