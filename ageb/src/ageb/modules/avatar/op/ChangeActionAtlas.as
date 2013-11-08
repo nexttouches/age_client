@@ -3,32 +3,32 @@ package ageb.modules.avatar.op
 	import ageb.modules.document.Document;
 
 	/**
-	 * 修改动作 fps
+	 * 修改动作的 atals
 	 * @author zhanghaocong
 	 *
 	 */
-	public class ChangeActionFPS extends AvatarOPBase
+	public class ChangeActionAtlas extends AvatarOPBase
 	{
 		/**
-		 * 旧 fps
+		 * 旧值
 		 */
-		public var oldFPS:int;
+		public var oldAtlas:String;
 
 		/**
-		 * 新 fps
+		 * 新值
 		 */
-		public var fps:int;
+		public var atlas:String;
 
 		/**
-		 * 创建一个新的 ChangeActionFPS
-		 * @param doc 相关文档
-		 * @param fps 新 fps
+		 * constructor
+		 * @param doc
+		 * @param atlas
 		 *
 		 */
-		public function ChangeActionFPS(doc:Document, fps:int)
+		public function ChangeActionAtlas(doc:Document, atlas:String)
 		{
 			super(doc);
-			this.fps = fps;
+			this.atlas = atlas;
 		}
 
 		/**
@@ -38,7 +38,7 @@ package ageb.modules.avatar.op
 		 */
 		override public function redo():void
 		{
-			action.setFPS(fps);
+			action.setAtlas(atlas);
 		}
 
 		/**
@@ -48,7 +48,7 @@ package ageb.modules.avatar.op
 		 */
 		override protected function saveOld():void
 		{
-			oldFPS = action.fps;
+			oldAtlas = action.atlas;
 		}
 
 		/**
@@ -58,7 +58,7 @@ package ageb.modules.avatar.op
 		 */
 		override public function undo():void
 		{
-			action.setFPS(oldFPS);
+			action.setAtlas(oldAtlas);
 		}
 
 		/**
@@ -68,7 +68,7 @@ package ageb.modules.avatar.op
 		 */
 		override public function get name():String
 		{
-			return format("修改 FPS ({fps})", this);
+			return format("修改 atlas ({atlas})", this);
 		}
 	}
 }

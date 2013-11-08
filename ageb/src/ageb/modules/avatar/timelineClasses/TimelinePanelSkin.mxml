@@ -368,6 +368,14 @@ in accordance with the terms of the license agreement accompanying it.
 							</s:ArrayList>
 						</s:dataProvider>
 					</s:ButtonBar>
+					<s:Label 
+						fontWeight="bold"
+						text="打包"/>
+					<s:TextInput id="atlasField"
+						width="100"
+						color="0x66b3ff"/>
+					<s:Button id="setAtlasAsActionNameButton"
+						label="设置为动作名"/>
 				</s:Group>
 			</s:Group>
 

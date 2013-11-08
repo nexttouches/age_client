@@ -344,5 +344,24 @@ package ageb.modules.ae
 				onNameChange.dispatch();
 			}
 		}
+
+		/**
+		 * atlas 变化时广播
+		 */
+		public var onAtlasChange:Signal = new Signal();
+
+		/**
+		 * 设置 atlas
+		 * @param value
+		 *
+		 */
+		public function setAtlas(value:String):void
+		{
+			if (value != atlas)
+			{
+				atlas = value;
+				onAtlasChange.dispatch();
+			}
+		}
 	}
 }

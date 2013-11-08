@@ -23,6 +23,7 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
 	import nt.lib.util.assert;
+	import ageb.modules.avatar.op.ChangeActionAtlas;
 
 	/**
 	 * 时间轴面板
@@ -77,6 +78,12 @@ package ageb.modules.avatar.timelineClasses
 		[SkinPart(required="true")]
 		public var removeLayerButton:Button;
 
+		[SkinPart(required="true")]
+		public var atlasField:TextInput;
+
+		[SkinPart(required="true")]
+		public var setAtlasAsActionNameButton:Button;
+
 		/**
 		 * 创建一个新的 TimelinePanel
 		 *
@@ -110,6 +117,16 @@ package ageb.modules.avatar.timelineClasses
 			addActionButton.addEventListener(MouseEvent.CLICK, addActionButton_onClick);
 			removeActionButton.addEventListener(MouseEvent.CLICK, removeActionButton_onClick);
 			renameActionButton.addEventListener(MouseEvent.CLICK, renameActionButton_onClick);
+			setAtlasAsActionNameButton.addEventListener(MouseEvent.CLICK, setAtlasAsActionNameButton_onClick);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		protected function setAtlasAsActionNameButton_onClick(event:MouseEvent):void
+		{
+			new ChangeActionAtlas(doc, atlasField.text).execute();
 		}
 
 		/**
@@ -361,6 +378,7 @@ package ageb.modules.avatar.timelineClasses
 				// 一些事件
 				actionInfo.onSelectedFramesChange.remove(onSelectedFramesChange);
 				actionInfo.onFPSChange.remove(onFPSChange);
+				actionInfo.onAtlasChange.remove(onAtalsChange);
 			}
 			super.actionInfo = value;
 
@@ -376,6 +394,7 @@ package ageb.modules.avatar.timelineClasses
 				actionInfo.onSelectedFramesChange.add(onSelectedFramesChange);
 				onSelectedFramesChange(null);
 				actionInfo.onFPSChange.add(onFPSChange);
+				actionInfo.onAtlasChange.add(onAtalsChange);
 			}
 			const hasAction:Boolean = actionInfo != null;
 			fpsField.enabled = hasAction;
@@ -384,6 +403,19 @@ package ageb.modules.avatar.timelineClasses
 			removeLayerButton.enabled = hasAction;
 			addLayerButton.enabled = hasAction;
 			onFPSChange();
+			onAtalsChange();
+		}
+
+		private function onAtalsChange():void
+		{
+			if (actionInfo)
+			{
+				atlasField.text = actionInfo.atlas;
+			}
+			else
+			{
+				atlasField.text = "";
+			}
 		}
 
 		/**
