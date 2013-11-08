@@ -12,6 +12,11 @@ package age.data
 	public class ActionInfo
 	{
 		/**
+		 * 当前动作的资源以此关键字进行打包
+		 */
+		public var atlas:String;
+
+		/**
 		 * 名字
 		 */
 		public var name:String
@@ -168,6 +173,13 @@ package age.data
 			restore(s, this, "numFrames");
 			restore(s, this, "name");
 			restore(s, this, "fps");
+			restore(s, this, "atlas");
+
+			// 为 atlas 设置默认值
+			if (!atlas)
+			{
+				atlas = name;
+			}
 
 			// 新版
 			if ("layers" in s)
@@ -287,7 +299,10 @@ package age.data
 		 */
 		public function toJSON(k:*):*
 		{
-			return { name: name, fps: fps, layers: layers };
+			var result:Object = { name: name, fps: fps, layers: layers };
+			// 如 atlas 和 name 一样就不导出了
+			export(this, result, "atlas", name);
+			return result;
 		}
 	}
 }

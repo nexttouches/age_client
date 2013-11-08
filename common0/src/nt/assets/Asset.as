@@ -1,5 +1,6 @@
 package nt.assets
 {
+	import flash.debugger.enterDebugger;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -362,6 +363,16 @@ package nt.assets
 		 */
 		public static function get(path:String, priority:int = 0, assetClass:Class = null, params:Object = null):Asset
 		{
+			// 路径中如果包含 null，很可能出 bug 了
+			// 这里做个调试辅助
+			if (Capabilities.isDebugger)
+			{
+				if (path.indexOf("null") != -1)
+				{
+					enterDebugger();
+				}
+			}
+
 			if (!assets[path])
 			{
 				if (!assetClass)

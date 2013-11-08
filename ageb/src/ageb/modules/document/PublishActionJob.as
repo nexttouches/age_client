@@ -18,6 +18,16 @@ package ageb.modules.document
 	public class PublishActionJob extends NativeJob
 	{
 		/**
+		 * 输出目录
+		 */
+		public var outputFolder:File;
+
+		/**
+		 * 这些文件直接拷贝出去
+		 */
+		public var pairs:Vector.<Pair> = new Vector.<Pair>;
+
+		/**
 		 * 输出动作路径的前缀
 		 */
 		public var prefix:String;
@@ -34,6 +44,7 @@ package ageb.modules.document
 			tpParams.dataFileName = prefix + ".xml";
 			tpParams.textureFileName = prefix + ".png";
 			tpParams.tps = new File(prefix + ".tps");
+			outputFolder = tpParams.tps.parent;
 
 			for (var i:int = 0; i < info.layers.length; i++)
 			{
@@ -41,18 +52,46 @@ package ageb.modules.document
 
 				if (l.type == FrameLayerType.ANIMATION || l.type == FrameLayerType.PARTICLE)
 				{
-					l.fillFramesTexture();
+					prepareTPParams(l);
+				}
+				else if (l.type == FrameLayerType.SOUND)
+				{
+					prepareFilesToCopy(l);
+				}
+			}
+		}
 
-					for (var j:int = 0; j < l.frames.length; j++)
-					{
-						const frame:FrameInfo = l.frames[j];
+		/**
+		 * 为 TPParams 准备数据
+		 * @param l
+		 *
+		 */
+		protected function prepareTPParams(l:FrameLayerInfo):void
+		{
+			l.fillFramesTexture();
 
-						if (frame.isKeyframe && !frame.isEmpty)
-						{
-							const url:String = AssetConfig.getInfo(AvatarInfo.folder + "/" + frame.texturePath + ".png").url;
-							tpParams.addFile(new File(url).nativePath);
-						}
-					}
+			for (var j:int = 0; j < l.frames.length; j++)
+			{
+				const frame:FrameInfo = l.frames[j];
+
+				if (frame.isKeyframe && !frame.isEmpty)
+				{
+					const url:String = AssetConfig.getInfo(AvatarInfo.folder + "/" + frame.texturePath + ".png").url;
+					tpParams.addFile(new File(url).nativePath);
+				}
+			}
+		}
+
+		protected function prepareFilesToCopy(l:FrameLayerInfo):void
+		{
+			for (var j:int = 0; j < l.frames.length; j++)
+			{
+				const frame:FrameInfo = l.frames[j];
+
+				if (frame.isKeyframe && !frame.isEmpty)
+				{
+					const url:String = AssetConfig.getInfo(AvatarInfo.folder + "/" + frame.soundPath).url;
+					pairs.push(new Pair(new File(url), outputFolder.resolvePath(frame.sound + ".mp3")));
 				}
 			}
 		}
@@ -63,6 +102,15 @@ package ageb.modules.document
 		 */
 		override public function execute():void
 		{
+			if (pairs.length > 0)
+			{
+				stdout.push("拷贝 {length} 个声音文件...", pairs);
+
+				for (var i:int = 0; i < pairs.length; i++)
+				{
+					pairs[i].from.copyTo(pairs[i].to, true);
+				}
+			}
 			tp.execute(tpParams.generate());
 		}
 
@@ -101,4 +149,18 @@ package ageb.modules.document
 			exit();
 		}
 	}
+}
+import flash.filesystem.File;
+
+class Pair
+{
+	function Pair(from:File, to:File)
+	{
+		this.from = from;
+		this.to = to;
+	}
+
+	public var from:File;
+
+	public var to:File;
 }

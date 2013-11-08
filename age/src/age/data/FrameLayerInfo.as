@@ -312,17 +312,17 @@ package age.data
 		{
 			const n:uint = frames.length;
 			var newSounds:Vector.<Sound> = new Vector.<Sound>(n, true);
-			var keyframe:FrameInfo;
+			var frame:FrameInfo;
 
 			for (var i:int = 0; i < n; i++)
 			{
-				keyframe = frames[i].keyframe;
+				frame = frames[i];
 
-				if (!keyframe.sound)
+				if (!frame.sound)
 				{
 					continue;
 				}
-				const asset:SoundAsset = SoundAsset.get(AvatarInfo.folder + "/" + frames[i].soundPath);
+				const asset:SoundAsset = SoundAsset.get(AvatarInfo.folder + "/" + frame.soundPath);
 				newSounds[i] = asset.sound;
 			}
 			sounds = newSounds;
