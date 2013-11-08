@@ -100,6 +100,13 @@ package age.data
 		public var velocity:Vector3D = new Vector3D();
 
 		/**
+		 * acceleration
+		 */
+		[Native]
+		[Export]
+		public var acceleration:Vector3D = new Vector3D();
+
+		/**
 		 * 质量，数值越大，掉落速度越快<br>
 		 * 为 0 时，将不受重力控制
 		 */
