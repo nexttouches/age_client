@@ -41,7 +41,7 @@ package age.renderers
 		 * 通过该方法结合 y 和 z 投影到 Starling 坐标系的 y 中<br>
 		 * 该方法的签名应是<br>
 		 * <code>function (y:Number, z:Number):Number</code>
-		 * 其中输入的 y 和 z 属笛卡尔坐标系
+		 * 其中输入的 y 和 z 属笛卡尔坐标系，返回的是 UI 坐标
 		 * @return
 		 *
 		 */
