@@ -1,6 +1,8 @@
 package age.renderers
 {
+	import flash.errors.IllegalOperationError;
 	import flash.filters.GlowFilter;
+	import flash.geom.Vector3D;
 	import age.data.AvatarInfo;
 	import age.data.Box;
 	import starling.events.Event;
@@ -39,7 +41,7 @@ package age.renderers
 
 		public function get zIndex():int
 		{
-			return _z - 1;
+			return position.z - 1;
 		}
 
 		private var _info:AvatarInfo;
@@ -53,9 +55,7 @@ package age.renderers
 		{
 			_info = value;
 			// 刷坐标
-			x = _x;
-			y = _y;
-			z = _z;
+			validatePosition();
 		}
 
 		override public function dispose():void
@@ -65,44 +65,111 @@ package age.renderers
 			super.dispose();
 		}
 
-		private var _x:Number;
+		private var _position:Vector3D = new Vector3D;
 
-		override public function get x():Number
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function get position():Vector3D
 		{
-			return _x;
+			return _position;
 		}
 
-		override public function set x(value:Number):void
+		public function set position(value:Vector3D):void
 		{
-			_x = value;
-			// 去整以避免像素字体模糊
-			super.x = int(value);
+			_position = value;
+			validatePosition();
 		}
 
-		private var _z:Number = 0;
-
-		public function get z():Number
+		/**
+		 * 相当于调用 position.setTo(x, y, z); validatePosition();
+		 * @param x
+		 * @param y
+		 * @param z
+		 *
+		 */
+		public function setPosition(x:Number, y:Number, z:Number):void
 		{
-			return _z;
+			position.setTo(x, y, z);
+			validatePosition();
 		}
 
-		public function set z(value:Number):void
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setX(value:Number):void
 		{
-			_z = value;
-			// 调用实际的 _projectY 方法
-			super.y = _projectY != null ? int(_projectY(_y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), _z)) : 0;
+			position.x = value;
+			validatePositionX();
 		}
 
-		private var _y:Number;
-
-		public override function set y(value:Number):void
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setY(value:Number):void
 		{
-			_y = value;
-			super.y = _projectY != null ? int(_projectY(_y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), _z)) : 0;
+			position.y = value;
+			validatePositionYZ();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setZ(value:Number):void
+		{
+			position.z = value;
+			validatePositionYZ();
+		}
+
+		/**
+		 * 当 position 发生变化时调用该方法以投影新坐标
+		 *
+		 */
+		[Inline]
+		final protected function validatePosition():void
+		{
+			if (_projectY == null)
+			{
+				return;
+			}
+			super.x = int(position.x);
+			super.y = int(_projectY(position.y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), position.z));
+		}
+
+		/**
+		 * 当 position.x 发生变化时调用该方法以投影新坐标
+		 *
+		 */
+		[Inline]
+		final protected function validatePositionX():void
+		{
+			super.x = int(position.x);
+		}
+
+		/**
+		 * 当 position.y 或 position.z 发生变化时调用该方法以投影新坐标
+		 *
+		 */
+		[Inline]
+		final protected function validatePositionYZ():void
+		{
+			if (_projectY == null)
+			{
+				return;
+			}
+			super.y = int(_projectY(position.y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), position.z));
 		}
 
 		private var _projectY:Function;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function get projectY():Function
 		{
 			return _projectY;
@@ -114,8 +181,26 @@ package age.renderers
 
 			if (value != null)
 			{
-				super.y = int(_projectY(_y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), _z));
+				validatePosition();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		[Deprecated("不允许从外部设置该属性。如要设置坐标，请使用 position 属性或 setPosition", "position")]
+		public override function set y(value:Number):void
+		{
+			throw new IllegalOperationError("不允许从外部设置该属性，要设置坐标，请使用 position 属性");
+		}
+
+		/**
+		 * @private
+		 */
+		[Deprecated("不允许从外部设置该属性。如要设置坐标，请使用 position 属性或 setPosition", "position")]
+		public override function set x(value:Number):void
+		{
+			throw new IllegalOperationError("不允许从外部设置该属性，要设置坐标，请使用 position 属性");
 		}
 
 		private var _scale:Number;

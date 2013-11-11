@@ -38,6 +38,9 @@ package ageb.modules.tools.selectToolClasses
 	public class SelectTool extends SelectToolPanel
 	{
 
+		/**
+		 * 图标类
+		 */
 		[Embed(source="../assets/icons/arrow2_nw.png")]
 		private var iconClass:Class;
 
@@ -325,8 +328,8 @@ package ageb.modules.tools.selectToolClasses
 		 */
 		final protected function updateThumbsPosition():void
 		{
-			var dx:Number = currentPoint.x - downPoint.x;
-			var dy:Number = currentPoint.y - downPoint.y;
+			const dx:Number = currentPoint.x - downPoint.x;
+			const dy:Number = currentPoint.y - downPoint.y;
 
 			for each (var thumb:IDragThumb in dragThumbs)
 			{

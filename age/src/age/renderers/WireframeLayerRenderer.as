@@ -70,9 +70,7 @@ package age.renderers
 				parent.addChild(q);
 			}
 			q.draw(width, height);
-			q.x = v.x;
-			q.y = v.y;
-			q.z = v.z;
+			q.position = v;
 			q.visible = true;
 		}
 
@@ -175,24 +173,6 @@ package age.renderers
 			return 0;
 		}
 
-		private var _projectY:Function;
-
-		/**
-		 * @inheritDoc
-		 * @return
-		 *
-		 */
-		public function get projectY():Function
-		{
-			return _projectY;
-		}
-
-		public function set projectY(value:Function):void
-		{
-			_projectY = value;
-			validate();
-		}
-
 		private var _scale:Number = 1;
 
 		public function get scale():Number
@@ -203,59 +183,6 @@ package age.renderers
 		public function set scale(value:Number):void
 		{
 			_scale = value;
-			validate();
-		}
-
-		/**
-		 * 位置信息
-		 */
-		private var position:Vector3D = new Vector3D();
-
-		/**
-		 * @inheritDoc
-		 * @return
-		 *
-		 */
-		public function get x():Number
-		{
-			return position.x;
-		}
-
-		public function set x(value:Number):void
-		{
-			position.x = value;
-			validate();
-		}
-
-		/**
-		 * @inheritDoc
-		 * @return
-		 *
-		 */
-		public function get y():Number
-		{
-			return position.y;
-		}
-
-		public function set y(value:Number):void
-		{
-			position.y = value;
-			validate();
-		}
-
-		/**
-		 * @inheritDoc
-		 * @return
-		 *
-		 */
-		public function get z():Number
-		{
-			return position.z;
-		}
-
-		public function set z(value:Number):void
-		{
-			position.z = value;
 			validate();
 		}
 
@@ -341,6 +268,83 @@ package age.renderers
 		{
 			_direction = value;
 			currentFrame = _currentFrame
+		}
+
+		private var _position:Vector3D = new Vector3D;
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function get position():Vector3D
+		{
+			return _position;
+		}
+
+		public function set position(value:Vector3D):void
+		{
+			_position = value;
+			validate();
+		}
+
+		/**
+		 * 相当于调用 position.setTo(x, y, z); validatePosition();
+		 * @param x
+		 * @param y
+		 * @param z
+		 *
+		 */
+		public function setPosition(x:Number, y:Number, z:Number):void
+		{
+			position.setTo(x, y, z);
+			validate();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setX(value:Number):void
+		{
+			position.x = value;
+			validate();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setY(value:Number):void
+		{
+			position.y = value;
+			validate();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setZ(value:Number):void
+		{
+			position.z = value;
+			validate();
+		}
+
+		private var _projectY:Function;
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function get projectY():Function
+		{
+			return _projectY;
+		}
+
+		public function set projectY(value:Function):void
+		{
+			_projectY = value;
+			validate();
 		}
 	}
 }

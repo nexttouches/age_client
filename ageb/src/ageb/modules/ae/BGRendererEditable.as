@@ -81,9 +81,7 @@ package ageb.modules.ae
 		 */
 		private function onXYChange():void
 		{
-			x = _info.x;
-			y = _info.y;
-			z = _info.z;
+			setPosition(_info.x, _info.y, _info.z);
 		}
 
 		/**

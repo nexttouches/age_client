@@ -50,9 +50,7 @@ package age.renderers
 
 			if (_info)
 			{
-				x = _info.x;
-				y = _info.y;
-				z = _info.z;
+				setPosition(_info.x, _info.y, _info.z);
 				asset = getAsset();
 				asset.useThumb = false;
 				asset.load();

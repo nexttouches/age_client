@@ -1,7 +1,9 @@
 package age.renderers
 {
+	import flash.errors.IllegalOperationError;
 	import flash.filters.GlowFilter;
 	import flash.geom.Rectangle;
+	import flash.geom.Vector3D;
 	import age.data.RegionInfo;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -162,32 +164,111 @@ package age.renderers
 			visible = true;
 		}
 
-		protected var is3D:Boolean = true;
+		private var _position:Vector3D = new Vector3D;
 
-		private var _z:Number = 0;
-
-		public function get z():Number
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function get position():Vector3D
 		{
-			return _z;
+			return _position;
 		}
 
-		public function set z(value:Number):void
+		public function set position(value:Vector3D):void
 		{
-			_z = value;
-			// 调用实际的 _projectY 方法
-			super.y = _projectY != null ? _projectY(_y, _z) : 0;
+			_position = value;
+			validatePosition();
 		}
 
-		private var _y:Number;
-
-		public override function set y(value:Number):void
+		/**
+		 * 相当于调用 position.setTo(x, y, z); validatePosition();
+		 * @param x
+		 * @param y
+		 * @param z
+		 *
+		 */
+		public function setPosition(x:Number, y:Number, z:Number):void
 		{
-			_y = value;
-			super.y = _projectY != null ? _projectY(_y, _z) : 0;
+			position.setTo(x, y, z);
+			validatePosition();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setX(value:Number):void
+		{
+			position.x = value;
+			validatePositionX();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setY(value:Number):void
+		{
+			position.y = value;
+			validatePositionYZ();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function setZ(value:Number):void
+		{
+			position.z = value;
+			validatePositionYZ();
+		}
+
+		/**
+		 * 当 position 发生变化时调用该方法以投影新坐标
+		 *
+		 */
+		[Inline]
+		final protected function validatePosition():void
+		{
+			if (_projectY == null)
+			{
+				return;
+			}
+			super.x = position.x;
+			super.y = _projectY(position.y, position.z);
+		}
+
+		/**
+		 * 当 position.x 发生变化时调用该方法以投影新坐标
+		 *
+		 */
+		[Inline]
+		final protected function validatePositionX():void
+		{
+			super.x = position.x;
+		}
+
+		/**
+		 * 当 position.y 或 position.z 发生变化时调用该方法以投影新坐标
+		 *
+		 */
+		[Inline]
+		final protected function validatePositionYZ():void
+		{
+			if (_projectY == null)
+			{
+				return;
+			}
+			super.y = _projectY(position.y, position.z);
 		}
 
 		private var _projectY:Function;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function get projectY():Function
 		{
 			return _projectY;
@@ -199,8 +280,26 @@ package age.renderers
 
 			if (value != null)
 			{
-				super.y = _projectY(_y, _z);
+				validatePosition();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		[Deprecated("不允许从外部设置该属性。如要设置坐标，请使用 position 属性或 setPosition", "position")]
+		public override function set y(value:Number):void
+		{
+			throw new IllegalOperationError("不允许从外部设置该属性，要设置坐标，请使用 position 属性");
+		}
+
+		/**
+		 * @private
+		 */
+		[Deprecated("不允许从外部设置该属性。如要设置坐标，请使用 position 属性或 setPosition", "position")]
+		public override function set x(value:Number):void
+		{
+			throw new IllegalOperationError("不允许从外部设置该属性，要设置坐标，请使用 position 属性");
 		}
 
 		private var _scale:Number;

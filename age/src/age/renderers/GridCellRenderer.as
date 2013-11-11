@@ -77,9 +77,7 @@ package age.renderers
 		public function set size(value:Vector3D):void
 		{
 			_size = value;
-			x = cellX * _size.x;
-			y = 0;
-			z = cellZ * _size.z;
+			setPosition(cellX * _size.x, 0, cellZ * _size.z);
 			readjustSize();
 			pivotY = texture.height;
 		}

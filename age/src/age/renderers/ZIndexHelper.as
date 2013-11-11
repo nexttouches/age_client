@@ -9,12 +9,12 @@ package age.renderers
 	public class ZIndexHelper
 	{
 		/**
-		 *
+		 * 唯一索引最大值
 		 */
 		private static const UNIQUE_ZINDEX_MAX:uint = 100;
 
 		/**
-		 * 获得一个唯一 z 索引，这是为了防止两个渲染器可能会计算出相同的索引，导致闪烁的问题
+		 * 获得一个唯一 z 索引，这是为了解决两个渲染器可能会计算出相同的索引导致闪烁的问题
 		 * @return
 		 *
 		 */
@@ -24,6 +24,10 @@ package age.renderers
 			return nextUniqueZIndex <= UNIQUE_ZINDEX_MAX ? ++nextUniqueZIndex : nextUniqueZIndex = 0;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private static var nextUniqueZIndex:uint = 0;
 
 		public static const Z_RANGE:uint = 20000;

@@ -1,5 +1,6 @@
 package age.renderers
 {
+	import flash.geom.Vector3D;
 
 	/**
 	 * 规定了 3D 显示对象<br>
@@ -17,27 +18,6 @@ package age.renderers
 		function get scale():Number;
 		function set scale(value:Number):void;
 		/**
-		 * 设置或获取 x
-		 * @return
-		 *
-		 */
-		function get x():Number;
-		function set x(value:Number):void;
-		/**
-		 * 设置或获取 y
-		 * @return
-		 *
-		 */
-		function get y():Number;
-		function set y(value:Number):void;
-		/**
-		 * z 轴
-		 * @return
-		 *
-		 */
-		function get z():Number;
-		function set z(value:Number):void;
-		/**
 		 * 通过该方法结合 y 和 z 投影到 Starling 坐标系的 y 中<br>
 		 * 该方法的签名应是<br>
 		 * <code>function (y:Number, z:Number):Number</code>
@@ -52,5 +32,38 @@ package age.renderers
 		 *
 		 */
 		function dispose():void;
+		/**
+		 * 设置或获取 3D 坐标，默认为 (0, 0, 0)
+		 * @return
+		 *
+		 */
+		function get position():Vector3D;
+		function set position(value:Vector3D):void;
+		/**
+		 * 根据参数设置 position 的值
+		 * @param x
+		 * @param y
+		 * @param z
+		 *
+		 */
+		function setPosition(x:Number, y:Number, z:Number):void;
+		/**
+		 * 设置 position.x
+		 * @param value
+		 *
+		 */
+		function setX(value:Number):void;
+		/**
+		 * 设置 position.y
+		 * @param value
+		 *
+		 */
+		function setY(value:Number):void;
+		/**
+		 * 设置 position.z
+		 * @param value
+		 *
+		 */
+		function setZ(value:Number):void;
 	}
 }

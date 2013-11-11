@@ -1,11 +1,8 @@
 package ageb.modules.ae.dnd
 {
-	import flash.geom.Point;
 	import flash.geom.Vector3D;
-	import age.AGE;
 	import age.renderers.IDisplayObject3D;
 	import age.renderers.TextureRenderer;
-	import ageb.modules.Modules;
 	import ageb.modules.ae.roundTo;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -18,14 +15,24 @@ package ageb.modules.ae.dnd
 	 */
 	public class BgDragThumb extends TextureRenderer implements IDragThumb
 	{
+		/**
+		 * 旧坐标
+		 */
 		public var origin:Vector3D;
 
+		/**
+		 * constructor
+		 *
+		 */
 		public function BgDragThumb()
 		{
 			super();
-			is3D = false;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function setSource(s:DisplayObject):void
 		{
 			if (s is Image)
@@ -42,15 +49,17 @@ package ageb.modules.ae.dnd
 			}
 			readjustSize();
 			transformationMatrix = s.transformationMatrix;
-			origin = new Vector3D(s.x, s.y, IDisplayObject3D(s).z);
-			var mousePosition:Point = new Point(Modules.getInstance().root.stage.mouseX - AGE.paddingLeft, Modules.getInstance().root.stage.mouseY - AGE.paddingTop);
-			mousePosition = s.globalToLocal(mousePosition, mousePosition);
+			origin = IDisplayObject3D(s).position.clone();
 			pivotX = s.pivotX;
 			pivotY = s.pivotY;
+			scale = IDisplayObject3D(s).scale;
 			offset(0, 0);
-			z = 0;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function dispose():void
 		{
 			if (texture is RenderTexture)
@@ -60,15 +69,22 @@ package ageb.modules.ae.dnd
 			super.dispose();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function get displayObject():DisplayObject
 		{
 			return this;
 		}
 
-		final public function offset(x:Number, y:Number, snapX:Number = 1, snapY:Number = 1):void
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function offset(x:Number, y:Number, snapX:Number = 1, snapY:Number = 1):void
 		{
-			this.x = roundTo(x + origin.x, snapX);
-			this.y = roundTo(-y + origin.y, snapY);
+			setPosition(roundTo(x + origin.x, snapX), roundTo(y + origin.y, snapY), origin.z);
 		}
 
 		/**

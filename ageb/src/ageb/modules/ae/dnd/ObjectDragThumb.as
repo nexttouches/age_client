@@ -8,6 +8,10 @@ package ageb.modules.ae.dnd
 	 */
 	public class ObjectDragThumb extends BgDragThumb
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function ObjectDragThumb()
 		{
 			super();

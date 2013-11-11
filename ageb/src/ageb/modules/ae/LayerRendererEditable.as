@@ -83,27 +83,21 @@ package ageb.modules.ae
 				far.projectY = info.parent.projectY;
 				// top
 				top.draw(w, 1);
-				top.x = 0;
-				top.y = h;
+				top.setPosition(0, h, 0);
 				// left
 				left.draw(1, h);
 				left.pivotY = h;
-				left.x = 0;
-				left.y = 0;
+				left.setPosition(0, 0, 0);
 				// right
 				right.draw(1, h);
 				right.pivotY = h;
-				right.y = 0;
-				right.x = w;
+				right.setPosition(0, w, 0);
 				// bottom
 				bottom.draw(w, 1);
-				bottom.x = 0;
-				bottom.y = 0;
+				bottom.setPosition(0, 0, 0);
 				// far
 				far.draw(w, 1);
-				far.x = 0;
-				far.y = 0;
-				far.z = d;
+				far.setPosition(0, 0, d);
 				// 其他文本框
 				widthField.text = format("{0} ({1})", top.width.toFixed(3), info.scrollRatio.toFixed(2));
 				widthField.x = top.width / 2;
@@ -264,7 +258,7 @@ package ageb.modules.ae
 				{
 					continue;
 				}
-				bg.z = bg.z;
+				bg.setZ(bg.position.z);
 			}
 		}
 	}

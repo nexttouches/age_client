@@ -217,7 +217,7 @@ package age.renderers
 
 		override public function get zIndex():int
 		{
-			return z * ZIndexHelper.Z_RANGE + uniqueIndex;
+			return position.z * ZIndexHelper.Z_RANGE + uniqueIndex;
 		}
 	}
 }

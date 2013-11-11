@@ -167,9 +167,7 @@ package age.renderers
 			// 添加到数组
 			renderers.push(r);
 			// 立即同步一些属性
-			r.x = _x;
-			r.y = _y;
-			r.z = _z;
+			r.setPosition(_x, _y, _z);
 			r.scale = _scale;
 
 			// TODO 需要同步更多属性
@@ -383,7 +381,7 @@ package age.renderers
 
 			for (var i:int = 0, n:int = layers.length; i < n; i++)
 			{
-				var info:FrameLayerInfo = layers[i];
+				const info:FrameLayerInfo = layers[i];
 
 				if (info.type == FrameLayerType.ANIMATION)
 				{
@@ -395,6 +393,7 @@ package age.renderers
 				}
 				else if (info.type == FrameLayerType.SOUND)
 				{
+					// TODO 从对象池取出
 					var slr:SoundLayerRenderer = new soundLayerRendererClass();
 					slr.info = info;
 					sounds.push(slr);
@@ -597,7 +596,7 @@ package age.renderers
 
 				for (var i:int = 0, n:int = renderers.length; i < n; i++)
 				{
-					renderers[i].x = _x;
+					renderers[i].setX(_x);
 				}
 			}
 		}
@@ -622,7 +621,7 @@ package age.renderers
 
 				for (var i:int = 0, n:int = renderers.length; i < n; i++)
 				{
-					renderers[i].y = _y;
+					renderers[i].setY(_y);
 				}
 			}
 		}
@@ -647,7 +646,7 @@ package age.renderers
 
 				for (var i:int = 0, n:int = renderers.length; i < n; i++)
 				{
-					renderers[i].z = _z;
+					renderers[i].setZ(_z);
 				}
 			}
 		}
@@ -1119,9 +1118,7 @@ package age.renderers
 
 			for (var i:int = 0, n:int = renderers.length; i < n; i++)
 			{
-				renderers[i].x = _x;
-				renderers[i].y = _y;
-				renderers[i].z = _z;
+				renderers[i].position = position;
 			}
 		}
 	}
