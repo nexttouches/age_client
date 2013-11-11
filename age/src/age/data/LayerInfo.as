@@ -1,6 +1,7 @@
 package age.data
 {
 	import flash.errors.IllegalOperationError;
+	import flash.geom.Vector3D;
 	import age.AGE;
 	import nt.assets.Asset;
 	import org.osflash.signals.Signal;
@@ -328,6 +329,23 @@ package age.data
 		}
 
 		/**
+		 * 重力
+		 */
+		public const g:Vector3D = new Vector3D(0, -980, 0);
+
+		/**
+		 * 摩擦力
+		 */
+		public const friction:Number = 0.5;
+
+		/**
+		 * 当速度小于该值时视为静止
+		 */
+		public const STICKY:Number = 1;
+
+		private static const ZERO_VELOCITY:Vector3D = new Vector3D;
+
+		/**
 		 * @inheritDoc
 		 * @param time
 		 *
@@ -335,12 +353,81 @@ package age.data
 		public function advanceTime(time:Number):void
 		{
 			var i:int, n:int, o:ObjectInfo;
+			const lower:Vector3D = parent.size.lower;
+			const upper:Vector3D = parent.size.upper;
 
 			for (i = 0, n = objects.length; i < n; i++)
 			{
 				o = objects[i];
+
+				if (o.position.y <= lower.y)
+				{
+					o.acceleration.setTo(0, 0, 0);
+				}
+				else
+				{
+					o.acceleration.setTo(g.x, g.y * o.mass, g.z);
+				}
+				// 左右键可以进行简单测试
+				/*if (ShortcutUtil.isLeftDown)
+				{
+					o.velocity.y = 900;
+					o.velocity.x = 200;
+				}
+				else if (ShortcutUtil.isRightDown)
+				{
+					o.velocity.x = -200;
+				}*/
+				const lastY:Number = o.position.y;
 				o.advanceTime(time);
+
+				// 进入下边界（贴地）
+				if (o.position.y <= lower.y)
+				{
+					// 设置 position 到地面
+					o.position.y = lower.y;
+					// 应用摩擦力
+					o.velocity.x *= friction;
+					o.velocity.z *= friction;
+
+					if (Math.abs(o.velocity.x) <= STICKY)
+					{
+						o.velocity.x = 0;
+					}
+
+					if (Math.abs(o.velocity.z) <= STICKY)
+					{
+						o.velocity.z = 0;
+					}
+
+					// 刚刚碰到地面，应用弹力
+					if (lastY > lower.y)
+					{
+						o.velocity.y *= -o.elasticity;
+
+						if (Math.abs(o.velocity.y) <= Math.abs(g.y * time))
+						{
+							o.velocity.y = 0;
+						}
+					}
+				}
+
+				// 进入左边界
+				if (o.position.x < lower.x)
+				{
+					o.position.x = lower.x;
+					o.velocity.x = 0;
+				}
+				// 进入右边界
+				else if (o.position.x > upper.x)
+				{
+					o.position.x = upper.x;
+					o.velocity.x = 0;
+				}
+				// 是否已静止
+				o.isSticky = o.velocity.equals(ZERO_VELOCITY);
 			}
 		}
+		// EOF
 	}
 }

@@ -108,11 +108,12 @@ package age.data
 
 		/**
 		 * 质量，数值越大，掉落速度越快<br>
-		 * 为 0 时，将不受重力控制
+		 * 为 0 时，将不受重力控制<br>
+		 * 为了简化运算，这里的 mass 实际是重力加速度的倍率
 		 */
 		[Native]
-		[Export(exclude=80)]
-		public var mass:Number = 80;
+		[Export(exclude=1)]
+		public var mass:Number = 1;
 
 		/**
 		 * 弹性，一般用在落地后的反弹力上
@@ -333,6 +334,12 @@ package age.data
 		[Inline]
 		final public function advanceTime(time:Number):void
 		{
+			velocity.x += acceleration.x * time;
+			velocity.y += acceleration.y * time;
+			velocity.z += acceleration.z * time;
+			position.x += velocity.x * time;
+			position.y += velocity.y * time;
+			position.z += velocity.z * time;
 			// 执行更新 currentFrame 逻辑
 			updateCurrentFrame(time);
 		}
@@ -375,6 +382,10 @@ package age.data
 				{
 					position.setTo(s.x, 0, parent.parent.height - s.y * .5);
 				}
+				velocity.x = 160;
+				velocity.y = 400;
+				velocity.z = 160;
+				mass = 4;
 			}
 		}
 
