@@ -40,9 +40,12 @@ package age.renderers
 
 			if (info_isComplete)
 			{
-				if (_info.sounds[_currentFrame])
+				if (_info.sounds.length > _currentFrame)
 				{
-					_info.sounds[_currentFrame].play();
+					if (_info.sounds[_currentFrame])
+					{
+						_info.sounds[_currentFrame].play();
+					}
 				}
 			}
 		}
