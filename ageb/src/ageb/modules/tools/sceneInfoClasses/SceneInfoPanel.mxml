@@ -16,7 +16,7 @@
 			 */
 			protected function saveSize():void
 			{
-				new ChangeSceneSize(doc, new Box(0, 0, 0, int(xField.value), int(yField.value), int(zField.value))).execute();
+				new ChangeSceneSize(doc, new Box(0, 0, 0, int(xField.value), int(yField.value), int(zField.value), 0, 0, 0)).execute();
 			}
 		]]>
 	</fx:Script>

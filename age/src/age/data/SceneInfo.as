@@ -50,7 +50,7 @@ package age.data
 		/**
 		 * 场景大小，默认是边长为 400 的正方形
 		 */
-		public var size:Box = new Box(0, 0, 0, DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_SIZE);
+		public var size:Box = new Box(0, 0, 0, DEFAULT_SIZE, DEFAULT_SIZE, DEFAULT_SIZE, 0, 0, 0);
 
 		/**
 		 * 地面摩擦力
