@@ -3,7 +3,7 @@ package ageb.modules.ae
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import spark.components.Alert;
+	import mx.controls.Alert;
 	import age.data.AvatarInfo;
 	import age.data.TextureAtlasConfig;
 	import nt.assets.AssetConfig;
