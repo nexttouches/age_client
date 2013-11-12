@@ -349,7 +349,7 @@ package age.data
 				}
 				else if (type == FrameLayerType.PARTICLE)
 				{
-					throw new Error("没做好");
+					addParticleAssets();
 				}
 			}
 
@@ -360,6 +360,39 @@ package age.data
 			super.load(queue);
 		}
 
+		/**
+		 * @private
+		 *
+		 */
+		[Inline]
+		final protected function addParticleAssets():void
+		{
+			if (type != FrameLayerType.PARTICLE)
+			{
+				return;
+			}
+			// 总之先清空
+			empty();
+
+			for (var i:int = 0, n:int = frames.length; i < n; i++)
+			{
+				if (frames[i].isKeyframe)
+				{
+					// 判断是否有贴图
+					if (frames[i].texture)
+					{
+						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].texturePath);
+						asset.useThumb = isTextureUseThumb;
+						addAsset(asset);
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
 		[Inline]
 		final protected function addSoundAssets():void
 		{

@@ -173,6 +173,11 @@ package age.data
 		}
 
 		/**
+		 * 设置或获取粒子配置，当图层类型为 Particle 时该值有效。默认值 null
+		 */
+		public var particleConfig:Particle3DConfig;
+
+		/**
 		 * 当前帧相对于 parent 的位置<br>
 		 * 如果没有 parent，返回 -1
 		 * @return
@@ -349,6 +354,10 @@ package age.data
 			{
 				return !(sound);
 			}
+			else if (type == FrameLayerType.PARTICLE)
+			{
+				return !(particleConfig && box && texture);
+			}
 			throw new Error("没有捕捉到 type: " + type);
 			return false;
 		}
@@ -375,6 +384,7 @@ package age.data
 				restore(s, this, "sound");
 				restore(s, this, "texture");
 				restore(s, this, "isKeyframe");
+				restore(s, this, "particleInfo");
 
 				if (s.box)
 				{
@@ -385,7 +395,7 @@ package age.data
 		}
 
 		/**
-		 * JSON.stringify 内部会调用的方法
+		 * JSON.stringify 内部会调用该方法
 		 * @param k
 		 * @return
 		 *
@@ -396,6 +406,7 @@ package age.data
 			export(this, result, "sound", null);
 			export(this, result, "box", null);
 			export(this, result, "texture", null);
+			export(this, result, "particleInfo", null);
 			export(this, result, "isKeyframe", false);
 			return result;
 		}

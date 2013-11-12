@@ -386,7 +386,7 @@ package age.renderers
 				if (info.type == FrameLayerType.ANIMATION)
 				{
 					// TODO 从对象池取出
-					var alr:AnimationLayerRenderer = new animationLayerRendererClass();
+					const alr:AnimationLayerRenderer = new animationLayerRendererClass();
 					alr.info = info;
 					animations.push(alr);
 					addRenderer(alr);
@@ -394,20 +394,20 @@ package age.renderers
 				else if (info.type == FrameLayerType.SOUND)
 				{
 					// TODO 从对象池取出
-					var slr:SoundLayerRenderer = new soundLayerRendererClass();
+					const slr:SoundLayerRenderer = new soundLayerRendererClass();
 					slr.info = info;
 					sounds.push(slr);
 				}
 				else if (info.type == FrameLayerType.PARTICLE)
 				{
-					throw new Error("尚未实现");
-						// var r:ParticlesLayerRenderer = new ParticlesLayerRenderer();
-						// XXX 实现粒子图层
-						// XXX 从对象池取出
+					// TODO 从对象池取出
+					const plr:ParticlesLayerRenderer = new particlesLayerRendererClass();
+					plr.info = info;
+					particles.push(plr);
 				}
 				else if (info.type == FrameLayerType.VIRTUAL)
 				{
-					var wlr:WireframeLayerRenderer = new wireframeLayerRendererClass();
+					const wlr:WireframeLayerRenderer = new wireframeLayerRendererClass();
 					wlr.info = info;
 					addWireframe(wlr);
 				}
@@ -714,6 +714,16 @@ package age.renderers
 		protected function get soundLayerRendererClass():Class
 		{
 			return SoundLayerRenderer;
+		}
+
+		/**
+		 * 获得实际用于创建 ParticlesLayerRenderer 的类
+		 * @return
+		 *
+		 */
+		protected function get particlesLayerRendererClass():Class
+		{
+			return ParticlesLayerRenderer;
 		}
 
 		/**

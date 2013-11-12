@@ -343,6 +343,9 @@ package age.data
 		 */
 		public const STICKY:Number = 1;
 
+		/**
+		 * 一个值为 0 的 Vector3D
+		 */
 		private static const ZERO_VELOCITY:Vector3D = new Vector3D;
 
 		/**

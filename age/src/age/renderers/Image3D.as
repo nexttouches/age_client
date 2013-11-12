@@ -3,7 +3,6 @@ package age.renderers
 	import flash.errors.IllegalOperationError;
 	import flash.events.MouseEvent;
 	import flash.geom.Vector3D;
-	import mx.rpc.http.Operation;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import starling.display.Image;
@@ -18,8 +17,12 @@ package age.renderers
 	 * @author zhanghaocong
 	 *
 	 */
-	public class Image3D extends Image implements IArrangeable, IDisplayObject3D, IDirectionRenderer, ITouchable
+	public class Image3D extends Image implements IDisplayObject3D, IDirectionRenderer, ITouchable
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function Image3D()
 		{
 			super(emptyTexture);
@@ -28,6 +31,10 @@ package age.renderers
 			addEventListener(Event.ADDED_TO_STAGE, onAdd);
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onAdd():void
 		{
 			projectY = SceneRenender(parent.parent).projectY;
