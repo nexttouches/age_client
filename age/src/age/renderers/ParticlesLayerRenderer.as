@@ -19,8 +19,7 @@ package age.renderers
 		 */
 		public function ParticlesLayerRenderer()
 		{
-			super(new Particle3DConfig);
-			start();
+			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdd);
 		}
 
@@ -85,11 +84,15 @@ package age.renderers
 				{
 					config = _info.frames[_currentFrame].particleConfig;
 				}
-				start();
-			}
-			else
-			{
-				stop();
+
+				if (_info.textures && _info.textures[_currentFrame])
+				{
+					texture = _info.textures[_currentFrame];
+				}
+				else
+				{
+					texture = null;
+				}
 			}
 
 			// 为没有任何配置的情况下提供默认值

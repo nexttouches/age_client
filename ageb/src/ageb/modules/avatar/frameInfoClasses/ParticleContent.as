@@ -16,5 +16,14 @@ package ageb.modules.avatar.frameInfoClasses
 		{
 			super();
 		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override protected function get skinClass():Class
+		{
+			return ParticleContentSkin;
+		}
 	}
 }

@@ -4,7 +4,6 @@ package age.renderers
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.display3D.Context3D;
-	import flash.display3D.Context3DBlendFactor;
 	import flash.display3D.Context3DProgramType;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.display3D.Context3DVertexBufferFormat;
@@ -44,25 +43,22 @@ package age.renderers
 		 * constructor
 		 *
 		 */
-		public function ParticleSystem3D(config:Particle3DConfig = null, initialCapacity:int = 128, maxCapacity:int = 8192, blendFactorSource:String = null, blendFactorDest:String = null)
+		public function ParticleSystem3D(initialCapacity:int = 128, maxCapacity:int = 8192)
 		{
 			this.config = config;
-			mTexture = defaultTexture;
-			mPremultipliedAlpha = texture.premultipliedAlpha;
-			mParticles = new Vector.<Particle3D>(0, false);
-			mVertexData = new VertexData(0);
-			mIndices = new <uint>[];
-			mEmissionTime = 0.0;
-			mFrameTime = 0.0;
-			mEmitterX = mEmitterY = 0;
-			mMaxCapacity = Math.min(8192, maxCapacity);
-			mBlendFactorDestination = blendFactorDest || Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA;
-			mBlendFactorSource = blendFactorSource || (mPremultipliedAlpha ? Context3DBlendFactor.ONE : Context3DBlendFactor.SOURCE_ALPHA);
-			createProgram();
-			raiseCapacity(initialCapacity);
-			// handle a lost device context
+			_maxCapacity = Math.min(8192, maxCapacity);
+			this.initialCapacity = Math.min(initialCapacity, maxCapacity);
 			Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContext3DCreate, false, 0, true);
-			mPremultipliedAlpha = false;
+		}
+
+		/**
+		 * 使用默认设置
+		 *
+		 */
+		public function useDefaultConfig():void
+		{
+			config = new Particle3DConfig();
+			texture = defaultTexture;
 		}
 
 		private var _onParticle3DConfigChange:Signal;
@@ -75,6 +71,29 @@ package age.renderers
 		public function get onParticle3DConfigChange():Signal
 		{
 			return _onParticle3DConfigChange;
+		}
+
+		private var _texture:Texture;
+
+		/**
+		 * 设置或获取当前贴图
+		 * @return
+		 *
+		 */
+		public function get texture():Texture
+		{
+			return _texture;
+		}
+
+		public function set texture(value:Texture):void
+		{
+			if (_texture != value)
+			{
+				_texture = value;
+				createProgram();
+				raiseCapacity(initialCapacity);
+				validate();
+			}
 		}
 
 		public var _config:Particle3DConfig;
@@ -94,8 +113,28 @@ package age.renderers
 			if (_config != value)
 			{
 				_config = value;
-				parseConfig(value);
+
+				if (_config)
+				{
+					parseConfig(value);
+				}
+				validate();
+			}
+		}
+
+		/**
+		 * 调用该方法验证更新配置
+		 *
+		 */
+		public function validate():void
+		{
+			if (_config && _texture)
+			{
 				start();
+			}
+			else
+			{
+				stop();
 			}
 		}
 
@@ -111,8 +150,9 @@ package age.renderers
 			mGravityX = config.gravityX;
 			mGravityY = config.gravityY;
 			mEmitterType = config.emitterType;
-			mMaxNumParticles = config.maxNumParticles;
-			mLifespan = Math.max(0.01, config.lifespan);
+			_maxNumParticles = config.maxNumParticles;
+			_lifespan = Math.max(0.01, config.lifespan);
+			emissionRate = _maxNumParticles / _lifespan;
 			mLifespanVariance = config.lifespanVariance;
 			mStartSize = config.startSize;
 			mStartSizeVariance = config.startSizeVariance;
@@ -139,9 +179,8 @@ package age.renderers
 			mStartColorVariance = config.startColorVariance;
 			mEndColor = config.endColor;
 			mEndColorVariance = config.endColorVariance;
-			mBlendFactorSource = config.blendFactorSource;
-			mBlendFactorDestination = config.blendFactorDestination;
-			mEmissionRate = mMaxNumParticles / mLifespan;
+			blendFactorSource = config.blendFactorSource;
+			blendFactorDestination = config.blendFactorDestination;
 		}
 
 		// emitter configuration                            // .pex element name
@@ -152,9 +191,9 @@ package age.renderers
 		private var mEmitterYVariance:Number; // sourcePositionVariance y
 
 		// particle configuration
-		private var mMaxNumParticles:int; // maxParticles
+		private var _maxNumParticles:int; // maxParticles
 
-		private var mLifespan:Number; // particleLifeSpan
+		private var _lifespan:Number; // particleLifeSpan
 
 		private var mLifespanVariance:Number; // particleLifeSpanVariance
 
@@ -225,7 +264,7 @@ package age.renderers
 		{
 			// for performance reasons, the random variances are calculated inline instead
 			// of calling a function
-			var lifespan:Number = mLifespan + mLifespanVariance * (Math.random() * 2.0 - 1.0);
+			var lifespan:Number = _lifespan + mLifespanVariance * (Math.random() * 2.0 - 1.0);
 			particle.currentTime = 0.0;
 			particle.totalTime = lifespan > 0.0 ? lifespan : 0.0;
 
@@ -233,10 +272,10 @@ package age.renderers
 			{
 				return;
 			}
-			particle.x = mEmitterX + mEmitterXVariance * (Math.random() * 2.0 - 1.0);
-			particle.y = mEmitterY + mEmitterYVariance * (Math.random() * 2.0 - 1.0);
-			particle.startX = mEmitterX;
-			particle.startY = mEmitterY;
+			particle.x = emitterX + mEmitterXVariance * (Math.random() * 2.0 - 1.0);
+			particle.y = emitterY + mEmitterYVariance * (Math.random() * 2.0 - 1.0);
+			particle.startX = emitterX;
+			particle.startY = emitterY;
 			var angle:Number = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0);
 			var speed:Number = mSpeed + mSpeedVariance * (Math.random() * 2.0 - 1.0);
 			particle.velocityX = speed * Math.cos(angle);
@@ -337,11 +376,13 @@ package age.renderers
 			{
 				particle.emitRotation += particle.emitRotationDelta * passedTime;
 				particle.emitRadius -= particle.emitRadiusDelta * passedTime;
-				particle.x = mEmitterX - Math.cos(particle.emitRotation) * particle.emitRadius;
-				particle.y = mEmitterY - Math.sin(particle.emitRotation) * particle.emitRadius;
+				particle.x = emitterX - Math.cos(particle.emitRotation) * particle.emitRadius;
+				particle.y = emitterY - Math.sin(particle.emitRotation) * particle.emitRadius;
 
 				if (particle.emitRadius < mMinRadius)
+				{
 					particle.currentTime = particle.totalTime;
+				}
 			}
 			else
 			{
@@ -377,383 +418,62 @@ package age.renderers
 
 		private function updateEmissionRate():void
 		{
-			emissionRate = mMaxNumParticles / mLifespan;
-		}
-
-		public function get emitterType():int
-		{
-			return mEmitterType;
-		}
-
-		public function set emitterType(value:int):void
-		{
-			mEmitterType = value;
-		}
-
-		public function get emitterXVariance():Number
-		{
-			return mEmitterXVariance;
-		}
-
-		public function set emitterXVariance(value:Number):void
-		{
-			mEmitterXVariance = value;
-		}
-
-		public function get emitterYVariance():Number
-		{
-			return mEmitterYVariance;
-		}
-
-		public function set emitterYVariance(value:Number):void
-		{
-			mEmitterYVariance = value;
+			emissionRate = _maxNumParticles / _lifespan;
 		}
 
 		public function get maxNumParticles():int
 		{
-			return mMaxNumParticles;
+			return _maxNumParticles;
 		}
 
 		public function set maxNumParticles(value:int):void
 		{
 			maxCapacity = value;
-			mMaxNumParticles = maxCapacity;
+			_maxNumParticles = maxCapacity;
 			updateEmissionRate();
 		}
 
 		public function get lifespan():Number
 		{
-			return mLifespan;
+			return _lifespan;
 		}
 
 		public function set lifespan(value:Number):void
 		{
-			mLifespan = Math.max(0.01, value);
+			_lifespan = Math.max(0.01, value);
 			updateEmissionRate();
 		}
 
-		public function get lifespanVariance():Number
-		{
-			return mLifespanVariance;
-		}
+		private var particles:Vector.<Particle3D> = new Vector.<Particle3D>(0, false);;
 
-		public function set lifespanVariance(value:Number):void
-		{
-			mLifespanVariance = value;
-		}
+		private var frameTime:Number = 0;
 
-		public function get startSize():Number
-		{
-			return mStartSize;
-		}
+		private var program:Program3D;
 
-		public function set startSize(value:Number):void
-		{
-			mStartSize = value;
-		}
-
-		public function get startSizeVariance():Number
-		{
-			return mStartSizeVariance;
-		}
-
-		public function set startSizeVariance(value:Number):void
-		{
-			mStartSizeVariance = value;
-		}
-
-		public function get endSize():Number
-		{
-			return mEndSize;
-		}
-
-		public function set endSize(value:Number):void
-		{
-			mEndSize = value;
-		}
-
-		public function get endSizeVariance():Number
-		{
-			return mEndSizeVariance;
-		}
-
-		public function set endSizeVariance(value:Number):void
-		{
-			mEndSizeVariance = value;
-		}
-
-		public function get emitAngle():Number
-		{
-			return mEmitAngle;
-		}
-
-		public function set emitAngle(value:Number):void
-		{
-			mEmitAngle = value;
-		}
-
-		public function get emitAngleVariance():Number
-		{
-			return mEmitAngleVariance;
-		}
-
-		public function set emitAngleVariance(value:Number):void
-		{
-			mEmitAngleVariance = value;
-		}
-
-		public function get startRotation():Number
-		{
-			return mStartRotation;
-		}
-
-		public function set startRotation(value:Number):void
-		{
-			mStartRotation = value;
-		}
-
-		public function get startRotationVariance():Number
-		{
-			return mStartRotationVariance;
-		}
-
-		public function set startRotationVariance(value:Number):void
-		{
-			mStartRotationVariance = value;
-		}
-
-		public function get endRotation():Number
-		{
-			return mEndRotation;
-		}
-
-		public function set endRotation(value:Number):void
-		{
-			mEndRotation = value;
-		}
-
-		public function get endRotationVariance():Number
-		{
-			return mEndRotationVariance;
-		}
-
-		public function set endRotationVariance(value:Number):void
-		{
-			mEndRotationVariance = value;
-		}
-
-		public function get speed():Number
-		{
-			return mSpeed;
-		}
-
-		public function set speed(value:Number):void
-		{
-			mSpeed = value;
-		}
-
-		public function get speedVariance():Number
-		{
-			return mSpeedVariance;
-		}
-
-		public function set speedVariance(value:Number):void
-		{
-			mSpeedVariance = value;
-		}
-
-		public function get gravityX():Number
-		{
-			return mGravityX;
-		}
-
-		public function set gravityX(value:Number):void
-		{
-			mGravityX = value;
-		}
-
-		public function get gravityY():Number
-		{
-			return mGravityY;
-		}
-
-		public function set gravityY(value:Number):void
-		{
-			mGravityY = value;
-		}
-
-		public function get radialAcceleration():Number
-		{
-			return mRadialAcceleration;
-		}
-
-		public function set radialAcceleration(value:Number):void
-		{
-			mRadialAcceleration = value;
-		}
-
-		public function get radialAccelerationVariance():Number
-		{
-			return mRadialAccelerationVariance;
-		}
-
-		public function set radialAccelerationVariance(value:Number):void
-		{
-			mRadialAccelerationVariance = value;
-		}
-
-		public function get tangentialAcceleration():Number
-		{
-			return mTangentialAcceleration;
-		}
-
-		public function set tangentialAcceleration(value:Number):void
-		{
-			mTangentialAcceleration = value;
-		}
-
-		public function get tangentialAccelerationVariance():Number
-		{
-			return mTangentialAccelerationVariance;
-		}
-
-		public function set tangentialAccelerationVariance(value:Number):void
-		{
-			mTangentialAccelerationVariance = value;
-		}
-
-		public function get maxRadius():Number
-		{
-			return mMaxRadius;
-		}
-
-		public function set maxRadius(value:Number):void
-		{
-			mMaxRadius = value;
-		}
-
-		public function get maxRadiusVariance():Number
-		{
-			return mMaxRadiusVariance;
-		}
-
-		public function set maxRadiusVariance(value:Number):void
-		{
-			mMaxRadiusVariance = value;
-		}
-
-		public function get minRadius():Number
-		{
-			return mMinRadius;
-		}
-
-		public function set minRadius(value:Number):void
-		{
-			mMinRadius = value;
-		}
-
-		public function get rotatePerSecond():Number
-		{
-			return mRotatePerSecond;
-		}
-
-		public function set rotatePerSecond(value:Number):void
-		{
-			mRotatePerSecond = value;
-		}
-
-		public function get rotatePerSecondVariance():Number
-		{
-			return mRotatePerSecondVariance;
-		}
-
-		public function set rotatePerSecondVariance(value:Number):void
-		{
-			mRotatePerSecondVariance = value;
-		}
-
-		public function get startColor():ColorArgb
-		{
-			return mStartColor;
-		}
-
-		public function set startColor(value:ColorArgb):void
-		{
-			mStartColor = value;
-		}
-
-		public function get startColorVariance():ColorArgb
-		{
-			return mStartColorVariance;
-		}
-
-		public function set startColorVariance(value:ColorArgb):void
-		{
-			mStartColorVariance = value;
-		}
-
-		public function get endColor():ColorArgb
-		{
-			return mEndColor;
-		}
-
-		public function set endColor(value:ColorArgb):void
-		{
-			mEndColor = value;
-		}
-
-		public function get endColorVariance():ColorArgb
-		{
-			return mEndColorVariance;
-		}
-
-		public function set endColorVariance(value:ColorArgb):void
-		{
-			mEndColorVariance = value;
-		}
-
-		private var mTexture:Texture;
-
-		private var mParticles:Vector.<Particle3D>;
-
-		private var mFrameTime:Number;
-
-		private var mProgram:Program3D;
-
-		private var mVertexData:VertexData;
+		private var vertexData:VertexData = new VertexData(0);
 
 		private var vertexBuffer:VertexBuffer3D;
 
-		private var mIndices:Vector.<uint>;
+		private var indices:Vector.<uint> = new Vector.<uint>;
 
 		private var indexBuffer:IndexBuffer3D;
 
-		private var mNumParticles:int;
+		private var _numParticles:int;
 
-		private var mMaxCapacity:int;
+		/**
+		 * 每秒粒子发射数
+		 */
+		private var emissionRate:Number = 0;
 
-		private var mEmissionRate:Number; // emitted particles per second
+		private var emissionTime:Number = 0;
 
-		private var mEmissionTime:Number;
+		protected var emitterX:Number = 0;
 
-		/** Helper objects. */
-		private static var sHelperMatrix:Matrix = new Matrix();
+		protected var emitterY:Number = 0;
 
-		private static var sHelperPoint:Point = new Point();
+		protected var blendFactorSource:String;
 
-		private static var sRenderAlpha:Vector.<Number> = new <Number>[ 1.0, 1.0,
-																		1.0, 1.0 ];
-
-		protected var mEmitterX:Number;
-
-		protected var mEmitterY:Number;
-
-		protected var mPremultipliedAlpha:Boolean;
-
-		protected var mBlendFactorSource:String;
-
-		protected var mBlendFactorDestination:String;
+		protected var blendFactorDestination:String;
 
 		/**
 		 * @inheritDoc
@@ -772,6 +492,8 @@ package age.renderers
 			{
 				indexBuffer.dispose();
 			}
+			_config = null;
+			stop(true);
 			super.dispose();
 		}
 
@@ -779,16 +501,21 @@ package age.renderers
 		 * @private
 		 *
 		 */
-		private function onContext3DCreate(... nouse):void
+		private function onContext3DCreate(event:*):void
 		{
 			createProgram();
 			raiseCapacity(0);
 		}
 
+		/**
+		 * 增加容量
+		 * @param byAmount
+		 *
+		 */
 		private function raiseCapacity(byAmount:int):void
 		{
 			var oldCapacity:int = capacity;
-			var newCapacity:int = Math.min(mMaxCapacity, capacity + byAmount);
+			var newCapacity:int = Math.min(_maxCapacity, capacity + byAmount);
 			var context:Context3D = Starling.context;
 
 			if (context == null)
@@ -798,59 +525,77 @@ package age.renderers
 			baseVertexData.setTexCoords(1, 1.0, 0.0);
 			baseVertexData.setTexCoords(2, 0.0, 1.0);
 			baseVertexData.setTexCoords(3, 1.0, 1.0);
-			mTexture.adjustVertexData(baseVertexData, 0, 4);
-			mParticles.fixed = false;
-			mIndices.fixed = false;
+			_texture.adjustVertexData(baseVertexData, 0, 4);
+			particles.fixed = false;
+			indices.fixed = false;
 
 			for (var i:int = oldCapacity; i < newCapacity; ++i)
 			{
 				var numVertices:int = i * 4;
 				var numIndices:int = i * 6;
-				mParticles[i] = new Particle3D();
-				mVertexData.append(baseVertexData);
-				mIndices[numIndices] = numVertices;
-				mIndices[int(numIndices + 1)] = numVertices + 1;
-				mIndices[int(numIndices + 2)] = numVertices + 2;
-				mIndices[int(numIndices + 3)] = numVertices + 1;
-				mIndices[int(numIndices + 4)] = numVertices + 3;
-				mIndices[int(numIndices + 5)] = numVertices + 2;
+				particles[i] = new Particle3D();
+				vertexData.append(baseVertexData);
+				indices[numIndices] = numVertices;
+				indices[int(numIndices + 1)] = numVertices + 1;
+				indices[int(numIndices + 2)] = numVertices + 2;
+				indices[int(numIndices + 3)] = numVertices + 1;
+				indices[int(numIndices + 4)] = numVertices + 3;
+				indices[int(numIndices + 5)] = numVertices + 2;
 			}
-			mParticles.fixed = true;
-			mIndices.fixed = true;
+			particles.fixed = true;
+			indices.fixed = true;
 
-			// upload data to vertex and index buffers
+			// 上传顶点和索引缓冲
 			if (vertexBuffer)
+			{
 				vertexBuffer.dispose();
+			}
 
 			if (indexBuffer)
+			{
 				indexBuffer.dispose();
+			}
 			vertexBuffer = context.createVertexBuffer(newCapacity * 4, VertexData.ELEMENTS_PER_VERTEX);
-			vertexBuffer.uploadFromVector(mVertexData.rawData, 0, newCapacity * 4);
+			vertexBuffer.uploadFromVector(vertexData.rawData, 0, newCapacity * 4);
 			indexBuffer = context.createIndexBuffer(newCapacity * 6);
-			indexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
+			indexBuffer.uploadFromVector(indices, 0, newCapacity * 6);
 		}
 
-		/** Starts the emitter for a certain time. @default infinite time */
+		/**
+		 * 开始发射粒子
+		 * @param duration 持续时间，默认值是 Number.MAX_VALUE，差不多是永远
+		 *
+		 */
 		public function start(duration:Number = Number.MAX_VALUE):void
 		{
-			if (mEmissionRate != 0)
-				mEmissionTime = duration;
+			if (emissionRate != 0)
+			{
+				emissionTime = duration;
+			}
 		}
 
-		/** Stops emitting new particles. Depending on 'clearParticles', the existing particles
-		 *  will either keep animating until they die or will be removed right away. */
+		/**
+		 * 停止发射新粒子
+		 * @param clearParticles 设置为 true 可以立即清除所有显示的粒子，默认 false
+		 *
+		 */
 		public function stop(clearParticles:Boolean = false):void
 		{
-			mEmissionTime = 0.0;
+			emissionTime = 0.0;
 
 			if (clearParticles)
+			{
 				clear();
+			}
 		}
 
-		/** Removes all currently active particles. */
+		/**
+		 * 立即清除当前所有显示的粒子
+		 *
+		 */
 		public function clear():void
 		{
-			mNumParticles = 0;
+			_numParticles = 0;
 		}
 
 		/** Returns an empty rectangle at the particle system's position. Calculating the
@@ -859,10 +604,10 @@ package age.renderers
 		{
 			if (resultRect == null)
 				resultRect = new Rectangle();
-			getTransformationMatrix(targetSpace, sHelperMatrix);
-			MatrixUtil.transformCoords(sHelperMatrix, 0, 0, sHelperPoint);
-			resultRect.x = sHelperPoint.x;
-			resultRect.y = sHelperPoint.y;
+			getTransformationMatrix(targetSpace, helperMatrix);
+			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
+			resultRect.x = helperPoint.x;
+			resultRect.y = helperPoint.y;
 			resultRect.width = resultRect.height = 0;
 			return resultRect;
 		}
@@ -873,13 +618,17 @@ package age.renderers
 		 */
 		public function advanceTime(passedTime:Number):void
 		{
+			if (!_config || !_texture)
+			{
+				return;
+			}
 			var particleIndex:int = 0;
 			var particle:Particle3D;
 
 			// advance existing particles
-			while (particleIndex < mNumParticles)
+			while (particleIndex < _numParticles)
 			{
-				particle = mParticles[particleIndex] as Particle3D;
+				particle = particles[particleIndex] as Particle3D;
 
 				if (particle.currentTime < particle.totalTime)
 				{
@@ -888,46 +637,46 @@ package age.renderers
 				}
 				else
 				{
-					if (particleIndex != mNumParticles - 1)
+					if (particleIndex != _numParticles - 1)
 					{
-						var nextParticle:Particle3D = mParticles[int(mNumParticles - 1)] as Particle3D;
-						mParticles[int(mNumParticles - 1)] = particle;
-						mParticles[particleIndex] = nextParticle;
+						var nextParticle:Particle3D = particles[int(_numParticles - 1)] as Particle3D;
+						particles[int(_numParticles - 1)] = particle;
+						particles[particleIndex] = nextParticle;
 					}
-					--mNumParticles;
+					--_numParticles;
 
-					if (mNumParticles == 0 && mEmissionTime == 0)
+					if (_numParticles == 0 && emissionTime == 0)
 						dispatchEvent(new Event(Event.COMPLETE));
 				}
 			}
 
 			// create and advance new particles
-			if (mEmissionTime > 0)
+			if (emissionTime > 0)
 			{
-				var timeBetweenParticles:Number = 1.0 / mEmissionRate;
-				mFrameTime += passedTime;
+				var timeBetweenParticles:Number = 1.0 / emissionRate;
+				frameTime += passedTime;
 
-				while (mFrameTime > 0)
+				while (frameTime > 0)
 				{
-					if (mNumParticles < mMaxCapacity)
+					if (_numParticles < _maxCapacity)
 					{
-						if (mNumParticles == capacity)
+						if (_numParticles == capacity)
 							raiseCapacity(capacity);
-						particle = mParticles[mNumParticles] as Particle3D;
+						particle = particles[_numParticles] as Particle3D;
 						initParticle(particle);
 
 						// particle might be dead at birth
 						if (particle.totalTime > 0.0)
 						{
-							advanceParticle(particle, mFrameTime);
-							++mNumParticles
+							advanceParticle(particle, frameTime);
+							++_numParticles
 						}
 					}
-					mFrameTime -= timeBetweenParticles;
+					frameTime -= timeBetweenParticles;
 				}
 
-				if (mEmissionTime != Number.MAX_VALUE)
-					mEmissionTime = Math.max(0.0, mEmissionTime - passedTime);
+				if (emissionTime != Number.MAX_VALUE)
+					emissionTime = Math.max(0.0, emissionTime - passedTime);
 			}
 			// update vertex data
 			var vertexID:int = 0;
@@ -936,13 +685,13 @@ package age.renderers
 			var rotation:Number;
 			var x:Number, y:Number;
 			var xOffset:Number, yOffset:Number;
-			var textureWidth:Number = mTexture.width;
-			var textureHeight:Number = mTexture.height;
+			var textureWidth:Number = _texture.width;
+			var textureHeight:Number = _texture.height;
 
-			for (var i:int = 0; i < mNumParticles; ++i)
+			for (var i:int = 0; i < _numParticles; ++i)
 			{
 				vertexID = i << 2;
-				particle = mParticles[i] as Particle3D;
+				particle = particles[i] as Particle3D;
 				color = particle.color;
 				alpha = particle.alpha;
 				rotation = particle.rotation;
@@ -953,8 +702,8 @@ package age.renderers
 
 				for (var j:int = 0; j < 4; ++j)
 				{
-					mVertexData.setColor(vertexID + j, color);
-					mVertexData.setAlpha(vertexID + j, alpha);
+					vertexData.setColor(vertexID + j, color);
+					vertexData.setAlpha(vertexID + j, alpha);
 				}
 
 				if (rotation)
@@ -965,25 +714,25 @@ package age.renderers
 					var cosY:Number = cos * yOffset;
 					var sinX:Number = sin * xOffset;
 					var sinY:Number = sin * yOffset;
-					mVertexData.setPosition(vertexID + 3, x - cosX + sinY, y - sinX - cosY);
-					mVertexData.setPosition(vertexID + 2, x + cosX + sinY, y + sinX - cosY);
-					mVertexData.setPosition(vertexID + 1, x - cosX - sinY, y - sinX + cosY);
-					mVertexData.setPosition(vertexID + 0, x + cosX - sinY, y + sinX + cosY);
+					vertexData.setPosition(vertexID + 3, x - cosX + sinY, y - sinX - cosY);
+					vertexData.setPosition(vertexID + 2, x + cosX + sinY, y + sinX - cosY);
+					vertexData.setPosition(vertexID + 1, x - cosX - sinY, y - sinX + cosY);
+					vertexData.setPosition(vertexID + 0, x + cosX - sinY, y + sinX + cosY);
 				}
 				else
 				{
 					// optimization for rotation == 0
-					mVertexData.setPosition(vertexID + 3, x - xOffset, y - yOffset);
-					mVertexData.setPosition(vertexID + 2, x + xOffset, y - yOffset);
-					mVertexData.setPosition(vertexID + 1, x - xOffset, y + yOffset);
-					mVertexData.setPosition(vertexID + 0, x + xOffset, y + yOffset);
+					vertexData.setPosition(vertexID + 3, x - xOffset, y - yOffset);
+					vertexData.setPosition(vertexID + 2, x + xOffset, y - yOffset);
+					vertexData.setPosition(vertexID + 1, x - xOffset, y + yOffset);
+					vertexData.setPosition(vertexID + 0, x + xOffset, y + yOffset);
 				}
 			}
 		}
 
 		public override function render(support:RenderSupport, alpha:Number):void
 		{
-			if (mNumParticles == 0)
+			if (_numParticles == 0)
 				return;
 			// always call this method when you write custom rendering code!
 			// it causes all previously batched quads/images to render.
@@ -996,22 +745,24 @@ package age.renderers
 			alpha *= this.alpha;
 			var context:Context3D = Starling.context;
 			var pma:Boolean = texture.premultipliedAlpha;
-			sRenderAlpha[0] = sRenderAlpha[1] = sRenderAlpha[2] = pma ? alpha : 1.0;
-			sRenderAlpha[3] = alpha;
+			renderAlpha[0] = renderAlpha[1] = renderAlpha[2] = pma ? alpha : 1.0;
+			renderAlpha[3] = alpha;
 
 			if (context == null)
-				throw new MissingContextError();
-			vertexBuffer.uploadFromVector(mVertexData.rawData, 0, mNumParticles * 4);
-			indexBuffer.uploadFromVector(mIndices, 0, mNumParticles * 6);
-			context.setBlendFactors(mBlendFactorSource, mBlendFactorDestination);
-			context.setTextureAt(0, mTexture.base);
-			context.setProgram(mProgram);
+			{
+				throw new MissingContextError()
+			}
+			vertexBuffer.uploadFromVector(vertexData.rawData, 0, _numParticles * 4);
+			indexBuffer.uploadFromVector(indices, 0, _numParticles * 6);
+			context.setBlendFactors(blendFactorSource, blendFactorDestination);
+			context.setTextureAt(0, _texture.base);
+			context.setProgram(program);
 			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, support.mvpMatrix3D, true);
-			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, sRenderAlpha, 1);
+			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, renderAlpha, 1);
 			context.setVertexBufferAt(0, vertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
 			context.setVertexBufferAt(1, vertexBuffer, VertexData.COLOR_OFFSET, Context3DVertexBufferFormat.FLOAT_4);
 			context.setVertexBufferAt(2, vertexBuffer, VertexData.TEXCOORD_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
-			context.drawTriangles(indexBuffer, 0, mNumParticles * 2);
+			context.drawTriangles(indexBuffer, 0, _numParticles * 2);
 			context.setTextureAt(0, null);
 			context.setVertexBufferAt(0, null);
 			context.setVertexBufferAt(1, null);
@@ -1022,30 +773,30 @@ package age.renderers
 		 *  their lifespans. */
 		public function populate(count:int):void
 		{
-			count = Math.min(count, mMaxCapacity - mNumParticles);
+			count = Math.min(count, _maxCapacity - _numParticles);
 
-			if (mNumParticles + count > capacity)
-				raiseCapacity(mNumParticles + count - capacity);
+			if (_numParticles + count > capacity)
+				raiseCapacity(_numParticles + count - capacity);
 			var p:Particle3D;
 
 			for (var i:int = 0; i < count; i++)
 			{
-				p = mParticles[mNumParticles + i];
+				p = particles[_numParticles + i];
 				initParticle(p);
 				advanceParticle(p, Math.random() * p.totalTime);
 			}
-			mNumParticles += count;
+			_numParticles += count;
 		}
 
 		// program management
 		private function createProgram():void
 		{
-			var mipmap:Boolean = mTexture.mipMapping;
-			var textureFormat:String = mTexture.format;
+			var mipmap:Boolean = _texture.mipMapping;
+			var textureFormat:String = _texture.format;
 			var programName:String = "age.ParticleSystem3D." + textureFormat + (mipmap ? "+mm" : "");
-			mProgram = Starling.current.getProgram(programName);
+			program = Starling.current.getProgram(programName);
 
-			if (mProgram == null)
+			if (program == null)
 			{
 				var textureOptions:String = "2d, clamp, linear, " + (mipmap ? "mipnearest" : "mipnone");
 
@@ -1063,94 +814,55 @@ package age.renderers
 				var fragmentProgramAssembler:AGALMiniAssembler = new AGALMiniAssembler();
 				fragmentProgramAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentProgramCode);
 				Starling.current.registerProgram(programName, vertexProgramAssembler.agalcode, fragmentProgramAssembler.agalcode);
-				mProgram = Starling.current.getProgram(programName);
+				program = Starling.current.getProgram(programName);
 			}
 		}
 
+		/**
+		 * 指示粒子系统是否工作中
+		 * @return
+		 *
+		 */
 		public function get isEmitting():Boolean
 		{
-			return mEmissionTime > 0 && mEmissionRate > 0;
+			return emissionTime > 0 && emissionRate > 0;
 		}
 
+		/**
+		 * 粒子容量
+		 * @return
+		 *
+		 */
 		public function get capacity():int
 		{
-			return mVertexData.numVertices / 4;
+			return vertexData.numVertices / 4;
 		}
 
+		/**
+		 * 粒子数
+		 * @return
+		 *
+		 */
 		public function get numParticles():int
 		{
-			return mNumParticles;
+			return _numParticles;
 		}
 
+		private var _maxCapacity:int;
+
+		/**
+		 * 设置或获取最大容量
+		 * @return
+		 *
+		 */
 		public function get maxCapacity():int
 		{
-			return mMaxCapacity;
+			return _maxCapacity;
 		}
 
 		public function set maxCapacity(value:int):void
 		{
-			mMaxCapacity = Math.min(8192, value);
-		}
-
-		public function get emissionRate():Number
-		{
-			return mEmissionRate;
-		}
-
-		public function set emissionRate(value:Number):void
-		{
-			mEmissionRate = value;
-		}
-
-		public function get emitterX():Number
-		{
-			return mEmitterX;
-		}
-
-		public function set emitterX(value:Number):void
-		{
-			mEmitterX = value;
-		}
-
-		public function get emitterY():Number
-		{
-			return mEmitterY;
-		}
-
-		public function set emitterY(value:Number):void
-		{
-			mEmitterY = value;
-		}
-
-		public function get blendFactorSource():String
-		{
-			return mBlendFactorSource;
-		}
-
-		public function set blendFactorSource(value:String):void
-		{
-			mBlendFactorSource = value;
-		}
-
-		public function get blendFactorDestination():String
-		{
-			return mBlendFactorDestination;
-		}
-
-		public function set blendFactorDestination(value:String):void
-		{
-			mBlendFactorDestination = value;
-		}
-
-		public function get texture():Texture
-		{
-			return mTexture;
-		}
-
-		public function set texture(value:Texture):void
-		{
-			mTexture = value;
-			createProgram();
+			_maxCapacity = Math.min(8192, value);
 		}
 
 		/**
@@ -1176,7 +888,6 @@ package age.renderers
 		public function set direction(value:int):void
 		{
 			_direction = value;
-			scaleX = Math.abs(scaleX) * (value == Direction.RIGHT ? 1 : -1);
 		}
 
 		private var _position:Vector3D = new Vector3D;
@@ -1247,8 +958,8 @@ package age.renderers
 			{
 				return;
 			}
-			mEmitterX = position.x;
-			mEmitterY = _projectY(position.y, position.z);
+			emitterX = position.x;
+			emitterY = _projectY(position.y, position.z);
 		}
 
 		/**
@@ -1258,7 +969,7 @@ package age.renderers
 		[Inline]
 		final protected function validatePositionX():void
 		{
-			mEmitterX = position.x;
+			emitterX = position.x;
 		}
 
 		/**
@@ -1272,7 +983,7 @@ package age.renderers
 			{
 				return;
 			}
-			mEmitterY = _projectY(position.y, position.z);
+			emitterY = _projectY(position.y, position.z);
 		}
 
 		private var _projectY:Function;
@@ -1344,8 +1055,8 @@ package age.renderers
 		{
 			if (!_defaultTextureBitmapData)
 			{
-				const textureSize:Number = 32;
-				const blur:Number = 10;
+				const textureSize:Number = 16;
+				const blur:Number = 4;
 				const bmd:BitmapData = new BitmapData(textureSize, textureSize, true, 0);
 				var shape:Shape = new Shape();
 				shape.graphics.beginFill(0xffffff, 1);
@@ -1373,5 +1084,15 @@ package age.renderers
 			}
 			return _defaultTexture;
 		}
+
+		/** Helper objects. */
+		private static var helperMatrix:Matrix = new Matrix();
+
+		private static var helperPoint:Point = new Point();
+
+		private static var renderAlpha:Vector.<Number> = new <Number>[ 1.0, 1.0,
+																	   1.0, 1.0 ];
+
+		private var initialCapacity:int;
 	}
 }
