@@ -109,10 +109,8 @@ package age.renderers
 		{
 			mEmitterXVariance = config.emitterXVariance;
 			mEmitterYVariance = config.emitterYVariance;
-			mEmitterZVariance = config.emitterZVariance;
 			mGravityX = config.gravityX;
 			mGravityY = config.gravityY;
-			mGravityZ = config.gravityZ;
 			mEmitterType = config.emitterType;
 			mMaxNumParticles = config.maxNumParticles;
 			mLifespan = Math.max(0.01, config.lifespan);
@@ -152,10 +150,6 @@ package age.renderers
 		private var mEmitterXVariance:Number; // sourcePositionVariance x
 
 		private var mEmitterYVariance:Number; // sourcePositionVariance y
-
-		private var mEmitterZ:Number;
-
-		private var mEmitterZVariance:Number;
 
 		// particle configuration
 		private var mMaxNumParticles:int; // maxParticles
@@ -241,14 +235,12 @@ package age.renderers
 			}
 			particle.x = mEmitterX + mEmitterXVariance * (Math.random() * 2.0 - 1.0);
 			particle.y = mEmitterY + mEmitterYVariance * (Math.random() * 2.0 - 1.0);
-			particle.z = mEmitterZ + mEmitterZVariance * (Math.random() * 2.0 - 1.0);
 			particle.startX = mEmitterX;
 			particle.startY = mEmitterY;
 			var angle:Number = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0);
 			var speed:Number = mSpeed + mSpeedVariance * (Math.random() * 2.0 - 1.0);
 			particle.velocityX = speed * Math.cos(angle);
 			particle.velocityY = speed * Math.sin(angle);
-			particle.velocityZ = speed;
 			particle.emitRadius = mMaxRadius + mMaxRadiusVariance * (Math.random() * 2.0 - 1.0);
 			particle.emitRadiusDelta = mMaxRadius / lifespan;
 			particle.emitRotation = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0);
@@ -347,7 +339,6 @@ package age.renderers
 				particle.emitRadius -= particle.emitRadiusDelta * passedTime;
 				particle.x = mEmitterX - Math.cos(particle.emitRotation) * particle.emitRadius;
 				particle.y = mEmitterY - Math.sin(particle.emitRotation) * particle.emitRadius;
-				particle.z = mEmitterZ;
 
 				if (particle.emitRadius < mMinRadius)
 					particle.currentTime = particle.totalTime;
@@ -371,10 +362,8 @@ package age.renderers
 				tangentialY = newY * particle.tangentialAcceleration;
 				particle.velocityX += passedTime * (mGravityX + radialX + tangentialX);
 				particle.velocityY += passedTime * (mGravityY + radialY + tangentialY);
-				particle.velocityZ += passedTime * (mGravityZ);
 				particle.x += particle.velocityX * passedTime;
 				particle.y += particle.velocityY * passedTime;
-				particle.z += particle.velocityZ * passedTime;
 			}
 			particle.scale += particle.scaleDelta * passedTime;
 			particle.rotation += particle.rotationDelta * passedTime;
@@ -964,18 +953,18 @@ package age.renderers
 					var cosY:Number = cos * yOffset;
 					var sinX:Number = sin * xOffset;
 					var sinY:Number = sin * yOffset;
-					mVertexData.setPosition(vertexID, x - cosX + sinY, y - sinX - cosY);
-					mVertexData.setPosition(vertexID + 1, x + cosX + sinY, y + sinX - cosY);
-					mVertexData.setPosition(vertexID + 2, x - cosX - sinY, y - sinX + cosY);
-					mVertexData.setPosition(vertexID + 3, x + cosX - sinY, y + sinX + cosY);
+					mVertexData.setPosition(vertexID + 3, x - cosX + sinY, y - sinX - cosY);
+					mVertexData.setPosition(vertexID + 2, x + cosX + sinY, y + sinX - cosY);
+					mVertexData.setPosition(vertexID + 1, x - cosX - sinY, y - sinX + cosY);
+					mVertexData.setPosition(vertexID + 0, x + cosX - sinY, y + sinX + cosY);
 				}
 				else
 				{
 					// optimization for rotation == 0
-					mVertexData.setPosition(vertexID, x - xOffset, y - yOffset);
-					mVertexData.setPosition(vertexID + 1, x + xOffset, y - yOffset);
-					mVertexData.setPosition(vertexID + 2, x - xOffset, y + yOffset);
-					mVertexData.setPosition(vertexID + 3, x + xOffset, y + yOffset);
+					mVertexData.setPosition(vertexID + 3, x - xOffset, y - yOffset);
+					mVertexData.setPosition(vertexID + 2, x + xOffset, y - yOffset);
+					mVertexData.setPosition(vertexID + 1, x - xOffset, y + yOffset);
+					mVertexData.setPosition(vertexID + 0, x + xOffset, y + yOffset);
 				}
 			}
 		}
@@ -1249,8 +1238,8 @@ package age.renderers
 			{
 				return;
 			}
-			super.x = position.x;
-			super.y = _projectY(position.y, position.z);
+			mEmitterX = position.x;
+			mEmitterY = _projectY(position.y, position.z);
 		}
 
 		/**

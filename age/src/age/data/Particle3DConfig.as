@@ -21,9 +21,6 @@ package age.data
 		[T("发射 y 随机量")]
 		public var emitterYVariance:Number = 10;
 
-		[T("发射 z 随机量")]
-		public var emitterZVariance:Number = 10;
-
 		// 粒子设置
 		[T("最大粒子数")]
 		public var maxNumParticles:int = 250;
@@ -66,19 +63,16 @@ package age.data
 
 		// 发射类型为 GRAVITY 的设置
 		[T("速度")]
-		public var speed:Number = 100;
+		public var speed:Number = 50;
 
 		[T("速度随机量")]
-		public var speedVariance:Number = 30;
+		public var speedVariance:Number = 15;
 
 		[T("重力 X")]
 		public var gravityX:Number = 0;
 
 		[T("重力 Y")]
 		public var gravityY:Number = 0;
-
-		[T("重力 Z")]
-		public var gravityZ:Number = 0;
 
 		[T("径向加速度")]
 		public var radialAcceleration:Number = 0;

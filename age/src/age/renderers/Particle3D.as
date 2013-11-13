@@ -16,7 +16,7 @@ package age.renderers
 
 		public var startX:Number, startY:Number;
 
-		public var velocityX:Number, velocityY:Number, velocityZ:Number;
+		public var velocityX:Number, velocityY:Number
 
 		public var radialAcceleration:Number;
 
@@ -30,7 +30,10 @@ package age.renderers
 
 		public var scaleDelta:Number;
 
-		public var z:Number;
+		/**
+		 * 该值总是为 0
+		 */
+		public var z:Number = 0;
 
 		public function Particle3D()
 		{
