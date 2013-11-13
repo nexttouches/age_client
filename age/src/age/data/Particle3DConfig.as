@@ -15,6 +15,9 @@ package age.data
 		[T("发生器类型")]
 		public var emitterType:int = EmitterType.GRAVITY;
 
+		[T("使用内置贴图")]
+		public var isUseNativeTexture:Boolean = true;
+
 		[T("发射 x 随机量")]
 		public var emitterXVariance:Number = 10;
 
