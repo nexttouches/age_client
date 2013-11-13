@@ -105,10 +105,12 @@
 				<components:IntInput id="heightField"
 					width="100%"/>
 				<components:IntInput id="depthField"
-					width="100%"/>
+					width="100%"
+					enabled="false"/>
 			</document:FormRow>
 			<document:FormRow 
 				width="100%"
+				enabled="false"
 				label="原点">
 				<components:NumberInput id="pivotXField"
 					width="100%"
@@ -126,6 +128,25 @@
 					minimum="-1"
 					stepSize="0.005"/>
 			</document:FormRow>
+		</skinClasses:PropertyGroup>
+		<skinClasses:PropertyGroup>
+			<document:FormRow 
+				width="100%"
+				label="贴图">
+				<s:TextInput id="textureField"
+					width="100%"/>
+				<s:Button id="browseTextureButton"
+					label="浏览…"/>
+				<s:Button id="removeTextureButton"
+					label="删除"/>
+			</document:FormRow>
+			<document:FormRow 
+				width="100%"
+				label="">
+				<s:CheckBox id="isUseNativeTexture"
+					label="使用内置贴图"/>
+			</document:FormRow>
+			<s:BitmapImage id="texturePreview"/>
 		</skinClasses:PropertyGroup>
 	</s:Group>
 </s:Skin>
