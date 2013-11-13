@@ -31,7 +31,6 @@ package ageb.modules.avatar.op
 		override public function redo():void
 		{
 			var i:int, n:int, layer:FrameLayerInfoEditable;
-			var numFrames:int = 0;
 
 			// 遍历所有 CellPosition，进行删除操作
 			for (i = cells.length - 1; i >= 0; i--)
@@ -48,18 +47,8 @@ package ageb.modules.avatar.op
 			{
 				layer = info.getLayerAt(insertPositions[i].rowIndex);
 				layer.notifyFramesChange();
-
-				// 修改后的图层帧长度
-				if (layer.numFrames > numFrames)
-				{
-					numFrames = layer.numFrames;
-				}
 			}
-
-			if (numFrames > 0)
-			{
-				info.numFrames = numFrames;
-			}
+			info.updateNumFrames();
 		}
 
 		/**
