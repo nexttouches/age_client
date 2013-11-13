@@ -91,7 +91,7 @@ package ageb.modules.ae
 				// right
 				right.draw(1, h);
 				right.pivotY = h;
-				right.setPosition(0, w, 0);
+				right.setPosition(w, 0, 0);
 				// bottom
 				bottom.draw(w, 1);
 				bottom.setPosition(0, 0, 0);
