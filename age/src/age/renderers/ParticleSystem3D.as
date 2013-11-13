@@ -28,7 +28,6 @@ package age.renderers
 	import starling.errors.MissingContextError;
 	import starling.events.Event;
 	import starling.extensions.ColorArgb;
-	import starling.extensions.Particle;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 	import starling.utils.VertexData;
@@ -53,7 +52,6 @@ package age.renderers
 			mParticles = new Vector.<Particle3D>(0, false);
 			mVertexData = new VertexData(0);
 			mIndices = new <uint>[];
-			mEmissionRate = mMaxNumParticles / mLifespan;
 			mEmissionTime = 0.0;
 			mFrameTime = 0.0;
 			mEmitterX = mEmitterY = 0;
@@ -63,7 +61,7 @@ package age.renderers
 			createProgram();
 			raiseCapacity(initialCapacity);
 			// handle a lost device context
-			Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated, false, 0, true);
+			Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContext3DCreate, false, 0, true);
 			mPremultipliedAlpha = false;
 		}
 
@@ -97,6 +95,7 @@ package age.renderers
 			{
 				_config = value;
 				parseConfig(value);
+				start();
 			}
 		}
 
@@ -142,6 +141,7 @@ package age.renderers
 			mEndColorVariance = config.endColorVariance;
 			mBlendFactorSource = config.blendFactorSource;
 			mBlendFactorDestination = config.blendFactorDestination;
+			mEmissionRate = mMaxNumParticles / mLifespan;
 		}
 
 		// emitter configuration                            // .pex element name
@@ -723,11 +723,11 @@ package age.renderers
 
 		private var mVertexData:VertexData;
 
-		private var mVertexBuffer:VertexBuffer3D;
+		private var vertexBuffer:VertexBuffer3D;
 
 		private var mIndices:Vector.<uint>;
 
-		private var mIndexBuffer:IndexBuffer3D;
+		private var indexBuffer:IndexBuffer3D;
 
 		private var mNumParticles:int;
 
@@ -755,19 +755,31 @@ package age.renderers
 
 		protected var mBlendFactorDestination:String;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public override function dispose():void
 		{
-			Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+			Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContext3DCreate);
 
-			if (mVertexBuffer)
-				mVertexBuffer.dispose();
+			if (vertexBuffer)
+			{
+				vertexBuffer.dispose();
+			}
 
-			if (mIndexBuffer)
-				mIndexBuffer.dispose();
+			if (indexBuffer)
+			{
+				indexBuffer.dispose();
+			}
 			super.dispose();
 		}
 
-		private function onContextCreated(... nouse):void
+		/**
+		 * @private
+		 *
+		 */
+		private function onContext3DCreate(... nouse):void
 		{
 			createProgram();
 			raiseCapacity(0);
@@ -807,15 +819,15 @@ package age.renderers
 			mIndices.fixed = true;
 
 			// upload data to vertex and index buffers
-			if (mVertexBuffer)
-				mVertexBuffer.dispose();
+			if (vertexBuffer)
+				vertexBuffer.dispose();
 
-			if (mIndexBuffer)
-				mIndexBuffer.dispose();
-			mVertexBuffer = context.createVertexBuffer(newCapacity * 4, VertexData.ELEMENTS_PER_VERTEX);
-			mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, newCapacity * 4);
-			mIndexBuffer = context.createIndexBuffer(newCapacity * 6);
-			mIndexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
+			if (indexBuffer)
+				indexBuffer.dispose();
+			vertexBuffer = context.createVertexBuffer(newCapacity * 4, VertexData.ELEMENTS_PER_VERTEX);
+			vertexBuffer.uploadFromVector(mVertexData.rawData, 0, newCapacity * 4);
+			indexBuffer = context.createIndexBuffer(newCapacity * 6);
+			indexBuffer.uploadFromVector(mIndices, 0, newCapacity * 6);
 		}
 
 		/** Starts the emitter for a certain time. @default infinite time */
@@ -989,17 +1001,17 @@ package age.renderers
 
 			if (context == null)
 				throw new MissingContextError();
-			mVertexBuffer.uploadFromVector(mVertexData.rawData, 0, mNumParticles * 4);
-			mIndexBuffer.uploadFromVector(mIndices, 0, mNumParticles * 6);
+			vertexBuffer.uploadFromVector(mVertexData.rawData, 0, mNumParticles * 4);
+			indexBuffer.uploadFromVector(mIndices, 0, mNumParticles * 6);
 			context.setBlendFactors(mBlendFactorSource, mBlendFactorDestination);
 			context.setTextureAt(0, mTexture.base);
 			context.setProgram(mProgram);
 			context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, support.mvpMatrix3D, true);
 			context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, sRenderAlpha, 1);
-			context.setVertexBufferAt(0, mVertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
-			context.setVertexBufferAt(1, mVertexBuffer, VertexData.COLOR_OFFSET, Context3DVertexBufferFormat.FLOAT_4);
-			context.setVertexBufferAt(2, mVertexBuffer, VertexData.TEXCOORD_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
-			context.drawTriangles(mIndexBuffer, 0, mNumParticles * 2);
+			context.setVertexBufferAt(0, vertexBuffer, VertexData.POSITION_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
+			context.setVertexBufferAt(1, vertexBuffer, VertexData.COLOR_OFFSET, Context3DVertexBufferFormat.FLOAT_4);
+			context.setVertexBufferAt(2, vertexBuffer, VertexData.TEXCOORD_OFFSET, Context3DVertexBufferFormat.FLOAT_2);
+			context.drawTriangles(indexBuffer, 0, mNumParticles * 2);
 			context.setTextureAt(0, null);
 			context.setVertexBufferAt(0, null);
 			context.setVertexBufferAt(1, null);
@@ -1030,7 +1042,7 @@ package age.renderers
 		{
 			var mipmap:Boolean = mTexture.mipMapping;
 			var textureFormat:String = mTexture.format;
-			var programName:String = "age.ParticleSystem." + textureFormat + (mipmap ? "+mm" : "");
+			var programName:String = "age.ParticleSystem3D." + textureFormat + (mipmap ? "+mm" : "");
 			mProgram = Starling.current.getProgram(programName);
 
 			if (mProgram == null)
@@ -1185,10 +1197,7 @@ package age.renderers
 		}
 
 		/**
-		 * 相当于调用 position.setTo(x, y, z); validatePosition();
-		 * @param x
-		 * @param y
-		 * @param z
+		 * @inheritDoc
 		 *
 		 */
 		public function setPosition(x:Number, y:Number, z:Number):void
@@ -1249,7 +1258,7 @@ package age.renderers
 		[Inline]
 		final protected function validatePositionX():void
 		{
-			super.x = position.x;
+			mEmitterX = position.x;
 		}
 
 		/**
@@ -1263,7 +1272,7 @@ package age.renderers
 			{
 				return;
 			}
-			super.y = _projectY(position.y, position.z);
+			mEmitterY = _projectY(position.y, position.z);
 		}
 
 		private var _projectY:Function;

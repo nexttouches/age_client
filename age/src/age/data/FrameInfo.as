@@ -384,7 +384,7 @@ package age.data
 				restore(s, this, "sound");
 				restore(s, this, "texture");
 				restore(s, this, "isKeyframe");
-				restore(s, this, "particleInfo");
+				restore(s, this, "particleConfig");
 
 				if (s.box)
 				{
@@ -406,7 +406,7 @@ package age.data
 			export(this, result, "sound", null);
 			export(this, result, "box", null);
 			export(this, result, "texture", null);
-			export(this, result, "particleInfo", null);
+			export(this, result, "particleConfig", null);
 			export(this, result, "isKeyframe", false);
 			return result;
 		}

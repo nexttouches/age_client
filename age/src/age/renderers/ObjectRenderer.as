@@ -404,6 +404,7 @@ package age.renderers
 					const plr:ParticlesLayerRenderer = new particlesLayerRendererClass();
 					plr.info = info;
 					particles.push(plr);
+					addRenderer(plr);
 				}
 				else if (info.type == FrameLayerType.VIRTUAL)
 				{

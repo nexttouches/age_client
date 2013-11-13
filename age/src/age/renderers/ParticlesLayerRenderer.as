@@ -1,22 +1,32 @@
 package age.renderers
 {
+	import flash.geom.Rectangle;
+	import age.AGE;
 	import age.data.FrameLayerInfo;
-	import starling.textures.Texture;
+	import age.data.Particle3DConfig;
+	import starling.events.Event;
 
 	/**
 	 * 粒子图层
 	 * @author zhanghaocong
 	 *
 	 */
-	public class ParticlesLayerRenderer extends ParticleSystem3D
+	public class ParticlesLayerRenderer extends ParticleSystem3D implements IDetailRenderer
 	{
 		/**
 		 * constructor
 		 *
 		 */
-		public function ParticlesLayerRenderer(config:XML = null, texture:Texture = null)
+		public function ParticlesLayerRenderer()
 		{
-			super();
+			super(new Particle3DConfig);
+			start();
+			addEventListener(Event.ADDED_TO_STAGE, onAdd);
+		}
+
+		private function onAdd():void
+		{
+			projectY = SceneRenender(parent.parent).projectY;
 		}
 
 		private var _info:FrameLayerInfo;
@@ -34,7 +44,19 @@ package age.renderers
 		 */
 		public function set info(value:FrameLayerInfo):void
 		{
-			_info = value;
+			if (_info != value)
+			{
+				_info = value;
+			}
+
+			if (_info)
+			{
+				AGE.renderJuggler.add(this);
+			}
+			else
+			{
+				AGE.renderJuggler.remove(this);
+			}
 		}
 
 		private var _currentFrame:int;
@@ -51,7 +73,66 @@ package age.renderers
 
 		public function set currentFrame(value:int):void
 		{
-			_currentFrame = value;
+			if (_currentFrame != value)
+			{
+				_currentFrame = value;
+			}
+
+			if (_info.frames.length > _currentFrame)
+			{
+				// TODO 检查是否有性能问题
+				if (_info.frames[_currentFrame].particleConfig)
+				{
+					config = _info.frames[_currentFrame].particleConfig;
+				}
+				start();
+			}
+			else
+			{
+				stop();
+			}
+
+			// 为没有任何配置的情况下提供默认值
+			if (_currentFrame == 0 && !config)
+			{
+				config = new Particle3DConfig();
+			}
+		}
+
+		/**
+		 * @inhertDoc
+		 *
+		 */
+		public function updateDetail(visibleRect:Rectangle):void
+		{
+			// 左边界
+			if (emitterX < visibleRect.x)
+			{
+				visible = false;
+				return;
+			}
+
+			// 上边界
+			if (emitterY < visibleRect.y)
+			{
+				visible = false;
+				return;
+			}
+
+			// 右边界
+			if (emitterX > visibleRect.right)
+			{
+				visible = false;
+				return;
+			}
+
+			// 下边界
+			if (emitterY > visibleRect.bottom)
+			{
+				visible = false;
+				return;
+			}
+			visible = true;
 		}
 	}
 }
