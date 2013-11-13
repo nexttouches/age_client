@@ -8,14 +8,17 @@ package age.data
 	 */
 	public class EmitterType
 	{
+
 		/**
 		 * GRAVITY 类型
 		 */
+		[Translation(zh_CN="GRAVITY")]
 		public static const GRAVITY:int = 0;
 
 		/**
 		 * RADIAL 类型
 		 */
+		[Translation(zh_CN="RADIAL")]
 		public static const RADIAL:int = 1;
 
 		/**

@@ -20,6 +20,8 @@
 
 	<fx:Script fb:purpose="styling">
 		<![CDATA[
+			import age.data.Particle3DConfig;
+
 			/**
 			 *  @private
 			 */
@@ -144,7 +146,7 @@
 				width="100%"
 				label="">
 				<s:CheckBox id="isUseNativeTexture"
-					label="使用内置贴图"/>
+					label="{Particle3DConfig.T('isUseNativeTexture')}"/>
 			</document:FormRow>
 			<s:BitmapImage id="texturePreview"/>
 		</skinClasses:PropertyGroup>
