@@ -4,13 +4,26 @@ package ageb.modules.ae
 	import age.renderers.AnimationLayerRenderer;
 	import nt.assets.Asset;
 
+	/**
+	 * AnimationLayerRendererEditable
+	 * @author zhanghaocong
+	 *
+	 */
 	public class AnimationLayerRendererEditable extends AnimationLayerRenderer
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function AnimationLayerRendererEditable()
 		{
 			super();
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set info(value:FrameLayerInfo):void
 		{
 			if (info)
@@ -23,14 +36,6 @@ package ageb.modules.ae
 				infoEditable.getFrameInfoAt(0).onBoxChange.remove(adjustSize);
 			}
 			super.info = value;
-
-			if (value)
-			{
-				for each (var a:Asset in value.assets)
-				{
-					SyncInfoLoader.loadAtlasConfig(a.path);
-				}
-			}
 
 			if (info)
 			{

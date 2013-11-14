@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:791d823f841f1308bc8524f4009629fe:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:4b5b4eb64dcdeb6daad279936d002367:1/1$ -->
 <TextureAtlas imagePath="1000_idle.png">
-    <SubTexture name="0" x="201" y="4" width="46" height="78"/>
-    <SubTexture name="1" x="135" y="4" width="60" height="88"/>
+    <SubTexture name="0" x="135" y="4" width="46" height="78"/>
     <SubTexture name="2" x="4" y="4" width="125" height="98"/>
 </TextureAtlas>

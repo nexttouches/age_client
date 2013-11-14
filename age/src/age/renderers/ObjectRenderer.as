@@ -155,7 +155,7 @@ package age.renderers
 		/**
 		 * 所有粒子渲染器
 		 */
-		public var particles:Vector.<ParticlesLayerRenderer> = new Vector.<ParticlesLayerRenderer>;
+		public var particles:Vector.<ParticleLayerRenderer> = new Vector.<ParticleLayerRenderer>;
 
 		/**
 		 * 添加一个子渲染器
@@ -401,7 +401,7 @@ package age.renderers
 				else if (info.type == FrameLayerType.PARTICLE)
 				{
 					// TODO 从对象池取出
-					const plr:ParticlesLayerRenderer = new particlesLayerRendererClass();
+					const plr:ParticleLayerRenderer = new particlesLayerRendererClass();
 					plr.info = info;
 					particles.push(plr);
 					addRenderer(plr);
@@ -448,7 +448,8 @@ package age.renderers
 
 			for (i = 0, n = particles.length; i < n; i++)
 			{
-				particles[i].removeFromParent(true);
+				// 标记粒子图层等到全部消失后自动删除
+				particles[i].stopAndDispose();
 					// TOOD 放回对象池
 			}
 			particles.length = 0;
@@ -724,7 +725,7 @@ package age.renderers
 		 */
 		protected function get particlesLayerRendererClass():Class
 		{
-			return ParticlesLayerRenderer;
+			return ParticleLayerRenderer;
 		}
 
 		/**

@@ -301,7 +301,7 @@ package age.data
 		 */
 		final protected function initParticles():void
 		{
-			enterDebugger();
+			initTextures();
 		}
 
 		/**

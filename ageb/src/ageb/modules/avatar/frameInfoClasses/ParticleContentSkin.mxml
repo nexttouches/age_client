@@ -74,7 +74,7 @@
 		<s:layout>
 			<s:VerticalLayout/>
 		</s:layout>
-		<skinClasses:PropertyGroup height="87">
+		<skinClasses:PropertyGroup height="57">
 			<document:FormRow 
 				width="100%"
 				label="">
@@ -103,14 +103,14 @@
 			</document:FormRow>
 			<document:FormRow 
 				width="100%"
-				label="大小">
+				label="大小"
+				visible="false">
 				<components:IntInput id="widthField"
 					width="100%"/>
 				<components:IntInput id="heightField"
 					width="100%"/>
 				<components:IntInput id="depthField"
-					width="100%"
-					enabled="false"/>
+					width="100%"/>
 			</document:FormRow>
 			<document:FormRow 
 				width="100%"
@@ -147,10 +147,14 @@
 			</document:FormRow>
 			<s:HGroup 
 				width="100%"
-				horizontalAlign="right"
+				horizontalAlign="left"
 				paddingRight="20">
-				<s:BitmapImage id="texturePreview"
-					width="64" height="64"/>
+				<s:BorderContainer 
+					width="64" height="64">
+					<s:BitmapImage id="texturePreview"
+						width="64" height="64"
+						scaleMode="letterbox"/>
+				</s:BorderContainer>
 				<s:CheckBox id="isUseNativeTexture"
 					label="{Particle3DConfig.T('isUseNativeTexture')}"/>
 			</s:HGroup>
@@ -161,7 +165,10 @@
 					maximum="1"
 					minimum="0"
 					stepSize="0.01"/>
-				<s:Label text="{startColorAlpha.value}"/>
+				<s:Label 
+					width="40"
+					textAlign="right"
+					text="{startColorAlpha.value}"/>
 			</frameInfoClasses:ParticleContentFormRow>
 			<frameInfoClasses:ParticleContentFormRow field="startColorVariance">
 				<mx:ColorPicker id="startColorVariance"/>
@@ -170,7 +177,10 @@
 					maximum="1"
 					minimum="0"
 					stepSize="0.01"/>
-				<s:Label text="{startColorVarianceAlpha.value}"/>
+				<s:Label 
+					width="40"
+					textAlign="right"
+					text="{startColorVarianceAlpha.value}"/>
 			</frameInfoClasses:ParticleContentFormRow>
 			<frameInfoClasses:ParticleContentFormRow field="endColor">
 				<mx:ColorPicker id="endColor"/>
@@ -179,7 +189,10 @@
 					maximum="1"
 					minimum="0"
 					stepSize="0.01"/>
-				<s:Label text="{endColorAlpha.value}"/>
+				<s:Label 
+					width="40"
+					textAlign="right"
+					text="{endColorAlpha.value}"/>
 			</frameInfoClasses:ParticleContentFormRow>
 			<frameInfoClasses:ParticleContentFormRow field="endColorVariance">
 				<mx:ColorPicker id="endColorVariance"/>
@@ -188,7 +201,10 @@
 					maximum="1"
 					minimum="0"
 					stepSize="0.01"/>
-				<s:Label text="{endColorVarianceAlpha.value}"/>
+				<s:Label 
+					width="40"
+					textAlign="right"
+					text="{endColorVarianceAlpha.value}"/>
 			</frameInfoClasses:ParticleContentFormRow>
 		</skinClasses:PropertyGroup>
 		<skinClasses:PropertyGroup>
@@ -234,9 +250,9 @@
 		</skinClasses:PropertyGroup>
 		<skinClasses:PropertyGroup height="100%">
 			<frameInfoClasses:ParticleContentFormRow field="emitterType">
-				<s:DropDownList id="emitterType"
+				<s:ButtonBar id="emitterType"
 					width="100%"
-					selectedIndex="1"/>
+					selectedIndex="0"/>
 			</frameInfoClasses:ParticleContentFormRow>
 			<mx:ViewStack id="emitterSettings"
 				width="100%"
@@ -259,23 +275,28 @@
 						step="1"/>
 					<frameInfoClasses:HSliderRow id="gravityX"
 						max="1000"
+						min="-1000"
 						step="1"/>
 					<frameInfoClasses:HSliderRow id="gravityY"
 						max="1000"
+						min="-1000"
 						step="1"/>
 					<frameInfoClasses:HSliderRow id="radialAcceleration"
 						max="1000"
+						min="-1000"
 						step="1"/>
 					<frameInfoClasses:HSliderRow id="radialAccelerationVariance"
 						max="1000"
+						min="-1000"
 						step="1"/>
 					<frameInfoClasses:HSliderRow id="tangentialAcceleration"
 						max="1000"
+						min="-1000"
 						step="1"/>
 					<frameInfoClasses:HSliderRow id="tangentialAccelerationVariance"
 						max="1000"
+						min="-1000"
 						step="1"/>
-
 				</s:NavigatorContent>
 				<s:NavigatorContent width="100%">
 					<s:layout>

@@ -39,6 +39,11 @@ package ageb.modules.avatar.op
 		protected var info:ActionInfoEditable;
 
 		/**
+		 * 旧的当前帧
+		 */
+		private var oldCurrentFrame:int;
+
+		/**
 		 * constructor
 		 * @param doc
 		 * @param info
@@ -72,6 +77,8 @@ package ageb.modules.avatar.op
 				}
 				lastCP = cp;
 			}
+			// 记录变更前当前帧
+			oldCurrentFrame = object.currentFrame;
 			// 记录变更前帧数
 			oldNumFrames = info.numFrames;
 			// 记录变更前图层的帧
@@ -95,6 +102,7 @@ package ageb.modules.avatar.op
 				layer.setFrames(oldLayers[key]);
 			}
 			info.numFrames = oldNumFrames;
+			object.currentFrame = oldCurrentFrame;
 		}
 	}
 }

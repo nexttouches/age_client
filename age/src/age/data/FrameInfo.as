@@ -356,7 +356,7 @@ package age.data
 			}
 			else if (type == FrameLayerType.PARTICLE)
 			{
-				return !(particleConfig && box && texture);
+				return !(particleConfig && box && (texture || particleConfig.isUseNativeTexture));
 			}
 			throw new Error("没有捕捉到 type: " + type);
 			return false;
@@ -384,12 +384,16 @@ package age.data
 				restore(s, this, "sound");
 				restore(s, this, "texture");
 				restore(s, this, "isKeyframe");
-				restore(s, this, "particleConfig");
 
 				if (s.box)
 				{
 					box = new Box();
 					box.fromJSON(s.box);
+				}
+
+				if (s.particleConfig)
+				{
+					particleConfig = new Particle3DConfig(s.particleConfig)
 				}
 			}
 		}

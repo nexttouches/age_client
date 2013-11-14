@@ -19,6 +19,7 @@ package age.renderers
 	import flash.geom.Vector3D;
 	import age.data.EmitterType;
 	import age.data.Particle3DConfig;
+	import nt.lib.util.assert;
 	import org.osflash.signals.Signal;
 	import starling.animation.IAnimatable;
 	import starling.core.RenderSupport;
@@ -90,8 +91,12 @@ package age.renderers
 			if (_texture != value)
 			{
 				_texture = value;
-				createProgram();
-				raiseCapacity(initialCapacity);
+
+				if (_texture)
+				{
+					createProgram();
+					raiseCapacity(initialCapacity);
+				}
 				validate();
 			}
 		}
@@ -134,7 +139,7 @@ package age.renderers
 			}
 			else
 			{
-				stop();
+				stop(_texture == null);
 			}
 		}
 
@@ -145,21 +150,21 @@ package age.renderers
 		 */
 		protected function parseConfig(config:Particle3DConfig):void
 		{
-			mEmitterXVariance = config.emitterXVariance;
-			mEmitterYVariance = config.emitterYVariance;
-			mGravityX = config.gravityX;
-			mGravityY = config.gravityY;
-			mEmitterType = config.emitterType;
+			emitterXVariance = config.emitterXVariance;
+			emitterYVariance = config.emitterYVariance;
+			gravityX = config.gravityX;
+			gravityY = config.gravityY;
+			emitterType = config.emitterType;
 			_maxNumParticles = config.maxNumParticles;
 			_lifespan = Math.max(0.01, config.lifespan);
 			emissionRate = _maxNumParticles / _lifespan;
-			mLifespanVariance = config.lifespanVariance;
-			mStartSize = config.startSize;
-			mStartSizeVariance = config.startSizeVariance;
-			mEndSize = config.endSize;
-			mEndSizeVariance = config.endSizeVariance;
-			mEmitAngle = deg2rad(config.emitAngle);
-			mEmitAngleVariance = deg2rad(config.emitAngleVariance);
+			lifespanVariance = config.lifespanVariance;
+			startSize = config.startSize;
+			startSizeVariance = config.startSizeVariance;
+			endSize = config.endSize;
+			endSizeVariance = config.endSizeVariance;
+			emitAngle = deg2rad(config.emitAngle);
+			emitAngleVariance = deg2rad(config.emitAngleVariance);
 			mStartRotation = deg2rad(config.startRotation);
 			mStartRotationVariance = deg2rad(config.startRotationVariance);
 			mEndRotation = deg2rad(config.endRotation);
@@ -181,33 +186,51 @@ package age.renderers
 			mEndColorVariance = config.endColorVariance;
 			blendFactorSource = config.blendFactorSource;
 			blendFactorDestination = config.blendFactorDestination;
+
+			if (config.isUseNativeTexture)
+			{
+				texture = defaultTexture;
+			}
 		}
 
+		/**
+		 * 做一个标记，是否要在结束后自动 Dispose
+		 */
+		protected var isStopAndDispose:Boolean;
+
+		public function stopAndDispose():void
+		{
+			isStopAndDispose = true;
+			stop();
+		}
+
+		private var initialCapacity:int;
+
 		// emitter configuration                            // .pex element name
-		private var mEmitterType:int; // emitterType
+		private var emitterType:int; // emitterType
 
-		private var mEmitterXVariance:Number; // sourcePositionVariance x
+		private var emitterXVariance:Number; // sourcePositionVariance x
 
-		private var mEmitterYVariance:Number; // sourcePositionVariance y
+		private var emitterYVariance:Number; // sourcePositionVariance y
 
 		// particle configuration
 		private var _maxNumParticles:int; // maxParticles
 
 		private var _lifespan:Number; // particleLifeSpan
 
-		private var mLifespanVariance:Number; // particleLifeSpanVariance
+		private var lifespanVariance:Number; // particleLifeSpanVariance
 
-		private var mStartSize:Number; // startParticleSize
+		private var startSize:Number; // startParticleSize
 
-		private var mStartSizeVariance:Number; // startParticleSizeVariance
+		private var startSizeVariance:Number; // startParticleSizeVariance
 
-		private var mEndSize:Number; // finishParticleSize
+		private var endSize:Number; // finishParticleSize
 
-		private var mEndSizeVariance:Number; // finishParticleSizeVariance
+		private var endSizeVariance:Number; // finishParticleSizeVariance
 
-		private var mEmitAngle:Number; // angle
+		private var emitAngle:Number; // angle
 
-		private var mEmitAngleVariance:Number; // angleVariance
+		private var emitAngleVariance:Number; // angleVariance
 
 		private var mStartRotation:Number; // rotationStart
 
@@ -222,11 +245,9 @@ package age.renderers
 
 		private var mSpeedVariance:Number; // speedVariance
 
-		private var mGravityX:Number; // gravity x
+		private var gravityX:Number; // gravity x
 
-		private var mGravityY:Number; // gravity y
-
-		private var mGravityZ:Number;
+		private var gravityY:Number; // gravity y
 
 		private var mRadialAcceleration:Number; // radialAcceleration
 
@@ -264,7 +285,7 @@ package age.renderers
 		{
 			// for performance reasons, the random variances are calculated inline instead
 			// of calling a function
-			var lifespan:Number = _lifespan + mLifespanVariance * (Math.random() * 2.0 - 1.0);
+			var lifespan:Number = _lifespan + lifespanVariance * (Math.random() * 2.0 - 1.0);
 			particle.currentTime = 0.0;
 			particle.totalTime = lifespan > 0.0 ? lifespan : 0.0;
 
@@ -272,22 +293,22 @@ package age.renderers
 			{
 				return;
 			}
-			particle.x = emitterX + mEmitterXVariance * (Math.random() * 2.0 - 1.0);
-			particle.y = emitterY + mEmitterYVariance * (Math.random() * 2.0 - 1.0);
+			particle.x = emitterX + emitterXVariance * (Math.random() * 2.0 - 1.0);
+			particle.y = emitterY + emitterYVariance * (Math.random() * 2.0 - 1.0);
 			particle.startX = emitterX;
 			particle.startY = emitterY;
-			var angle:Number = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0);
+			var angle:Number = emitAngle + emitAngleVariance * (Math.random() * 2.0 - 1.0);
 			var speed:Number = mSpeed + mSpeedVariance * (Math.random() * 2.0 - 1.0);
 			particle.velocityX = speed * Math.cos(angle);
 			particle.velocityY = speed * Math.sin(angle);
 			particle.emitRadius = mMaxRadius + mMaxRadiusVariance * (Math.random() * 2.0 - 1.0);
 			particle.emitRadiusDelta = mMaxRadius / lifespan;
-			particle.emitRotation = mEmitAngle + mEmitAngleVariance * (Math.random() * 2.0 - 1.0);
+			particle.emitRotation = emitAngle + emitAngleVariance * (Math.random() * 2.0 - 1.0);
 			particle.emitRotationDelta = mRotatePerSecond + mRotatePerSecondVariance * (Math.random() * 2.0 - 1.0);
 			particle.radialAcceleration = mRadialAcceleration + mRadialAccelerationVariance * (Math.random() * 2.0 - 1.0);
 			particle.tangentialAcceleration = mTangentialAcceleration + mTangentialAccelerationVariance * (Math.random() * 2.0 - 1.0);
-			var startSize:Number = mStartSize + mStartSizeVariance * (Math.random() * 2.0 - 1.0);
-			var endSize:Number = mEndSize + mEndSizeVariance * (Math.random() * 2.0 - 1.0);
+			var startSize:Number = startSize + startSizeVariance * (Math.random() * 2.0 - 1.0);
+			var endSize:Number = endSize + endSizeVariance * (Math.random() * 2.0 - 1.0);
 
 			if (startSize < 0.1)
 			{
@@ -372,7 +393,7 @@ package age.renderers
 			passedTime = restTime > passedTime ? passedTime : restTime;
 			particle.currentTime += passedTime;
 
-			if (mEmitterType == EmitterType.RADIAL)
+			if (emitterType == EmitterType.RADIAL)
 			{
 				particle.emitRotation += particle.emitRotationDelta * passedTime;
 				particle.emitRadius -= particle.emitRadiusDelta * passedTime;
@@ -401,8 +422,8 @@ package age.renderers
 				var newY:Number = tangentialX;
 				tangentialX = -tangentialY * particle.tangentialAcceleration;
 				tangentialY = newY * particle.tangentialAcceleration;
-				particle.velocityX += passedTime * (mGravityX + radialX + tangentialX);
-				particle.velocityY += passedTime * (mGravityY + radialY + tangentialY);
+				particle.velocityX += passedTime * (gravityX + radialX + tangentialX);
+				particle.velocityY += passedTime * (gravityY + radialY + tangentialY);
 				particle.x += particle.velocityX * passedTime;
 				particle.y += particle.velocityY * passedTime;
 			}
@@ -428,8 +449,7 @@ package age.renderers
 
 		public function set maxNumParticles(value:int):void
 		{
-			maxCapacity = value;
-			_maxNumParticles = maxCapacity;
+			_maxNumParticles = value;
 			updateEmissionRate();
 		}
 
@@ -492,7 +512,8 @@ package age.renderers
 			{
 				indexBuffer.dispose();
 			}
-			_config = null;
+			config = null;
+			texture = null;
 			stop(true);
 			super.dispose();
 		}
@@ -618,6 +639,14 @@ package age.renderers
 		 */
 		public function advanceTime(passedTime:Number):void
 		{
+			if (isStopAndDispose)
+			{
+				if (numParticles == 0)
+				{
+					removeFromParent(true);
+				}
+			}
+
 			if (!_config || !_texture)
 			{
 				return;
@@ -651,7 +680,7 @@ package age.renderers
 			}
 
 			// create and advance new particles
-			if (emissionTime > 0)
+			if (emissionTime > 0 && emissionRate > 0)
 			{
 				var timeBetweenParticles:Number = 1.0 / emissionRate;
 				frameTime += passedTime;
@@ -733,7 +762,9 @@ package age.renderers
 		public override function render(support:RenderSupport, alpha:Number):void
 		{
 			if (_numParticles == 0)
+			{
 				return;
+			}
 			// always call this method when you write custom rendering code!
 			// it causes all previously batched quads/images to render.
 			support.finishQuadBatch();
@@ -741,10 +772,12 @@ package age.renderers
 			// make this call to keep the statistics display in sync.
 			// to play it safe, it's done in a backwards-compatible way here.
 			if (support.hasOwnProperty("raiseDrawCount"))
+			{
 				support.raiseDrawCount();
+			}
 			alpha *= this.alpha;
 			var context:Context3D = Starling.context;
-			var pma:Boolean = texture.premultipliedAlpha;
+			var pma:Boolean = _texture.premultipliedAlpha;
 			renderAlpha[0] = renderAlpha[1] = renderAlpha[2] = pma ? alpha : 1.0;
 			renderAlpha[3] = alpha;
 
@@ -874,7 +907,7 @@ package age.renderers
 			return _position.z;
 		}
 
-		private var _direction:int;
+		protected var _direction:int;
 
 		/**
 		 * @inheritDoc
@@ -1092,7 +1125,5 @@ package age.renderers
 
 		private static var renderAlpha:Vector.<Number> = new <Number>[ 1.0, 1.0,
 																	   1.0, 1.0 ];
-
-		private var initialCapacity:int;
 	}
 }

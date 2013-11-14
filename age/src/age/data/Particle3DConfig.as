@@ -139,8 +139,12 @@ package age.data
 		 * constructor
 		 *
 		 */
-		public function Particle3DConfig()
+		public function Particle3DConfig(raw:Object = null)
 		{
+			if (raw)
+			{
+				fromJSON(raw);
+			}
 		}
 
 		/**
@@ -170,6 +174,16 @@ package age.data
 				}
 			}
 			return this;
+		}
+
+		/**
+		 * 获得当前对象的副本
+		 * @return
+		 *
+		 */
+		public function clone():Particle3DConfig
+		{
+			return new Particle3DConfig(JSON.parse(JSON.stringify(this)));
 		}
 	}
 }

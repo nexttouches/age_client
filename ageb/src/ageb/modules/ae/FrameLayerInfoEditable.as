@@ -147,7 +147,7 @@ package ageb.modules.ae
 
 		/**
 		 * frames 属性发生变化时广播<br>
-		 * 通常由外部调用
+		 * 正确的签名是 function (target:FrameLayerInfoEditable):void;
 		 */
 		public var onFramesChange:Signal = new Signal(FrameLayerInfoEditable);
 

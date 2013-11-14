@@ -3,6 +3,8 @@ package ageb.modules.ae
 	import flash.geom.Vector3D;
 	import age.data.Box;
 	import age.data.FrameInfo;
+	import age.data.Particle3DConfig;
+	import ageb.modules.avatar.frameInfoClasses.ParticleContent;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -266,6 +268,23 @@ package ageb.modules.ae
 				isKeyframe = value;
 				onIsKeyframeChange.dispatch();
 			}
+		}
+
+		/**
+		 * particleConfig 变化时广播
+		 */
+		public var onParticleConfigChange:Signal = new Signal();
+
+		/**
+		 * 设置 particleConfig
+		 * @param value
+		 * @return
+		 *
+		 */
+		public function setParticleConfig(value:Particle3DConfig):void
+		{
+			particleConfig = value;
+			onParticleConfigChange.dispatch();
 		}
 
 		/**

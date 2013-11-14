@@ -495,11 +495,22 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * 排序时使用的方法
+		 * @param a
+		 * @param b
+		 * @return
+		 *
+		 */
 		protected function sort(a:IArrangeable, b:IArrangeable):int
 		{
 			return b.zIndex - a.zIndex;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function dispose():void
 		{
 			if (_isAutoSort)

@@ -267,7 +267,7 @@ package nt.assets
 		 */
 		protected function notifyLoadComplete():void
 		{
-			trace("[Asset] 加载完成 " + info.url, ", 总", int(bytesLoaded / 1024), "k");
+			trace("[Asset] 加载完成 " + info.url, " (", int(bytesLoaded / 1024), "k)");
 
 			for each (var user:IAssetUser in _users)
 			{

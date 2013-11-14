@@ -104,7 +104,7 @@ package ageb.modules.document
 		{
 			if (pairs.length > 0)
 			{
-				stdout.push("拷贝 {length} 个声音文件...", pairs);
+				stdout.push(format("拷贝 {length} 个声音文件...", pairs));
 
 				for (var i:int = 0; i < pairs.length; i++)
 				{

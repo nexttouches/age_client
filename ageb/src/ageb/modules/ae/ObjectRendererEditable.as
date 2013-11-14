@@ -207,6 +207,15 @@ package ageb.modules.ae
 
 		/**
 		 * @inheritDoc
+		 *
+		 */
+		override protected function get particlesLayerRendererClass():Class
+		{
+			return ParticleLayerRendererEditable;
+		}
+
+		/**
+		 * @inheritDoc
 		 * @return
 		 *
 		 */

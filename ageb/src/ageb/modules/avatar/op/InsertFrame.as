@@ -1,6 +1,7 @@
 package ageb.modules.avatar.op
 {
 	import spark.components.gridClasses.CellPosition;
+	import age.data.FrameInfo;
 	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.ae.FrameLayerInfoEditable;
@@ -101,12 +102,18 @@ package ageb.modules.avatar.op
 				{
 					if (isCopyProps && newFrame.index > 0)
 					{
-						newFrame.texture = newFrame.prevKeyFrame.texture;
-						newFrame.sound = newFrame.prevKeyFrame.sound;
+						const prevKeyFrame:FrameInfo = newFrame.prevKeyFrame;
+						newFrame.texture = prevKeyFrame.texture;
+						newFrame.sound = prevKeyFrame.sound;
 
-						if (newFrame.prevKeyFrame.box)
+						if (prevKeyFrame.box)
 						{
-							newFrame.box = newFrame.prevKeyFrame.box.clone1();
+							newFrame.box = prevKeyFrame.box.clone1();
+						}
+
+						if (prevKeyFrame.particleConfig)
+						{
+							newFrame.particleConfig = prevKeyFrame.particleConfig.clone();
 						}
 					}
 					newFrame.isKeyframe = true;
@@ -126,6 +133,8 @@ package ageb.modules.avatar.op
 				layer.notifyFramesChange();
 			}
 			info.updateNumFrames();
+			// 最后移动播放头到添加了的帧
+			object.currentFrame = newFrame.index;
 		}
 
 		/**

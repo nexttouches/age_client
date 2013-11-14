@@ -1,5 +1,6 @@
 package ageb.modules.avatar.frameInfoClasses
 {
+	import flash.events.Event;
 	import mx.binding.utils.BindingUtils;
 	import spark.components.HSlider;
 	import spark.components.Label;
@@ -9,6 +10,7 @@ package ageb.modules.avatar.frameInfoClasses
 	 * @author zhanghaocong
 	 *
 	 */
+	[Event(name="change", type="flash.events.Event")]
 	public class HSliderRow extends ParticleContentFormRow
 	{
 		/**
@@ -37,6 +39,7 @@ package ageb.modules.avatar.frameInfoClasses
 			slider.maximum = max;
 			slider.minimum = min;
 			slider.stepSize = step;
+			slider.addEventListener(Event.CHANGE, onChange);
 			addElement(slider);
 			valueLabel = new Label();
 			valueLabel.width = 40;
@@ -46,6 +49,16 @@ package ageb.modules.avatar.frameInfoClasses
 			BindingUtils.bindProperty(this, "max", slider, "maximum");
 			BindingUtils.bindProperty(this, "step", slider, "stepSize");
 			addElement(valueLabel);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		protected function onChange(event:Event):void
+		{
+			_value = slider.value;
+			dispatchEvent(event);
 		}
 
 		private var _value:Number = 0;

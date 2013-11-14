@@ -661,6 +661,7 @@ package ageb.modules.avatar.timelineClasses
 				_info.onIsKeyframeChange.remove(render);
 				_info.onTextureChange.remove(render);
 				_info.onBoxChange.remove(render);
+				_info.onParticleConfigChange.remove(render);
 			}
 			_info = value;
 
@@ -669,6 +670,7 @@ package ageb.modules.avatar.timelineClasses
 				_info.onIsKeyframeChange.add(render);
 				_info.onTextureChange.add(render);
 				_info.onBoxChange.add(render);
+				_info.onParticleConfigChange.add(render);
 			}
 			render();
 		}

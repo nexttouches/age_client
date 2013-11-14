@@ -45,7 +45,7 @@ package ageb.modules.avatar.frameInfoClasses
 		/**
 		 * @private
 		 */
-		[SkinPart(required="true")]
+		[SkinPart(required="false")]
 		public var texturePreviewGroup:Group;
 
 		/**
@@ -216,7 +216,7 @@ package ageb.modules.avatar.frameInfoClasses
 		 * @private
 		 *
 		 */
-		private function onTextureChange():void
+		protected function onTextureChange():void
 		{
 			if (keyframe && keyframe.texture)
 			{
