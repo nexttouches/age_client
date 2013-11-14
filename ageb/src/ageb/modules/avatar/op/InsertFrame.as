@@ -57,6 +57,12 @@ package ageb.modules.avatar.op
 				var newFrame:FrameInfoEditable = new FrameInfoEditable()
 				layer = info.getLayerAt(rowIndex);
 
+				// 该图层没有任何帧，需要先插入一个空白关键帧
+				if (layer.numFrames == 0)
+				{
+					layer.addFrame(new FrameInfoEditable({ isKeyframe: true }));
+				}
+
 				// 插入位置超过了帧长度，需要补齐前面的帧
 				// 该操作属追加
 				if (layer.numFrames <= columnIndex)
