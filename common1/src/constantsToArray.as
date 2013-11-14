@@ -22,6 +22,7 @@ package
 				result.push({ label: translation, data: o[key]});
 			}
 		}
+		result.sortOn("data", Array.NUMERIC);
 		return result;
 	}
 }

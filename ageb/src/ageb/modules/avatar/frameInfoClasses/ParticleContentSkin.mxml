@@ -15,7 +15,9 @@
 	xmlns:ageb="ageb.*"
 	xmlns:document="ageb.modules.document.*"
 	xmlns:components="ageb.components.*"
-	xmlns:skinClasses="ageb.modules.avatar.frameInfoClasses.skinClasses.*">
+	xmlns:skinClasses="ageb.modules.avatar.frameInfoClasses.skinClasses.*"
+	xmlns:frameInfoClasses="ageb.modules.avatar.frameInfoClasses.*"
+	xmlns:mx="library://ns.adobe.com/flex/mx">
 	<fx:Metadata>[HostComponent("ageb.modules.avatar.frameInfoClasses.ParticleContent")]</fx:Metadata>
 
 	<fx:Script fb:purpose="styling">
@@ -72,7 +74,7 @@
 		<s:layout>
 			<s:VerticalLayout/>
 		</s:layout>
-		<skinClasses:PropertyGroup>
+		<skinClasses:PropertyGroup height="87">
 			<document:FormRow 
 				width="100%"
 				label="">
@@ -113,7 +115,8 @@
 			<document:FormRow 
 				width="100%"
 				enabled="false"
-				label="原点">
+				label="原点"
+				visible="false">
 				<components:NumberInput id="pivotXField"
 					width="100%"
 					maximum="2"
@@ -142,13 +145,160 @@
 				<s:Button id="removeTextureButton"
 					label="删除"/>
 			</document:FormRow>
-			<document:FormRow 
+			<s:HGroup 
 				width="100%"
-				label="">
+				horizontalAlign="right"
+				paddingRight="20">
+				<s:BitmapImage id="texturePreview"
+					width="64" height="64"/>
 				<s:CheckBox id="isUseNativeTexture"
 					label="{Particle3DConfig.T('isUseNativeTexture')}"/>
-			</document:FormRow>
-			<s:BitmapImage id="texturePreview"/>
+			</s:HGroup>
+			<frameInfoClasses:ParticleContentFormRow field="startColor">
+				<mx:ColorPicker id="startColor"/>
+				<s:HSlider id="startColorAlpha"
+					width="100%"
+					maximum="1"
+					minimum="0"
+					stepSize="0.01"/>
+				<s:Label text="{startColorAlpha.value}"/>
+			</frameInfoClasses:ParticleContentFormRow>
+			<frameInfoClasses:ParticleContentFormRow field="startColorVariance">
+				<mx:ColorPicker id="startColorVariance"/>
+				<s:HSlider id="startColorVarianceAlpha"
+					width="100%"
+					maximum="1"
+					minimum="0"
+					stepSize="0.01"/>
+				<s:Label text="{startColorVarianceAlpha.value}"/>
+			</frameInfoClasses:ParticleContentFormRow>
+			<frameInfoClasses:ParticleContentFormRow field="endColor">
+				<mx:ColorPicker id="endColor"/>
+				<s:HSlider id="endColorAlpha"
+					width="100%"
+					maximum="1"
+					minimum="0"
+					stepSize="0.01"/>
+				<s:Label text="{endColorAlpha.value}"/>
+			</frameInfoClasses:ParticleContentFormRow>
+			<frameInfoClasses:ParticleContentFormRow field="endColorVariance">
+				<mx:ColorPicker id="endColorVariance"/>
+				<s:HSlider id="endColorVarianceAlpha"
+					width="100%"
+					maximum="1"
+					minimum="0"
+					stepSize="0.01"/>
+				<s:Label text="{endColorVarianceAlpha.value}"/>
+			</frameInfoClasses:ParticleContentFormRow>
 		</skinClasses:PropertyGroup>
+		<skinClasses:PropertyGroup>
+			<frameInfoClasses:HSliderRow id="maxNumParticles"
+				max="1000"
+				step="1"/>
+			<frameInfoClasses:HSliderRow id="lifespan"
+				max="10"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="lifespanVariance"
+				max="10"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="startSize"
+				max="100"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="startSizeVariance"
+				max="100"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="endSize"
+				max="100"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="endSizeVariance"
+				max="100"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="emitAngle"
+				max="360"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="emitAngleVariance"
+				max="360"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="startRotation"
+				max="360"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="startRotationVariance"
+				max="360"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="endRotation"
+				max="360"
+				step="0.25"/>
+			<frameInfoClasses:HSliderRow id="endRotationVariance"
+				max="360"
+				step="0.25"/>
+		</skinClasses:PropertyGroup>
+		<skinClasses:PropertyGroup height="100%">
+			<frameInfoClasses:ParticleContentFormRow field="emitterType">
+				<s:DropDownList id="emitterType"
+					width="100%"
+					selectedIndex="1"/>
+			</frameInfoClasses:ParticleContentFormRow>
+			<mx:ViewStack id="emitterSettings"
+				width="100%"
+				selectedIndex="{emitterType.selectedIndex}">
+				<s:NavigatorContent width="100%">
+					<s:layout>
+						<s:VerticalLayout/>
+					</s:layout>
+					<frameInfoClasses:HSliderRow id="emitterXVariance"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="emitterYVariance"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="speed"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="speedVariance"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="gravityX"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="gravityY"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="radialAcceleration"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="radialAccelerationVariance"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="tangentialAcceleration"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="tangentialAccelerationVariance"
+						max="1000"
+						step="1"/>
+
+				</s:NavigatorContent>
+				<s:NavigatorContent width="100%">
+					<s:layout>
+						<s:VerticalLayout/>
+					</s:layout>
+					<frameInfoClasses:HSliderRow id="maxRadius"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="maxRadiusVariance"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="minRadius"
+						max="1000"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="rotatePerSecond"
+						max="360"
+						step="1"/>
+					<frameInfoClasses:HSliderRow id="rotatePerSecondVariance"
+						max="360"
+						step="1"/>
+				</s:NavigatorContent>
+			</mx:ViewStack>
+		</skinClasses:PropertyGroup>
+
 	</s:Group>
 </s:Skin>

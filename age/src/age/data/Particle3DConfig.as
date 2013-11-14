@@ -26,14 +26,8 @@ package age.data
 		public var isUseNativeTexture:Boolean = true;
 
 		// 发射器设置
-		[T("发生器类型")]
+		[T("发射类型")]
 		public var emitterType:int = EmitterType.GRAVITY;
-
-		[T("发射 x 随机量")]
-		public var emitterXVariance:Number = 10;
-
-		[T("发射 y 随机量")]
-		public var emitterYVariance:Number = 10;
 
 		// 粒子设置
 		[T("最大粒子数")]
@@ -76,6 +70,12 @@ package age.data
 		public var endRotationVariance:Number = 0;
 
 		// 发射类型为 GRAVITY 的设置
+		[T("发射 x 随机量")]
+		public var emitterXVariance:Number = 10;
+
+		[T("发射 y 随机量")]
+		public var emitterYVariance:Number = 10;
+
 		[T("速度")]
 		public var speed:Number = 50;
 

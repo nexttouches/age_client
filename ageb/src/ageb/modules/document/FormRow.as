@@ -21,11 +21,19 @@ package ageb.modules.document
 			percentWidth = 100;
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			labelField = new Label();
-			labelField.width = _labelWidth;
+
+			if (!_isLabelAutoSize)
+			{
+				labelField.width = _labelWidth;
+			}
 			labelField.text = _label;
 			labelField.setStyle("textAlign", "right");
 			labelField.setStyle("paddingRight", 3);
@@ -46,7 +54,24 @@ package ageb.modules.document
 			if (labelField)
 			{
 				labelField.text = value;
+
+				if (_isLabelAutoSize)
+				{
+					labelField.width = labelField.measureText(value).width;
+				}
 			}
+		}
+
+		private var _isLabelAutoSize:Boolean = false;
+
+		public function get isLabelAutoSize():Boolean
+		{
+			return _isLabelAutoSize;
+		}
+
+		public function set isLabelAutoSize(value:Boolean):void
+		{
+			_isLabelAutoSize = value;
 		}
 
 		private var _labelWidth:Number = 30;
