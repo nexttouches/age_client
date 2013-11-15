@@ -76,7 +76,7 @@ package age
 
 		/**
 		 * 用于更新渲染的 Juggler<br>
-		 * 总是在 physicsJuggler 执行
+		 * 总是在 physicsJuggler 后执行
 		 */
 		public static var renderJuggler:Juggler = new Juggler();
 
