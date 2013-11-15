@@ -2,6 +2,8 @@ package age.data
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;
+	import age.pad.KeyboardPad;
+	import age.pad.Pad;
 	import age.renderers.Direction;
 	import nt.lib.reflect.Property;
 	import nt.lib.reflect.Type;
@@ -25,6 +27,7 @@ package age.data
 		public function ObjectInfo(raw:Object = null, parent:LayerInfo = null)
 		{
 			this.parent = parent;
+			pad = new KeyboardPad();
 			fromJSON(raw);
 		}
 
@@ -1115,6 +1118,33 @@ package age.data
 				{
 					_onColorChange.dispatch();
 				}
+			}
+		}
+
+		private var _pad:Pad;
+
+		/**
+		 * 设置或获取当前对象使用的 Pad
+		 */
+		public function get pad():Pad
+		{
+			return _pad;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pad(value:Pad):void
+		{
+			if (_pad)
+			{
+				_pad.removeObject(this);
+			}
+			_pad = value;
+
+			if (_pad)
+			{
+				_pad.addObject(this);
 			}
 		}
 	}

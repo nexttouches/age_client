@@ -8,6 +8,7 @@ package
 	 * @author zhanghaocong
 	 *
 	 */
+	[SWF(frameRate="60", width="1000", height="600")]
 	public class bootstrap extends Sprite
 	{
 		/**
@@ -17,6 +18,15 @@ package
 		public function bootstrap()
 		{
 			super();
+			stage.color = 0;
+			const preloaderURL:String = loaderInfo.parameters["preloaderURL"];
+			var s:Sprite = new Sprite();
+			s.buttonMode = true;
+			s.graphics.beginFill(0xff0000, 1);
+			s.graphics.drawRect(0, 0, 100, 100);
+			s.graphics.drawCircle(50, 50, 30);
+			s.graphics.endFill();
+			addChild(s);
 		}
 	}
 }
