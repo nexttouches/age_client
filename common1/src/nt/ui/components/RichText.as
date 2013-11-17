@@ -195,30 +195,6 @@ package nt.ui.components
 		}
 
 		/**
-		 * added by no4matrix
-		 * 追加一行。该方法不会导致全局刷新，性能较好
-		 * 一个或多个<p>标签
-		 * @param str
-		 *
-		 */
-		public function appendString(str:String):void
-		{
-			try
-			{
-				var r:String = "<root>" + str + "</root>";
-				var xml:XML = new XML(r);
-
-				for each (var child:XML in xml..p)
-				{
-					this.append(child);
-				}
-			}
-			catch (e:Error)
-			{
-			}
-		}
-
-		/**
 		 * 合并 appendContent 到 content
 		 *
 		 */
@@ -542,7 +518,7 @@ package nt.ui.components
 		}
 
 		/**
-		 * 处理 <a> 到 GroupElement
+		 * 处理 a 到 GroupElement
 		 * @param node
 		 * @param styles
 		 * @return

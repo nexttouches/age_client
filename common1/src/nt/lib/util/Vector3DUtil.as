@@ -66,7 +66,7 @@ package nt.lib.util
 		}
 
 		/**
-		 * 导出 Vector3D 到 Vector.<Number>
+		 * 导出 Vector3D 到 Vector.&lt;Number&gt;
 		 * @param v 源 Vectory3D
 		 * @param isIncludeFour 设置是否要导出第四个属性 w
 		 * @return 导出的数组

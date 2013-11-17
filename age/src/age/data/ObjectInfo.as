@@ -259,7 +259,7 @@ package age.data
 		public var name:String;
 
 		/**
-		 * 位于所在场景的 <strong>唯一 ID</strong <br>
+		 * 位于所在场景的 <strong>唯一 ID</strong><br>
 		 */
 		[Native]
 		[Export(exclude=null)]
