@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="TweenNano,com.greensock.TweenNano,ALL_IMMEDIATE,ALL_ONSTART,AUTO,CONCURRENT,NONE,NORMAL,PREEXISTING,SEQUENCE,START,currentLabel,currentProgress,currentProgress,currentTime,currentTime,defaultEase,duration,duration,globalTimeScale,killTweensOf,mode,repeat,repeat,repeatDelay,repeatDelay,target,target,timeScale,timeScale,totalDuration,totalDuration,totalDuration,totalProgress,totalProgress,useFrames,useFrames,vars,yoyo,yoyo,addCallback,addLabel,allFrom,allFromTo,allTo,append,appendMultiple,clear,complete,complete,complete,delayedCall,delayedCall,delayedCall,from,from,from,fromTo,getActive,getAllTweens,getChildren,getLabelAfter,getLabelBefore,getLabelTime,getTweensOf,getTweensOf,goto,gotoAndPlay,gotoAndStop,init,insert,insertMultiple,invalidate,invalidate,invalidate,invalidate,isTweening,kill,killAll,killChildTweensOf,killProperties,killTweensOf,killTweensOf,killTweensOf,killVars,pauseAll,prepend,prependMultiple,remove,removeCallback,removeLabel,renderTime,resumeAll,setDestination,shiftChildren,stop,to,to,to,tweenFromTo,tweenTo,updateTo"><title>com.greensock.TweenNano</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'TweenNano - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?com/greensock/TweenNano.html&amp;com/greensock/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt="AdobeLogo" title="AdobeLogo"></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">TweenNano</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("TweenNano"); titleBar_setSubNav(false,true,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">com.greensock</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  TweenNano</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">TweenNano  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><p></p><p></p>
+ 	TweenNano is a super-lightweight (1.6k in AS3 and 2k in AS2) version of <a href="http://www.TweenLite.com" target="">TweenLite</a> 
+  and is only recommended for situations where you absolutely cannot afford the extra 3.1k (4.7k total) that the normal 
+  TweenLite engine would cost and your project doesn't require any plugins. Normally, it is much better to use 
+  TweenLite because of the additional flexibility it provides via plugins and its compatibility with TimelineLite and TimelineMax. 
+  TweenNano can do everything TweenLite can do with the following exceptions:
+ 	<ul>
+ 		               <li>
+                     <b> No Plugins </b>- One of the great things about TweenLite is that you can activate
+ 			plugins in order to add features (like autoAlpha, tint, blurFilter, etc.). TweenNano, however, 
+ 			doesn't work with plugins. </li>
+ 		  
+ 		               <li>
+                     <b> Incompatible with TimelineLite and TimelineMax </b>- Complex sequencing and management of groups of 
+ 			tweens can be much easier with TimelineLite and TimelineMax, but TweenNano instances cannot be inserted into
+ 			TimelineLite or TimelineMax instances.</li>
+ 		  
+ 		               <li>
+                     <b> Slight speed decrease </b>- Under very heavy loads, TweenNano won't perform quite as well as TweenLite, but
+ 			it is extremely unlikely that you'd notice unless you're tweening thousands of objects simultaneously.</li>
+ 		  
+ 		               <li>
+                     <b> Fewer overwrite modes </b>- You can either overwrite all or none of the existing tweens of the same 
+ 			object (overwrite:true or overwrite:false) in TweenNano. TweenLite, however, can use OverwriteManager to expand 
+ 			its capabilities and use modes like AUTO, CONCURRENT, PREEXISTING, and ALL_ONSTART
+ 			(see <a href="http://www.greensock.com/overwritemanager/" target="">http://www.greensock.com/overwritemanager/</a>
+ 			for details).</li>
+ 
+ 		               <li>
+                     <b>Compared to TweenLite, TweenNano is missing the following methods/properties:</b>
+ 			                 <ul>
+ 				                   <li>pause()</li>
+ 				                   <li>play()</li>
+ 				                   <li>resume()</li>
+ 				                   <li>restart()</li>
+ 				                   <li>reverse()</li>
+ 				                   <li>invalidate()</li>
+ 				                   <li>onStart</li>
+ 				                   <li>onInit</li>
+ 				                   <li>defaultEase</li>
+ 				                   <li>easeParams</li>
+ 				                   <li>currentTime</li>
+ 				                   <li>startTime</li>
+ 				                   <li>totalTime</li>
+ 				                   <li>paused</li>
+ 				                   <li>reversed</li>
+ 				                   <li>totalDuration</li>
+ 			                 </ul>
+ 		               </li>
+ 	             </ul>
+ 
+               	
+               <b>SPECIAL PROPERTIES:</b>
+ 
+ 
+ Any of the following special properties can optionally be passed in through the vars object (the third parameter):
+ 
+ <ul>
+ 	                <li>
+                     <b> delay : Number</b>			Amount of delay in seconds (or frames for frames-based tweens) before the tween should begin.</li>
+ 	
+ 	                <li>
+                     <b> useFrames : Boolean</b>		If useFrames is set to true, the tweens's timing mode will be based on frames. 
+ 										Otherwise, it will be based on seconds/time.</li>
+ 	
+ 	                <li>
+                     <b> ease : Function</b>			Use any standard easing equation to control the rate of change. For example, 
+ 										<code>Elastic.easeOut</code>. The Default is Regular.easeOut.</li>
+ 	
+ 	                <li>
+                     <b> onUpdate : Function</b>		A function that should be called every time the tween's time/position is updated 
+ 										(on every frame while the timeline is active)</li>
+ 	
+ 	                <li>
+                     <b> onUpdateParams : Array</b>	An Array of parameters to pass the onUpdate function</li>
+ 	
+ 	                <li>
+                     <b> onComplete : Function</b>	A function that should be called when the tween has finished </li>
+ 	
+ 	                <li>
+                     <b> onCompleteParams : Array</b> An Array of parameters to pass the onComplete function.</li>
+ 	
+ 	                <li>
+                     <b> immediateRender : Boolean</b> Normally when you create a from() tween, it renders the starting state immediately even
+ 										  if you define a delay which in typical "animate in" scenarios is very desirable, but
+ 										  if you prefer to override this behavior and have the from() tween render only after any 
+ 										  delay has elapsed, set <code>immediateRender</code> to false. </li>
+ 	
+ 	                <li>
+                     <b> overwrite : Boolean</b>		Controls how other tweens of the same object are handled when this tween is created. Here are the options:
+ 										<ul>
+ 			  							           <li>
+                           <b> false (NONE):</b> No tweens are overwritten. This is the fastest mode, but you need to be careful not 
+ 													to create any tweens with overlapping properties of the same object that run at the same time, 
+ 													otherwise they'll conflict with each other. <code>
+ 												   		TweenNano.to(mc, 1, {x:100, y:200});
+ 														TweenNano.to(mc, 1, {x:300, delay:2, overwrite:false}); //does NOT overwrite the previous tween.</code>
+                        </li>
+ 											
+ 										             <li>
+                           <b> true (ALL_IMMEDIATE):</b> This is the default mode in TweenNano. All tweens of the same target
+ 													are completely overwritten immediately when the tween is created, regardless of whether or 
+ 													not any of the properties overlap. <code>
+ 												   		TweenNano.to(mc, 1, {x:100, y:200});
+ 														TweenNano.to(mc, 1, {x:300, delay:2, overwrite:true}); //immediately overwrites the previous tween</code>
+                        </li>
+ 										          </ul>
+                  </li>
+ 	             </ul>
+ 
+               <b>EXAMPLES:</b> 
+ 
+ 	Tween the the MovieClip "mc" to an alpha value of 0.5 (50% transparent) and an x-coordinate of 120 
+ 	over the course of 1.5 seconds like so:
+ 	
+ <code>
+ 		import com.greensock.TweenNano;
+ 		TweenNano.to(mc, 1.5, {alpha:0.5, x:120});
+ 	</code>
+  
+ 	To tween the "mc" MovieClip's alpha property to 0.5, its x property to 120 using the <code>Back.easeOut</code> easing 
+  function, delay starting the whole tween by 2 seconds, and then call a function named "onFinishTween" when it 
+  has completed (it will have a duration of 5 seconds) and pass a few parameters to that function (a value of 
+  5 and a reference to the mc), you'd do so like:
+ 		
+ 	<code>
+ 		import com.greensock.TweenNano;
+ 		import com.greensock.easing.Back;
+ 
+ 		TweenNano.to(mc, 5, {alpha:0.5, x:120, ease:Back.easeOut, delay:2, onComplete:onFinishTween, onCompleteParams:[5, mc]});
+ 		function onFinishTween(param1:Number, param2:MovieClip):void {
+ 			trace("The tween has finished! param1 = " + param1 + ", and param2 = " + param2);
+ 		}
+ 	</code>
+  
+ 	If you have a MovieClip on the stage that is already in it's end position and you just want to animate it into 
+ 	place over 5 seconds (drop it into place by changing its y property to 100 pixels higher on the screen and 
+ 	dropping it from there), you could:
+ 	
+  <code>
+ 		import com.greensock.TweenNano;
+ 		import com.greensock.easing.Elastic;
+ 
+ 		TweenNano.from(mc, 5, {y:"-100", ease:Elastic.easeOut});		
+  </code>
+ 
+               <b>NOTES:</b>
+               <ul>
+ 	                <li> The base TweenNano class adds about 1.6k to your Flash file.</li>
+ 	  
+ 	                <li> Passing values as Strings will make the tween relative to the current value. For example, if you do
+ 	  <code>TweenNano.to(mc, 2, {x:"-20"});</code> it'll move the mc.x to the left 20 pixels which is the same as doing
+ 	  <code>TweenNano.to(mc, 2, {x:mc.x - 20});</code> You could also cast it like: <code>TweenNano.to(mc, 2, {x:String(myVariable)});</code>
+                  </li>
+ 	
+ 	                <li> Kill all tweens for a particular object anytime with the <code>TweenNano.killTweensOf(mc); </code>
+                  </li>
+ 	  
+ 	                <li> You can kill all delayedCalls to a particular function using <code>TweenNano.killTweensOf(myFunction);</code>
+ 	  This can be helpful if you want to preempt a call.</li>
+ 
+                  <li> If some of your tweens don't appear to be working, read about the <code>overwrite</code> special property
+ 		above - it is most likely an overwriting issue that could be solved by adding <code>overwrite:false</code> to your vars object.</li>
+ 	  
+ 	                <li> Use the <code>TweenNano.from()</code> method to animate things into place. For example, if you have things set up on 
+ 	  the stage in the spot where they should end up, and you just want to animate them into place, you can 
+ 	  pass in the beginning x and/or y and/or alpha (or whatever properties you want).</li>
+ 	  
+ 	                <li> If you find this class useful, please consider joining Club GreenSock which not only helps to sustain
+ 	  ongoing development, but also gets you bonus plugins, classes and other benefits that are ONLY available 
+ 	  to members. Learn more at <a href="http://www.greensock.com/club/" target="">http://www.greensock.com/club/</a>
+                  </li>
+               </ul>
+ 
+               <b>Copyright 2010, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html" target="">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ 
+ <p></p><br/><hr></div><a name="propertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Properties</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#duration" class="signatureLink">duration</a> : Number<div class="summaryTableDescription"> Duration of the tween in seconds (or in frames if "useFrames" is true).</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#target" class="signatureLink">target</a> : Object<div class="summaryTableDescription"> Target object whose properties this tween affects.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#useFrames" class="signatureLink">useFrames</a> : Boolean<div class="summaryTableDescription"> Indicates that frames should be used instead of seconds for timing purposes.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#vars" class="signatureLink">vars</a> : Object<div class="summaryTableDescription"> Stores variables (things like "alpha", "y" or whatever we're tweening, as well as special properties like "onComplete").</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr></table></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#TweenNano()" class="signatureLink">TweenNano</a>(target:Object, duration:Number, vars:Object)</div><div class="summaryTableDescription">
+		 Constructor
+		  
+		 </div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#complete()" class="signatureLink">complete</a>(skipRender:Boolean = false):void</div><div class="summaryTableDescription">
+		 Forces the tween to completion.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#delayedCall()" class="signatureLink">delayedCall</a>(delay:Number, onComplete:Function, onCompleteParams:Array = null, useFrames:Boolean = false):<a href="../../com/greensock/TweenNano.html">TweenNano</a></div><div class="summaryTableDescription">[static] 
+		 Provides a simple way to call a function after a set amount of time (or frames).</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#from()" class="signatureLink">from</a>(target:Object, duration:Number, vars:Object):<a href="../../com/greensock/TweenNano.html">TweenNano</a></div><div class="summaryTableDescription">[static] 
+		 Static method for creating a TweenNano instance that tweens in the opposite direction
+		 compared to a TweenNano.to() tween.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#kill()" class="signatureLink">kill</a>():void</div><div class="summaryTableDescription"> Kills the tween, stopping it immediately.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#killTweensOf()" class="signatureLink">killTweensOf</a>(target:Object, complete:Boolean = false):void</div><div class="summaryTableDescription">[static] 
+		 Kills all the tweens of a particular object, optionally forcing them to completion too.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#renderTime()" class="signatureLink">renderTime</a>(time:Number):void</div><div class="summaryTableDescription">
+		 Renders the tween at a particular time (or frame number for frames-based tweens)
+		 WITHOUT changing its startTime, meaning if the tween is in progress when you call
+		 renderTime(), it will not adjust the tween's timing to continue from the new time.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#to()" class="signatureLink">to</a>(target:Object, duration:Number, vars:Object):<a href="../../com/greensock/TweenNano.html">TweenNano</a></div><div class="summaryTableDescription">[static] 
+		 Static method for creating a TweenNano instance which can be more intuitive for some developers 
+		 and shields them from potential garbage collection issues that could arise when assigning a
+		 tween instance to a variable that persists.</div></td><td class="summaryTableOwnerCol">TweenNano</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><div class="detailSectionHeader">Property Detail</div><a name="propertyDetail"></a><a name="duration"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">duration</td><td class="detailHeaderType">property</td></tr></table><div class="detailBody"><code>public var duration:Number</code><p></p><p></p><p> Duration of the tween in seconds (or in frames if "useFrames" is true). </p></div><a name="propertyDetail"></a><a name="target"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">target</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var target:Object</code><p></p><p></p><p> Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. </p></div><a name="propertyDetail"></a><a name="useFrames"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">useFrames</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var useFrames:Boolean</code><p></p><p></p><p> Indicates that frames should be used instead of seconds for timing purposes. So if useFrames is true and the tween's duration is 10, it would mean that the tween should take 10 frames to complete, not 10 seconds. </p></div><a name="propertyDetail"></a><a name="vars"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">vars</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public var vars:Object</code><p></p><p></p><p> Stores variables (things like "alpha", "y" or whatever we're tweening, as well as special properties like "onComplete"). </p></div><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="TweenNano()"></a><a name="TweenNano(Object,Number,Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">TweenNano</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function TweenNano(target:Object, duration:Number, vars:Object)</code><p></p><p>
+		 Constructor
+		  
+		 </p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">duration</span>:Number</code> &mdash; Duration in seconds (or in frames if "useFrames" is true)
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">vars</span>:Object</code> &mdash; An object containing the end values of the properties you're tweening, like {x:100, y:50}. It can also contain special properties like "onComplete", "ease", "delay", etc.
+		 </td></tr></table></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="complete()"></a><a name="complete(Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">complete</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public function complete(skipRender:Boolean = false):void</code><p></p><p></p><p>
+		 Forces the tween to completion.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">skipRender</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; To skip rendering the final state of the tween, set skipRender to true. 
+		 </td></tr></table></p></div><a name="delayedCall()"></a><a name="delayedCall(Number,Function,Array,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">delayedCall</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function delayedCall(delay:Number, onComplete:Function, onCompleteParams:Array = null, useFrames:Boolean = false):<a href="../../com/greensock/TweenNano.html">TweenNano</a></code><p></p><p></p><p>
+		 Provides a simple way to call a function after a set amount of time (or frames). You can
+		 optionally pass any number of parameters to the function too. For example:<code>
+		 
+		 TweenNano.delayedCall(1, myFunction, ["param1", 2]); 
+		 function myFunction(param1:String, param2:Number):void { 
+		     trace("called myFunction and passed params: " + param1 + ", " + param2); 
+		 } </code>
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">delay</span>:Number</code> &mdash; Delay in seconds (or frames if "useFrames" is true) before the function should be called
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">onComplete</span>:Function</code> &mdash; Function to call
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">onCompleteParams</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An Array of parameters to pass the function.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">useFrames</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If the delay should be measured in frames instead of seconds, set useFrames to true (default is false)
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../com/greensock/TweenNano.html">TweenNano</a></code> &mdash; TweenNano instance
+		 </td></tr></table></div><a name="from()"></a><a name="from(Object,Number,Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">from</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function from(target:Object, duration:Number, vars:Object):<a href="../../com/greensock/TweenNano.html">TweenNano</a></code><p></p><p></p><p>
+		 Static method for creating a TweenNano instance that tweens in the opposite direction
+		 compared to a TweenNano.to() tween. In other words, you define the START values in the 
+		 vars object instead of the end values, and the tween will use the current values as 
+		 the end values. This can be very useful for animating things into place on the stage
+		 because you can build them in their end positions and do some simple TweenNano.from()
+		 calls to animate them into place. <b>NOTE:</b> By default, <code>immediateRender</code>
+		 is <code>true</code> in from() tweens, meaning that they immediately render their starting state 
+		 regardless of any delay that is specified. You can override this behavior by passing 
+		 <code>immediateRender:false</code> in the <code>vars</code> object so that it will wait to 
+		 render until the tween actually begins. To illustrate the default behavior, the following code 
+		 will immediately set the <code>alpha</code> of <code>mc</code> to 0 and then wait 2 seconds 
+		 before tweening the <code>alpha</code> back to 1 over the course of 1.5 seconds:<code>
+		 
+		 TweenNano.from(mc, 1.5, {alpha:0, delay:2});</code>
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">duration</span>:Number</code> &mdash; Duration in seconds (or frames if "useFrames" is true)
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">vars</span>:Object</code> &mdash; An object containing the start values of the properties you're tweening like {x:100, y:50}. It can also contain special properties like "onComplete", "ease", "delay", etc.
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../com/greensock/TweenNano.html">TweenNano</a></code> &mdash; TweenNano instance
+		 </td></tr></table></div><a name="kill()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">kill</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function kill():void</code><p></p><p></p><p> Kills the tween, stopping it immediately. </p></div><a name="killTweensOf()"></a><a name="killTweensOf(Object,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">killTweensOf</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function killTweensOf(target:Object, complete:Boolean = false):void</code><p></p><p></p><p>
+		 Kills all the tweens of a particular object, optionally forcing them to completion too.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; Object whose tweens should be immediately killed
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">complete</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Indicates whether or not the tweens should be forced to completion before being killed.
+		 </td></tr></table></p></div><a name="renderTime()"></a><a name="renderTime(Number)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">renderTime</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function renderTime(time:Number):void</code><p></p><p></p><p>
+		 Renders the tween at a particular time (or frame number for frames-based tweens)
+		 WITHOUT changing its startTime, meaning if the tween is in progress when you call
+		 renderTime(), it will not adjust the tween's timing to continue from the new time. 
+		 The time is based simply on the overall duration. For example, if a tween's duration
+		 is 3, renderTime(1.5) would render it at the halfway finished point.
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; time (or frame number for frames-based tweens) to render.
+		 </td></tr></table></p></div><a name="to()"></a><a name="to(Object,Number,Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">to</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function to(target:Object, duration:Number, vars:Object):<a href="../../com/greensock/TweenNano.html">TweenNano</a></code><p></p><p></p><p>
+		 Static method for creating a TweenNano instance which can be more intuitive for some developers 
+		 and shields them from potential garbage collection issues that could arise when assigning a
+		 tween instance to a variable that persists. The following lines of code all produce exactly 
+		 the same result: <code>
+		 
+		 var myTween:TweenNano = new TweenNano(mc, 1, {x:100}); 
+		 TweenNano.to(mc, 1, {x:100}); 
+		 var myTween:TweenNano = TweenNano.to(mc, 1, {x:100});</code>
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; Target object whose properties this tween affects. This can be ANY object, not just a DisplayObject. 
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">duration</span>:Number</code> &mdash; Duration in seconds (or frames if "useFrames" is true)
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">vars</span>:Object</code> &mdash; An object containing the end values of the properties you're tweening, like {x:100, y:50}. It can also contain special properties like "onComplete", "ease", "delay", etc.
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../com/greensock/TweenNano.html">TweenNano</a></code> &mdash; TweenNano instance
+		 </td></tr></table></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Sun Nov 17 2013, 11:05 PM +08:00  </center></div></body></html><!--<br/>Sun Nov 17 2013, 11:05 PM +08:00  -->

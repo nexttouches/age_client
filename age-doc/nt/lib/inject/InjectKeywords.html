@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../../override.css" type="text/css"><meta name="keywords" content="InjectKeywords,nt.lib.inject.InjectKeywords,Alias,CHANGE,DefaultProperty,DefaultValue,Event,Inject,after,before,elementType,injectKeyword,injectablePropertyCache,injectorCache,input,name"><title>nt.lib.inject.InjectKeywords</title></head><body><script language="javascript" type="text/javascript" src="../../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../../help.js"></script><script language="javascript" type="text/javascript" src="../../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'InjectKeywords - API Documentation';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../../package-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../../class-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../../all-index-A.html" onclick="loadClassListFrame('../../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../../index.html?nt/lib/inject/InjectKeywords.html&amp;nt/lib/inject/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../../images/logo.jpg" class="logoImage" alt="AdobeLogo" title="AdobeLogo"></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">InjectKeywords</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("InjectKeywords"); titleBar_setSubNav(true,false,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">nt.lib.inject</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  InjectKeywords</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">InjectKeywords  <img src="../../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><p></p><p></p><br/><hr></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#InjectKeywords()" class="signatureLink">InjectKeywords</a>()</div><div class="summaryTableDescription"></div></td><td class="summaryTableOwnerCol">InjectKeywords</td></tr></table></div><a name="constantSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Constants</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableConstant"><tr><th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#Alias" class="signatureLink">Alias</a> : String = alias<div class="summaryTableDescription">[static] 
+		 设置一个别名，用于自动关联远程无类型对象和本地对象的属性
+		 </div></td><td class="summaryTableOwnerCol">InjectKeywords</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#DefaultProperty" class="signatureLink">DefaultProperty</a> : String = defaultProperty<div class="summaryTableDescription">[static] 
+		 设置该对象的默认属性，通常是对象的 ID,CollectionInjectable.fill 时会自动赋值
+		 </div></td><td class="summaryTableOwnerCol">InjectKeywords</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#DefaultValue" class="signatureLink">DefaultValue</a> : String = defaultValue<div class="summaryTableDescription">[static] 
+		 为属性设置一个默认值，可以是具体值或 "auto"
+		 设置为 "auto" 时将会自动识别属性的类型并创建对应的对象
+		 
+		 [Inject(defaultValue="Helloworld")]
+		 public var helloworld:String; // helloworld 将会自动赋值 “Helloworld”
+		 
+		 [Inject(defaultValue="auto")]
+		 public var background:Sprite; // 一个新的 Sprite 将会被自动创建并赋给 background
+		 
+		 
+		 </div></td><td class="summaryTableOwnerCol">InjectKeywords</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#Event" class="signatureLink">Event</a> : String = event<div class="summaryTableDescription">[static] 
+		 设置一个事件名称，属性变化后将自动触发事件（必须实现 IInjectable 调用 updateFrom 或 setValue 时才会正确触发）
+		 </div></td><td class="summaryTableOwnerCol">InjectKeywords</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#Inject" class="signatureLink">Inject</a> : String = Inject<div class="summaryTableDescription">[static] 
+		 Metadata 专用标签
+		 </div></td><td class="summaryTableOwnerCol">InjectKeywords</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="InjectKeywords()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">InjectKeywords</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function InjectKeywords()</code><p></p><br/><br/></div><div class="detailSectionHeader">Constant Detail</div><a name="constantDetail"></a><a name="Alias"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">Alias</td><td class="detailHeaderType">Constant</td></tr></table><div class="detailBody"><code>public static const Alias:String = alias</code><p></p><p></p><p>
+		 设置一个别名，用于自动关联远程无类型对象和本地对象的属性
+		 </p></div><a name="constantDetail"></a><a name="DefaultProperty"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">DefaultProperty</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const DefaultProperty:String = defaultProperty</code><p></p><p></p><p>
+		 设置该对象的默认属性，通常是对象的 ID,CollectionInjectable.fill 时会自动赋值
+		 </p></div><a name="constantDetail"></a><a name="DefaultValue"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">DefaultValue</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const DefaultValue:String = defaultValue</code><p></p><p></p><p>
+		 为属性设置一个默认值，可以是具体值或 "auto"
+		 设置为 "auto" 时将会自动识别属性的类型并创建对应的对象
+		 <div class="listing"><pre>
+         [Inject(defaultValue="Helloworld")]
+         public var helloworld:String; // helloworld 将会自动赋值 “Helloworld”
+         
+         [Inject(defaultValue="auto")]
+         public var background:Sprite; // 一个新的 Sprite 将会被自动创建并赋给 background
+         </pre></div>
+		 
+		 </p></div><a name="constantDetail"></a><a name="Event"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">Event</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const Event:String = event</code><p></p><p></p><p>
+		 设置一个事件名称，属性变化后将自动触发事件（必须实现 IInjectable 调用 updateFrom 或 setValue 时才会正确触发）
+		 </p></div><a name="constantDetail"></a><a name="Inject"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">Inject</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const Inject:String = Inject</code><p></p><p></p><p>
+		 Metadata 专用标签
+		 </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Sun Nov 17 2013, 11:05 PM +08:00  </center></div></body></html><!--<br/>Sun Nov 17 2013, 11:05 PM +08:00  -->

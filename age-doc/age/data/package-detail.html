@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><title>age.data Summary</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'age.data package - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?age/data/package-detail.html&amp;age/data/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt="AdobeLogo" title="AdobeLogo"></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">age.data</td><td class="titleTableSubNav" id="subNav" align="right"><a href="package-detail.html#classSummary">Classes</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("age.data"); titleBar_setSubNav(false,false,false,false,false,false,false,false,false,false,false	,false,false,false,true,false);}	
+				-->
+			</script><div class="MainContent"><br><br><hr><a name="classSummary"></a><div class="summaryTableTitle">Classes</div><table cellpadding="3" cellspacing="0" class="summaryTable"><tr><th>&nbsp;</th><th width="30%">Class</th><th width="70%">Description</th></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="ActionInfo.html">ActionInfo</a></td><td class="summaryTableLastCol">
+	 ActionInfo 表示一个 AvatarInfo 的某个动作
+	 包含了所有渲染时需要的图层和原点等基本信息
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="AvatarInfo.html">AvatarInfo</a></td><td class="summaryTableLastCol">
+	 AvatarInfo 储存了一套角色的所有动作、大小等基本信息
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="BGInfo.html">BGInfo</a></td><td class="summaryTableLastCol">
+	 BGInfo 是图层上的背景图，不参与碰撞检测
+	 只允许出现在 LayerInfo.type == LayerType.OBJECT 的图层上
+	 与 ObjectInfo 不同，BG 并不支持 z 排序
+	 也就是说，BG 依赖于所在层进行前后层次的排序
+	 如果强制设置在对象图层上，由于 BG 的 z 视为 0，所以会遮挡后面所有对象
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="Box.html">Box</a></td><td class="summaryTableLastCol">
+	 长方体
+	 采用左手坐标系
+
+       upper
+   +----+
+  /    /|
+ +----+ |
+ |    | +
+ |    |/
+ +----+
+lower
+
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="EmitterType.html">EmitterType</a></td><td class="summaryTableLastCol">
+	 粒子发生器类型
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="FrameInfo.html">FrameInfo</a></td><td class="summaryTableLastCol">
+	 储存每一帧的基本信息，如宽高，坐标，长度等
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="FrameLayerInfo.html">FrameLayerInfo</a></td><td class="summaryTableLastCol">
+	 帧图层信息
+	 
+	 继承自 AssetGroup，所以会广播下载完毕等事件
+	 是特殊的 AssetGroup，资源增删关联都由内部进行，请不要从外部添加
+	 
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="FrameLayerType.html">FrameLayerType</a></td><td class="summaryTableLastCol">
+	 帧图层类型
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="LayerInfo.html">LayerInfo</a></td><td class="summaryTableLastCol">
+	 LayerInfo 是场景图层信息
+	 一个场景可以包含任意数目的图层
+	 图层具有下列特性
+	 
+	 	分背景和对象图层两种
+	 	实现了 IAnimatable，当 type 为 LayerType.OBJECT 时，将参与物理计算
+	 
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="LayerType.html">LayerType</a></td><td class="summaryTableLastCol">
+	 图层类型常量
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="ObjectInfo.html">ObjectInfo</a></td><td class="summaryTableLastCol">
+	 ObjectInfo 是指地图上的装饰物，NPC，怪物
+	 只允许出现在 LayerInfo.type == LayerType.OBJECT 的图层上
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="ObjectType.html">ObjectType</a></td><td class="summaryTableLastCol">
+	 对象类型
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="Particle3DConfig.html">Particle3DConfig</a></td><td class="summaryTableLastCol">
+	 粒子配置
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="RegionInfo.html">RegionInfo</a></td><td class="summaryTableLastCol">
+	 RegionInfo 表示一个场景区域
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="SceneInfo.html">SceneInfo</a></td><td class="summaryTableLastCol">
+	 SceneInfo 是场景信息
+	 包含了多个场景的图层
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="TextureAsset.html">TextureAsset</a></td><td class="summaryTableLastCol">
+	 TextureAsset 表示一个贴图资源
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="TextureAtlasConfig.html">TextureAtlasConfig</a></td><td class="summaryTableLastCol">
+	 TextureAtlasConfig 按 path 储存了所有的 TextureAtlas 信息
+	 </td></tr><tr class="prow0"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="TextureConfig.html">TextureConfig</a></td><td class="summaryTableLastCol">
+	 TextureConfig 按 path 储存了所有的 TextureAtlas 信息
+	 </td></tr><tr class="prow1"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableSecondCol"><a href="VirtualLayerName.html">VirtualLayerName</a></td><td class="summaryTableLastCol">
+	 存一些虚拟图层的名字
+	 </td></tr></table><p></p><div><p></p><center class="copyright"><footer></footer><br/>Sun Nov 17 2013, 11:05 PM +08:00  </center></div></div></body></html><!--<br/>Sun Nov 17 2013, 11:05 PM +08:00  -->

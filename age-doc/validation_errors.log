@@ -1,0 +1,9 @@
+Text for example in com.greensock.motionPaths:LinePath2D is not valid.
+org.xml.sax.SAXParseException: The content of elements must consist of well-formed character data or markup.
+
+Text for description in com.greensock.plugins:EndVectorPlugin is not valid.
+org.xml.sax.SAXParseException: The element type "Number" must be terminated by the matching end-tag "</Number>".
+
+Text for description in com.greensock.data:TweenLiteVars/orientToBezier is not valid.
+org.xml.sax.SAXParseException: The element type "ol" must be terminated by the matching end-tag "</ol>".
+
