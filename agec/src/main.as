@@ -1,8 +1,7 @@
 package
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	import nt.lib.util.setupStage;
+	import nt.lib.util.assert;
 
 	/**
 	 * 客户端主程序
@@ -13,24 +12,13 @@ package
 	public class main extends Sprite
 	{
 		/**
-		 * 加载器的皮肤类
-		 */
-		public var skin:Sprite;
-
-		/**
 		 * constructor
 		 *
 		 */
 		public function main()
 		{
 			super();
-
-			// 如直接启动则设置 stage 相关属性
-			if (stage)
-			{
-				setupStage(stage);
-				init();
-			}
+			assert(!stage, "不可直接启动");
 		}
 
 		/**
