@@ -92,6 +92,12 @@ package ageb.modules.avatar.op
 			{
 				dragInitiator.scrollTo(dropIndex + caretIndex);
 			}
+
+			// 提示所有渲染器索引已变化
+			for (var i:int = 0; i < action.layers.length; i++)
+			{
+				action.getLayerAt(i).onIndexChange.dispatch();
+			}
 		}
 
 		/**

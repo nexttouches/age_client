@@ -2,7 +2,6 @@ package ageb.modules.ae
 {
 	import age.data.FrameLayerInfo;
 	import age.renderers.AnimationLayerRenderer;
-	import nt.assets.Asset;
 
 	/**
 	 * AnimationLayerRendererEditable
@@ -34,18 +33,30 @@ package ageb.modules.ae
 			if (infoEditable)
 			{
 				infoEditable.getFrameInfoAt(0).onBoxChange.remove(adjustSize);
+				infoEditable.onIndexChange.remove(onIndexChange);
 			}
 			super.info = value;
 
 			if (info)
 			{
 				info.onTexturesChange.add(onTexturesChange);
+				infoEditable.onIndexChange.add(onIndexChange);
 			}
 
 			if (infoEditable)
 			{
 				infoEditable.getFrameInfoAt(0).onBoxChange.add(adjustSize);
 			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function onIndexChange():void
+		{
+			// 重新缓存当前索引
+			layerIndex = info.index;
 		}
 
 		/**

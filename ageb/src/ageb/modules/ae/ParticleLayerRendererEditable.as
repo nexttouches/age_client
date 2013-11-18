@@ -83,12 +83,14 @@ package ageb.modules.ae
 			if (infoEditable)
 			{
 				infoEditable.onFramesChange.remove(onFramesChange);
+				infoEditable.onIndexChange.remove(onIndexChange);
 			}
 			super.info = value;
 
 			if (info)
 			{
 				info.onTexturesChange.add(onTexturesChange);
+				infoEditable.onIndexChange.add(onIndexChange);
 			}
 
 			if (infoEditable)
@@ -97,6 +99,16 @@ package ageb.modules.ae
 			}
 			onFramesChange();
 			onTexturesChange();
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function onIndexChange():void
+		{
+			// 重新缓存当前索引
+			layerIndex = info.index;
 		}
 
 		/**

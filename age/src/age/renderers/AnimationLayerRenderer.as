@@ -15,7 +15,7 @@ package age.renderers
 		/**
 		 * 缓存当前图层索引，排序时会用到
 		 */
-		private var layerIndex:int;
+		protected var layerIndex:int;
 
 		/**
 		 * 缓存当前 info 是否已加载好

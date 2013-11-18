@@ -21,7 +21,7 @@ package age.renderers
 		/**
 		 * 缓存当前图层索引，排序时会用到
 		 */
-		private var layerIndex:int;
+		protected var layerIndex:int;
 
 		/**
 		 * 用于避免闪烁的唯一索引
