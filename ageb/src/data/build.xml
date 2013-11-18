@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================
+	 2013-11-18 下午2:11:12
+
+	 ageb-build
+	 构建 AGE 资源脚本
+
+	 zhanghaocong
+	 ====================================================================== -->
+<project name="ageb-build"
+	default="main">
+	<description>
+            构建 AGE 资源脚本
+    </description>
+	<scriptdef name="substring"
+		language="javascript">
+		<attribute name="text"/>
+		<attribute name="start"/>
+		<attribute name="end"/>
+		<attribute name="property"/>
+		<![CDATA[
+			var text = attributes.get("text");
+			var start = attributes.get("start");
+			var end = attributes.get("end") || text.length();
+			project.setProperty(attributes.get("property"), text.substring(start, end));
+		]]>
+	</scriptdef>
+	<property name="classes.dir"
+		value="classes"/>
+	<property name="src"
+		location="D:/age/age_client/test_assets/src"/>
+	<property name="bin"
+		location="D:/age/age_client/test_assets/bin"/>
+
+	<!-- =================================
+		  target: main
+		 ================================= -->
+	<target name="main"
+		description="构建 AGE 资源脚本">
+		<antcall target="zip"/>
+		<antcall target="hash"/>
+		<antcall target="upload"/>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - -
+			  target: zip
+			 - - - - - - - - - - - - - - - - - -->
+	<target name="zip"
+		description="打包">
+		<zip destfile="${bin}/data0.zip"
+			level="9">
+			<zipfileset dir="${src}">
+				<include name="avatars/*.txt"/>
+				<include name="avatars/*.xml"/>
+				<include name="scenes/*.txt"/>
+				<include name="scenes/*.xml"/>
+			</zipfileset>
+		</zip>
+		<copy todir="${bin}">
+			<fileset dir="${src}">
+				<include name="avatars/*.png"/>
+				<include name="scenes/*.png"/>
+			</fileset>
+		</copy>
+	</target>
+	<!-- - - - - - - - - - - - - - - - - -
+			  target: upload
+			 - - - - - - - - - - - - - - - - - -->
+	<target name="upload"
+		description="上传">
+	</target>
+	<!-- - - - - - - - - - - - - - - - - -
+			  target: hash
+			 - - - - - - - - - - - - - - - - - -->
+
+	<target name="hash"
+		description="生成校验">
+		<taskdef name="hash"
+			classname="game.ant.Hash"
+			classpath="gametasks.jar"/>
+
+		<!-- 四层目录 hash -->
+		<property name="hash.includes"
+			value="*,*/*,*/*/*,*/*/*/*"/>
+		<property name="hash.version_binformat"
+			value="version_{0}.bin"/>
+		<property name="hash.excludes"
+			value="test,swfobject.js,.svn,*.fla,*/*.fla,*/*/*.fla,*/*/*/*.fla"/>
+		<hash cachedir="${bin}-cache"
+			todir="${bin}"
+			totalproperty="hash.total"
+			version_binformat="${hash.version_binformat}">
+			<fileset dir="${src}"
+				includes="${hash.includes}"
+				excludes="${hash.excludes}"/>
+		</hash>
+
+		<!-- 输出 version.js 并改名拷贝到新目录；会有 version.js 和 version_版本.js 2 个文件 -->
+		<property name="hash.version.js"
+			value="${bin}/version_${hash.total}.js"/>
+		<property name="hash.version.js.fixed"
+			value="${bin}/version.js"/>
+		<substring 
+			text="${hash.bootstrap.version}"
+			start="0"
+			end="16"
+			property="hash.bootstrap.version"/>
+		<echo output="${hash.version.js}">hash={"index":"${hash.bootstrap.version}","version":"${hash.total}"};</echo>
+		<echo output="${hash.version.js.fixed}">hash={"index":"${hash.bootstrap.version}","version":"${hash.total}"};</echo>
+	</target>
+</project>

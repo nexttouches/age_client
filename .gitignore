@@ -4,6 +4,7 @@
 # *.project
 # *.actionScriptProperties
 bin
+bin-*
 bin-debug
 bin-debug-*
 bin-release

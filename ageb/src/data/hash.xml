@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="gametasks" basedir="." default="hash">
+	<scriptdef name="substring" language="javascript">
+		<attribute name="text" />
+		<attribute name="start" />
+		<attribute name="end" />
+		<attribute name="property" />
+		<![CDATA[
+			var text = attributes.get("text");
+			var start = attributes.get("start");
+			var end = attributes.get("end") || text.length();
+			project.setProperty(attributes.get("property"), text.substring(start, end));
+		]]>
+	</scriptdef>
+	<property name="src.dir" value="src" />
+	<property name="classes.dir" value="classes" />
+
+	<target name="hash" description="Hash files">
+		<!-- 输出 version.bin 并改名拷贝到新目录 -->
+		<taskdef name="hash" classname="game.ant.Hash" classpath="${ant.project.name}.jar" />
+		<property name="hash.workspace" value="${basedir}" />
+		<property name="hash.src" value="${hash.workspace}/src" />
+		<property name="hash.todir" value="${hash.workspace}/bin-release" />
+		<property name="hash.cachedir" value="${hash.workspace}/bin-release-checksum" />
+
+		<!-- 四层目录 hash -->
+		<property name="hash.includes" value="*,*/*,*/*/*,*/*/*/*" />
+		<property name="hash.version_binformat" value="version_{0}.bin" />
+		<property name="hash.excludes" value="swfobject.js,.svn,*.fla,*/*.fla,*/*/*.fla,*/*/*/*.fla" />
+		<hash cachedir="${hash.cachedir}" todir="${hash.todir}" totalproperty="hash.total" version_binformat="${hash.version_binformat}">
+			<fileset dir="${hash.src}" includes="${hash.includes}" excludes="${hash.excludes}" />
+		</hash>
+
+		<!-- 输出 version.js 并改名拷贝到新目录；会有 version.js 和 version_版本.js 2 个文件 -->
+		<property name="hash.version.js" value="${hash.todir}/version_${hash.total}.js" />
+		<property name="hash.version.js.fixed" value="${hash.todir}/version.js" />
+		<checksum algorithm="SHA-1" file="${hash.src}/GameIndex.swf" property="hash.bootstrap.version" />
+		<substring text="${hash.bootstrap.version}" start="0" end="16" property="hash.bootstrap.version" />
+		<echo output="${hash.version.js}">hash={"index":"${hash.bootstrap.version}","version":"${hash.total}"};</echo>
+		<echo output="${hash.version.js.fixed}">hash={"index":"${hash.bootstrap.version}","version":"${hash.total}"};</echo>
+	</target>
+</project>
