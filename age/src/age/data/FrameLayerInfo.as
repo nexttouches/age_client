@@ -184,7 +184,7 @@ package age.data
 
 		/**
 		 * 设置或获取当前图层的长度<br>
-		 * 根据情况， 这将截断或使用 null 填充到指定长度
+		 * 根据情况，这将截断或使用 null 填充 frames 到指定长度
 		 */
 		public function get numFrames():uint
 		{
