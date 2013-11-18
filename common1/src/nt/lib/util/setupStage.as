@@ -14,8 +14,6 @@ package nt.lib.util
 		stage.quality = StageQuality.HIGH;
 		stage.align = StageAlign.TOP_LEFT;
 		stage.frameRate = frameRate;
-		// modified by weixiao
-//		stage.addEventListener(MouseEvent.RIGHT_CLICK, killContextMenu);
 	}
 }
 import flash.events.MouseEvent;

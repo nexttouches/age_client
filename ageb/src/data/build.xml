@@ -72,7 +72,6 @@
 	<!-- - - - - - - - - - - - - - - - - -
 			  target: hash
 			 - - - - - - - - - - - - - - - - - -->
-
 	<target name="hash"
 		description="生成校验">
 		<taskdef name="hash"
