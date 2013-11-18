@@ -18,7 +18,7 @@ package age.renderers
 	 * @author zhanghaocong
 	 *
 	 */
-	[Deprecated(message="该类已被 AnimationLayerRenderer 代替")]
+	//[Deprecated(message="该类已被 AnimationLayerRenderer 代替")]
 	public class AnimationRenderer extends TextureRenderer implements IAnimatable
 	{
 		/**
