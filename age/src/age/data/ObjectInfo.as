@@ -27,7 +27,6 @@ package age.data
 		public function ObjectInfo(raw:Object = null, parent:LayerInfo = null)
 		{
 			this.parent = parent;
-			pad = new KeyboardPad();
 			fromJSON(raw);
 		}
 
@@ -1146,6 +1145,60 @@ package age.data
 			{
 				_pad.addObject(this);
 			}
+		}
+
+		private var speed:Number = 200;
+
+		/**
+		 * 左移
+		 *
+		 */
+		public function moveLeft():void
+		{
+			// 先转向后移动
+			if (_direction == Direction.LEFT)
+			{
+				velocity.x = -speed;
+			}
+			else
+			{
+				direction = Direction.LEFT;
+			}
+		}
+
+		/**
+		 * 右移
+		 *
+		 */
+		public function moveRight():void
+		{
+			// 先转向后移动
+			if (_direction == Direction.RIGHT)
+			{
+				velocity.x = speed;
+			}
+			else
+			{
+				direction = Direction.RIGHT;
+			}
+		}
+
+		/**
+		 * 下移动
+		 *
+		 */
+		public function moveNear():void
+		{
+			velocity.z = -200;
+		}
+
+		/**
+		 * 上移
+		 *
+		 */
+		public function moveFar():void
+		{
+			velocity.z = 200;
 		}
 	}
 }

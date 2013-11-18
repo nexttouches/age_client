@@ -429,7 +429,8 @@ in accordance with the terms of the license agreement accompanying it.
 								icon="@Embed('../assets/icons/lock.png')"
 								toolTip="锁定全部"/>
 						</s:Group>
-						<timelineClasses:FrameLayerList id="layerList"/>
+						<timelineClasses:FrameLayerList id="layerList"
+							verticalScrollPolicy="on"/>
 						<s:Group 
 							width="100%" height="12">
 							<s:layout>

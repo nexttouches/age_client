@@ -14,6 +14,9 @@ package age.pad
 	 */
 	public class KeyboardPad extends Pad implements IAnimatable
 	{
+		/**
+		 * 键盘控制器的配置
+		 */
 		public var config:KeyboardPadConfig = new KeyboardPadConfig();
 
 		/**
@@ -31,37 +34,42 @@ package age.pad
 		 */
 		public function advanceTime(time:Number):void
 		{
+			// 单个控制器只能控制一个角色
 			assert(objectInfos.length == 1);
 
 			for (var i:int = 0; i < objectInfos.length; i++)
 			{
 				const o:ObjectInfo = objectInfos[i];
+				var actionName:String = "idle";
 
 				if (ShortcutUtil.isDown(config.left))
 				{
-					o.velocity.x = -200;
+					o.moveLeft();
+					actionName = "walk";
 				}
 				else if (ShortcutUtil.isDown(config.right))
 				{
-					o.velocity.x = 200;
+					o.moveRight();
+					actionName = "walk";
 				}
 				else
 				{
-					o.velocity.x = 0;
 				}
 
 				if (ShortcutUtil.isDown(config.near))
 				{
-					o.velocity.z = -200;
+					o.moveNear();
+					actionName = "walk";
 				}
 				else if (ShortcutUtil.isDown(config.far))
 				{
-					o.velocity.z = 200;
+					o.moveFar();
+					actionName = "walk";
 				}
 				else
 				{
-					o.velocity.z = 0;
 				}
+				o.actionName = actionName;
 			}
 		}
 

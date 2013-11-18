@@ -1,9 +1,11 @@
 package ageb.modules.ae
 {
+	import flash.debugger.enterDebugger;
 	import age.data.ActionInfo;
 	import age.data.FrameInfo;
 	import age.data.FrameLayerInfo;
 	import age.data.FrameLayerType;
+	import nt.assets.AssetLoadQueue;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -57,6 +59,7 @@ package ageb.modules.ae
 		private function reloadAssets(... ignored):void
 		{
 			addAnimationAssets();
+			addParticleAssets();
 			addSoundAssets();
 			load();
 		}

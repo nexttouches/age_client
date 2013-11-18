@@ -19,7 +19,6 @@ package age.renderers
 	import flash.geom.Vector3D;
 	import age.data.EmitterType;
 	import age.data.Particle3DConfig;
-	import nt.lib.util.assert;
 	import org.osflash.signals.Signal;
 	import starling.animation.IAnimatable;
 	import starling.core.RenderSupport;
@@ -984,8 +983,7 @@ package age.renderers
 		 * 当 position 发生变化时调用该方法以投影新坐标
 		 *
 		 */
-		[Inline]
-		final protected function validatePosition():void
+		protected function validatePosition():void
 		{
 			if (_projectY == null)
 			{
@@ -1019,7 +1017,7 @@ package age.renderers
 			emitterY = _projectY(position.y, position.z);
 		}
 
-		private var _projectY:Function;
+		protected var _projectY:Function;
 
 		/**
 		 * @inheritDoc

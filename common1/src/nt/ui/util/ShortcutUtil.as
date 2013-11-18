@@ -2,6 +2,7 @@ package nt.ui.util
 {
 	import flash.display.Stage;
 	import flash.errors.IllegalOperationError;
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
@@ -44,6 +45,13 @@ package nt.ui.util
 			stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, onRightMouseUp, false, int.MAX_VALUE);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, int.MAX_VALUE);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, int.MAX_VALUE);
+			stage.addEventListener(Event.MOUSE_LEAVE, onMouseLeave, false, int.MAX_VALUE);
+		}
+
+		protected static function onMouseLeave(event:Event):void
+		{
+			keyDownList.length = 0;
+			keyDownList.length = 256;
 		}
 
 		protected static function onMiddleMouseDown(event:MouseEvent):void
@@ -88,6 +96,15 @@ package nt.ui.util
 		 */
 		protected static function onkeyUp(event:KeyboardEvent):void
 		{
+			if (event.ctrlKey)
+			{
+				delete keyDownList[Keyboard.CONTROL];
+			}
+
+			if (event.shiftKey)
+			{
+				delete keyDownList[Keyboard.SHIFT];
+			}
 			delete keyDownList[event.keyCode];
 		}
 

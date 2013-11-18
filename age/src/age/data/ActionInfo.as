@@ -12,7 +12,7 @@ package age.data
 	public class ActionInfo
 	{
 		/**
-		 * 当前动作的资源以此关键字进行打包
+		 * 动作的资源将以此关键字进行打包（未实现）
 		 */
 		public var atlas:String;
 

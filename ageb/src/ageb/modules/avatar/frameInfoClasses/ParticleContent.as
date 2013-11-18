@@ -180,6 +180,7 @@ package ageb.modules.avatar.frameInfoClasses
 		protected function onChange(event:Event):void
 		{
 			var pc:Particle3DConfig = new Particle3DConfig();
+			pc.isUseNativeTexture = isUseNativeTexture.selected;
 
 			for each (var p:Property in Type.of(Particle3DConfig).properties)
 			{
@@ -250,7 +251,7 @@ package ageb.modules.avatar.frameInfoClasses
 		public function set particleConfig(value:Particle3DConfig):void
 		{
 			_particleConfig = value || new Particle3DConfig;
-			_particleConfig.isUseNativeTexture = isUseNativeTexture.selected;
+			isUseNativeTexture.selected = _particleConfig.isUseNativeTexture;
 
 			for each (var p:Property in Type.of(Particle3DConfig).properties)
 			{

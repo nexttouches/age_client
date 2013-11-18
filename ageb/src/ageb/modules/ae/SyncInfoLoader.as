@@ -61,7 +61,7 @@ package ageb.modules.ae
 		}
 
 		/**
-		 * 加载 avatar
+		 * 加载 avatar 信息
 		 * @param id
 		 *
 		 */
@@ -110,7 +110,7 @@ package ageb.modules.ae
 		 */
 		public static function addError(path:String, message:String):void
 		{
-			if (hasError(path))
+			if (!hasError(path))
 			{
 				errors[path] = true;
 				Alert.show(message);

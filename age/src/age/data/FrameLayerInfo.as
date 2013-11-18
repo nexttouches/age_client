@@ -1,6 +1,5 @@
 package age.data
 {
-	import flash.debugger.enterDebugger;
 	import flash.media.Sound;
 	import age.age_internal;
 	import nt.assets.AssetGroup;

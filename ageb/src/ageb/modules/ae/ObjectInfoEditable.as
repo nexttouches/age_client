@@ -1,6 +1,7 @@
 package ageb.modules.ae
 {
 	import flash.geom.Vector3D;
+	import age.data.AvatarInfo;
 	import age.data.LayerInfo;
 	import age.data.ObjectInfo;
 	import org.osflash.signals.Signal;
@@ -273,6 +274,20 @@ package ageb.modules.ae
 		private function onFPSChange():void
 		{
 			fps = actionInfo.fps;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function validateNow():void
+		{
+			super.validateNow();
+
+			if (actionInfo)
+			{
+				SyncInfoLoader.loadAtlasConfig(AvatarInfo.folder + "/" + avatarID + "_" + actionName);
+			}
 		}
 	}
 }

@@ -7,7 +7,6 @@ package age.renderers
 	import age.data.Box;
 	import age.data.FrameInfo;
 	import age.data.FrameLayerInfo;
-	import age.utils.project;
 	import nt.assets.IAsset;
 	import nt.assets.IAssetUser;
 	import starling.events.Event;
@@ -67,7 +66,7 @@ package age.renderers
 			if (_info != value)
 			{
 				_info = value;
-					// 此处要设置使用外部贴图
+					// TODO 此处要设置使用外部贴图
 			}
 
 			if (_info)
@@ -139,16 +138,28 @@ package age.renderers
 				}
 				box = keyframe.box;
 
-				if (!config || !config.isUseNativeTexture)
+				if (config)
 				{
-					if (_info.textures && _info.textures[_currentFrame])
+					// 使用外部贴图
+					if (!config.isUseNativeTexture)
 					{
-						texture = _info.textures[_currentFrame];
+						if (_info.textures && _info.textures[_currentFrame])
+						{
+							texture = _info.textures[_currentFrame];
+						}
+						else
+						{
+							isEmpty = true;
+						}
 					}
 					else
 					{
-						isEmpty = true;
+						texture = defaultTexture;
 					}
+				}
+				else
+				{
+					isEmpty = true;
 				}
 			}
 
@@ -233,17 +244,28 @@ package age.renderers
 		 */
 		private function validateBox():void
 		{
+			validatePosition();
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override protected function validatePosition():void
+		{
+			if (_projectY == null)
+			{
+				return;
+			}
+
 			if (_box)
 			{
-				helperVector.setTo(_box.x, _box.y, _box.z);
-				project(helperVector, helperPoint);
-				pivotX = _direction == Direction.RIGHT ? -helperPoint.x : helperPoint.x;
-				pivotY = -helperPoint.y;
+				emitterX = position.x + (_direction == Direction.RIGHT ? _box.x : -_box.x);
+				emitterY = _projectY(position.y + _box.y, position.z + _box.z);
 			}
 			else
 			{
-				pivotX = 0;
-				pivotY = 0;
+				super.validatePosition();
 			}
 		}
 
