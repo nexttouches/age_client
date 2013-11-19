@@ -35,7 +35,7 @@ package nt.assets.extensions
 		{
 			stream.readBytes(raw);
 			content = String(raw);
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 			notifyLoadComplete();
 		}
 	}

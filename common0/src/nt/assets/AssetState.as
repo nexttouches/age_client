@@ -3,7 +3,7 @@ package nt.assets
 
 	/**
 	 * 资源状态常量集
-	 * @author zhanghaocong
+	 * @author KK
 	 * @see Asset#state
 	 */
 	public class AssetState
@@ -11,22 +11,22 @@ package nt.assets
 		/**
 		 * 尚未开始加载
 		 */
-		public static const NotLoaded:int = 0;
+		public static const NOT_LOADED:int = 0;
 
 		/**
 		 * 正在下载
 		 */
-		public static const Loading:int = 1;
+		public static const LOADING:int = 1;
 
 		/**
 		 * 已下载完毕
 		 */
-		public static const Loaded:int = 2;
+		public static const LOADED:int = 2;
 
 		/**
 		 * 下载时出现错误
 		 */
-		public static const Error:int = 3;
+		public static const ERROR:int = 3;
 
 		/**
 		 * 资源是否已被释放，这表示该资源不可再使用

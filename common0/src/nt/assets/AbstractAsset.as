@@ -49,12 +49,12 @@ package nt.assets
 
 		public function get isComplete():Boolean
 		{
-			return _state == AssetState.Loaded;
+			return _state == AssetState.LOADED;
 		}
 
 		public function get isLoading():Boolean
 		{
-			return _state == AssetState.Loading;
+			return _state == AssetState.LOADING;
 		}
 
 		public function addUser(user:IAssetUser):void
@@ -143,7 +143,7 @@ package nt.assets
 
 		public function get isNotLoaded():Boolean
 		{
-			return state == AssetState.NotLoaded;
+			return state == AssetState.NOT_LOADED;
 		}
 	}
 }

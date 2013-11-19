@@ -100,7 +100,7 @@ package nt.assets
 						var asset:Asset = assets.shift();
 
 						// 跳过已完成的资源
-						if (asset.state != AssetState.NotLoaded)
+						if (asset.state != AssetState.NOT_LOADED)
 						{
 							onAssetLoadComplete(asset);
 						}
@@ -147,6 +147,7 @@ package nt.assets
 		 */
 		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
 		{
+			// 不侦听加载进度
 		}
 
 		/**
@@ -169,7 +170,7 @@ package nt.assets
 		 */
 		public function onAssetLoadComplete(asset:IAsset):void
 		{
-			// 加载成功后进入下一恶搞
+			// 加载成功后进入下一个
 			asset.removeUser(this);
 			threadsRunning--;
 			loadNext();

@@ -192,7 +192,7 @@ package nt.assets.extensions
 		 */
 		override public function loadNow():void
 		{
-			if (_state != AssetState.NotLoaded)
+			if (_state != AssetState.NOT_LOADED)
 			{
 				return;
 			}
@@ -260,7 +260,7 @@ package nt.assets.extensions
 		 */
 		public function onAssetLoadComplete(asset:IAsset):void
 		{
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 
 			switch (asset)
 			{

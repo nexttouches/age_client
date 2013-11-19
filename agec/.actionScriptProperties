@@ -31,6 +31,7 @@
       <libraryPathEntry kind="3" linkType="1" path="/age/bin/age.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/common1/bin/common1.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/common0/bin/common0.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="assets/nativepreloaderskin.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

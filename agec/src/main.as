@@ -4,7 +4,7 @@ package
 	import nt.lib.util.assert;
 
 	/**
-	 * 客户端主程序
+	 * 客户端主程序，不可直接启动，请从 preloader 启动
 	 * @author zhanghaocong
 	 *
 	 */
@@ -18,7 +18,7 @@ package
 		public function main()
 		{
 			super();
-			assert(!stage, "不可直接启动");
+			assert(!stage, "不可作为文档类直接启动，请从 preloader 启动");
 		}
 
 		/**
@@ -27,9 +27,7 @@ package
 		 */
 		public function init(skin:Sprite = null):void
 		{
-			this.skin = skin;
 			trace("启动 main");
-			// TODO 加载配置和资源
 		}
 	}
 }

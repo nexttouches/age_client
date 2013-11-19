@@ -1,12 +1,5 @@
 package nt.assets
 {
-	import flash.utils.Dictionary;
-	import nt.assets.extensions.CompressedAMFAsset;
-	import nt.assets.extensions.ImageAsset;
-	import nt.assets.extensions.LibAsset;
-	import nt.assets.extensions.SoundAsset;
-	import nt.assets.extensions.TextAsset;
-	import nt.assets.extensions.ZipAsset;
 
 	/**
 	 * 资源配置
@@ -16,33 +9,14 @@ package nt.assets
 	public class AssetConfig
 	{
 		/**
-		 * 通常是 Flash Vars 进来的版本
+		 * 资源根路径，默认是 "" （空字符串）
 		 */
-		public static var version:String;
+		public static var root:String = "";
 
 		/**
-		 * 资源根路径
+		 * 储存所有 AssetInfo
 		 */
-		public static var root:String;
-
-		/**
-		 * 程序最后一次打包时间，应该通过 flashVars 进来
-		 */
-		public static var lastBuild:Number;
-
-		/**
-		 * 标记是否已初始化
-		 */
-		public static var isInit:Boolean;
-
-		/**
-		 * @private
-		 */
-		private static var infos:Dictionary;
-
-		public static var isEditMode:Boolean;
-
-		public static var isPathIsURL:Boolean;
+		private static var infos:Object = {};
 
 		/**
 		 * 获得相对于 AssetConfig.root 的路径
@@ -56,84 +30,84 @@ package nt.assets
 		}
 
 		/**
-		 * 设置或获取是否启用无缓存模式
+		 * 任意 path 如果含有该关键字则视为完整 URL
 		 */
-		public static var noCache:Boolean = false;
+		private static const URL_KEYWORD:String = "://"
 
 		/**
 		 * 根据路径获得指定的 AssetInfo
-		 * @param path
-		 * @return
+		 * @param path 相对于 <tt>root</tt> 的路径或完整 URL（如 <tt>http://</tt> 开头）
+		 * @return AssetInfo
 		 *
 		 */
 		public static function getInfo(path:String):AssetInfo
 		{
-			if (!infos)
-			{
-				throw new Error("AssetConfig 尚未初始化");
-			}
-
+			// 缓存中找不到该路径对应的信息，我们创建一个
 			if (!infos[path])
 			{
-				infos[path] = { path: path, pathIsURL: isPathIsURL };
-			}
+				// 检查是否是完整 URL
+				const isURL:Boolean = path.indexOf(URL_KEYWORD) != -1;
 
-			if (!(infos[path] is AssetInfo))
+				if (isURL)
+				{
+					infos[path] = new AssetInfo({ url: path, path: path });
+				}
+				else
+				{
+					// 找不到路径对应的信息，我们 fallback
+					infos[path] = new AssetInfo({ path: path }); // 该信息不包含版本
+				}
+			}
+			else
 			{
-				infos[path] = new AssetInfo(infos[path]);
+				// infos 可能存的不是 AssetInfo，我们转换一下
+				if (!(infos[path] is AssetInfo))
+				{
+					infos[path] = new AssetInfo(infos[path]);
+				}
 			}
 			return infos[path];
 		}
 
 		/**
 		 * 初始化 AssetConfig
-		 * @param infos 键为路径，值为 {path, version, size} 的对象数组
-		 * @param version 整个 AssetConfig 的版本
-		 * @param root 资源根目录
-		 * @param isEditMode 可选，是否是编辑模式
-		 * @param isPathIsURL 可选，路径是否已是完整路径
+		 * @param root 资源根路径：比如静态资源的 CDN 路径。
+		 * @param infos 可选：资源信息文件，默认 null。事后可以通过 <tt>updateInfos</tt> 来更新
 		 *
 		 */
-		public static function init(infos:Dictionary, version:String, root:String, isEditMode:Boolean = false, isPathIsURL:Boolean = false):void
+		public static function init(root:String, infos:Object = null):void
 		{
-			if (isInit)
-			{
-				return;
-//				throw new Error("AssetConfig 不能重复初始化");
-			}
-			AssetConfig.isEditMode = isEditMode;
-			AssetConfig.isPathIsURL = isPathIsURL;
-			isInit = true;
-			AssetConfig.version = version;
 			AssetConfig.root = root;
-			AssetConfig.infos = infos;
-			Asset.register("lib", LibAsset);
-			Asset.register("swf", LibAsset);
-			Asset.register("anis", ZipAsset);
-			Asset.register("xml", TextAsset);
-			Asset.register("png", ImageAsset);
-			Asset.register("jpg", ImageAsset);
-			Asset.register("jxr", ImageAsset);
-			Asset.register("cfg", CompressedAMFAsset);
-			Asset.register("mp3", SoundAsset);
+
+			// 检查并补充 "/" 结尾（root 为空字符串时可能是相对路径，故不作修改）
+			if (root.length > 0 && root.lastIndexOf("/") != root.length - 1)
+			{
+				AssetConfig.root += "/";
+			}
+
+			if (infos)
+			{
+				AssetConfig.infos = infos;
+			}
+			trace("[AssetConfig] 已初始化 (root=" + AssetConfig.root + ")");
 		}
 
-		public static function dispose():void
+		/**
+		 * 更新 infos
+		 * @param newInfos 要更新的 infos。新旧 info 如遇 path 冲突则报错
+		 *
+		 */
+		public static function updateInfos(newInfos:Object):void
 		{
-			if (!isInit)
+			for each (var info:Object in newInfos)
 			{
-				throw new Error("尚未初始化");
+				// 检查重复的路径
+				if (infos.hasOwnProperty(info.path))
+				{
+					throw new ArgumentError("[AssetConfig] updateInfos 时发生错误：路径重复 (" + info.path + ")");
+				}
+				infos[info.path] = info;
 			}
-			isInit = false;
-			Asset.unregister("lib");
-			Asset.unregister("swf");
-			Asset.unregister("anis");
-			Asset.unregister("xml");
-			Asset.unregister("png");
-			Asset.unregister("jpg");
-			Asset.unregister("jxr");
-			Asset.unregister("cfg");
-			Asset.unregister("mp3");
 		}
 	}
 }

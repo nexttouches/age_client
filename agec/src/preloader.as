@@ -1,61 +1,48 @@
 package
 {
-	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
-	import flash.utils.clearInterval;
-	import flash.utils.setInterval;
+	import agec.preloader.PreloaderConfig;
+	import nt.assets.Asset;
+	import nt.assets.AssetConfig;
+	import nt.assets.AssetGroup;
+	import nt.assets.AssetLoadQueue;
+	import nt.assets.AssetLoaderNames;
+	import nt.assets.IAsset;
+	import nt.assets.IAssetUser;
+	import nt.assets.extensions.CompressedAMFAsset;
+	import nt.assets.extensions.LibAsset;
 	import nt.lib.util.setupStage;
 
 	/**
-	 * preloader 是最初的引导程序，负责载入 main<br/>
+	 * preloader 是加载器，负责载入进入游戏必须的资源
 	 * @author zhanghaocong
 	 *
 	 */
 	[SWF(frameRate="60", width="1000", height="600")]
-	public class preloader extends Sprite
+	public class preloader extends Sprite implements IAssetUser
 	{
 		/**
-		 * 默认的加载器路径
+		 * 预加载配置文件
 		 */
-		private static const DEFAULT_MAIN_URL:String = "main.swf";
+		public var config:PreloaderConfig = new PreloaderConfig;
 
 		/**
-		 * 默认的皮肤路径
+		 * 加载器的皮肤类，默认是 NativePreloaderSkin
 		 */
-		private static const DEFAULT_SKIN_URL:String = "skin.swf";
+		public var skin:Sprite = new NativePreloaderSkin;
 
 		/**
-		 * 加载器的皮肤类
+		 * 加载时使用的组
 		 */
-		public var skin:Sprite;
+		public var group:AssetGroup = new AssetGroup();
 
 		/**
-		 * @private
+		 * 皮肤资源，将使用独立的进程进行加载
 		 */
-		private var tf:TextField;
+		public var skinAsset:LibAsset;
 
-		/**
-		 * @private
-		 */
-		private var updateLabelIntervalID:int;
-
-		/**
-		 * 加载 main.swf 的 Loader
-		 */
-		private var mainLoader:Loader;
-
-		/**
-		 * 加载 skin 的 Loader
-		 */
-		private var skinLoader:Loader;
+		public var versionAsset:Asset;
 
 		/**
 		 * constructor
@@ -75,6 +62,16 @@ package
 			{
 				addEventListener(Event.ADDED_TO_STAGE, onAdd);
 			}
+			positionSkin();
+			addChild(skin);
+			// 从 FlashVars 更新信息
+			config.fromJSON(loaderInfo.parameters);
+			// 初始化 AssetConfig
+			AssetConfig.init(config.root);
+			// 皮肤资源
+			skinAsset = LibAsset.get("preloader/skin.swf");
+			// 版本信息
+			group.load(queue);
 		}
 
 		/**
@@ -84,71 +81,28 @@ package
 		 */
 		protected function onAdd(event:Event = null):void
 		{
-			mainLoader = new Loader();
-			mainLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
-			mainLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
-			mainLoader.load(new URLRequest(loaderInfo.parameters["main"] ||= DEFAULT_MAIN_URL), new LoaderContext(false, new ApplicationDomain(ApplicationDomain.currentDomain)));
-			skinLoader = new Loader();
-			skinLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, skinLoader_onComplete);
-			skinLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, skinLoader_onError);
-			skinLoader.load(new URLRequest(loaderInfo.parameters["skin"] ||= DEFAULT_SKIN_URL), new LoaderContext(false, new ApplicationDomain(ApplicationDomain.currentDomain)));
-			tf = new TextField();
-			tf.defaultTextFormat = new TextFormat("Arial", "12", 0xffffff, null, null, null, null, null, "center");
-			tf.text = "正在加载主程序...";
-			tf.autoSize = TextFieldAutoSize.CENTER;
-			tf.selectable = false;
-			addChild(tf);
-			positionTF();
-			stage.addEventListener(Event.RESIZE, positionTF);
-			updateLabelIntervalID = setInterval(updateTF, 1000);
+			stage.addEventListener(Event.RESIZE, onResize);
+			addEventListener(Event.REMOVED_FROM_STAGE, onRemove);
 		}
 
 		/**
-		 * @private
+		 * 从舞台删除后回收资源
+		 * @param event
 		 *
 		 */
-		protected function skinLoader_onComplete(event:Event):void
+		protected function onRemove(event:Event):void
 		{
-			skin = skinLoader.content as Sprite;
-			stage.addChild(skin);
+			stage.removeEventListener(Event.RESIZE, onResize);
 		}
 
 		/**
-		 * @private
+		 * 场景缩放后调用
+		 * @param event
 		 *
 		 */
-		protected function skinLoader_onError(event:IOErrorEvent):void
+		protected function onResize(event:Event):void
 		{
-			trace("皮肤加载出错");
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		protected function onError(event:IOErrorEvent):void
-		{
-			tf.text = "加载错误\n（" + event.text + "）";
-			clearInterval(updateLabelIntervalID);
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function updateTF():void
-		{
-			tf.text += ".";
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function positionTF(... ignored):void
-		{
-			tf.x = stage.stageWidth / 2 - tf.width / 2;
-			tf.y = stage.stageHeight / 2 - tf.height / 2;
+			positionSkin();
 		}
 
 		/**
@@ -159,8 +113,6 @@ package
 		protected function onComplete(event:Event):void
 		{
 			event.currentTarget.content.init(skin);
-			tf.text += "完成！";
-			clearInterval(updateLabelIntervalID);
 			addEventListener(Event.ENTER_FRAME, fadeOut);
 		}
 
@@ -178,6 +130,93 @@ package
 				removeEventListener(Event.ENTER_FRAME, fadeOut);
 				parent.removeChild(this);
 			}
+		}
+
+		/**
+		 * 使皮肤居中
+		 *
+		 */
+		private function positionSkin():void
+		{
+			skin.x = (stage.stageWidth - skin.width) / 2;
+			skin.y = (stage.stageHeight - skin.height) / 2;
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetDispose(asset:IAsset):void
+		{
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadComplete(asset:IAsset):void
+		{
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadError(asset:IAsset):void
+		{
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
+		{
+		}
+
+		/**
+		 * 释放资源
+		 *
+		 */
+		public function dispose():void
+		{
+			removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
+			removeEventListener(Event.ADDED_TO_STAGE, onAdd);
+			stage.removeEventListener(Event.RESIZE, onResize);
+			group.removeUser(this);
+			group.dispose();
+			group = null;
+			parent.removeChild(this);
+		}
+
+		/**
+		 * 当前下载项进度
+		 */
+		public var currentProgress:Number;
+
+		/**
+		 * 当前下载项文字
+		 */
+		public var currentProgressText:String;
+
+		/**
+		 * 总进度
+		 */
+		public var totalProgress:Number;
+
+		/**
+		 * 总进度文字
+		 */
+		public var totalProgressText:String;
+
+		/**
+		 * 本次使用的加载队列
+		 * @return
+		 *
+		 */
+		protected function get queue():AssetLoadQueue
+		{
+			return AssetLoadQueue.get(AssetLoaderNames.DoubleThreading)
 		}
 	}
 }

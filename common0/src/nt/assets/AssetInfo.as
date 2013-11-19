@@ -3,14 +3,14 @@ package nt.assets
 	import nt.assets.util.URLUtil;
 
 	/**
-	 * 资源的基本信息，包括路径，版本，文件大小
+	 * 资源的基本信息。包括路径、版本、文件大小等
 	 * @author zhanghaocong
 	 *
 	 */
 	public class AssetInfo
 	{
 		/**
-		 * 路径
+		 * 路径（相对于 AssetInfo.root）
 		 */
 		public var path:String;
 
@@ -25,9 +25,55 @@ package nt.assets
 		public var size:uint;
 
 		/**
-		 * 标记路径是否是完整 URL
+		 * 地址
 		 */
-		private var pathIsURL:Boolean;
+		public var url:String;
+
+		/**
+		 * constructor
+		 * @param raw
+		 *
+		 */
+		public function AssetInfo(raw:Object = null)
+		{
+			fromJSON(raw);
+		}
+
+		/**
+		 * 从 JSON 或一个对象更新
+		 * @param raw
+		 *
+		 */
+		public function fromJSON(raw:Object):void
+		{
+			if (!raw)
+			{
+				return;
+			}
+			// 拷贝值
+			path = raw.path;
+			version = raw.version;
+			size = raw.size;
+			url = raw.url;
+			_filename = null;
+
+			// 如果 url 字段不存在则根据 path 自动创建
+			if (!url)
+			{
+				// 根据 version 填充 url 字段
+				if (version)
+				{ // 如果有版本号，拼装成改名后的地址
+					const dot:int = path.lastIndexOf(".");
+					const name:String = path.substring(0, dot);
+					const ext:String = path.substr(dot);
+					url = AssetConfig.resolvePath(name + "_" + version + ext);
+				}
+				else
+				{ // 如果当前 info 没有版本号，则使用默认地址
+					url = AssetConfig.resolvePath(path);
+				}
+			}
+		}
 
 		private var _filename:String;
 
@@ -38,61 +84,7 @@ package nt.assets
 		 */
 		public function get filename():String
 		{
-			if (!_filename)
-			{
-				_filename = URLUtil.getFilename(path);
-			}
-			return _filename;
-		}
-
-		/**
-		 * constructor
-		 * @param raw
-		 *
-		 */
-		public function AssetInfo(raw:Object)
-		{
-			this.path = raw.path;
-			this.version = raw.version;
-			this.size = raw.size;
-			this.pathIsURL = raw.pathIsURL;
-			buildUrl();
-		}
-
-		/**
-		 * 构建 URL
-		 *
-		 */
-		private function buildUrl():void
-		{
-			// 调试版本专用，不带版本号的路径
-			if (pathIsURL || !version)
-			{
-				_url = AssetConfig.root + path;
-
-				if (AssetConfig.noCache)
-				{
-					_url += "?" + Math.random();
-				}
-			}
-			else
-			{
-				var dot:int = path.lastIndexOf(".");
-				var name:String = path.substring(0, dot);
-				var ext:String = path.substr(dot);
-				_url = AssetConfig.root + name + "_" + version + ext;
-			}
-		}
-
-		private var _url:String;
-
-		/**
-		 * 完整路径
-		 */
-		[Inline]
-		final public function get url():String
-		{
-			return _url;
+			return _filename ||= URLUtil.getFilename(path);
 		}
 	}
 }

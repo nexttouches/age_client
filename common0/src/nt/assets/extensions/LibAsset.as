@@ -95,7 +95,7 @@ package nt.assets.extensions
 			// loader 也没用了
 			removeLoader();
 			// 标记为加载完毕
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 			// 通知其他用户
 			notifyLoadComplete();
 		}
@@ -189,7 +189,7 @@ package nt.assets.extensions
 		 */
 		protected function getDefintion(name:String):*
 		{
-			if (_state != AssetState.Loaded)
+			if (_state != AssetState.LOADED)
 			{
 				throw new Error("尚未加载完毕或已被回收");
 			}
@@ -204,6 +204,17 @@ package nt.assets.extensions
 		public function get domain():ApplicationDomain
 		{
 			return context.applicationDomain;
+		}
+
+		/**
+		 * 根据路径获得 <tt>LibAsset</tt>
+		 * @param path 相对于 <tt>AssetConfig.root</tt> 的路径
+		 * @return
+		 *
+		 */
+		public static function get(path:String):LibAsset
+		{
+			return Asset.get(path, 0, LibAsset) as LibAsset;
 		}
 	}
 }

@@ -38,13 +38,13 @@ package nt.assets.extensions
 		 */
 		override protected function onIOError(event:IOErrorEvent):void
 		{
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 			result = ErrorImage.getInstance();
 			// raw 已经没用了，可以先清掉，但是要保留引用，否则 dispose 时会出错
 			raw.clear();
 			raw = null;
 			// 标记为加载完毕
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 			// 假装是加载完毕了
 			notifyLoadComplete()
 		}

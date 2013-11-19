@@ -37,7 +37,7 @@ package nt.assets.extensions
 			stream.readBytes(raw);
 			sound = new Sound();
 			sound.loadCompressedDataFromByteArray(raw, raw.length);
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 			notifyLoadComplete();
 		}
 

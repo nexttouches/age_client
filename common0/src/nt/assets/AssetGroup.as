@@ -72,18 +72,6 @@ package nt.assets
 		}
 
 		/**
-		 * 添加一个路径，重复添加会报错
-		 * @param path
-		 *
-		 */
-		public function addPath(path:String, priority:int = 0):Asset
-		{
-			var result:Asset = Asset.get(path, priority || -assets.length)
-			addAsset(result);
-			return result;
-		}
-
-		/**
 		 * 添加一个 asset，重复添加会报错
 		 * @param asset
 		 *

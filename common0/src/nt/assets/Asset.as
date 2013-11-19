@@ -12,7 +12,6 @@ package nt.assets
 	import flash.utils.ByteArray;
 	import flash.utils.getTimer;
 	import flash.utils.setTimeout;
-	import nt.assets.util.URLUtil;
 
 	/**
 	 * Asset 表示一个可以加载的资源
@@ -49,13 +48,13 @@ package nt.assets
 		{
 			this.path = path;
 			this.priority = priority;
-			_state = AssetState.NotLoaded;
+			_state = AssetState.NOT_LOADED;
 			_bytesTotal = info.size;
 		}
 
 		/**
 		 * 把当前 Asset 加入到指定的队列中
-		 * @param queue
+		 * @param queue 指定的队列
 		 *
 		 */
 		override public function load(queue:AssetLoadQueue = null):void
@@ -73,12 +72,12 @@ package nt.assets
 		 */
 		public function loadNow():void
 		{
-			if (_state != AssetState.NotLoaded)
+			if (_state != AssetState.NOT_LOADED)
 			{
 				return;
 			}
 			trace("[Asset] 正在加载", info.url);
-			_state = AssetState.Loading;
+			_state = AssetState.LOADING;
 			addStream();
 			raw = new ByteArray();
 
@@ -151,7 +150,7 @@ package nt.assets
 		 */
 		protected function onSecurityError(event:SecurityErrorEvent):void
 		{
-			_state = AssetState.Error;
+			_state = AssetState.ERROR;
 			trace("[Asset] Security Error " + info.url);
 			notifyLoadError();
 		}
@@ -162,7 +161,7 @@ package nt.assets
 		 */
 		protected function onIOError(event:IOErrorEvent):void
 		{
-			_state = AssetState.Error;
+			_state = AssetState.ERROR;
 			trace("[Asset] IO Error " + info.url);
 			notifyLoadError();
 		}
@@ -174,7 +173,7 @@ package nt.assets
 		protected function onComplete(event:Event):void
 		{
 			stream.readBytes(raw);
-			_state = AssetState.Loaded;
+			_state = AssetState.LOADED;
 			notifyLoadComplete();
 		}
 
@@ -294,57 +293,7 @@ package nt.assets
 		 */
 		public function toString():String
 		{
-			return path;
-		}
-
-		/**
-		 * 已注册的扩展名
-		 */
-		private static var registeredExtensions:Object = {};
-
-		/**
-		 * 为指定的扩展名注册一个 assetClass，如果重复注册会报错
-		 * @param extension
-		 * @param assetClass
-		 *
-		 */
-		public static function register(extension:String, assetClass:Class):void
-		{
-			if (registeredExtensions[extension])
-			{
-				throw new Error("注册失败，已有相同扩展名 " + extension + "的注册");
-			}
-			registeredExtensions[extension] = assetClass;
-		}
-
-		/**
-		 * 反注册扩展名
-		 * @param extension
-		 *
-		 */
-		public static function unregister(extension:String):void
-		{
-			if (!registeredExtensions[extension])
-			{
-				throw new Error("解除注册失败，没有相同扩展名 " + extension + "的注册");
-			}
-			delete registeredExtensions[extension];
-		}
-
-		/**
-		 * 根据扩展名获得已注册了的 Asset，如果找不到指定的扩展名之注册会报错
-		 * @param extension
-		 * @return
-		 *
-		 */
-		public static function getAssetClass(extension:String):Class
-		{
-			if (!registeredExtensions[extension])
-			{
-				trace("找不到扩展名 " + extension + " 的注册，将返回默认的 Asset");
-				return Asset;
-			}
-			return registeredExtensions[extension];
+			return "[Asset] " + path;
 		}
 
 		/**
@@ -353,11 +302,12 @@ package nt.assets
 		public static var assets:Object = {};
 
 		/**
-		 * 根据路径从 assetList 获得指定的 Asset，如不存在会自动创建
-		 * @param path path
-		 * @param priority priority
-		 * @param assetClass assetClass 建议使用 register 来处理后缀名，这不是推荐的参数
-		 * @param params 构造 assetClass 之后，将要复制给 params 的参数，这不是推荐的参数
+		 * 根据 <tt>path</tt> 获得一个 Asset<br>
+		 * 该方法首先会从 <tt>assets</tt> 中查询是否已有现成资源，如不存在会自动创建
+		 * @param path path 要加载的路径，该路径相对于 AssetConfig.root。
+		 * @param priority priority 在同一队列中加载的优先级，数值越大优先级越高。相同优先级的按照加入先后顺序排列。默认值 0
+		 * @param assetClass assetClass 可选，设置本次加载应使用哪个 Asset 的子类。比如说图片应用 ImageAsset，MP3 应用 SoundAsset。默认值 Asset
+		 * @param params 可选，构造 assetClass 之后，将要复制给 params 的参数，默认值 null
 		 * @return
 		 *
 		 */
@@ -371,13 +321,19 @@ package nt.assets
 				{
 					enterDebugger();
 				}
+
+				// 路径不可为 null, undefined, ""（空字符串）, 布尔值
+				if (!path || path === true)
+				{
+					enterDebugger();
+				}
 			}
 
 			if (!assets[path])
 			{
 				if (!assetClass)
 				{
-					assetClass = getAssetClass(URLUtil.getExtension(path));
+					assetClass = Asset;
 				}
 				assets[path] = new assetClass(path, priority);
 
@@ -404,7 +360,7 @@ package nt.assets
 		 */
 		override public function get isSuccess():Boolean
 		{
-			return _state == AssetState.Loaded;
+			return _state == AssetState.LOADED;
 		}
 
 		/**
@@ -414,7 +370,7 @@ package nt.assets
 		*/
 		public function get isError():Boolean
 		{
-			return _state == AssetState.Error;
+			return _state == AssetState.ERROR;
 		}
 
 		/**
@@ -496,7 +452,7 @@ package nt.assets
 				a.dispose();
 				assets[path] = null;
 				delete assets[path];
-			} //end for key
+			}
 
 			if (Capabilities.isDebugger)
 			{
