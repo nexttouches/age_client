@@ -128,7 +128,7 @@ package ageb.modules.settings
 						}
 						else
 						{
-							AssetConfig.init(new Dictionary, "", file.parent.url + content.paths.assets);
+							AssetConfig.init(file.parent.url + content.paths.assets);
 							AvatarInfo.init({}, content.paths.avatars);
 							SceneInfo.init({}, content.paths.scenes);
 						}

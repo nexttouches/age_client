@@ -12,6 +12,7 @@
 	<description>
             构建 AGE 资源脚本
     </description>
+	<!-- substring 以备不时之需 -->
 	<scriptdef name="substring"
 		language="javascript">
 		<attribute name="text"/>
@@ -25,8 +26,16 @@
 			project.setProperty(attributes.get("property"), text.substring(start, end));
 		]]>
 	</scriptdef>
-	<property name="classes.dir"
-		value="classes"/>
+	<!-- 当前时间 -->
+	<tstamp>
+		<format property="now"
+			pattern="yyyy-MM-dd HH:mm:ss"/>
+	</tstamp>
+
+	<!-- 构建数 -->
+	<buildnumber file="build.number"/>
+
+	<!-- src 和 bin -->
 	<property name="src"
 		location="D:/age/age_client/test_assets/src"/>
 	<property name="bin"
@@ -37,9 +46,16 @@
 		 ================================= -->
 	<target name="main"
 		description="构建 AGE 资源脚本">
+		<antcall target="compile"/>
 		<antcall target="zip"/>
 		<antcall target="hash"/>
 		<antcall target="upload"/>
+	</target>
+	<!-- - - - - - - - - - - - - - - - - -
+	  target: upload
+	 - - - - - - - - - - - - - - - - - -->
+	<target name="compile"
+		description="编译">
 	</target>
 
 	<!-- - - - - - - - - - - - - - - - - -
@@ -78,13 +94,19 @@
 			classname="game.ant.Hash"
 			classpath="gametasks.jar"/>
 
-		<!-- 四层目录 hash -->
+		<!-- 设置 hash 遍历 3 层目录 -->
 		<property name="hash.includes"
-			value="*,*/*,*/*/*,*/*/*/*"/>
-		<property name="hash.version_binformat"
-			value="version_{0}.bin"/>
+			value="*,*/*,*/*/*"/>
+
+		<!-- 设置要排除的文件（夹） -->
 		<property name="hash.excludes"
 			value="test,swfobject.js,.svn,*.fla,*/*.fla,*/*/*.fla,*/*/*/*.fla"/>
+
+		<!-- 输出文件使用 version_{hash}.bin 这样的命名规则 -->
+		<property name="hash.version_binformat"
+			value="version_{0}.bin"/>
+
+		<!-- 调用 hash -->
 		<hash cachedir="${bin}-cache"
 			todir="${bin}"
 			totalproperty="hash.total"
@@ -94,17 +116,23 @@
 				excludes="${hash.excludes}"/>
 		</hash>
 
-		<!-- 输出 version.js 并改名拷贝到新目录；会有 version.js 和 version_版本.js 2 个文件 -->
+		<!-- 复制一份固定名字（version.bin）的供调试用 -->
+		<copy file="${bin}/version_${hash.total}.bin"
+			tofile="${bin}/version.bin"/>
+
+		<!--
+		输出版本信息，一共有 2 个文件：
+		version.js			- 测试用：固定的文件名以方便测试
+		version_{hash}.js	- 发布用：修改了文件名以区分不同版本
+		-->
 		<property name="hash.version.js"
 			value="${bin}/version_${hash.total}.js"/>
 		<property name="hash.version.js.fixed"
 			value="${bin}/version.js"/>
-		<substring 
-			text="${hash.bootstrap.version}"
-			start="0"
-			end="16"
-			property="hash.bootstrap.version"/>
-		<echo output="${hash.version.js}">hash={"index":"${hash.bootstrap.version}","version":"${hash.total}"};</echo>
-		<echo output="${hash.version.js.fixed}">hash={"index":"${hash.bootstrap.version}","version":"${hash.total}"};</echo>
+		<property name="hash.version.js.content">hash={"version":"${hash.total}","time":"${now}","build":${build.number}};</property>
+		<echo output="${hash.version.js}"
+			message="${hash.version.js.content}"/>
+		<echo output="${hash.version.js.fixed}"
+			message="${hash.version.js.content}"/>
 	</target>
 </project>

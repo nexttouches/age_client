@@ -41,11 +41,22 @@ package nt.assets
 						const path:String = raw.readUTF();
 						const version:String = raw.readUTF();
 						const size:int = raw.readInt();
-						_result[path] = { path: path, version: fileVersion, size: size };
+						_result[path] = { path: path, version: version, size: size };
 					}
 				}
 			}
 			return _result;
+		}
+
+		/**
+		* 根据路径获得 <tt>VersionAsset</tt>
+		* @param path 相对于 <tt>AssetConfig.root</tt> 的路径
+		* @return
+		*
+		*/
+		public static function get(path:String):VersionAsset
+		{
+			return Asset.get(path, 0, VersionAsset) as VersionAsset;
 		}
 	}
 }

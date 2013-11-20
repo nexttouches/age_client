@@ -107,7 +107,7 @@ package nt.assets
 						else
 						{
 							threadsRunning++;
-							asset.loadNow();
+							asset.doLoad();
 
 							if (state != AssetLoaderState.Busy)
 							{

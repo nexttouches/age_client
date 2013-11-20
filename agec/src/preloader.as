@@ -1,16 +1,17 @@
 package
 {
 	import flash.display.Sprite;
+	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import agec.preloader.PreloaderConfig;
+	import agec.preloader.PreloaderSkin;
 	import nt.assets.Asset;
 	import nt.assets.AssetConfig;
-	import nt.assets.AssetGroup;
 	import nt.assets.AssetLoadQueue;
 	import nt.assets.AssetLoaderNames;
 	import nt.assets.IAsset;
 	import nt.assets.IAssetUser;
-	import nt.assets.extensions.CompressedAMFAsset;
+	import nt.assets.VersionAsset;
 	import nt.assets.extensions.LibAsset;
 	import nt.lib.util.setupStage;
 
@@ -28,24 +29,22 @@ package
 		public var config:PreloaderConfig = new PreloaderConfig;
 
 		/**
-		 * 加载器的皮肤类，默认是 NativePreloaderSkin
+		 * 皮肤，默认是 NativePreloaderSkin
 		 */
-		public var skin:Sprite = new NativePreloaderSkin;
+		public var skin:PreloaderSkin = new PreloaderSkin();
 
 		/**
-		 * 加载时使用的组
+		 * 版本资源
 		 */
-		public var group:AssetGroup = new AssetGroup();
+		public var versionBinAsset:VersionAsset;
 
 		/**
-		 * 皮肤资源，将使用独立的进程进行加载
+		 * main.swf
 		 */
-		public var skinAsset:LibAsset;
-
-		public var versionAsset:Asset;
+		public var mainAsset:LibAsset;
 
 		/**
-		 * constructor
+		 * 构造函数
 		 *
 		 */
 		public function preloader()
@@ -65,13 +64,25 @@ package
 			positionSkin();
 			addChild(skin);
 			// 从 FlashVars 更新信息
-			config.fromJSON(loaderInfo.parameters);
+			config.init(loaderInfo.parameters);
 			// 初始化 AssetConfig
-			AssetConfig.init(config.root);
-			// 皮肤资源
-			skinAsset = LibAsset.get("preloader/skin.swf");
+			AssetConfig.init(config.rootPath);
+			// 设置并加载皮肤
+			skin.asset = LibAsset.get(config.skinPath);
+			// 加载 version.bin
+			loadVersionBin();
+		}
+
+		/**
+		 * 加载 version.bin
+		 *
+		 */
+		private function loadVersionBin():void
+		{
 			// 版本信息
-			group.load(queue);
+			versionBinAsset = VersionAsset.get(config.versionPath);
+			versionBinAsset.addUser(this);
+			versionBinAsset.load(queue);
 		}
 
 		/**
@@ -106,17 +117,6 @@ package
 		}
 
 		/**
-		 * 释放本加载器的资源
-		 * @param event
-		 *
-		 */
-		protected function onComplete(event:Event):void
-		{
-			event.currentTarget.content.init(skin);
-			addEventListener(Event.ENTER_FRAME, fadeOut);
-		}
-
-		/**
 		 * @private
 		 *
 		 */
@@ -128,7 +128,7 @@ package
 			{
 				alpha = 0;
 				removeEventListener(Event.ENTER_FRAME, fadeOut);
-				parent.removeChild(this);
+				dispose();
 			}
 		}
 
@@ -148,6 +148,7 @@ package
 		 */
 		public function onAssetDispose(asset:IAsset):void
 		{
+			throw new IllegalOperationError("[preloader] 逻辑错误：按照设计不应该运行到这里。");
 		}
 
 		/**
@@ -156,6 +157,24 @@ package
 		 */
 		public function onAssetLoadComplete(asset:IAsset):void
 		{
+			skin.currentProgress = 1;
+			skin.currentInfo += "完成！";
+
+			if (asset == versionBinAsset)
+			{
+				AssetConfig.updateInfos(versionBinAsset.result);
+				skin.totalProgress = 0.5;
+				mainAsset = LibAsset.get(config.mainPath);
+				mainAsset.addUser(this);
+				mainAsset.load();
+			}
+			else if (asset == mainAsset)
+			{
+				skin.totalProgress = 1;
+				const main:* = new (mainAsset.getClass("main"));
+				main.init();
+				addEventListener(Event.ENTER_FRAME, fadeOut);
+			}
 		}
 
 		/**
@@ -164,6 +183,7 @@ package
 		 */
 		public function onAssetLoadError(asset:IAsset):void
 		{
+			trace("[preloader] 加载过程中发生错误，请查看输出日志");
 		}
 
 		/**
@@ -172,6 +192,9 @@ package
 		 */
 		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
 		{
+			const p:Number = bytesLoaded / bytesTotal;
+			skin.currentProgress = p;
+			skin.currentInfo = "正在加载 " + Asset(asset).info.filename + "…";
 		}
 
 		/**
@@ -180,43 +203,26 @@ package
 		 */
 		public function dispose():void
 		{
+			trace("[preloader] dispose");
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
 			removeEventListener(Event.ADDED_TO_STAGE, onAdd);
 			stage.removeEventListener(Event.RESIZE, onResize);
-			group.removeUser(this);
-			group.dispose();
-			group = null;
+			versionBinAsset.removeUser(this);
+			versionBinAsset = null;
+			mainAsset.removeUser(this);
+			mainAsset = null;
 			parent.removeChild(this);
+			skin.dispose();
 		}
 
 		/**
-		 * 当前下载项进度
-		 */
-		public var currentProgress:Number;
-
-		/**
-		 * 当前下载项文字
-		 */
-		public var currentProgressText:String;
-
-		/**
-		 * 总进度
-		 */
-		public var totalProgress:Number;
-
-		/**
-		 * 总进度文字
-		 */
-		public var totalProgressText:String;
-
-		/**
-		 * 本次使用的加载队列
+		 * 预加载时使用的队列
 		 * @return
 		 *
 		 */
-		protected function get queue():AssetLoadQueue
+		public static function get queue():AssetLoadQueue
 		{
-			return AssetLoadQueue.get(AssetLoaderNames.DoubleThreading)
+			return AssetLoadQueue.get(AssetLoaderNames.DoubleThreading);
 		}
 	}
 }

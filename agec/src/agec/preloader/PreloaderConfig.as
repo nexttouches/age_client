@@ -9,73 +9,83 @@ package agec.preloader
 	public class PreloaderConfig
 	{
 		/**
-		 * 默认的加载器路径
+		 * 默认资源根目录
 		 */
-		private static const DEFAULT_MAIN_URL:String = "main.swf";
+		public static const DEFAULT_ROOT_PATH:String = "../../test_assets/bin/";
 
 		/**
-		 * 默认的皮肤路径
+		 * 默认加载器路径
 		 */
-		private static const DEFAULT_SKIN_URL:String = "skin.swf";
+		public static const DEFAULT_PRELOADER_PATH:String = "preloaderskin.swf";
 
 		/**
-		 * 默认版本文件地址
+		 * 版本
 		 */
-		private static const DEFAULT_VERSION_URL:String = "";
+		public var version:String;
 
 		/**
-		 * 默认 ROOT 地址
+		 * 时间（字符串）
 		 */
-		private static const DEFAULT_ROOT_URL:String = "";
+		public var time:String;
 
 		/**
-		 * main.swf 的路径
+		 * 构建次数
 		 */
-		public var main:String = DEFAULT_MAIN_URL;
-
-		/**
-		 * 皮肤路径
-		 */
-		public var skin:String = DEFAULT_SKIN_URL;
+		public var build:int = 0;
 
 		/**
 		 * version.bin 路径
 		 */
-		public var version:String = DEFAULT_VERSION_URL;
+		public var versionPath:String;
+
+		/**
+		 * preloader 的皮肤路径，默认是 preloaderskin.swf
+		 */
+		public var skinPath:String;
+
+		/**
+		 * main.swf 路径（固定为 "main.swf"）
+		 */
+		public const mainPath:String = "main.swf";
 
 		/**
 		 * 资源根路径
 		 */
-		public var root:String = DEFAULT_ROOT_URL;
+		public var rootPath:String;
 
 		/**
 		 * constructor
 		 *
 		 */
-		public function PreloaderConfig(raw:Object = null)
+		public function PreloaderConfig()
 		{
-			fromJSON(raw);
 		}
 
 		/**
-		 * 从 JSON 恢复数据
-		 * @param raw JSON 反序列化后的对象或任意 Object
+		 * 初始化配置
+		 * @param parameters 外部传入的 FlashVars
 		 *
 		 */
-		public function fromJSON(raw:Object):void
+		public function init(params:Object):void
 		{
-			if (!raw)
-			{
-				return;
-			}
+			// 收集数据
+			rootPath = params.rootPath || DEFAULT_ROOT_PATH;
+			skinPath = params.skinPath || DEFAULT_PRELOADER_PATH;
+			version = params.version;
+			build = params.build;
+			time = params.time;
 
-			for (var key:String in raw)
+			// 有版本和没版本加载不同的 version.bin
+			if (version)
 			{
-				if (hasOwnProperty(key))
-				{
-					this[key] = raw[key];
-				}
+				versionPath = "version_" + version + ".bin";
 			}
+			else
+			{
+				versionPath = "version.bin";
+			}
+			time = params.time;
+			build = params.build;
 		}
 	}
 }

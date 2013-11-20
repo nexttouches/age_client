@@ -41,6 +41,21 @@ package nt.assets
 		public var priority:int;
 
 		/**
+		 * 用于观察下载速度的辅助类
+		 */
+		private var speedMonitor:SpeedMonitor;
+
+		/**
+		 * 下载速度
+		 * @return
+		 *
+		 */
+		public function get downloadSpeed():int
+		{
+			return speedMonitor.speed;
+		}
+
+		/**
 		 * constructor
 		 *
 		 */
@@ -67,17 +82,18 @@ package nt.assets
 		}
 
 		/**
-		 * 实际由 AssetLoadQueue 调用实际用于加载的方法
+		 * 实际由 AssetLoadQueue 调用实际用于加载的方法，请不要直接调用该方法
 		 *
 		 */
-		public function loadNow():void
+		public function doLoad():void
 		{
 			if (_state != AssetState.NOT_LOADED)
 			{
 				return;
 			}
-			trace("[Asset] 正在加载", info.url);
+			trace("[Asset] 正在加载 " + info.url + " (预计 " + int(info.size / 1024) + "k)");
 			_state = AssetState.LOADING;
+			speedMonitor = new SpeedMonitor();
 			addStream();
 			raw = new ByteArray();
 
@@ -136,7 +152,10 @@ package nt.assets
 		protected function onProgress(event:ProgressEvent):void
 		{
 			_bytesLoaded = event.bytesLoaded;
+			// 更新下载速度
+			speedMonitor.update(_bytesLoaded);
 
+			// AssetInfo 中没有文件大小信息，这里设置一下
 			if (_bytesTotal == 0)
 			{
 				_bytesTotal = event.bytesTotal;
@@ -266,7 +285,7 @@ package nt.assets
 		 */
 		protected function notifyLoadComplete():void
 		{
-			trace("[Asset] 加载完成 " + info.url, " (", int(bytesLoaded / 1024), "k)");
+			trace("[Asset] 加载完成 " + info.url + " (实际 " + int(bytesLoaded / 1024) + "k)");
 
 			for each (var user:IAssetUser in _users)
 			{
@@ -313,17 +332,16 @@ package nt.assets
 		 */
 		public static function get(path:String, priority:int = 0, assetClass:Class = null, params:Object = null):Asset
 		{
-			// 路径中如果包含 null，很可能出 bug 了
-			// 这里做个调试辅助
 			if (Capabilities.isDebugger)
 			{
-				if (path.indexOf("null") != -1)
+				// 路径不可为 null, undefined, ""（空字符串）, 布尔值
+				if (!path || path === true)
 				{
 					enterDebugger();
 				}
 
-				// 路径不可为 null, undefined, ""（空字符串）, 布尔值
-				if (!path || path === true)
+				// 路径中如果包含 null，很可能出 bug 了
+				if (path.indexOf("null") != -1)
 				{
 					enterDebugger();
 				}

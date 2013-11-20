@@ -1,5 +1,6 @@
 package nt.assets.extensions
 {
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.system.ApplicationDomain;
@@ -204,6 +205,16 @@ package nt.assets.extensions
 		public function get domain():ApplicationDomain
 		{
 			return context.applicationDomain;
+		}
+
+		/**
+		 * 本次加载的内容，实际返回的是 loader.content
+		 * @return
+		 *
+		 */
+		public function get content():DisplayObject
+		{
+			return loader.content;
 		}
 
 		/**

@@ -6,7 +6,6 @@ package nt.assets.extensions
 	import nt.assets.AssetState;
 	import nt.assets.IAsset;
 	import nt.assets.IAssetUser;
-	import nt.assets.asset_internal;
 
 	/**
 	 * 渐进式的下载图片<br>
@@ -18,8 +17,6 @@ package nt.assets.extensions
 	 */
 	public class ProgressiveImageAsset extends Asset implements IAssetUser
 	{
-		use namespace asset_internal;
-
 		/**
 		 * 小图的后缀（不含扩展名）
 		 */
@@ -190,7 +187,7 @@ package nt.assets.extensions
 		 * 这边覆盖掉，增加一些逻辑
 		 *
 		 */
-		override public function loadNow():void
+		override public function doLoad():void
 		{
 			if (_state != AssetState.NOT_LOADED)
 			{
@@ -222,12 +219,12 @@ package nt.assets.extensions
 			if (useThumb)
 			{
 				// 小图未好 - 复制状态，载小图
-				thumb.loadNow();
+				thumb.doLoad();
 				_state = thumb.state;
 			}
 			else
 			{
-				full.loadNow();
+				full.doLoad();
 				_state = full.state;
 			}
 		}
