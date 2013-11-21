@@ -46,5 +46,16 @@ package nt.assets.extensions
 			content = null;
 			super.dispose();
 		}
+
+		/**
+		 * 根据路径获得 <tt>ZipAsset</tt>
+		 * @param path 相对于 <tt>AssetConfig.root</tt> 的路径
+		 * @return
+		 *
+		 */
+		public static function get(path:String):ZipAsset
+		{
+			return Asset.get(path, 0, ZipAsset) as ZipAsset;
+		}
 	}
 }

@@ -7,12 +7,14 @@ package
 	import agec.preloader.PreloaderSkin;
 	import nt.assets.Asset;
 	import nt.assets.AssetConfig;
+	import nt.assets.AssetGroup;
 	import nt.assets.AssetLoadQueue;
 	import nt.assets.AssetLoaderNames;
 	import nt.assets.IAsset;
 	import nt.assets.IAssetUser;
 	import nt.assets.VersionAsset;
 	import nt.assets.extensions.LibAsset;
+	import nt.assets.extensions.ZipAsset;
 	import nt.lib.util.setupStage;
 
 	/**
@@ -42,6 +44,11 @@ package
 		 * main.swf
 		 */
 		public var mainAsset:LibAsset;
+
+		/**
+		 * 加载完 versionBinAsset 之后，加载该组
+		 */
+		public var group:AssetGroup;
 
 		/**
 		 * 构造函数
@@ -163,18 +170,33 @@ package
 			if (asset == versionBinAsset)
 			{
 				AssetConfig.updateInfos(versionBinAsset.result);
-				skin.totalProgress = 0.5;
-				mainAsset = LibAsset.get(config.mainPath);
-				mainAsset.addUser(this);
-				mainAsset.load();
+				loadOtherAssets();
 			}
-			else if (asset == mainAsset)
+			else if (mainAsset.isComplete)
 			{
 				skin.totalProgress = 1;
 				const main:* = new (mainAsset.getClass("main"));
-				main.init();
+				main.init(stage);
 				addEventListener(Event.ENTER_FRAME, fadeOut);
 			}
+		}
+
+		/**
+		 * 加载剩余的其他资源
+		 *
+		 */
+		private function loadOtherAssets():void
+		{
+			skin.totalProgress = 0;
+			mainAsset = LibAsset.get(config.mainPath);
+			group = new AssetGroup;
+			// main.swf
+			group.addAsset(mainAsset);
+			// data0.zip
+			group.addAsset(ZipAsset.get(config.dataPath));
+			// TODO lang.zip
+			group.addUser(this);
+			group.load(queue);
 		}
 
 		/**
@@ -192,9 +214,27 @@ package
 		 */
 		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
 		{
-			const p:Number = bytesLoaded / bytesTotal;
-			skin.currentProgress = p;
-			skin.currentInfo = "正在加载 " + Asset(asset).info.filename + "…";
+			// 当前加载的资源
+			var currentAsset:Asset;
+
+			// 当前加载的是 versionBinAsset
+			if (asset == versionBinAsset)
+			{
+				currentAsset = versionBinAsset;
+				skin.totalProgress = 0;
+			}
+			// 当前加载的是剩余的组
+			else if (asset == group)
+			{
+				if (group.currentLoadings.length > 0)
+				{
+					// 只取第一项
+					currentAsset = group.currentLoadings[0];
+				}
+				skin.totalProgress = bytesLoaded / bytesTotal;
+			}
+			skin.currentInfo = "正在加载 " + currentAsset.info.filename + "…";
+			skin.currentProgress = currentAsset.bytesLoaded / currentAsset.bytesTotal;
 		}
 
 		/**
@@ -209,9 +249,11 @@ package
 			stage.removeEventListener(Event.RESIZE, onResize);
 			versionBinAsset.removeUser(this);
 			versionBinAsset = null;
-			mainAsset.removeUser(this);
 			mainAsset = null;
 			parent.removeChild(this);
+			group.removeUser(this);
+			group.dispose();
+			group = null;
 			skin.dispose();
 		}
 

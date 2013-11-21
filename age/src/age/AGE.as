@@ -82,22 +82,23 @@ package age
 
 		/**
 		 * 启动 AE
-		 * @param stage Stage 对象
+		 * @param stage flash.display.Stage 对象
 		 * @param rootClass 用于启动 Starling 的 root 类
 		 */
-		public static function start(stage:Stage, rootClass:Class):void
+		public static function start(nativeStage:Stage, rootClass:Class):void
 		{
 			if (_s)
 			{
 				throw new Error("AE 已启动，不可重复启动");
 				return;
 			}
+			trace("[AGE] 正在启动…");
 			config.onIsDebugModeChange.add(onIsDebugModeChange);
 			Starling.handleLostContext = true;
 			// 禁用多点触摸
 			Starling.multitouchEnabled = false;
 			// 启动 Starling
-			_s = new Engine(rootClass, stage);
+			_s = new Engine(rootClass, nativeStage);
 			_s.addEventListener(Event.CONTEXT3D_CREATE, function():void
 			{
 				// 两个池要初始化一下

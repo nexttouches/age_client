@@ -90,6 +90,8 @@ package age.renderers
 				l.info = _info.layers[i];
 				addChild(l);
 			}
+			charLayer.isShowGrid = _isShowGrid;
+			charLayer.isShowRegions = _isShowRegions;
 		}
 
 		/**
@@ -239,6 +241,50 @@ package age.renderers
 						_onRollOut.dispatch(this);
 					}
 				}
+			}
+		}
+
+		private var _isShowGrid:Boolean;
+
+		/**
+		 * 切换是否显示网格
+		 * @return
+		 *
+		 */
+		public function get isShowGrid():Boolean
+		{
+			return _isShowGrid;
+		}
+
+		public function set isShowGrid(value:Boolean):void
+		{
+			_isShowGrid = value;
+
+			if (info)
+			{
+				charLayer.isShowGrid = value;
+			}
+		}
+
+		private var _isShowRegions:Boolean;
+
+		/**
+		 * 设置或获取是否显示区域
+		 * @return
+		 *
+		 */
+		public function get isShowRegions():Boolean
+		{
+			return _isShowRegions;
+		}
+
+		public function set isShowRegions(value:Boolean):void
+		{
+			_isShowRegions = value;
+
+			if (info)
+			{
+				charLayer.isShowRegions = value;
 			}
 		}
 	}

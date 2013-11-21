@@ -28,39 +28,6 @@ package ageb.modules.ae
 
 		public var isShowBGOutline:Boolean;
 
-		private var _isShowGrid:Boolean;
-
-		/**
-		 * 切换是否显示网格
-		 * @return
-		 *
-		 */
-		public function get isShowGrid():Boolean
-		{
-			return _isShowGrid;
-		}
-
-		public function set isShowGrid(value:Boolean):void
-		{
-			_isShowGrid = value;
-
-			if (info)
-			{
-				charLayer.isShowGrid = value;
-			}
-		}
-
-		/**
-		 * @inheritDoc
-		 *
-		 */
-		override protected function addLayers():void
-		{
-			super.addLayers();
-			charLayer.isShowGrid = _isShowGrid;
-			charLayer.isShowRegions = _isShowRegions;
-		}
-
 		private var _isShowLayerOutline:Boolean = true;
 
 		/**
@@ -81,28 +48,6 @@ package ageb.modules.ae
 			{
 				var l:LayerRendererEditable = getChildAt(i) as LayerRendererEditable;
 				l.isShowLayerOutline = value;
-			}
-		}
-
-		private var _isShowRegions:Boolean;
-
-		/**
-		 * 设置或获取是否显示区域
-		 * @return
-		 *
-		 */
-		public function get isShowRegions():Boolean
-		{
-			return _isShowRegions;
-		}
-
-		public function set isShowRegions(value:Boolean):void
-		{
-			_isShowRegions = value;
-
-			if (info)
-			{
-				charLayer.isShowRegions = value;
 			}
 		}
 
@@ -160,7 +105,6 @@ package ageb.modules.ae
 				infoEditable.onSizeChange.add(onSizeChange);
 				infoEditable.onGridCellChange.add(onGridCellChange);
 				infoEditable.onLayersChange.add(onLayersChange);
-				charLayer.isShowGrid = _isShowGrid;
 			}
 		}
 
@@ -170,7 +114,7 @@ package ageb.modules.ae
 		 */
 		protected function regionsArrayList_onChange(event:CollectionEvent):void
 		{
-			if (_isShowRegions)
+			if (isShowRegions)
 			{
 				charLayer.addRegionInfoRenderers();
 			}
@@ -193,7 +137,7 @@ package ageb.modules.ae
 		 */
 		private function onGridCellChange(x:int, y:int, value:int):void
 		{
-			if (_isShowGrid)
+			if (isShowGrid)
 			{
 				charLayer.getGridCellRenderer(x, y).value = value;
 			}
@@ -205,7 +149,7 @@ package ageb.modules.ae
 		 */
 		private function onGridSizeChange():void
 		{
-			if (_isShowGrid)
+			if (isShowGrid)
 			{
 				charLayer.isShowGrid = false;
 				charLayer.isShowGrid = true;

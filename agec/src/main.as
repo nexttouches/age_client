@@ -1,6 +1,12 @@
 package
 {
+	import flash.debugger.enterDebugger;
 	import flash.display.Sprite;
+	import flash.display.Stage;
+	import age.AGE;
+	import age.renderers.SceneRenender;
+	import agec.modules.AllModules;
+	import nt.assets.AssetConfig;
 	import nt.lib.util.assert;
 
 	/**
@@ -25,9 +31,10 @@ package
 		 * @private
 		 *
 		 */
-		public function init(skin:Sprite = null):void
+		public function init(stage:Stage):void
 		{
-			trace("启动 main");
+			// 初始化 AllModules
+			AllModules.getInstance().init(stage);
 		}
 	}
 }

@@ -54,6 +54,11 @@ package agec.preloader
 		public var rootPath:String;
 
 		/**
+		 * data0.zip 路径（固定为 "data0.zip）
+		 */
+		public const dataPath:String = "data0.zip";
+
+		/**
 		 * constructor
 		 *
 		 */
