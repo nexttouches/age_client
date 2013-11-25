@@ -1046,7 +1046,7 @@ package age.renderers
 			}
 		}
 
-		private var _color:uint;
+		private var _color:uint = 0xffffff;
 
 		/**
 		 * 设置或获取 color

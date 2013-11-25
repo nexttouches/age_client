@@ -332,8 +332,7 @@ package nt.assets.extensions
 		 */
 		public function onAssetLoadError(asset:IAsset):void
 		{
-			// thumb 和 full 是 ImageAsset，他们本身不会出错
-			// 这里不做任何事
+			// thumb 和 full 是 ImageAsset，是不会出现加载错误的。这里不做任何事。
 		}
 
 		/**

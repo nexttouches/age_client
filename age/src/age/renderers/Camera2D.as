@@ -197,7 +197,7 @@ package age.renderers
 			zoom(zoomScale);
 		}
 
-		private var _zoomScale:Number;
+		private var _zoomScale:Number = 1;
 
 		/**
 		 * 获取缩放比例

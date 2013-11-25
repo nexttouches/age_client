@@ -147,6 +147,8 @@ package age.renderers
 		 */
 		public function onAssetLoadError(asset:IAsset):void
 		{
+			info_isComplete = false;
+			trace("[SoundLayerRenderer] 加载错误：将不会播放音效 (" + asset + ")");
 		}
 
 		/**

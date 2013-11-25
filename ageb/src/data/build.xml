@@ -37,9 +37,9 @@
 
 	<!-- src 和 bin -->
 	<property name="src"
-		location="${basedir}/src"/>
+		location="${project.dir}/src"/>
 	<property name="bin"
-		location="${basedir}/bin"/>
+		location="${project.dir}/bin"/>
 
 	<!-- =================================
 		  target: main
@@ -72,12 +72,6 @@
 				<include name="scenes/*.xml"/>
 			</zipfileset>
 		</zip>
-		<copy todir="${bin}">
-			<fileset dir="${src}">
-				<include name="avatars/*.png"/>
-				<include name="scenes/*.png"/>
-			</fileset>
-		</copy>
 	</target>
 	<!-- - - - - - - - - - - - - - - - - -
 			  target: upload
@@ -90,14 +84,13 @@
 			 - - - - - - - - - - - - - - - - - -->
 	<target name="hash"
 		description="生成校验">
-		<echo>${user.dir}</echo>
 		<taskdef name="hash"
 			classname="game.ant.Hash"
-			classpath="${user.dir}/data/gametasks.jar"/>
+			classpath="${basedir}/gametasks.jar"/>
 
-		<!-- 设置 hash 遍历 3 层目录 -->
+		<!-- 设置 hash 遍历 2 层目录 -->
 		<property name="hash.includes"
-			value="*,*/*,*/*/*"/>
+			value="*,*/*"/>
 
 		<!-- 设置要排除的文件（夹） -->
 		<property name="hash.excludes"
