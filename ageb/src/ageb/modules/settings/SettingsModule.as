@@ -129,8 +129,8 @@ package ageb.modules.settings
 						else
 						{
 							AssetConfig.init(file.parent.url + content.paths.assets);
-							AvatarInfo.init({}, content.paths.avatars);
-							SceneInfo.init({}, content.paths.scenes);
+							AvatarInfo.init(content.paths.avatars);
+							SceneInfo.init(content.paths.scenes);
 						}
 					}
 				}

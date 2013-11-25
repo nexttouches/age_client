@@ -1,6 +1,7 @@
 package age.data
 {
 	import flash.geom.Vector3D;
+	import flash.system.Capabilities;
 	import flash.utils.getTimer;
 	import nt.assets.Asset;
 	import nt.lib.util.Vector3DUtil;
@@ -271,54 +272,6 @@ package age.data
 		}
 
 		/**
-		 * 所有 SceneInfo 按 id 存在这里
-		 */
-		public static var list:Object = {};
-
-		/**
-		 * 场景贴图的子文件夹
-		 */
-		public static var folder:String;
-
-		/**
-		 * 获得相对于 folder 的路径
-		 * @param args
-		 *
-		 */
-		public static function resolvePath(... args):String
-		{
-			return folder + "/" + args.join("/");
-		}
-
-		/**
-		 * 从 JSON 中转换出场景列表
-		 * @param json
-		 *
-		 */
-		public static function init(o:Object, folder:String = ""):void
-		{
-			list = o.list;
-			SceneInfo.folder = folder;
-		}
-
-		/**
-		 * 根据 id 获得一个 SceneInfo
-		 * @param id
-		 * @return
-		 *
-		 */
-		public static function get(id:String):SceneInfo
-		{
-			if (!(list[id] is SceneInfo)) // 获取时才进行转换操作
-			{
-				trace("[SceneInfo] 已运行时实例化 ID =", id);
-				list[id] = new SceneInfo(list[id]);
-				SceneInfo(list[id]).id = id; // 运行时复制 ID
-			}
-			return list[id];
-		}
-
-		/**
 		 * JSON.stringify 内部会调用的方法
 		 * @param k
 		 * @return
@@ -392,6 +345,81 @@ package age.data
 			}
 			restore(s, this, "friction");
 			trace("[SceneInfo] 反序列化耗时", getTimer() - started + "ms");
+		}
+
+		/**
+		 * 所有 SceneInfo 按 id 存在这里
+		 */
+		public static var list:Object = {};
+
+		/**
+		 * 场景资源的路径（相对于 AssetConfig.root）
+		 */
+		public static var folder:String;
+
+		/**
+		 * 获得相对于 folder 的路径
+		 * @param args
+		 *
+		 */
+		public static function resolvePath(... args):String
+		{
+			return folder + "/" + args.join("/");
+		}
+
+		/**
+		 * 从 JSON 中转换出场景列表
+		 * @param json
+		 *
+		 */
+		public static function init(folder:String = ""):void
+		{
+			SceneInfo.folder = folder;
+		}
+
+		/**
+		 * 根据 id 获得一个 SceneInfo
+		 * @param id
+		 * @return
+		 *
+		 */
+		public static function get(id:String):SceneInfo
+		{
+			if (!(list[id] is SceneInfo)) // 获取时才进行转换操作
+			{
+				trace("[SceneInfo] 已运行时实例化 ID =", id);
+				list[id] = new SceneInfo(list[id]);
+			}
+			return list[id];
+		}
+
+		/**
+		 * 添加一个 AvatarInfo
+		 * @param info
+		 *
+		 */
+		public static function add(raw:Object):void
+		{
+			if (Capabilities.isDebugger)
+			{
+				if (has(raw.id))
+				{
+					throw new ArgumentError("[SceneInfo] 添加 info 时出错：id 重复（" + raw.id + "）");
+				}
+				traceex("[SceneInfo] 添加（{id}）", raw);
+			}
+			list[raw.id] = list;
+		}
+
+		/**
+		 * 指 ID 的场景信息是否存在
+		 * @param id
+		 * @return
+		 *
+		 */
+		public static function has(id:String):Boolean
+		{
+			return id in list
 		}
 	}
 }

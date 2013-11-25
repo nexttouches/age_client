@@ -40,12 +40,12 @@ package ageb.modules.ae
 			if (info)
 			{
 				info.onTexturesChange.add(onTexturesChange);
-				infoEditable.onIndexChange.add(onIndexChange);
 			}
 
 			if (infoEditable)
 			{
 				infoEditable.getFrameInfoAt(0).onBoxChange.add(adjustSize);
+				infoEditable.onIndexChange.add(onIndexChange);
 			}
 		}
 

@@ -1,10 +1,8 @@
 package agec.modules.age
 {
-	import flash.debugger.enterDebugger;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.utils.getDefinitionByName;
 	import age.AGE;
 	import age.data.AvatarInfo;
 	import age.data.SceneInfo;
@@ -46,22 +44,21 @@ package agec.modules.age
 			AGE.start(nativeStage, SceneRenender);
 			AGE.onStart.addOnce(AGE_onStart);
 			nativeStage.addEventListener(Event.RESIZE, onResize);
-			initData();
+			initInfos();
 		}
 
 		/**
 		 * @private
 		 *
 		 */
-		private function initData():void
+		private function initInfos():void
 		{
 			// 几个关键字
-			const KEYWORD_AVATAR:String = "avatars/";
-			const KEYWORD_SCENE:String = "scenes/";
-			// 动作
-			var avatars:Object = {};
-			// 场景
-			var scenes:Object = {};
+			const KEYWORD_AVATAR:String = "avatars";
+			const KEYWORD_SCENE:String = "scenes";
+			// 初始化 AvatarInfo 和 SceneInfo
+			AvatarInfo.init("avatars");
+			SceneInfo.init("scenes");
 			// 取出 zip
 			const dataAsset:ZipAsset = ZipAsset.get("data0.zip");
 			// 期待该文件应该是下载好了的
@@ -74,39 +71,33 @@ package agec.modules.age
 				const path:String = file.filename;
 				const filename:String = URLUtil.getFilename(path);
 				const ext:String = URLUtil.getExtension(path).toLowerCase();
+				var raw:Object;
 
+				// 没有扩展名视为文件夹
 				if (ext == "")
 				{
-					// 不处理文件夹
+					// 不处理
 				}
 				// 识别为贴图集
 				else if (ext == "xml")
 				{
 					TextureAtlasConfig.addAtlas(path, XML(file.getContentAsString()));
 				}
-				// 识别为动作
-				else if (path.indexOf(KEYWORD_AVATAR) == 0)
+				else if (ext == "txt")
 				{
-					// 其中 XML 是贴图集信息
-					if (ext == "xml")
-					{
+					raw = JSON.parse(file.getContentAsString());
+					raw.id = filename;
+
+					if (path.indexOf(KEYWORD_AVATAR) == 0)
+					{ // 识别为动作
+						AvatarInfo.add(raw);
 					}
-					else if (ext == "txt")
-					{
+					else if (path.indexOf(KEYWORD_SCENE) == 0)
+					{ // 识别为场景
+						SceneInfo.add(raw);
 					}
-					else
-					{
-						// 忽略
-					}
-				}
-				// 识别为场景
-				else if (path.indexOf(KEYWORD_SCENE) == 0);
-				{
-					trace("x");
 				}
 			}
-			// 初始化动作配置
-			// 初始化场景配置
 		}
 
 		/**

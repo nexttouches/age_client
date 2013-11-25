@@ -1,12 +1,8 @@
 package
 {
-	import flash.debugger.enterDebugger;
 	import flash.display.Sprite;
 	import flash.display.Stage;
-	import age.AGE;
-	import age.renderers.SceneRenender;
 	import agec.modules.AllModules;
-	import nt.assets.AssetConfig;
 	import nt.lib.util.assert;
 
 	/**

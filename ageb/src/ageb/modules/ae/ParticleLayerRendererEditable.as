@@ -90,11 +90,11 @@ package ageb.modules.ae
 			if (info)
 			{
 				info.onTexturesChange.add(onTexturesChange);
-				infoEditable.onIndexChange.add(onIndexChange);
 			}
 
 			if (infoEditable)
 			{
+				infoEditable.onIndexChange.add(onIndexChange);
 				infoEditable.onFramesChange.add(onFramesChange);
 			}
 			onFramesChange();

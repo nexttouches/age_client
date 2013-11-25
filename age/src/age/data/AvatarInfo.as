@@ -1,6 +1,7 @@
 package age.data
 {
 	import flash.system.Capabilities;
+	import nt.lib.util.assert;
 
 	/**
 	 * AvatarInfo 储存了一套角色的所有动作、大小等基本信息
@@ -132,13 +133,21 @@ package age.data
 		}
 
 		/**
-		 * 所有 Avatar 列表
-		 * @return
+		 * 添加一个 AvatarInfo
+		 * @param raw AvatarInfo 的原始数据
 		 *
 		 */
-		public static function get list():Object
+		public static function add(raw:Object):void
 		{
-			return _list;
+			if (Capabilities.isDebugger)
+			{
+				if (has(raw.id))
+				{
+					throw new ArgumentError("[AvatarInfo] 添加 info 时出错：id 重复（" + raw.id + "）");
+				}
+				traceex("[AvatarInfo] 添加（{id}）", raw);
+			}
+			list[raw.id] = list;
 		}
 
 		/**
@@ -149,26 +158,20 @@ package age.data
 		 */
 		public static function get(id:String):AvatarInfo
 		{
-			// 如尚未初始化，就报错
-			if (!_list)
-			{
-				throw new Error("尚未初始化");
-			}
-
 			// id 不在 _list 中，这将返回 null
-			if (!(id in _list))
+			if (!(id in list))
 			{
 				trace("[AvatarInfo.get]" + id + " 不存在");
 				return null;
 			}
 
 			// 获取时动态转换成 JSON
-			if (!(_list[id] is AvatarInfo))
+			if (!(list[id] is AvatarInfo))
 			{
-				_list[id].id = id;
-				_list[id] = new AvatarInfo(_list[id]);
+				list[id].id = id;
+				list[id] = new AvatarInfo(list[id]);
 			}
-			return _list[id];
+			return list[id];
 		}
 
 		/**
@@ -179,45 +182,27 @@ package age.data
 		 */
 		public static function has(id:String):Boolean
 		{
-			return id in _list;
+			return id in list;
 		}
 
 		/**
 		 * 初始化 AvatarInfo
-		 * @param o 无类型的所有 Avatar 的数据
 		 * @param folder 位于资源目录下的 avatar 子目录
 		 *
 		 */
-		public static function init(o:Object, folder:String = ""):void
+		public static function init(folder:String = ""):void
 		{
-			if (list)
-			{
-				throw new Error("不能重复初始化");
-			}
-			_list = {};
-			// AvatarInfo 文件的版本
-			// 现在没用到
-			// 迟早会用到 :D
-			const version:int = o.version;
-
-			for (var key:String in o.list)
-			{
-				var raw:Object = o.list[key];
-				raw.id = key;
-				var info:AvatarInfo = new AvatarInfo(raw);
-				list[info.id] = info;
-			}
 			AvatarInfo.folder = folder;
 		}
 
 		/**
-		 * 位于资源目录下的 avatar 子目录
+		 * avatar 资源路径（相对于 AssetConfig.root）
 		 */
 		public static var folder:String;
 
 		/**
 		 * 按 ID 储存所有的 AvatarInfo
 		 */
-		protected static var _list:Object;
+		public static var list:Object = {};
 	}
 }
