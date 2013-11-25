@@ -1,5 +1,6 @@
 package agec.modules.age
 {
+	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -12,7 +13,9 @@ package agec.modules.age
 	import deng.fzip.FZipFile;
 	import nt.assets.extensions.ZipAsset;
 	import nt.assets.util.URLUtil;
+	import nt.lib.util.BitArray;
 	import nt.lib.util.assert;
+	import nt.ui.util.ShortcutUtil;
 
 	/**
 	 * AGE 模块
@@ -43,8 +46,18 @@ package agec.modules.age
 		{
 			AGE.start(nativeStage, SceneRenender);
 			AGE.onStart.addOnce(AGE_onStart);
+			ShortcutUtil.init(nativeStage, null);
 			nativeStage.addEventListener(Event.RESIZE, onResize);
 			initInfos();
+		}
+
+		/**
+		 * 执行测试代码
+		 *
+		 */
+		private function test():void
+		{
+			sceneRenderer.info = SceneInfo.get("0");
 		}
 
 		/**
@@ -81,7 +94,7 @@ package agec.modules.age
 				// 识别为贴图集
 				else if (ext == "xml")
 				{
-					TextureAtlasConfig.addAtlas(path, XML(file.getContentAsString()));
+					TextureAtlasConfig.addAtlas(path.replace(/\.xml/ig, ""), XML(file.getContentAsString()));
 				}
 				else if (ext == "txt")
 				{
@@ -113,6 +126,8 @@ package agec.modules.age
 			AGE.isBlockNativeMouseDown = false;
 			// 暴露 sceneRenderer 到外面
 			sceneRenderer = AGE.s.root as SceneRenender;
+			// 跑个小测试
+			test();
 		}
 
 		/**

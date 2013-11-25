@@ -375,7 +375,7 @@ package nt.assets.extensions
 		 */
 		protected function notifyBitmapDataChange():void
 		{
-			trace("[ProgressiveImageAsset] onBitmapDataChange " + info.url, ", total", int(bytesLoaded / 1024), "k");
+			trace("[ProgressiveImageAsset] onBitmapDataChange " + info.url, "(", int(bytesLoaded / 1024), "k)");
 
 			for each (var user:IAssetUser in _users)
 			{

@@ -1,5 +1,6 @@
 package age.data
 {
+	import flash.system.Capabilities;
 
 	/**
 	 * TextureAtlasConfig 按 path 储存了所有的 TextureAtlas 信息
@@ -66,6 +67,11 @@ package age.data
 		public static function addAtlas(path:String, atlas:XML):void
 		{
 			_list[path] = atlas;
+
+			if (Capabilities.isDebugger)
+			{
+				trace("[TextureAtlasConfig] 添加贴图集信息 (" + path + ")");
+			}
 		}
 
 		/**

@@ -67,8 +67,15 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * 一个标志，用于记录当前 visible 属性是否已锁定
+		 */
 		private var isVisibleLocked:Boolean;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set visible(value:Boolean):void
 		{
 			if (isVisibleLocked)

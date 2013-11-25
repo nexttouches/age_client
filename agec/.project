@@ -3,6 +3,9 @@
 	<name>agec</name>
 	<comment></comment>
 	<projects>
+		<project>age</project>
+		<project>common0</project>
+		<project>common1</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

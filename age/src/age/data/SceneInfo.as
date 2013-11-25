@@ -385,9 +385,15 @@ package age.data
 		 */
 		public static function get(id:String):SceneInfo
 		{
+			if (!has(id))
+			{
+				trace("[SceneInfo] 警告：指定的场景不存在 ID=" + id);
+				return null;
+			}
+
 			if (!(list[id] is SceneInfo)) // 获取时才进行转换操作
 			{
-				trace("[SceneInfo] 已运行时实例化 ID =", id);
+				trace("[SceneInfo] 已运行时实例化 ID =" + id);
 				list[id] = new SceneInfo(list[id]);
 			}
 			return list[id];
@@ -408,7 +414,7 @@ package age.data
 				}
 				traceex("[SceneInfo] 添加（{id}）", raw);
 			}
-			list[raw.id] = list;
+			list[raw.id] = raw;
 		}
 
 		/**

@@ -841,7 +841,6 @@ package age.renderers
 				return;
 			}
 
-			// FIXME 避免无用的 playRenderers 调用
 			// 使用 actionName 判断是否有动作播放中
 			// 而不是 actionInfo，这可以减少一次方法调用
 			if (actionName)

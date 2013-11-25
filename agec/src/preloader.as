@@ -1,8 +1,11 @@
 package
 {
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
+	import flash.filters.BitmapFilterQuality;
+	import flash.filters.BlurFilter;
 	import agec.preloader.PreloaderConfig;
 	import agec.preloader.PreloaderSkin;
 	import nt.assets.Asset;
@@ -129,7 +132,17 @@ package
 		 */
 		protected function fadeOut(event:Event):void
 		{
-			alpha -= 0.013;
+			alpha -= 0.01;
+
+			if (filters.length)
+			{
+				const blur:Number = filters[0].blurX + 0.33;
+				filters = [ new BlurFilter(blur, blur, BitmapFilterQuality.HIGH)];
+			}
+			else
+			{
+				filters = [ new BlurFilter(0.33, 0.33, BitmapFilterQuality.HIGH)];
+			}
 
 			if (alpha <= 0)
 			{

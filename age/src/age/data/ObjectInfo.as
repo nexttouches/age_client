@@ -28,6 +28,7 @@ package age.data
 		{
 			this.parent = parent;
 			fromJSON(raw);
+			pad = new KeyboardPad();
 		}
 
 		protected var _onIsStickyChange:Signal;

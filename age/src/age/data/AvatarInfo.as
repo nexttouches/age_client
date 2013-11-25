@@ -100,7 +100,7 @@ package age.data
 			{
 				if (!hasAction(name))
 				{
-					trace("动作 " + id + "/" + name + " 不存在");
+					trace("[AvatarInfo] 动作 " + id + "/" + name + " 不存在");
 				}
 			}
 			return actions[name];
@@ -147,7 +147,7 @@ package age.data
 				}
 				traceex("[AvatarInfo] 添加（{id}）", raw);
 			}
-			list[raw.id] = list;
+			list[raw.id] = raw;
 		}
 
 		/**
