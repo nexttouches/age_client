@@ -1,6 +1,5 @@
 package
 {
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
@@ -219,6 +218,7 @@ package
 		public function onAssetLoadError(asset:IAsset):void
 		{
 			trace("[preloader] 加载过程中发生错误，请查看输出日志");
+			// TODO 界面应提示用户加载失败并刷新
 		}
 
 		/**
