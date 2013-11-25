@@ -37,9 +37,9 @@
 
 	<!-- src 和 bin -->
 	<property name="src"
-		location="D:/age/age_client/test_assets/src"/>
+		location="${basedir}/src"/>
 	<property name="bin"
-		location="D:/age/age_client/test_assets/bin"/>
+		location="${basedir}/bin"/>
 
 	<!-- =================================
 		  target: main
@@ -90,9 +90,10 @@
 			 - - - - - - - - - - - - - - - - - -->
 	<target name="hash"
 		description="生成校验">
+		<echo>${user.dir}</echo>
 		<taskdef name="hash"
 			classname="game.ant.Hash"
-			classpath="gametasks.jar"/>
+			classpath="${user.dir}/data/gametasks.jar"/>
 
 		<!-- 设置 hash 遍历 3 层目录 -->
 		<property name="hash.includes"
