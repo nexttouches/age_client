@@ -63,7 +63,7 @@
 			 - - - - - - - - - - - - - - - - - -->
 	<target name="zip"
 		description="打包">
-		<zip destfile="${bin}/data0.zip"
+		<zip destfile="${src}/data0.zip"
 			level="9">
 			<zipfileset dir="${src}">
 				<include name="avatars/*.txt"/>
