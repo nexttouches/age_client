@@ -263,12 +263,16 @@ package age.data
 
 		/**
 		 * 从当前 SceneInfo 中派生出新的，并且所有属性都一样
+		 * @param id 新 SceneInfo 的 ID
 		 * @return
 		 *
 		 */
-		public function fork():SceneInfo
+		public function fork(id:String):SceneInfo
 		{
-			return new SceneInfo(JSON.parse(JSON.stringify(this)));
+			var result:Object = JSON.parse(JSON.stringify(this));
+			result.id = id;
+			SceneInfo.add(result);
+			return SceneInfo.get(id);
 		}
 
 		/**
@@ -387,13 +391,13 @@ package age.data
 		{
 			if (!has(id))
 			{
-				trace("[SceneInfo] 警告：指定的场景不存在 ID=" + id);
+				trace("[SceneInfo] 警告：指定的场景不存在 ID=" + id + "，本次已返回 null");
 				return null;
 			}
 
 			if (!(list[id] is SceneInfo)) // 获取时才进行转换操作
 			{
-				trace("[SceneInfo] 已运行时实例化 ID =" + id);
+				trace("[SceneInfo] 已运行时实例化 ID=" + id);
 				list[id] = new SceneInfo(list[id]);
 			}
 			return list[id];

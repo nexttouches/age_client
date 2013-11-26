@@ -26,6 +26,7 @@ package age.data
 		/**
 		 * type 发生变化时广播
 		 */
+		[Transient]
 		public function get onTypeChange():Signal
 		{
 			return _onTypeChange ||= new Signal();
@@ -93,6 +94,7 @@ package age.data
 		/**
 		 * 是否是角色层
 		 */
+		[Transient]
 		public var isCharLayer:Boolean;
 
 		/**
@@ -112,6 +114,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get onIsVisibleChange():Signal
 		{
 			return _onIsVisibleChange ||= new Signal();
@@ -252,6 +255,7 @@ package age.data
 		/**
 		 * 关联的 SceneInfo
 		 */
+		[Transient]
 		public var parent:SceneInfo;
 
 		/**
@@ -431,6 +435,5 @@ package age.data
 				o.isSticky = o.velocity.equals(ZERO_VELOCITY);
 			}
 		}
-		// EOF
 	}
 }

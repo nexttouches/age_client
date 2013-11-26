@@ -24,7 +24,7 @@ package age.data
 		/**
 		 * 参考帧率
 		 */
-		public var fps:int;
+		public var fps:int = 1;
 
 		/**
 		 * ActionInfo 的父级
@@ -179,6 +179,12 @@ package age.data
 			if (!atlas)
 			{
 				atlas = name;
+			}
+
+			// 检查 fps 有效性
+			if (fps <= 0)
+			{
+				fps = 1;
 			}
 
 			// 新版

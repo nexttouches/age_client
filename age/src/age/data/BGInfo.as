@@ -31,11 +31,13 @@ package age.data
 		/**
 		 * 贴图的路径
 		 */
+		[Transient]
 		public var texturePath:String;
 
 		/**
 		 * 位于 Atlas 中的名字
 		 */
+		[Transient]
 		public var textureName:String;
 
 		private var _onTextureChange:Signal;
@@ -45,6 +47,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get onTextureChange():Signal
 		{
 			return _onTextureChange ||= new Signal();
@@ -122,6 +125,7 @@ package age.data
 		/**
 		 * 所属图层
 		 */
+		[Transient]
 		public var parent:LayerInfo;
 
 		/**
@@ -129,6 +133,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get layerIndex():int
 		{
 			if (!parent)
@@ -155,14 +160,13 @@ package age.data
 						this[key] = raw[key];
 					}
 				}
-
-				// 向前兼容：
-				// 转化到笛卡尔坐标系
-				if (!raw.hasOwnProperty("z"))
-				{
-					z = 0;
-					y = parent.parent.height - y;
-				}
+					// 向前兼容：
+					// 转化到笛卡尔坐标系
+//				if (!raw.hasOwnProperty("z"))
+//				{
+//					z = 0;
+//					y = parent.parent.height - y;
+//				}
 			}
 		}
 	}

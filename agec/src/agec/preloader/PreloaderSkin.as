@@ -216,7 +216,7 @@ package agec.preloader
 		 */
 		public function onAssetLoadError(asset:IAsset):void
 		{
-			trace("[PreloaderSkin] 加载皮肤时发生错误，将不会使用外部皮肤");
+			trace("[PreloaderSkin] 加载皮肤时发生错误，将不使用外部皮肤");
 		}
 
 		/**

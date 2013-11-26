@@ -238,18 +238,6 @@ package ageb.modules.ae
 		}
 
 		/**
-		 * JSON 序列化时自动执行的方法
-		 * @param k
-		 * @return
-		 *
-		 */
-		public function toJSON(k:*):*
-		{
-			return Type.of(this).superType.toObject(this, [ "textureName", "texturePath",
-															"parent" ]);
-		}
-
-		/**
 		 * atlas 变化时广播
 		 */
 		public var onAtlasChange:Signal = new Signal;

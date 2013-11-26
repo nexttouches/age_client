@@ -177,17 +177,5 @@ package ageb.modules.ae
 		{
 			return ObjectInfoEditable;
 		}
-
-		/**
-		 * JSON 序列化时使用的对象
-		 * @param k
-		 * @return
-		 *
-		 */
-		public function toJSON(k:*):*
-		{
-			return Type.of(this).superType.toObject(this, [ "parent", "onIsVisibleChange",
-															"isCharLayer" ]);
-		}
 	}
 }

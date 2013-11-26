@@ -2,7 +2,6 @@ package age.data
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;
-	import age.pad.KeyboardPad;
 	import age.pad.Pad;
 	import age.renderers.Direction;
 	import nt.lib.reflect.Property;
@@ -28,7 +27,6 @@ package age.data
 		{
 			this.parent = parent;
 			fromJSON(raw);
-			pad = new KeyboardPad();
 		}
 
 		protected var _onIsStickyChange:Signal;

@@ -4,10 +4,13 @@ package agec.modules.age
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
 	import age.AGE;
 	import age.data.AvatarInfo;
+	import age.data.ObjectInfo;
 	import age.data.SceneInfo;
 	import age.data.TextureAtlasConfig;
+	import age.pad.KeyboardPad;
 	import age.renderers.SceneRenender;
 	import deng.fzip.FZip;
 	import deng.fzip.FZipFile;
@@ -57,7 +60,12 @@ package agec.modules.age
 		 */
 		private function test():void
 		{
-			sceneRenderer.info = SceneInfo.get("0");
+			sceneRenderer.info = SceneInfo.get("0").fork("0_copy");
+			var my:ObjectInfo = new ObjectInfo();
+			my.avatarID = "100";
+			my.actionName = "idle";
+			my.pad = new KeyboardPad;
+			sceneRenderer.info.charLayer.objects.push(my);
 		}
 
 		/**
