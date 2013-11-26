@@ -61,11 +61,11 @@ package agec.modules.age
 		private function test():void
 		{
 			sceneRenderer.info = SceneInfo.get("0").fork("0_copy");
-			var my:ObjectInfo = new ObjectInfo();
-			my.avatarID = "100";
-			my.actionName = "idle";
-			my.pad = new KeyboardPad;
-			sceneRenderer.info.charLayer.objects.push(my);
+			var me:ObjectInfo = new ObjectInfo();
+			me.avatarID = "100";
+			me.actionName = "idle";
+			me.pad = new KeyboardPad;
+			sceneRenderer.info.charLayer.addObject(me);
 		}
 
 		/**

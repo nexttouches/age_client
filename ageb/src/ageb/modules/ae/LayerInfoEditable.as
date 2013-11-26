@@ -3,6 +3,7 @@ package ageb.modules.ae
 	import mx.collections.ArrayList;
 	import age.data.LayerInfo;
 	import age.data.LayerType;
+	import age.data.ObjectInfo;
 	import age.data.SceneInfo;
 	import nt.lib.reflect.Type;
 	import org.apache.flex.collections.VectorList;
@@ -110,10 +111,15 @@ package ageb.modules.ae
 		 * @param info
 		 *
 		 */
-		public function addObject(info:ObjectInfoEditable):void
+		override public function addObject(info:ObjectInfo):void
 		{
 			objectsVectorList.addItem(info);
 			info.parent = this;
+
+			if (_onAddObject)
+			{
+				_onAddObject.dispatch(info);
+			}
 		}
 
 		/**
@@ -121,10 +127,15 @@ package ageb.modules.ae
 		 * @param info
 		 *
 		 */
-		public function removeObject(info:ObjectInfoEditable):void
+		override public function removeObject(info:ObjectInfo):void
 		{
 			objectsVectorList.removeItem(info);
 			info.parent = null;
+
+			if (_onRemoveObject)
+			{
+				_onRemoveObject.dispatch(info);
+			}
 		}
 
 		/**

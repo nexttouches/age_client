@@ -1146,7 +1146,12 @@ package age.data
 			}
 		}
 
-		private var speed:Number = 200;
+		/**
+		 * 设置或获取当前对象是否正在跑
+		 */
+		public var isRunning:Boolean;
+
+		private var speed:Number = 150;
 
 		/**
 		 * 左移
@@ -1157,7 +1162,7 @@ package age.data
 			// 先转向后移动
 			if (_direction == Direction.LEFT)
 			{
-				velocity.x = -speed;
+				velocity.x = -speed * (isRunning ? 1.5 : 1);
 			}
 			else
 			{
@@ -1174,7 +1179,7 @@ package age.data
 			// 先转向后移动
 			if (_direction == Direction.RIGHT)
 			{
-				velocity.x = speed;
+				velocity.x = speed * (isRunning ? 1.5 : 1);
 			}
 			else
 			{
@@ -1188,7 +1193,7 @@ package age.data
 		 */
 		public function moveNear():void
 		{
-			velocity.z = -200;
+			velocity.z = -speed * (isRunning ? 1.5 : 1);
 		}
 
 		/**
@@ -1197,7 +1202,25 @@ package age.data
 		 */
 		public function moveFar():void
 		{
-			velocity.z = 200;
+			velocity.z = speed * (isRunning ? 1.5 : 1);
+		}
+
+		/**
+		 * 停止前后移动
+		 *
+		 */
+		public function stopMoveNearFar():void
+		{
+			velocity.z = 0;
+		}
+
+		/**
+		 * 停止左右移动
+		 *
+		 */
+		public function stopMoveLeftRight():void
+		{
+			velocity.x = 0;
 		}
 	}
 }

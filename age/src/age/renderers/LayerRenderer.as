@@ -68,6 +68,8 @@ package age.renderers
 				// 反注册快捷键
 				_info.onTypeChange.remove(onTypeChange);
 				_info.onIsVisibleChange.remove(onIsVisibleChange);
+				_info.onAddObject.remove(addObject);
+				_info.onRemoveObject.remove(removeObject);
 				removeGridCellRenderer();
 				removeChildren(0, -1, true);
 			}
@@ -79,6 +81,8 @@ package age.renderers
 				onIsVisibleChange();
 				_info.onTypeChange.add(onTypeChange);
 				onTypeChange();
+				_info.onAddObject.add(addObject);
+				_info.onRemoveObject.add(removeObject);
 			}
 			visibleRect.x = visibleRect.y = visibleRect.width = visibleRect.height = 0;
 		}

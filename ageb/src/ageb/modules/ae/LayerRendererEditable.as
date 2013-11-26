@@ -121,7 +121,6 @@ package ageb.modules.ae
 		{
 			if (infoEditable)
 			{
-				infoEditable.objectsVectorList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, onObjectsChange);
 				infoEditable.bgsVectorList.removeEventListener(CollectionEvent.COLLECTION_CHANGE, onBgsChange);
 			}
 			removeOutline();
@@ -130,7 +129,6 @@ package ageb.modules.ae
 
 			if (infoEditable)
 			{
-				infoEditable.objectsVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, onObjectsChange);
 				infoEditable.bgsVectorList.addEventListener(CollectionEvent.COLLECTION_CHANGE, onBgsChange);
 			}
 		}
@@ -155,30 +153,6 @@ package ageb.modules.ae
 				for each (info in event.items)
 				{
 					removeBg(info);
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		protected function onObjectsChange(event:CollectionEvent):void
-		{
-			var info:ObjectInfoEditable;
-
-			if (event.kind == CollectionEventKind.ADD)
-			{
-				for each (info in event.items)
-				{
-					addObject(info);
-				}
-			}
-			else if (event.kind == CollectionEventKind.REMOVE)
-			{
-				for each (info in event.items)
-				{
-					removeObject(info);
 				}
 			}
 		}

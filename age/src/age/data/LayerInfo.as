@@ -21,6 +21,50 @@ package age.data
 	 */
 	public class LayerInfo implements IAnimatable
 	{
+		/**
+			* 创建一个新的 LayerInfo
+			* @param raw
+			* @param parent
+			*
+			*/
+		public function LayerInfo(raw:Object = null, parent:SceneInfo = null)
+		{
+			this.parent = parent;
+
+			if (raw)
+			{
+				this.parent = parent;
+				scrollRatio = raw.scrollRatio ? raw.scrollRatio : 1;
+				type = raw.type;
+				isVisible = (isVisible in raw) ? raw.isVisible : true;
+				var i:int, n:int;
+
+				// 根据图层类型分别处理
+				// 背景
+				if (type == LayerType.BG)
+				{
+					if (raw.bgs)
+					{
+						for (i = 0, n = raw.bgs.length; i < n; i++)
+						{
+							bgs.push(new bgInfoClass(raw.bgs[i], this));
+						}
+					}
+				}
+				// 对象
+				else if (type == LayerType.OBJECT)
+				{
+					if (raw.objects)
+					{
+						for (i = 0, n = raw.objects.length; i < n; i++)
+						{
+							objects.push(new objectInfoClass(raw.objects[i], this));
+						}
+					}
+				}
+			}
+		}
+
 		private var _onTypeChange:Signal;
 
 		/**
@@ -164,47 +208,61 @@ package age.data
 			return ObjectInfo;
 		}
 
+		protected var _onAddObject:Signal;
+
 		/**
-		 * 创建一个新的 LayerInfo
-		 * @param raw
-		 * @param parent
+		 * 添加对象时调用，正确的签名是 <tt>function (info:ObjectInfo):void;</tt>
+		 * @return
 		 *
 		 */
-		public function LayerInfo(raw:Object = null, parent:SceneInfo = null)
+		[Transient]
+		public function get onAddObject():Signal
 		{
-			this.parent = parent;
+			return _onAddObject ||= new Signal(ObjectInfo);
+		}
 
-			if (raw)
+		/**
+		 * 添加 ObjectInfoEditable 对应的渲染器
+		 * @param info
+		 *
+		 */
+		public function addObject(info:ObjectInfo):void
+		{
+			info.parent = this;
+			objects.push(info);
+
+			if (_onAddObject)
 			{
-				this.parent = parent;
-				scrollRatio = raw.scrollRatio ? raw.scrollRatio : 1;
-				type = raw.type;
-				isVisible = (isVisible in raw) ? raw.isVisible : true;
-				var i:int, n:int;
+				_onAddObject.dispatch(info);
+			}
+		}
 
-				// 根据图层类型分别处理
-				// 背景
-				if (type == LayerType.BG)
-				{
-					if (raw.bgs)
-					{
-						for (i = 0, n = raw.bgs.length; i < n; i++)
-						{
-							bgs.push(new bgInfoClass(raw.bgs[i], this));
-						}
-					}
-				}
-				// 对象
-				else if (type == LayerType.OBJECT)
-				{
-					if (raw.objects)
-					{
-						for (i = 0, n = raw.objects.length; i < n; i++)
-						{
-							objects.push(new objectInfoClass(raw.objects[i], this));
-						}
-					}
-				}
+		protected var _onRemoveObject:Signal;
+
+		/**
+		 * 删除对象时调用，正确的签名是 <tt>function (info:ObjectInfo):void;</tt>
+		 * @return
+		 *
+		 */
+		[Transient]
+		public function get onRemoveObject():Signal
+		{
+			return _onRemoveObject ||= new Signal(ObjectInfo);
+		}
+
+		/**
+		 * 删除 ObjectInfoEditable 对应的渲染器
+		 * @param info
+		 *
+		 */
+		public function removeObject(info:ObjectInfo):void
+		{
+			info.parent = null;
+			objects.splice(objects.indexOf(info), 1);
+
+			if (_onRemoveObject)
+			{
+				_onRemoveObject.dispatch(info);
 			}
 		}
 

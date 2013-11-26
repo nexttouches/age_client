@@ -6,6 +6,7 @@ package nt.ui.util
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
+	import flash.utils.getTimer;
 
 	/**
 	 * 快捷键工具
@@ -36,7 +37,7 @@ package nt.ui.util
 		public static function init(stage:Stage, excludes:Vector.<Class>):void
 		{
 			ShortcutUtil.stage = stage;
-			ShortcutUtil.excludes = excludes;
+			ShortcutUtil.excludes = excludes || new Vector.<Class>;
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onkeyUp);
 			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, onMiddleMouseDown, false, int.MAX_VALUE);
@@ -85,9 +86,19 @@ package nt.ui.util
 		}
 
 		/**
-		 * 键按下列表
+		 * 按键间隔。记录相同的键 2 次按下间隔（毫秒）
 		 */
-		private static var keyDownList:Array = new Array(256);
+		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(256);
+
+		/**
+		 * 以 keyCode 为索引记录最后一次 key up 时间（通过 getTimer 实现）
+		 */
+		private static var keyUpTime:Vector.<int> = new Vector.<int>(256);
+
+		/**
+		 * 以 keyCode 为索引记录键按下列表。记录按下 (true) 与否
+		 */
+		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(256);
 
 		/**
 		 * UP
@@ -96,16 +107,21 @@ package nt.ui.util
 		 */
 		protected static function onkeyUp(event:KeyboardEvent):void
 		{
+			const now:int = getTimer();
+
 			if (event.ctrlKey)
 			{
-				delete keyDownList[Keyboard.CONTROL];
+				keyUpTime[Keyboard.CONTROL] = now;
+				keyDownList[Keyboard.CONTROL] = false;
 			}
 
 			if (event.shiftKey)
 			{
-				delete keyDownList[Keyboard.SHIFT];
+				keyUpTime[Keyboard.SHIFT] = now;
+				keyDownList[Keyboard.SHIFT] = false;
 			}
-			delete keyDownList[event.keyCode];
+			keyUpTime[event.keyCode] = now;
+			keyDownList[event.keyCode] = false;
 		}
 
 		/**
@@ -115,7 +131,31 @@ package nt.ui.util
 		 */
 		protected static function onKeyDown(event:KeyboardEvent):void
 		{
+			const now:int = getTimer();
+
 			// 更新键按下列表
+			if (event.ctrlKey)
+			{
+				if (!keyDownList[Keyboard.CONTROL])
+				{
+					keyDownIntervals[Keyboard.CONTROL] = now - keyUpTime[Keyboard.CONTROL]
+				}
+				keyDownList[Keyboard.CONTROL] = true;
+			}
+
+			if (event.shiftKey)
+			{
+				if (!keyDownList[Keyboard.SHIFT])
+				{
+					keyDownIntervals[Keyboard.SHIFT] = now - keyUpTime[Keyboard.SHIFT]
+				}
+				keyDownList[Keyboard.SHIFT] = true;
+			}
+
+			if (!keyDownList[event.keyCode])
+			{
+				keyDownIntervals[event.keyCode] = now - keyUpTime[event.keyCode]
+			}
 			keyDownList[event.keyCode] = true;
 
 			// 检查组合键
@@ -261,11 +301,24 @@ package nt.ui.util
 		}
 
 		/**
+		 * 获得指定键与上次松开的时间间隔
+		 * @param keyCode
+		 * @return
+		 *
+		 */
+		[Inline]
+		public static function getInterval(keyCode:uint):int
+		{
+			return keyDownIntervals[keyCode];
+		}
+
+		/**
 		 * 检查指定键是否已按下
 		 * @param keys
 		 * @return
 		 *
 		 */
+		[Inline]
 		public static function isDown(keyCode:uint):Boolean
 		{
 			return keyDownList[keyCode];
@@ -273,7 +326,7 @@ package nt.ui.util
 
 		/**
 		 * 检查一组键是否已按下
-		 * @param keyCodes
+		 * @param combo
 		 * @return
 		 *
 		 */
