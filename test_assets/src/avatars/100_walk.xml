@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:e5cfdc813f3d0c25bbdbc1878412a7a6:1/1$ -->
+<TextureAtlas imagePath="100_walk.png">
+    <SubTexture name="180" x="4" y="712" width="40" height="112" frameX="-209" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="181" x="4" y="594" width="40" height="112" frameX="-211" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="182" x="4" y="240" width="48" height="110" frameX="-209" frameY="-225" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="183" x="4" y="356" width="46" height="112" frameX="-208" frameY="-225" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="184" x="4" y="474" width="40" height="114" frameX="-211" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="185" x="4" y="830" width="32" height="114" frameX="-215" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="186" x="4" y="122" width="50" height="112" frameX="-209" frameY="-225" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="187" x="4" y="4" width="50" height="112" frameX="-205" frameY="-225" frameWidth="500" frameHeight="500"/>
+</TextureAtlas>
