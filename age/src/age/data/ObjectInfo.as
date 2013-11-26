@@ -2,6 +2,8 @@ package age.data
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;
+	import age.data.objectStates.AbstractObjectState;
+	import age.data.objectStates.ObjectStates;
 	import age.pad.Pad;
 	import age.renderers.Direction;
 	import nt.lib.reflect.Property;
@@ -27,6 +29,31 @@ package age.data
 		{
 			this.parent = parent;
 			fromJSON(raw);
+			state = ObjectStates.idle;
+		}
+
+		private var _state:AbstractObjectState;
+
+		/**
+		 * 设置或获取当前对象的状态
+		 */
+		public function get state():AbstractObjectState
+		{
+			return _state;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set state(value:AbstractObjectState):void
+		{
+			if (_state != value)
+			{
+				if (!value || value.apply(this))
+				{
+					_state = value;
+				}
+			}
 		}
 
 		protected var _onIsStickyChange:Signal;
@@ -558,7 +585,7 @@ package age.data
 
 			if (dispatchLastFrameEvent)
 			{
-				_onLastFrame.dispatch();
+				_onLastFrame.dispatch(this);
 			}
 
 			if (_isLoop && restTime > 0.0)
@@ -1151,6 +1178,9 @@ package age.data
 		 */
 		public var isRunning:Boolean;
 
+		/**
+		 * 移动速度，之后要设计到属性系统中
+		 */
 		private var speed:Number = 150;
 
 		/**
@@ -1203,24 +1233,6 @@ package age.data
 		public function moveFar():void
 		{
 			velocity.z = speed * (isRunning ? 1.5 : 1);
-		}
-
-		/**
-		 * 停止前后移动
-		 *
-		 */
-		public function stopMoveNearFar():void
-		{
-			velocity.z = 0;
-		}
-
-		/**
-		 * 停止左右移动
-		 *
-		 */
-		public function stopMoveLeftRight():void
-		{
-			velocity.x = 0;
 		}
 	}
 }

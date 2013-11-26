@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:095efe644bc60741d964bcad294cb541:1/1$ -->
+<TextureAtlas imagePath="100_attack3.png">
+    <SubTexture name="32" x="530" y="4" width="82" height="94" frameX="-208" frameY="-245" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="33" x="618" y="4" width="66" height="86" frameX="-189" frameY="-252" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="34" x="784" y="4" width="64" height="82" frameX="-197" frameY="-256" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="35" x="690" y="4" width="88" height="84" frameX="-239" frameY="-252" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="36" x="434" y="4" width="90" height="108" frameX="-236" frameY="-228" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="37" x="4" y="4" width="88" height="112" frameX="-237" frameY="-224" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="38" x="350" y="4" width="78" height="112" frameX="-236" frameY="-224" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="39" x="266" y="4" width="78" height="112" frameX="-236" frameY="-224" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="40" x="182" y="4" width="78" height="112" frameX="-236" frameY="-224" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="41" x="98" y="4" width="78" height="112" frameX="-236" frameY="-224" frameWidth="500" frameHeight="500"/>
+</TextureAtlas>

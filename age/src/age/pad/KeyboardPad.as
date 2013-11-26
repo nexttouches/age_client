@@ -2,6 +2,8 @@ package age.pad
 {
 	import age.AGE;
 	import age.data.ObjectInfo;
+	import age.data.objectStates.AbstractObjectState;
+	import age.data.objectStates.ObjectStates;
 	import nt.lib.util.assert;
 	import nt.ui.util.ShortcutUtil;
 	import starling.animation.IAnimatable;
@@ -41,77 +43,70 @@ package age.pad
 			for (var i:int = 0; i < objectInfos.length; i++)
 			{
 				var o:ObjectInfo = objectInfos[i];
-				var actionName:String = "idle";
-				var isRunning:Boolean = false;
+				var state:AbstractObjectState = ObjectStates.idle;
 
-				// 行走方向
-				if (ShortcutUtil.isDown(config.left))
+				if (ShortcutUtil.isDown(config.attack))
 				{
-					o.moveLeft();
-
-					if (ShortcutUtil.getInterval(config.left) < INTERVAL)
-					{
-						actionName = "run";
-						isRunning = true;
-					}
-					else if (actionName != "run")
-					{
-						actionName = "walk";
-					}
-				}
-				else if (ShortcutUtil.isDown(config.right))
-				{
-					o.moveRight();
-
-					if (ShortcutUtil.getInterval(config.right) < INTERVAL)
-					{
-						actionName = "run";
-						isRunning = true;
-					}
-					else if (actionName != "run")
-					{
-						actionName = "walk";
-					}
+					state = ObjectStates.attack;
 				}
 				else
 				{
-					o.stopMoveLeftRight();
-				}
+					// 行走方向
+					if (ShortcutUtil.isDown(config.left))
+					{
+						o.moveLeft();
 
-				if (ShortcutUtil.isDown(config.near))
-				{
-					o.moveNear();
+						if (ShortcutUtil.getInterval(config.left) < INTERVAL)
+						{
+							state = ObjectStates.run;
+						}
+						else if (state != ObjectStates.run)
+						{
+							state = ObjectStates.walk;
+						}
+					}
+					else if (ShortcutUtil.isDown(config.right))
+					{
+						o.moveRight();
 
-					if (ShortcutUtil.getInterval(config.near) < INTERVAL)
-					{
-						actionName = "run";
-						isRunning = true;
+						if (ShortcutUtil.getInterval(config.right) < INTERVAL)
+						{
+							state = ObjectStates.run;
+						}
+						else if (state != ObjectStates.run)
+						{
+							state = ObjectStates.walk;
+						}
 					}
-					else if (actionName != "run")
-					{
-						actionName = "walk";
-					}
-				}
-				else if (ShortcutUtil.isDown(config.far))
-				{
-					o.moveFar();
 
-					if (ShortcutUtil.getInterval(config.far) < INTERVAL)
+					if (ShortcutUtil.isDown(config.near))
 					{
-						actionName = "run";
-						isRunning = true;
+						o.moveNear();
+
+						if (ShortcutUtil.getInterval(config.near) < INTERVAL)
+						{
+							state = ObjectStates.run;
+						}
+						else if (state != ObjectStates.run)
+						{
+							state = ObjectStates.walk;
+						}
 					}
-					else if (actionName != "run")
+					else if (ShortcutUtil.isDown(config.far))
 					{
-						actionName = "walk";
+						o.moveFar();
+
+						if (ShortcutUtil.getInterval(config.far) < INTERVAL)
+						{
+							state = ObjectStates.run;
+						}
+						else if (state != ObjectStates.run)
+						{
+							state = ObjectStates.walk;
+						}
 					}
 				}
-				else
-				{
-					o.stopMoveNearFar();
-				}
-				o.actionName = actionName;
-				o.isRunning = isRunning;
+				o.state = state;
 			}
 		}
 
