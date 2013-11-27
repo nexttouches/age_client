@@ -27,30 +27,78 @@ package nt.ui.util
 		/**
 		 * 存 stage 引用
 		 */
-		private static var stage:Stage;
+		private static var nativeStage:Stage;
+
+		/**
+		 * 按键间隔。记录相同的键 2 次按下间隔（毫秒）
+		 */
+		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(256);
+
+		/**
+		 * 以 keyCode 为索引记录最后一次 key up 时间（通过 getTimer 实现）
+		 */
+		private static var keyUpTime:Vector.<int> = new Vector.<int>(256);
+
+		/**
+		 * 以 keyCode 为索引记录键按下列表。记录按下 (true) 与否
+		 */
+		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(256);
+
+		/**
+		 * 检查左键是否已按下<br>
+		 * 有些快捷键会用到
+		 */
+		public static var isLeftDown:Boolean;
+
+		/**
+		 * 检查右键是否已按下<br>
+		 * 有些快捷键会用到
+		 */
+		public static var isRightDown:Boolean;
+
+		/**
+		 * 检查中键是否已按下<br>
+		 * 有些快捷键会用到
+		 */
+		public static var isMiddleDown:Boolean;
+
+		/**
+		 * 当聚焦在这些对象时，将不会激活快捷键，除非强制指定
+		 */
+		public static var excludeClasses:Vector.<Class>;
 
 		/**
 		 * 初始化快捷键小工具
 		 * @param stage 用于侦听 keyDown 和 keyUp 的 stage
 		 * @param excludes 全局设置不会激活快捷键的类
 		 */
-		public static function init(stage:Stage, excludes:Vector.<Class>):void
+		public static function init(nativeStage:Stage, excludes:Vector.<Class>):void
 		{
-			ShortcutUtil.stage = stage;
-			ShortcutUtil.excludes = excludes || new Vector.<Class>;
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onkeyUp);
-			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, onMiddleMouseDown, false, int.MAX_VALUE);
-			stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, onMiddleMouseUp, false, int.MAX_VALUE);
-			stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onRightMouseDown, false, int.MAX_VALUE);
-			stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, onRightMouseUp, false, int.MAX_VALUE);
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, int.MAX_VALUE);
-			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, int.MAX_VALUE);
-			stage.addEventListener(Event.MOUSE_LEAVE, onMouseLeave, false, int.MAX_VALUE);
+			ShortcutUtil.nativeStage = nativeStage;
+			ShortcutUtil.excludeClasses = excludes || new Vector.<Class>;
+			nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			nativeStage.addEventListener(KeyboardEvent.KEY_UP, onkeyUp);
+			nativeStage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, onMiddleMouseDown, false, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, onMiddleMouseUp, false, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onRightMouseDown, false, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, onRightMouseUp, false, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, int.MAX_VALUE);
+			nativeStage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, int.MAX_VALUE);
+			nativeStage.addEventListener(Event.DEACTIVATE, onDeactive, false, int.MAX_VALUE);
+			nativeStage.addEventListener(Event.MOUSE_LEAVE, onMouseLeave, false, int.MAX_VALUE);
 		}
 
 		protected static function onMouseLeave(event:Event):void
 		{
+			isMiddleDown = false;
+			isLeftDown = false;
+			isRightDown = false;
+		}
+
+		protected static function onDeactive(event:Event):void
+		{
+			keyUpTime.length = 0;
+			keyUpTime.length = 256;
 			keyDownList.length = 0;
 			keyDownList.length = 256;
 		}
@@ -84,21 +132,6 @@ package nt.ui.util
 		{
 			isLeftDown = true;
 		}
-
-		/**
-		 * 按键间隔。记录相同的键 2 次按下间隔（毫秒）
-		 */
-		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(256);
-
-		/**
-		 * 以 keyCode 为索引记录最后一次 key up 时间（通过 getTimer 实现）
-		 */
-		private static var keyUpTime:Vector.<int> = new Vector.<int>(256);
-
-		/**
-		 * 以 keyCode 为索引记录键按下列表。记录按下 (true) 与否
-		 */
-		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(256);
 
 		/**
 		 * UP
@@ -161,7 +194,7 @@ package nt.ui.util
 			// 检查组合键
 			for (var i:int = 0, n:int = shortcuts.length; i < n; i++)
 			{
-				if (isDown2(shortcuts[i].keys) && shortcuts[i].isInScope(stage.focus))
+				if (isDown2(shortcuts[i].keys) && shortcuts[i].isInScope(nativeStage.focus))
 				{
 					// 调用回调
 					shortcuts[i].callback();
@@ -341,28 +374,5 @@ package nt.ui.util
 			}
 			return true;
 		}
-
-		/**
-		 * 检查左键是否已按下<br>
-		 * 有些快捷键会用到
-		 */
-		public static var isLeftDown:Boolean;
-
-		/**
-		 * 检查右键是否已按下<br>
-		 * 有些快捷键会用到
-		 */
-		public static var isRightDown:Boolean;
-
-		/**
-		 * 检查中键是否已按下<br>
-		 * 有些快捷键会用到
-		 */
-		public static var isMiddleDown:Boolean;
-
-		/**
-		 * 当 focus 在这些对象时，将不会激活快捷键，除非强制指定
-		 */
-		public static var excludes:Vector.<Class>;
 	}
 }

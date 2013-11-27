@@ -74,9 +74,9 @@ package nt.ui.util
 		[Inline]
 		final public function isInExcludes(focus:InteractiveObject):Boolean
 		{
-			for (var i:int = 0; i < ShortcutUtil.excludes.length; i++)
+			for (var i:int = 0; i < ShortcutUtil.excludeClasses.length; i++)
 			{
-				if (focus is ShortcutUtil.excludes[i])
+				if (focus is ShortcutUtil.excludeClasses[i])
 				{
 					return true;
 				}
