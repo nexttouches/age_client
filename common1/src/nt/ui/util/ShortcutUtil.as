@@ -32,17 +32,22 @@ package nt.ui.util
 		/**
 		 * 按键间隔。记录相同的键 2 次按下间隔（毫秒）
 		 */
-		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(256);
+		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(128);
 
 		/**
-		 * 以 keyCode 为索引记录最后一次 key up 时间（通过 getTimer 实现）
+		 * 以 keyCode 为索引记录最后一次松开时间（通过 getTimer 实现）
 		 */
-		private static var keyUpTime:Vector.<int> = new Vector.<int>(256);
+		private static var keyUpTime:Vector.<int> = new Vector.<int>(128);
+
+		/**
+		 * 以 keyCode 为索引记录最后一次按下时间（通过 getTimer 实现）
+		 */
+		private static var keyDownTime:Vector.<int> = new Vector.<int>(128);
 
 		/**
 		 * 以 keyCode 为索引记录键按下列表。记录按下 (true) 与否
 		 */
-		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(256);
+		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(128);
 
 		/**
 		 * 检查左键是否已按下<br>
@@ -174,6 +179,7 @@ package nt.ui.util
 					keyDownIntervals[Keyboard.CONTROL] = now - keyUpTime[Keyboard.CONTROL]
 				}
 				keyDownList[Keyboard.CONTROL] = true;
+				keyDownTime[Keyboard.CONTROL] = now;
 			}
 
 			if (event.shiftKey)
@@ -183,6 +189,7 @@ package nt.ui.util
 					keyDownIntervals[Keyboard.SHIFT] = now - keyUpTime[Keyboard.SHIFT]
 				}
 				keyDownList[Keyboard.SHIFT] = true;
+				keyDownTime[Keyboard.SHIFT] = now;
 			}
 
 			if (!keyDownList[event.keyCode])
@@ -190,6 +197,7 @@ package nt.ui.util
 				keyDownIntervals[event.keyCode] = now - keyUpTime[event.keyCode]
 			}
 			keyDownList[event.keyCode] = true;
+			keyDownTime[event.keyCode] = now;
 
 			// 检查组合键
 			for (var i:int = 0, n:int = shortcuts.length; i < n; i++)
@@ -343,6 +351,30 @@ package nt.ui.util
 		public static function getInterval(keyCode:uint):int
 		{
 			return keyDownIntervals[keyCode];
+		}
+
+		/**
+		 * 获得指定键上次松开的时间
+		 * @param keyCode
+		 * @return
+		 *
+		 */
+		[Inline]
+		public static function getKeyUpTime(keyCode:uint):int
+		{
+			return keyUpTime[keyCode];
+		}
+
+		/**
+		 * 获得指定键上次按下的时间
+		 * @param keyCode
+		 * @return
+		 *
+		 */
+		[Inline]
+		public static function getKeyDownTime(keyCode:uint):int
+		{
+			return keyDownTime[keyCode];
 		}
 
 		/**

@@ -70,7 +70,7 @@ package age
 		}
 
 		/**
-		 * 用于做物理计算的 Juggler
+		 * 用于做物理或数据计算的 Juggler
 		 */
 		public static var physicsJuggler:Juggler = new Juggler();
 

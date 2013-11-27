@@ -1,9 +1,13 @@
 package age.pad
 {
+	import flash.utils.getTimer;
 	import age.AGE;
 	import age.data.ObjectInfo;
 	import age.data.objectStates.AbstractObjectState;
-	import age.data.objectStates.ObjectStates;
+	import age.data.objectStates.AttackState;
+	import age.data.objectStates.IdleState;
+	import age.data.objectStates.RunState;
+	import age.data.objectStates.WalkState;
 	import nt.lib.util.assert;
 	import nt.ui.util.ShortcutUtil;
 	import starling.animation.IAnimatable;
@@ -38,75 +42,98 @@ package age.pad
 		{
 			// 单个控制器只能控制一个角色
 			assert(objectInfos.length == 1);
-			const INTERVAL:int = 200;
+			const now:int = getTimer();
 
 			for (var i:int = 0; i < objectInfos.length; i++)
 			{
 				var o:ObjectInfo = objectInfos[i];
-				var state:AbstractObjectState = ObjectStates.idle;
+				var state:AbstractObjectState;
+				var isStateChange:Boolean = true;
+				const oldState:AbstractObjectState = o.state;
 
-				if (ShortcutUtil.isDown(config.attack))
-				{
-					state = ObjectStates.attack;
+				if (oldState is AttackState)
+				{ // 是攻击状态
+					if (now - ShortcutUtil.getKeyDownTime(config.attack) < 200)
+					{ // 200ms 前按下了攻击键
+						isStateChange = false;
+						AttackState(o.state).isContinueToNextSeq = true;
+					}
+					else
+					{
+						isStateChange = false;
+						AttackState(o.state).isContinueToNextSeq = false;
+					}
 				}
 				else
 				{
-					// 行走方向
-					if (ShortcutUtil.isDown(config.left))
-					{
-						o.moveLeft();
-
-						if (ShortcutUtil.getInterval(config.left) < INTERVAL)
-						{
-							state = ObjectStates.run;
-						}
-						else if (state != ObjectStates.run)
-						{
-							state = ObjectStates.walk;
-						}
+					if (ShortcutUtil.isDown(config.attack))
+					{ // 攻击
+						state = o.createState(AttackState);
 					}
-					else if (ShortcutUtil.isDown(config.right))
+					else
 					{
-						o.moveRight();
+						// 行走方向
+						if (ShortcutUtil.isDown(config.left))
+						{
+							o.moveLeft();
 
-						if (ShortcutUtil.getInterval(config.right) < INTERVAL)
-						{
-							state = ObjectStates.run;
+							if (ShortcutUtil.getInterval(config.left) < config.runTimeout)
+							{
+								state = o.createState(RunState);
+							}
+							else
+							{
+								state = o.createState(WalkState);
+							}
 						}
-						else if (state != ObjectStates.run)
+						else if (ShortcutUtil.isDown(config.right))
 						{
-							state = ObjectStates.walk;
-						}
-					}
+							o.moveRight();
 
-					if (ShortcutUtil.isDown(config.near))
-					{
-						o.moveNear();
+							if (ShortcutUtil.getInterval(config.right) < config.runTimeout)
+							{
+								state = o.createState(RunState);
+							}
+							else
+							{
+								state = o.createState(WalkState);
+							}
+						}
 
-						if (ShortcutUtil.getInterval(config.near) < INTERVAL)
+						if (ShortcutUtil.isDown(config.near))
 						{
-							state = ObjectStates.run;
-						}
-						else if (state != ObjectStates.run)
-						{
-							state = ObjectStates.walk;
-						}
-					}
-					else if (ShortcutUtil.isDown(config.far))
-					{
-						o.moveFar();
+							o.moveNear();
 
-						if (ShortcutUtil.getInterval(config.far) < INTERVAL)
-						{
-							state = ObjectStates.run;
+							if (ShortcutUtil.getInterval(config.near) < config.runTimeout)
+							{
+								state = o.createState(RunState);
+							}
+							else
+							{
+								state = o.createState(WalkState);
+							}
 						}
-						else if (state != ObjectStates.run)
+						else if (ShortcutUtil.isDown(config.far))
 						{
-							state = ObjectStates.walk;
+							o.moveFar();
+
+							if (ShortcutUtil.getInterval(config.far) < config.runTimeout)
+							{
+								state = o.createState(RunState);
+							}
+							else
+							{
+								state = o.createState(WalkState);
+							}
 						}
 					}
 				}
-				o.state = state;
+
+				// 如果没有任何键盘输入，默认是 IdleState
+				if (isStateChange)
+				{
+					o.state = state || o.createState(IdleState);
+				}
 			}
 		}
 

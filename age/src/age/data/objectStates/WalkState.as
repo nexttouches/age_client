@@ -13,18 +13,19 @@ package age.data.objectStates
 		 * constructor
 		 *
 		 */
-		public function WalkState()
+		public function WalkState(info:ObjectInfo)
 		{
-			super();
+			super(info);
 		}
 
 		/**
 		 * @inheritDoc
 		 *
 		 */
-		override public function apply(info:ObjectInfo):Boolean
+		override public function apply():Boolean
 		{
-			if (info.state == ObjectStates.attack)
+			// 攻击状态将不可移动
+			if (info.state is AttackState)
 			{
 				return false;
 			}

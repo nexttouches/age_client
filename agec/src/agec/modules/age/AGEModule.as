@@ -1,6 +1,5 @@
 package agec.modules.age
 {
-	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -10,13 +9,14 @@ package agec.modules.age
 	import age.data.ObjectInfo;
 	import age.data.SceneInfo;
 	import age.data.TextureAtlasConfig;
+	import age.data.objectStates.IdleState;
+	import age.data.objectStates.ObjectStates;
 	import age.pad.KeyboardPad;
 	import age.renderers.SceneRenender;
 	import deng.fzip.FZip;
 	import deng.fzip.FZipFile;
 	import nt.assets.extensions.ZipAsset;
 	import nt.assets.util.URLUtil;
-	import nt.lib.util.BitArray;
 	import nt.lib.util.assert;
 	import nt.ui.util.ShortcutUtil;
 
@@ -60,12 +60,13 @@ package agec.modules.age
 		 */
 		private function test():void
 		{
-			sceneRenderer.info = SceneInfo.get("0").fork("0_copy");
+			var info:SceneInfo = SceneInfo.get("0").fork("0_copy");
 			var me:ObjectInfo = new ObjectInfo();
 			me.avatarID = "100";
-			me.actionName = "idle";
+			me.position.setTo(info.width / 2, 0, info.depth / 2);
 			me.pad = new KeyboardPad;
-			sceneRenderer.info.charLayer.addObject(me);
+			sceneRenderer.info = info;
+			info.charLayer.addObject(me);
 		}
 
 		/**

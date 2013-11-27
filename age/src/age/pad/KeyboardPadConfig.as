@@ -30,11 +30,6 @@ package age.pad
 		 */
 		public var near:uint = Keyboard.S;
 
-		/**
-		 * 连续按 2 次左右键进入冲刺状态时的超时（毫秒）
-		 */
-		public var dashTimeout:uint = 10;
-
 		// 动作相关
 		/**
 		 * 跳跃（K）
@@ -50,6 +45,11 @@ package age.pad
 		 * 后跳
 		 */
 		public var backstep:uint = Keyboard.L;
+
+		/**
+		 * 连续按 2 次左右键进入冲刺状态时的超时（毫秒）
+		 */
+		public var runTimeout:uint = 200;
 
 		/**
 		 * constructor

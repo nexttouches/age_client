@@ -13,21 +13,17 @@ package age.data.objectStates
 		 * constructor
 		 *
 		 */
-		public function IdleState()
+		public function IdleState(info:ObjectInfo)
 		{
-			super();
+			super(info);
 		}
 
 		/**
 		 * @inheritDoc
 		 *
 		 */
-		override public function apply(info:ObjectInfo):Boolean
+		override public function apply():Boolean
 		{
-			if (info.state == ObjectStates.attack)
-			{
-				return false;
-			}
 			info.actionName = "idle";
 			info.velocity.x = 0;
 			info.velocity.z = 0;

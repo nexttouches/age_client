@@ -17,23 +17,37 @@ package age.data.objectStates
 		public var name:String;
 
 		/**
+		 * 状态的操作对象
+		 */
+		protected var info:ObjectInfo;
+
+		/**
 		 * constructor
 		 *
 		 */
-		public function AbstractObjectState()
+		public function AbstractObjectState(info:ObjectInfo)
 		{
+			this.info = info;
 			name = Type.of(this).shortname.replace(/State/g, "").toLowerCase();
 		}
 
 		/**
-		 * 应用当前状态到指定的 ObjectInfo
-		 * @param info
+		 * 应用当前状态
 		 * @return 是否应用成功
 		 */
-		public function apply(info:ObjectInfo):Boolean
+		public function apply():Boolean
 		{
 			throw new IllegalOperationError("错误：需子类实现");
 			return false;
+		}
+
+		/**
+		 * 取消该状态时调用
+		 * @param info
+		 *
+		 */
+		public function cancel():void
+		{
 		}
 	}
 }

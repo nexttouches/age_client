@@ -2,8 +2,9 @@ package age.data
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;
+	import flash.utils.Dictionary;
 	import age.data.objectStates.AbstractObjectState;
-	import age.data.objectStates.ObjectStates;
+	import age.data.objectStates.IdleState;
 	import age.pad.Pad;
 	import age.renderers.Direction;
 	import nt.lib.reflect.Property;
@@ -12,6 +13,7 @@ package age.data
 	import nt.lib.util.Vector3DUtil;
 	import nt.lib.util.assert;
 	import org.osflash.signals.Signal;
+	import starling.animation.IAnimatable;
 
 	/**
 	 * ObjectInfo 是指地图上的装饰物，NPC，怪物<br>
@@ -29,7 +31,7 @@ package age.data
 		{
 			this.parent = parent;
 			fromJSON(raw);
-			state = ObjectStates.idle;
+			state = createState(IdleState);
 		}
 
 		private var _state:AbstractObjectState;
@@ -37,6 +39,7 @@ package age.data
 		/**
 		 * 设置或获取当前对象的状态
 		 */
+		[Transient]
 		public function get state():AbstractObjectState
 		{
 			return _state;
@@ -49,11 +52,33 @@ package age.data
 		{
 			if (_state != value)
 			{
-				if (!value || value.apply(this))
+				if (!value || value.apply())
 				{
+					if (_state)
+					{
+						_state.cancel();
+					}
 					_state = value;
 				}
 			}
+		}
+
+		/**
+		 * 当前 ObjectInfo 状态缓存
+		 * @see createState
+		 */
+		private var stateCache:Dictionary = new Dictionary();
+
+		/**
+		 * 创建一个当前 ObjectInfo 专属的状态
+		 * @param factory
+		 * @return
+		 *
+		 */
+		[Inline]
+		final public function createState(factory:Class):AbstractObjectState
+		{
+			return stateCache[factory] ||= new factory(this);
 		}
 
 		protected var _onIsStickyChange:Signal;
@@ -112,8 +137,8 @@ package age.data
 		}
 
 		/**
-		 * 位置<br>
-		 * 位置发生变化时，将广播 onPositionChange<br>
+		 * 设置或获取位置<br>
+		 * 当位置发生变化时，将广播 onPositionChange<br>
 		 * 请注意：直接修改该值将不会广播上述事件
 		 */
 		[Native]
@@ -362,6 +387,11 @@ package age.data
 		[Inline]
 		final public function advanceTime(time:Number):void
 		{
+			if (_state is IAnimatable)
+			{
+				IAnimatable(_state).advanceTime(time);
+			}
+			// 计算速度和位置
 			velocity.x += acceleration.x * time;
 			velocity.y += acceleration.y * time;
 			velocity.z += acceleration.z * time;

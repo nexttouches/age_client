@@ -425,24 +425,15 @@ package age.data
 			{
 				o = objects[i];
 
+				// 重力
 				if (o.position.y <= lower.y)
 				{
-					o.acceleration.setTo(0, 0, 0);
+					o.acceleration.y = 0;
 				}
 				else
 				{
-					o.acceleration.setTo(g.x, g.y * o.mass, g.z);
+					o.acceleration.y = g.y * o.mass;
 				}
-				// 左右键可以进行简单测试
-				/*if (ShortcutUtil.isLeftDown)
-				{
-					o.velocity.y = 900;
-					o.velocity.x = 200;
-				}
-				else if (ShortcutUtil.isRightDown)
-				{
-					o.velocity.x = -200;
-				}*/
 				const lastY:Number = o.position.y;
 				o.advanceTime(time);
 

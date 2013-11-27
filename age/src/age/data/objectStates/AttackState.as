@@ -3,42 +3,113 @@ package age.data.objectStates
 	import age.data.ObjectInfo;
 
 	/**
-	 * 普攻状态
+	 * 普攻状态，根据参数可以设置为普攻的第几下
 	 * @author zhanghaocong
 	 *
 	 */
 	public class AttackState extends AbstractObjectState
 	{
 		/**
-		 * constructor
-		 *
+		 * 攻击动作动作名字前缀（attack1, attack2 ... attackN）
 		 */
-		public function AttackState()
+		private static const ACTION_NAME_PREFIX:String = "attack";
+
+		/**
+		 * 设置或获取是否继续下一个攻击。<br>
+		 * false：当前攻击动作结束后设置为 IdleState
+		 * true：当前攻击动作结束后设置为下一动作： attack1 -> attack2 -> attack3 -> attack1 ... 循环
+		 */
+		public var isContinueToNextSeq:Boolean;
+
+		/**
+		 * constructor
+		 * @param sequence 当前是第几下 attack
+		 * @param nextState 攻击完毕后自动进入该状态
+		 */
+		public function AttackState(info:ObjectInfo)
 		{
-			super();
+			super(info);
 		}
 
 		/**
 		 * @inheritDoc
 		 *
 		 */
-		override public function apply(info:ObjectInfo):Boolean
+		override public function apply():Boolean
 		{
+			info.onCurrentFrameChange.add(onCurrentFrameChange);
 			info.actionName = "attack1";
-			info.onLastFrame.addOnce(onLastFrame);
-			info.velocity.x = 0;
+			info.onLastFrame.addOnce(attack1_onLastFrame);
 			info.velocity.z = 0;
 			return true;
+		}
+
+		private function onCurrentFrameChange(... args):void
+		{
+			info.velocity.x = 50;
 		}
 
 		/**
 		 * @private
 		 *
 		 */
-		private function onLastFrame(info:ObjectInfo):void
+		private function attack1_onLastFrame(info:ObjectInfo):void
 		{
-			info.state = null;
-			info.state = ObjectStates.idle;
+			if (isContinueToNextSeq)
+			{
+				info.actionName = "attack2";
+				info.onLastFrame.addOnce(attack2_onLastFrame);
+			}
+			else
+			{
+				info.state = info.createState(IdleState);
+			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function attack2_onLastFrame(info:ObjectInfo):void
+		{
+			if (isContinueToNextSeq)
+			{
+				info.actionName = "attack3";
+				info.onLastFrame.addOnce(attack3_onLastFrame);
+			}
+			else
+			{
+				info.state = info.createState(IdleState);
+			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function attack3_onLastFrame(info:ObjectInfo):void
+		{
+			if (isContinueToNextSeq)
+			{
+				info.actionName = "attack1";
+				info.onLastFrame.addOnce(attack1_onLastFrame);
+			}
+			else
+			{
+				info.state = info.createState(IdleState);
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function cancel():void
+		{
+			isContinueToNextSeq = false;
+			info.onLastFrame.remove(attack1_onLastFrame);
+			info.onLastFrame.remove(attack2_onLastFrame);
+			info.onLastFrame.remove(attack3_onLastFrame);
 		}
 	}
 }
