@@ -93,7 +93,7 @@ package nt.assets
 			{
 				if (Capabilities.isDebugger)
 				{
-					trace("[AssetGroup] 已忽略重复", asset);
+					// trace("[AssetGroup] 已忽略重复", asset);
 				}
 			}
 		}

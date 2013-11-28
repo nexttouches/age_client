@@ -4,17 +4,13 @@ package age.data.objectStates
 	import age.renderers.Direction;
 
 	/**
-	 * 跑步状态
+	 * 跳跃攻击
 	 * @author zhanghaocong
 	 *
 	 */
-	public class RunState extends WalkState
+	public class JumpAttackState extends JumpState
 	{
-		/**
-		 * constructor
-		 *
-		 */
-		public function RunState(info:ObjectInfo)
+		public function JumpAttackState(info:ObjectInfo)
 		{
 			super(info);
 		}
@@ -25,11 +21,21 @@ package age.data.objectStates
 		 */
 		override public function apply():Boolean
 		{
-			if (info.state is AttackState || info.state is JumpState)
+			if (info.state is JumpState)
 			{
-				return false;
+				info.actionName = "jumpattack";
+				info.isLoop = true;
+				return true;
 			}
+			return false;
+		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function advanceTime(time:Number):void
+		{
 			if (direction & Direction.LEFT)
 			{
 				moveLeft();
@@ -47,8 +53,12 @@ package age.data.objectStates
 			{
 				moveBack();
 			}
-			info.actionName = "run";
-			return true;
+
+			if (info.position.y <= 0)
+			{
+				info.state = null;
+				info.state = info.createState(IdleState);
+			}
 		}
 	}
 }

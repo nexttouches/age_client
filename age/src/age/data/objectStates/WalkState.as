@@ -1,6 +1,7 @@
 package age.data.objectStates
 {
 	import age.data.ObjectInfo;
+	import age.renderers.Direction;
 
 	/**
 	 * 行走状态
@@ -24,13 +25,29 @@ package age.data.objectStates
 		 */
 		override public function apply():Boolean
 		{
-			// 攻击状态将不可移动
-			if (info.state is AttackState)
+			if (info.state is AttackState || info.state is JumpState)
 			{
 				return false;
 			}
+
+			if (direction & Direction.LEFT)
+			{
+				moveLeft();
+			}
+			else if (direction & Direction.RIGHT)
+			{
+				moveRight();
+			}
+
+			if (direction & Direction.FRONT)
+			{
+				moveFront();
+			}
+			else if (direction & Direction.BACK)
+			{
+				moveBack();
+			}
 			info.actionName = "walk";
-			info.isRunning = false;
 			return true;
 		}
 	}

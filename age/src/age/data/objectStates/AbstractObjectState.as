@@ -2,6 +2,7 @@ package age.data.objectStates
 {
 	import flash.errors.IllegalOperationError;
 	import age.data.ObjectInfo;
+	import age.renderers.Direction;
 	import nt.lib.reflect.Type;
 
 	/**
@@ -17,7 +18,12 @@ package age.data.objectStates
 		public var name:String;
 
 		/**
-		 * 状态的操作对象
+		 * 方向参数
+		 */
+		public var direction:int;
+
+		/**
+		 * 当前状态的操作对象
 		 */
 		protected var info:ObjectInfo;
 
@@ -48,6 +54,60 @@ package age.data.objectStates
 		 */
 		public function cancel():void
 		{
+		}
+
+		private var moveSpeed:Number = 150;
+
+		/**
+		 * 左移
+		 *
+		 */
+		public function moveLeft():void
+		{
+			// 先转向后移动
+			if (info.direction & Direction.LEFT)
+			{
+				info.velocity.x = -moveSpeed;
+			}
+			else
+			{
+				info.direction = Direction.LEFT;
+			}
+		}
+
+		/**
+		 * 右移
+		 *
+		 */
+		public function moveRight():void
+		{
+			// 先转向后移动
+			if (info.direction & Direction.RIGHT)
+			{
+				info.velocity.x = moveSpeed;
+			}
+			else
+			{
+				info.direction = Direction.RIGHT;
+			}
+		}
+
+		/**
+		 * 下移动
+		 *
+		 */
+		public function moveFront():void
+		{
+			info.velocity.z = -moveSpeed;
+		}
+
+		/**
+		 * 上移
+		 *
+		 */
+		public function moveBack():void
+		{
+			info.velocity.z = moveSpeed;
 		}
 	}
 }

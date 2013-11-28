@@ -23,12 +23,12 @@ package age.pad
 		/**
 		 * 向远（上）移动（W）
 		 */
-		public var far:uint = Keyboard.W;
+		public var back:uint = Keyboard.W;
 
 		/**
 		 * 向近（下）移动（S）
 		 */
-		public var near:uint = Keyboard.S;
+		public var front:uint = Keyboard.S;
 
 		// 动作相关
 		/**

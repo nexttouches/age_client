@@ -260,7 +260,7 @@ package age.renderers
 
 			if (_box)
 			{
-				emitterX = position.x + (_direction == Direction.RIGHT ? _box.x : -_box.x);
+				emitterX = position.x + (_direction & Direction.RIGHT ? _box.x : -_box.x);
 				emitterY = _projectY(position.y + _box.y, position.z + _box.z);
 			}
 			else

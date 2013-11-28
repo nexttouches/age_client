@@ -24,10 +24,20 @@ package age.data.objectStates
 		 */
 		override public function apply():Boolean
 		{
-			info.actionName = "idle";
-			info.velocity.x = 0;
-			info.velocity.z = 0;
-			return true;
+			if (info.state is AttackState)
+			{
+				AttackState(info.state).isContinueToNextSeq = false;
+				return false;
+			}
+
+			if (!info.state || info.state is WalkState)
+			{
+				info.actionName = "idle";
+				info.velocity.x = 0;
+				info.velocity.z = 0;
+				return true;
+			}
+			return false;
 		}
 	}
 }

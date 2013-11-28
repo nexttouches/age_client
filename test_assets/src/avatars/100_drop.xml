@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:78afda23c67d5b010d8e0ab1a5f96552:1/1$ -->
+<TextureAtlas imagePath="100_drop.png">
+    <SubTexture name="128" x="252" y="4" width="66" height="80" frameX="-199" frameY="-233" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="129" x="176" y="4" width="70" height="110" frameX="-201" frameY="-231" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="130" x="90" y="4" width="80" height="112" frameX="-200" frameY="-229" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="131" x="4" y="4" width="80" height="112" frameX="-200" frameY="-229" frameWidth="500" frameHeight="500"/>
+</TextureAtlas>

@@ -25,12 +25,24 @@ package age.renderers
 		 * 右
 		 */
 		[Translation(zh_CN="RIGHT")]
-		public static const RIGHT:int = 0;
+		public static const RIGHT:int = 32;
 
 		/**
 		 * 左
 		 */
 		[Translation(zh_CN="LEFT")]
 		public static const LEFT:int = 1;
+
+		/**
+		 * 脸朝前
+		 */
+		[Translation(zh_CN="FRONT")]
+		public static const FRONT:int = 8;
+
+		/**
+		 * 背朝前
+		 */
+		[Translation(zh_CN="BACK")]
+		public static const BACK:int = 16;
 	}
 }

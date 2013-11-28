@@ -37,16 +37,38 @@ package age.data.objectStates
 		 */
 		override public function apply():Boolean
 		{
-			info.onCurrentFrameChange.add(onCurrentFrameChange);
-			info.actionName = "attack1";
-			info.onLastFrame.addOnce(attack1_onLastFrame);
-			info.velocity.z = 0;
+			if (info.state is AttackState)
+			{
+				isContinueToNextSeq = true;
+				return false;
+			}
+			else
+			{
+				isContinueToNextSeq = false;
+				info.actionName = "attack1";
+				info.onLastFrame.addOnce(attack1_onLastFrame);
+				info.velocity.z = 0;
+				info.velocity.x = 0;
+			}
 			return true;
 		}
 
-		private function onCurrentFrameChange(... args):void
+		/**
+		 * @private
+		 *
+		 */
+		private function jumpattack_onLastFrame(info:ObjectInfo):void
 		{
-			info.velocity.x = 50;
+			if (isContinueToNextSeq)
+			{
+				info.actionName = "jumpattack";
+				info.onLastFrame.addOnce(jumpattack_onLastFrame);
+			}
+			else
+			{
+				info.state = null;
+				info.state = info.createState(IdleState);
+			}
 		}
 
 		/**
@@ -57,11 +79,14 @@ package age.data.objectStates
 		{
 			if (isContinueToNextSeq)
 			{
+				isContinueToNextSeq = false;
+				info.velocity.x = 50;
 				info.actionName = "attack2";
 				info.onLastFrame.addOnce(attack2_onLastFrame);
 			}
 			else
 			{
+				info.state = null;
 				info.state = info.createState(IdleState);
 			}
 		}
@@ -74,11 +99,14 @@ package age.data.objectStates
 		{
 			if (isContinueToNextSeq)
 			{
+				isContinueToNextSeq = false;
+				info.velocity.x = 50;
 				info.actionName = "attack3";
 				info.onLastFrame.addOnce(attack3_onLastFrame);
 			}
 			else
 			{
+				info.state = null;
 				info.state = info.createState(IdleState);
 			}
 		}
@@ -91,11 +119,14 @@ package age.data.objectStates
 		{
 			if (isContinueToNextSeq)
 			{
+				isContinueToNextSeq = false;
+				info.velocity.x = 50;
 				info.actionName = "attack1";
 				info.onLastFrame.addOnce(attack1_onLastFrame);
 			}
 			else
 			{
+				info.state = null;
 				info.state = info.createState(IdleState);
 			}
 		}

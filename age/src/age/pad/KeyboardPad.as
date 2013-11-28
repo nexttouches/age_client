@@ -6,15 +6,17 @@ package age.pad
 	import age.data.objectStates.AbstractObjectState;
 	import age.data.objectStates.AttackState;
 	import age.data.objectStates.IdleState;
+	import age.data.objectStates.JumpAttackState;
+	import age.data.objectStates.JumpState;
 	import age.data.objectStates.RunState;
 	import age.data.objectStates.WalkState;
-	import nt.lib.util.assert;
+	import age.renderers.Direction;
 	import nt.ui.util.ShortcutUtil;
 	import starling.animation.IAnimatable;
 
 	/**
 	 * 键盘手柄<br>
-	 * 主要用于侦听键盘事件再操作 ObjectInfo
+	 * 负责侦听键盘事件然后设置 ObjectInfo 的状态
 	 * @author zhanghaocong
 	 *
 	 */
@@ -40,100 +42,65 @@ package age.pad
 		 */
 		public function advanceTime(time:Number):void
 		{
-			// 单个控制器只能控制一个角色
-			assert(objectInfos.length == 1);
 			const now:int = getTimer();
+			// 方向键使用频率最高，先收集一下
+			const isLeft:Boolean = ShortcutUtil.isDown(config.left)
+			const isRight:Boolean = ShortcutUtil.isDown(config.right);
+			const isFront:Boolean = ShortcutUtil.isDown(config.front);
+			const isBack:Boolean = ShortcutUtil.isDown(config.back);
+			const isJump:Boolean = ShortcutUtil.isDown(config.jump);
+			const direction:int //
+				= (isLeft ? Direction.LEFT : 0) // 朝左
+				| (isRight ? Direction.RIGHT : 0) // 朝右
+				| (isFront ? Direction.FRONT : 0) // 朝前
+				| (isBack ? Direction.BACK : 0); // 朝后
 
 			for (var i:int = 0; i < objectInfos.length; i++)
 			{
+				// 当前操作对象
 				var o:ObjectInfo = objectInfos[i];
-				var state:AbstractObjectState;
-				var isStateChange:Boolean = true;
-				const oldState:AbstractObjectState = o.state;
+				// 更新旧状态
+				o.state.direction = direction;
+				// 新状态
+				var newStateClass:AbstractObjectState;
 
-				if (oldState is AttackState)
-				{ // 是攻击状态
-					if (now - ShortcutUtil.getKeyDownTime(config.attack) < 200)
-					{ // 200ms 前按下了攻击键
-						isStateChange = false;
-						AttackState(o.state).isContinueToNextSeq = true;
+				// 攻击
+				if (ShortcutUtil.isDown(config.attack) || now - ShortcutUtil.getKeyDownTime(config.attack) < 100)
+				{
+					if (o.state is JumpState)
+					{
+						newStateClass = o.createState(JumpAttackState);
 					}
 					else
 					{
-						isStateChange = false;
-						AttackState(o.state).isContinueToNextSeq = false;
+						newStateClass = o.createState(AttackState);
 					}
 				}
-				else
+				else if (isJump)
 				{
-					if (ShortcutUtil.isDown(config.attack))
-					{ // 攻击
-						state = o.createState(AttackState);
+					newStateClass = o.createState(JumpState);
+				}
+				else if (direction != 0)
+				{
+					if ((isLeft && ShortcutUtil.getInterval(config.left) < config.runTimeout) // 左
+						|| (isRight && ShortcutUtil.getInterval(config.right) < config.runTimeout) // 右
+						|| (isFront && ShortcutUtil.getInterval(config.front) < config.runTimeout) // 前
+						|| (isBack && ShortcutUtil.getInterval(config.back) < config.runTimeout)) // 后
+					{
+						newStateClass = o.createState(RunState);
 					}
 					else
 					{
-						// 行走方向
-						if (ShortcutUtil.isDown(config.left))
-						{
-							o.moveLeft();
-
-							if (ShortcutUtil.getInterval(config.left) < config.runTimeout)
-							{
-								state = o.createState(RunState);
-							}
-							else
-							{
-								state = o.createState(WalkState);
-							}
-						}
-						else if (ShortcutUtil.isDown(config.right))
-						{
-							o.moveRight();
-
-							if (ShortcutUtil.getInterval(config.right) < config.runTimeout)
-							{
-								state = o.createState(RunState);
-							}
-							else
-							{
-								state = o.createState(WalkState);
-							}
-						}
-
-						if (ShortcutUtil.isDown(config.near))
-						{
-							o.moveNear();
-
-							if (ShortcutUtil.getInterval(config.near) < config.runTimeout)
-							{
-								state = o.createState(RunState);
-							}
-							else
-							{
-								state = o.createState(WalkState);
-							}
-						}
-						else if (ShortcutUtil.isDown(config.far))
-						{
-							o.moveFar();
-
-							if (ShortcutUtil.getInterval(config.far) < config.runTimeout)
-							{
-								state = o.createState(RunState);
-							}
-							else
-							{
-								state = o.createState(WalkState);
-							}
-						}
+						newStateClass = o.createState(WalkState);
 					}
 				}
 
-				// 如果没有任何键盘输入，默认是 IdleState
-				if (isStateChange)
+				if (!newStateClass)
 				{
-					o.state = state || o.createState(IdleState);
+					newStateClass = o.createState(IdleState);
 				}
+				newStateClass.direction = direction;
+				o.state = newStateClass;
 			}
 		}
 

@@ -1,5 +1,6 @@
 package age.renderers
 {
+	import flash.display.PixelSnapping;
 	import flash.errors.IllegalOperationError;
 	import flash.events.MouseEvent;
 	import flash.geom.Vector3D;
@@ -32,6 +33,11 @@ package age.renderers
 		}
 
 		/**
+		 * 设置或获取是否使用整形坐标，这用来避免一些像素图模糊，默认 false
+		 */
+		public var isUseIntPosition:Boolean = false;
+
+		/**
 		 * @private
 		 *
 		 */
@@ -40,7 +46,7 @@ package age.renderers
 			projectY = SceneRenender(parent.parent).projectY;
 		}
 
-		private var _direction:int;
+		private var _direction:int = Direction.RIGHT;
 
 		/**
 		 * @inheritDoc
@@ -54,7 +60,7 @@ package age.renderers
 		public function set direction(value:int):void
 		{
 			_direction = value;
-			scaleX = Math.abs(scaleX) * (value == Direction.RIGHT ? 1 : -1);
+			scaleX = Math.abs(scaleX) * (_direction & Direction.RIGHT ? 1 : -1);
 		}
 
 		/**

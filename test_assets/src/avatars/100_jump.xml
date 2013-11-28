@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:a5ff9d26a7fa9da821e8951d38bec6bb:1/1$ -->
+<TextureAtlas imagePath="100_jump.png">
+    <SubTexture name="125" x="74" y="4" width="64" height="100" frameX="-201" frameY="-239" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="126" x="4" y="4" width="64" height="112" frameX="-202" frameY="-229" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="127" x="144" y="4" width="66" height="80" frameX="-199" frameY="-233" frameWidth="500" frameHeight="500"/>
+</TextureAtlas>

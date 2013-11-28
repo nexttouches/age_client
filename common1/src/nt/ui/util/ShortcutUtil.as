@@ -32,22 +32,22 @@ package nt.ui.util
 		/**
 		 * 按键间隔。记录相同的键 2 次按下间隔（毫秒）
 		 */
-		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(128);
+		private static var keyDownIntervals:Vector.<int> = new Vector.<int>(200);
 
 		/**
 		 * 以 keyCode 为索引记录最后一次松开时间（通过 getTimer 实现）
 		 */
-		private static var keyUpTime:Vector.<int> = new Vector.<int>(128);
+		private static var keyUpTime:Vector.<int> = new Vector.<int>(200);
 
 		/**
 		 * 以 keyCode 为索引记录最后一次按下时间（通过 getTimer 实现）
 		 */
-		private static var keyDownTime:Vector.<int> = new Vector.<int>(128);
+		private static var keyDownTime:Vector.<int> = new Vector.<int>(200);
 
 		/**
 		 * 以 keyCode 为索引记录键按下列表。记录按下 (true) 与否
 		 */
-		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(128);
+		private static var keyDownList:Vector.<Boolean> = new Vector.<Boolean>(200);
 
 		/**
 		 * 检查左键是否已按下<br>

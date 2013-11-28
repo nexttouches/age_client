@@ -40,6 +40,7 @@ package age.data
 		 * 设置或获取当前对象的状态
 		 */
 		[Transient]
+		[Inline]
 		public function get state():AbstractObjectState
 		{
 			return _state;
@@ -48,18 +49,16 @@ package age.data
 		/**
 		 * @private
 		 */
-		public function set state(value:AbstractObjectState):void
+		[Inline]
+		final public function set state(value:AbstractObjectState):void
 		{
-			if (_state != value)
+			if (!value || value.apply())
 			{
-				if (!value || value.apply())
+				if (_state)
 				{
-					if (_state)
-					{
-						_state.cancel();
-					}
-					_state = value;
+					_state.cancel();
 				}
+				_state = value;
 			}
 		}
 
@@ -71,14 +70,14 @@ package age.data
 
 		/**
 		 * 创建一个当前 ObjectInfo 专属的状态
-		 * @param factory
+		 * @param stateClass
 		 * @return
 		 *
 		 */
 		[Inline]
-		final public function createState(factory:Class):AbstractObjectState
+		final public function createState(stateClass:Class):AbstractObjectState
 		{
-			return stateCache[factory] ||= new factory(this);
+			return stateCache[stateClass] ||= new stateClass(this);
 		}
 
 		protected var _onIsStickyChange:Signal;
@@ -1204,65 +1203,8 @@ package age.data
 		}
 
 		/**
-		 * 设置或获取当前对象是否正在跑
+		 * 标记是否计算 elasticity
 		 */
-		public var isRunning:Boolean;
-
-		/**
-		 * 移动速度，之后要设计到属性系统中
-		 */
-		private var speed:Number = 150;
-
-		/**
-		 * 左移
-		 *
-		 */
-		public function moveLeft():void
-		{
-			// 先转向后移动
-			if (_direction == Direction.LEFT)
-			{
-				velocity.x = -speed * (isRunning ? 1.5 : 1);
-			}
-			else
-			{
-				direction = Direction.LEFT;
-			}
-		}
-
-		/**
-		 * 右移
-		 *
-		 */
-		public function moveRight():void
-		{
-			// 先转向后移动
-			if (_direction == Direction.RIGHT)
-			{
-				velocity.x = speed * (isRunning ? 1.5 : 1);
-			}
-			else
-			{
-				direction = Direction.RIGHT;
-			}
-		}
-
-		/**
-		 * 下移动
-		 *
-		 */
-		public function moveNear():void
-		{
-			velocity.z = -speed * (isRunning ? 1.5 : 1);
-		}
-
-		/**
-		 * 上移
-		 *
-		 */
-		public function moveFar():void
-		{
-			velocity.z = speed * (isRunning ? 1.5 : 1);
-		}
+		public var isElasticityEnabled:Boolean = false;
 	}
 }

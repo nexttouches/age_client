@@ -459,9 +459,16 @@ package age.data
 					// 刚刚碰到地面，应用弹力
 					if (lastY > lower.y)
 					{
-						o.velocity.y *= -o.elasticity;
+						if (o.isElasticityEnabled)
+						{
+							o.velocity.y *= -o.elasticity;
 
-						if (Math.abs(o.velocity.y) <= Math.abs(g.y * time))
+							if (Math.abs(o.velocity.y) <= Math.abs(g.y * time))
+							{
+								o.velocity.y = 0;
+							}
+						}
+						else
 						{
 							o.velocity.y = 0;
 						}

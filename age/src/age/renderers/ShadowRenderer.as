@@ -145,18 +145,6 @@ package age.renderers
 		}
 
 		/**
-		 * ShadowRenderer 无条件贴在地板上，改了也没用
-		 * @param value
-		 *
-		 */
-		public override function set y(value:Number):void
-		{
-			// y 固定为 0
-			// 也就是永远贴在地板上
-			super.y = 0;
-		}
-
-		/**
 		 * 创建一个 64×64 圆用作阴影
 		 * @return
 		 *

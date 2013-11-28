@@ -1083,7 +1083,7 @@ package age.renderers
 			}
 		}
 
-		private var _direction:int;
+		private var _direction:int = Direction.RIGHT;
 
 		/**
 		 * @inheritDoc
