@@ -731,7 +731,7 @@ package age.data
 		}
 
 		/**
-		* 指示非循环动画是否已放完
+		* 指示非循环动画是否已播放完毕。如果 <tt>isLoop</tt> 为 true，总是返回 false
 		* @return
 		*
 		*/
@@ -865,8 +865,8 @@ package age.data
 		}
 
 		/**
-		 * 设置或获取 fps<br>
-		 * 这将改变 defaultFrameDuration, durations, startTimes
+		 * 设置或获取 fps。
+		 * 修改该值将同时修改 defaultFrameDuration, durations, startTimes
 		 * @return
 		 *
 		 */

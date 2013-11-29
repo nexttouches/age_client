@@ -25,6 +25,7 @@ package age.data.objectStates
 		 */
 		override public function canSwitch(newState:AbstractObjectState):Boolean
 		{
+			info.isLoop = newState is AttackState || newState is JumpAttackState;
 			return info.position.y <= 0;
 		}
 
@@ -44,7 +45,23 @@ package age.data.objectStates
 		 */
 		public function advanceTime(time:Number):void
 		{
-			move(false);
+			move(false); // 开始落地
+
+			if (info.isComplete)
+			{
+				if (info.velocity.y < 0)
+				{
+					if (info.actionName != "drop")
+					{
+						info.actionName = "drop";
+						info.pause();
+					}
+					else if (info.position.y < info.avatarInfo.size.height)
+					{
+						info.play();
+					}
+				}
+			}
 		}
 	}
 }
