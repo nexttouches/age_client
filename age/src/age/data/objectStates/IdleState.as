@@ -25,8 +25,7 @@ package age.data.objectStates
 		override public function apply():void
 		{
 			info.actionName = "idle";
-			info.velocity.x = 0;
-			info.velocity.z = 0;
+			stop();
 		}
 	}
 }

@@ -22,6 +22,18 @@ package age.data.objectStates
 		public var isContinue:Boolean;
 
 		/**
+		 * 记录当前第几下，默认 0<br>
+		 * apply 时，该值设置到 1<br>
+		 * cancle 时，该值设置到 0
+		 */
+		private var index:int = 0;
+
+		/**
+		 * 索引最大值（固定为 3）
+		 */
+		private static const MAX_INDEX:int = 3;
+
+		/**
 		 * constructor
 		 * @param sequence 当前是第几下 attack
 		 * @param nextState 攻击完毕后自动进入该状态
@@ -38,7 +50,7 @@ package age.data.objectStates
 		override public function canSwitch(newState:AbstractObjectState):Boolean
 		{
 			isContinue = newState is AttackState;
-			return false;
+			return !isContinue && info.isComplete;
 		}
 
 		/**
@@ -47,88 +59,39 @@ package age.data.objectStates
 		 */
 		override public function apply():void
 		{
+			attack();
+		}
+
+		/**
+		 * 执行攻击动作
+		 *
+		 */
+		private function attack():void
+		{
+			if (index >= MAX_INDEX)
+			{
+				index = 0;
+			}
+			index++;
 			isContinue = false;
-			info.actionName = "attack1";
-			info.onLastFrame.addOnce(attack1_onLastFrame);
-			info.velocity.z = 0;
-			info.velocity.x = 0;
+			info.actionName = ACTION_NAME_PREFIX + index;
+			info.isLoop = false;
+			info.onLastFrame.addOnce(onLastFrame);
 		}
 
 		/**
-		 * @private
+		 * 动作完毕后调用，此时会判断是否继续下一击或停止
 		 *
 		 */
-		private function jumpattack_onLastFrame(info:ObjectInfo):void
+		private function onLastFrame(info:ObjectInfo):void
 		{
 			if (isContinue)
 			{
-				info.actionName = "jumpattack";
-				info.onLastFrame.addOnce(jumpattack_onLastFrame);
+				attack();
 			}
 			else
 			{
-				info.state = null;
-				info.state = info.createState(IdleState);
-			}
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function attack1_onLastFrame(info:ObjectInfo):void
-		{
-			if (isContinue)
-			{
-				isContinue = false;
-				info.velocity.x = 50;
-				info.actionName = "attack2";
-				info.onLastFrame.addOnce(attack2_onLastFrame);
-			}
-			else
-			{
-				info.state = null;
-				info.state = info.createState(IdleState);
-			}
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function attack2_onLastFrame(info:ObjectInfo):void
-		{
-			if (isContinue)
-			{
-				isContinue = false;
-				info.velocity.x = 150;
-				info.actionName = "attack3";
-				info.onLastFrame.addOnce(attack3_onLastFrame);
-			}
-			else
-			{
-				info.state = null;
-				info.state = info.createState(IdleState);
-			}
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function attack3_onLastFrame(info:ObjectInfo):void
-		{
-			if (isContinue)
-			{
-				isContinue = false;
-				info.velocity.x = 50;
-				info.actionName = "attack1";
-				info.onLastFrame.addOnce(attack1_onLastFrame);
-			}
-			else
-			{
-				info.state = null;
-				info.state = info.createState(IdleState);
+				index = 0;
 			}
 		}
 
@@ -138,10 +101,9 @@ package age.data.objectStates
 		 */
 		override public function cancel():void
 		{
+			index = 0;
 			isContinue = false;
-			info.onLastFrame.remove(attack1_onLastFrame);
-			info.onLastFrame.remove(attack2_onLastFrame);
-			info.onLastFrame.remove(attack3_onLastFrame);
+			info.onLastFrame.remove(onLastFrame);
 		}
 	}
 }

@@ -152,5 +152,16 @@ package age.data.objectStates
 				moveBack();
 			}
 		}
+
+		/**
+		 * 水平方向停止移动
+		 *
+		 */
+		[Inline]
+		final public function stop():void
+		{
+			info.velocity.x = 0;
+			info.velocity.z = 0;
+		}
 	}
 }
