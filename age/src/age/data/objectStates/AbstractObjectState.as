@@ -13,14 +13,19 @@ package age.data.objectStates
 	public class AbstractObjectState
 	{
 		/**
-		 * 状态名字
+		 * 当前状态是否可以强制切换到新状态，默认 false
+		 */
+		public var isForce:Boolean = false;
+
+		/**
+		 * 状态名字。自动通过反射获取并且全小写
 		 */
 		public var name:String;
 
 		/**
-		 * 方向参数
+		 * 方向参数。默认值为 0，也就是没有任何方向
 		 */
-		public var direction:int;
+		public var direction:int = 0;
 
 		/**
 		 * 当前状态的操作对象
@@ -39,12 +44,10 @@ package age.data.objectStates
 
 		/**
 		 * 应用当前状态
-		 * @return 是否应用成功
 		 */
-		public function apply():Boolean
+		public function apply():void
 		{
 			throw new IllegalOperationError("错误：需子类实现");
-			return false;
 		}
 
 		/**
@@ -56,16 +59,31 @@ package age.data.objectStates
 		{
 		}
 
-		private var moveSpeed:Number = 150;
+		/**
+		 * 从当前状态切换到指定新状态时调用<br>
+		 * 抽象类 AbstractObjectState 的该方法总是返回 true
+		 * @param newState 新状态
+		 * @return 如果可以切换就返回 true，否则返回 false
+		 *
+		 */
+		public function canSwitch(newState:AbstractObjectState):Boolean
+		{
+			return true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var moveSpeed:Number = 150;
 
 		/**
 		 * 左移
 		 *
 		 */
-		public function moveLeft():void
+		final protected function moveLeft(isChangeDirection:Boolean):void
 		{
 			// 先转向后移动
-			if (info.direction & Direction.LEFT)
+			if (info.direction & Direction.LEFT || !isChangeDirection)
 			{
 				info.velocity.x = -moveSpeed;
 			}
@@ -79,10 +97,10 @@ package age.data.objectStates
 		 * 右移
 		 *
 		 */
-		public function moveRight():void
+		final protected function moveRight(isChangeDirection:Boolean):void
 		{
 			// 先转向后移动
-			if (info.direction & Direction.RIGHT)
+			if (info.direction & Direction.RIGHT || !isChangeDirection)
 			{
 				info.velocity.x = moveSpeed;
 			}
@@ -96,7 +114,7 @@ package age.data.objectStates
 		 * 下移动
 		 *
 		 */
-		public function moveFront():void
+		final protected function moveFront():void
 		{
 			info.velocity.z = -moveSpeed;
 		}
@@ -105,9 +123,34 @@ package age.data.objectStates
 		 * 上移
 		 *
 		 */
-		public function moveBack():void
+		final protected function moveBack():void
 		{
 			info.velocity.z = moveSpeed;
+		}
+
+		/**
+		 * 检查 direction 并移动
+		 * @param isChangeDirection 反向移动时是否要换方向
+		 */
+		final public function move(isChangeDirection:Boolean = true):void
+		{
+			if (direction & Direction.LEFT)
+			{
+				moveLeft(isChangeDirection);
+			}
+			else if (direction & Direction.RIGHT)
+			{
+				moveRight(isChangeDirection);
+			}
+
+			if (direction & Direction.FRONT)
+			{
+				moveFront();
+			}
+			else if (direction & Direction.BACK)
+			{
+				moveBack();
+			}
 		}
 	}
 }

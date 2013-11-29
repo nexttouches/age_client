@@ -1,7 +1,6 @@
 package age.data.objectStates
 {
 	import age.data.ObjectInfo;
-	import age.renderers.Direction;
 	import starling.animation.IAnimatable;
 
 	/**
@@ -22,18 +21,21 @@ package age.data.objectStates
 
 		/**
 		 * @inheritDoc
+		 */
+		override public function canSwitch(newState:AbstractObjectState):Boolean
+		{
+			return newState is JumpAttackState || info.position.y <= 0;
+		}
+
+		/**
+		 * @inheritDoc
 		 *
 		 */
-		override public function apply():Boolean
+		override public function apply():void
 		{
-			if (info.state is IdleState || info.state is WalkState)
-			{
-				info.actionName = "jump";
-				info.isLoop = false;
-				info.velocity.y = 600;
-				return true;
-			}
-			return false;
+			info.actionName = "jump";
+			info.isLoop = false;
+			info.velocity.y = 600;
 		}
 
 		/**
@@ -42,24 +44,9 @@ package age.data.objectStates
 		 */
 		public function advanceTime(time:Number):void
 		{
-			if (direction & Direction.LEFT)
-			{
-				moveLeft();
-			}
-			else if (direction & Direction.RIGHT)
-			{
-				moveRight();
-			}
+			move(true);
 
-			if (direction & Direction.FRONT)
-			{
-				moveFront();
-			}
-			else if (direction & Direction.BACK)
-			{
-				moveBack();
-			}
-
+			// 开始落地
 			if (info.velocity.y < 0)
 			{
 				if (info.actionName != "drop")
@@ -71,11 +58,6 @@ package age.data.objectStates
 				{
 					info.play();
 				}
-			}
-			else if (info.position.y <= 0)
-			{
-				info.state = null;
-				info.state = info.createState(IdleState);
 			}
 		}
 	}

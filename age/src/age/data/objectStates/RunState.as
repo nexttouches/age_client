@@ -1,7 +1,6 @@
 package age.data.objectStates
 {
 	import age.data.ObjectInfo;
-	import age.renderers.Direction;
 
 	/**
 	 * 跑步状态
@@ -17,38 +16,17 @@ package age.data.objectStates
 		public function RunState(info:ObjectInfo)
 		{
 			super(info);
+			moveSpeed *= 1.5;
 		}
 
 		/**
 		 * @inheritDoc
 		 *
 		 */
-		override public function apply():Boolean
+		override public function apply():void
 		{
-			if (info.state is AttackState || info.state is JumpState)
-			{
-				return false;
-			}
-
-			if (direction & Direction.LEFT)
-			{
-				moveLeft();
-			}
-			else if (direction & Direction.RIGHT)
-			{
-				moveRight();
-			}
-
-			if (direction & Direction.FRONT)
-			{
-				moveFront();
-			}
-			else if (direction & Direction.BACK)
-			{
-				moveBack();
-			}
+			move();
 			info.actionName = "run";
-			return true;
 		}
 	}
 }

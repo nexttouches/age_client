@@ -62,23 +62,23 @@ package age.pad
 				// 更新旧状态
 				o.state.direction = direction;
 				// 新状态
-				var newStateClass:AbstractObjectState;
+				var newState:AbstractObjectState;
 
 				// 攻击
-				if (ShortcutUtil.isDown(config.attack) || now - ShortcutUtil.getKeyDownTime(config.attack) < 100)
+				if (ShortcutUtil.isDown(config.attack) || now - ShortcutUtil.getKeyDownTime(config.attack) < 150)
 				{
 					if (o.state is JumpState)
 					{
-						newStateClass = o.createState(JumpAttackState);
+						newState = o.createState(JumpAttackState);
 					}
 					else
 					{
-						newStateClass = o.createState(AttackState);
+						newState = o.createState(AttackState);
 					}
 				}
 				else if (isJump)
 				{
-					newStateClass = o.createState(JumpState);
+					newState = o.createState(JumpState);
 				}
 				else if (direction != 0)
 				{
@@ -87,20 +87,20 @@ package age.pad
 						|| (isFront && ShortcutUtil.getInterval(config.front) < config.runTimeout) // 前
 						|| (isBack && ShortcutUtil.getInterval(config.back) < config.runTimeout)) // 后
 					{
-						newStateClass = o.createState(RunState);
+						newState = o.createState(RunState);
 					}
 					else
 					{
-						newStateClass = o.createState(WalkState);
+						newState = o.createState(WalkState);
 					}
 				}
 
-				if (!newStateClass)
+				if (!newState)
 				{
-					newStateClass = o.createState(IdleState);
+					newState = o.createState(IdleState);
 				}
-				newStateClass.direction = direction;
-				o.state = newStateClass;
+				newState.direction = direction;
+				o.state = newState;
 			}
 		}
 

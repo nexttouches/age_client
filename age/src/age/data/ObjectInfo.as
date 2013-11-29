@@ -52,13 +52,18 @@ package age.data
 		[Inline]
 		final public function set state(value:AbstractObjectState):void
 		{
-			if (!value || value.apply())
+			if ((!_state || _state.canSwitch(value)) || !value)
 			{
 				if (_state)
 				{
 					_state.cancel();
 				}
 				_state = value;
+
+				if (_state)
+				{
+					_state.apply();
+				}
 			}
 		}
 

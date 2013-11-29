@@ -1,15 +1,19 @@
 package age.data.objectStates
 {
 	import age.data.ObjectInfo;
-	import age.renderers.Direction;
+	import starling.animation.IAnimatable;
 
 	/**
 	 * 跳跃攻击
 	 * @author zhanghaocong
 	 *
 	 */
-	public class JumpAttackState extends JumpState
+	public class JumpAttackState extends AbstractObjectState implements IAnimatable
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function JumpAttackState(info:ObjectInfo)
 		{
 			super(info);
@@ -19,46 +23,28 @@ package age.data.objectStates
 		 * @inheritDoc
 		 *
 		 */
-		override public function apply():Boolean
+		override public function canSwitch(newState:AbstractObjectState):Boolean
 		{
-			if (info.state is JumpState)
-			{
-				info.actionName = "jumpattack";
-				info.isLoop = true;
-				return true;
-			}
-			return false;
+			return info.position.y <= 0;
 		}
 
 		/**
 		 * @inheritDoc
 		 *
 		 */
-		override public function advanceTime(time:Number):void
+		override public function apply():void
 		{
-			if (direction & Direction.LEFT)
-			{
-				moveLeft();
-			}
-			else if (direction & Direction.RIGHT)
-			{
-				moveRight();
-			}
+			info.actionName = "jumpattack";
+			info.isLoop = true;
+		}
 
-			if (direction & Direction.FRONT)
-			{
-				moveFront();
-			}
-			else if (direction & Direction.BACK)
-			{
-				moveBack();
-			}
-
-			if (info.position.y <= 0)
-			{
-				info.state = null;
-				info.state = info.createState(IdleState);
-			}
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		public function advanceTime(time:Number):void
+		{
+			move(false);
 		}
 	}
 }
