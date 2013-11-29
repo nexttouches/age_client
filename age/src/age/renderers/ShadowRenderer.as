@@ -145,6 +145,38 @@ package age.renderers
 		}
 
 		/**
+		 * 旧 projectY
+		 */
+		private var origProjectY:Function;
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function set projectY(value:Function):void
+		{
+			origProjectY = value;
+			super.projectY = projectY_ignoreY;
+
+			if (value != null)
+			{
+				validatePosition();
+			}
+		}
+
+		/**
+		 * 忽略 y 参数的 projectY 方法
+		 * @param y
+		 * @param z
+		 * @return
+		 *
+		 */
+		protected function projectY_ignoreY(y:Number, z:Number):Number
+		{
+			return origProjectY(0, z);
+		}
+
+		/**
 		 * 创建一个 64×64 圆用作阴影
 		 * @return
 		 *
