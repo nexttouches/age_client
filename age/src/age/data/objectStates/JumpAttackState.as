@@ -49,7 +49,7 @@ package age.data.objectStates
 			move(false);
 
 			// 开始落地
-			if (info.velocity.y < 0)
+			if (info.isComplete && info.velocity.y < 0)
 			{
 				// 切换到 drop 动作并暂停
 				if (info.actionName != "drop")
