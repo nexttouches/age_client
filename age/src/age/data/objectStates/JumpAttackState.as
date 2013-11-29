@@ -45,21 +45,23 @@ package age.data.objectStates
 		 */
 		public function advanceTime(time:Number):void
 		{
-			move(false); // 开始落地
+			// 跳跃攻击时可以移动，但是不会转向
+			move(false);
 
-			if (info.isComplete)
+			// 开始落地
+			if (info.velocity.y < 0)
 			{
-				if (info.velocity.y < 0)
+				// 切换到 drop 动作并暂停
+				if (info.actionName != "drop")
 				{
-					if (info.actionName != "drop")
-					{
-						info.actionName = "drop";
-						info.pause();
-					}
-					else if (info.position.y < info.avatarInfo.size.height)
-					{
-						info.play();
-					}
+					info.actionName = "drop";
+					info.pause();
+				}
+				// 快落地时开始播放
+				// 注：此处有更好的做法 ———— 计算落地时间，然后调整动画的 fps
+				else if (info.position.y < info.avatarInfo.size.height)
+				{
+					info.play();
 				}
 			}
 		}

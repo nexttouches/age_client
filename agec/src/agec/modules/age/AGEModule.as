@@ -3,14 +3,11 @@ package agec.modules.age
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.geom.Vector3D;
 	import age.AGE;
 	import age.data.AvatarInfo;
 	import age.data.ObjectInfo;
 	import age.data.SceneInfo;
 	import age.data.TextureAtlasConfig;
-	import age.data.objectStates.IdleState;
-	import age.data.objectStates.ObjectStates;
 	import age.pad.KeyboardPad;
 	import age.renderers.SceneRenender;
 	import deng.fzip.FZip;
