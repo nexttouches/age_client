@@ -1,6 +1,7 @@
 package age.data.objectStates
 {
 	import age.data.ObjectInfo;
+	import age.renderers.Direction;
 
 	/**
 	 * 普攻状态，根据参数可以设置为普攻的第几下
@@ -75,6 +76,48 @@ package age.data.objectStates
 			info.actionName = ACTION_NAME_PREFIX + index;
 			info.isLoop = false;
 			info.onLastFrame.addOnce(onLastFrame);
+			info.onCurrentFrameChange.addOnce(onCurrentFrameChange);
+
+			// 攻击中可以移动的判定
+			if (info.direction & Direction.RIGHT)
+			{
+				if (direction & Direction.RIGHT)
+				{
+					moveSpeed = 300;
+				}
+				else if (direction & Direction.LEFT)
+				{
+					moveSpeed = 0;
+				}
+				else
+				{
+					moveSpeed = 150;
+				}
+			}
+			else if (info.direction & Direction.LEFT)
+			{
+				if (direction & Direction.LEFT)
+				{
+					moveSpeed = -300;
+				}
+				else if (direction & Direction.RIGHT)
+				{
+					moveSpeed = 0;
+				}
+				else
+				{
+					moveSpeed = -150;
+				}
+			}
+		}
+
+		/**
+		 * 此处判断第一个判定帧出现后，向前移动一定距离
+		 *
+		 */
+		private function onCurrentFrameChange(info:ObjectInfo):void
+		{
+			info.velocity.x = moveSpeed;
 		}
 
 		/**
@@ -102,6 +145,7 @@ package age.data.objectStates
 			index = 0;
 			isContinue = false;
 			info.onLastFrame.remove(onLastFrame);
+			info.onCurrentFrameChange.remove(onCurrentFrameChange);
 		}
 	}
 }
