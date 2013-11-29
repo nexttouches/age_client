@@ -5,6 +5,7 @@ package age.pad
 	import age.data.ObjectInfo;
 	import age.data.objectStates.AbstractObjectState;
 	import age.data.objectStates.AttackState;
+	import age.data.objectStates.BackstepState;
 	import age.data.objectStates.IdleState;
 	import age.data.objectStates.JumpAttackState;
 	import age.data.objectStates.JumpState;
@@ -49,6 +50,7 @@ package age.pad
 			const isFront:Boolean = ShortcutUtil.isDown(config.front);
 			const isBack:Boolean = ShortcutUtil.isDown(config.back);
 			const isJump:Boolean = ShortcutUtil.isDown(config.jump);
+			const isBackstep:Boolean = ShortcutUtil.isDown(config.backstep);
 			const direction:int //
 				= (isLeft ? Direction.LEFT : 0) // 朝左
 				| (isRight ? Direction.RIGHT : 0) // 朝右
@@ -64,8 +66,18 @@ package age.pad
 				// 新状态
 				var newState:AbstractObjectState;
 
-				// 攻击
-				if (ShortcutUtil.isDown(config.attack) || now - ShortcutUtil.getKeyDownTime(config.attack) < 150)
+				// 后跳
+				if (isBackstep)
+				{
+					newState = o.createState(BackstepState);
+				}
+				// 跳跃
+				else if (isJump)
+				{
+					newState = o.createState(JumpState);
+				}
+				// 攻击	
+				else if (ShortcutUtil.isDown(config.attack) || now - ShortcutUtil.getKeyDownTime(config.attack) < 150)
 				{
 					if (o.state is JumpState)
 					{
@@ -75,10 +87,6 @@ package age.pad
 					{
 						newState = o.createState(AttackState);
 					}
-				}
-				else if (isJump)
-				{
-					newState = o.createState(JumpState);
 				}
 				else if (direction != 0)
 				{

@@ -265,6 +265,7 @@ package age.data
 				{
 					_onAvatarIDChange.dispatch();
 				}
+				isShowGhost = false;
 			}
 		}
 
@@ -305,6 +306,7 @@ package age.data
 				{
 					_onActionNameChange.dispatch();
 				}
+				isShowGhost = false;
 			}
 		}
 
@@ -1211,5 +1213,10 @@ package age.data
 		 * 标记是否计算 elasticity
 		 */
 		public var isElasticityEnabled:Boolean = false;
+
+		/**
+		 * 下一次切换动作时，是否显示鬼影
+		 */
+		public var isShowGhost:Boolean;
 	}
 }

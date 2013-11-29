@@ -1,5 +1,7 @@
 package age.renderers
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Linear;
 	import flash.geom.Vector3D;
 	import age.AGE;
 	import age.data.ActionInfo;
@@ -7,6 +9,7 @@ package age.renderers
 	import age.data.FrameLayerInfo;
 	import age.data.FrameLayerType;
 	import age.data.ObjectInfo;
+	import age.filters.SolidColorFilter;
 	import nt.lib.util.IDisposable;
 	import nt.lib.util.assert;
 	import org.osflash.signals.ISignal;
@@ -284,8 +287,7 @@ package age.renderers
 			// 清理工作
 			if (actionInfo)
 			{
-				// 删除所有旧图层
-				removeAllLayerRenderers();
+				removeAllLayerRenderers(info.isShowGhost);
 				avatarID = null;
 				actionName = null;
 			}
@@ -433,16 +435,29 @@ package age.renderers
 
 		/**
 		 * 删除所有子渲染器
-		 *
+		 * @param isShowGhost 的同时是否显示残影
 		 */
-		private function removeAllLayerRenderers():void
+		private function removeAllLayerRenderers(isShowGhost:Boolean):void
 		{
 			var i:int, n:int;
 
 			for (i = 0, n = animations.length; i < n; i++)
 			{
-				animations[i].removeFromParent(true);
-					// TOOD 放回对象池
+				if (isShowGhost)
+				{
+					animations[i].filter = new SolidColorFilter(0x99ffffff);
+					animations[i].scale = 1.33;
+					TweenLite.to(animations[i], 0.4, { ease: Linear.easeIn, alpha: 0,
+									 scale: 1, onComplete: function(a:DisplayObject):void
+									 {
+										 a.removeFromParent(true);
+									 }, onCompleteParams: [ animations[i]]});
+				}
+				else
+				{
+					animations[i].removeFromParent(true);
+						// TOOD 放回对象池
+				}
 			}
 			animations.length = 0;
 

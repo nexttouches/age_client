@@ -48,6 +48,11 @@ package age.data.objectStates
 		 */
 		override public function canSwitch(newState:AbstractObjectState):Boolean
 		{
+			if (newState.isForce)
+			{
+				isContinue = false;
+				return true;
+			}
 			isContinue = newState is AttackState;
 			return !isContinue && info.isComplete;
 		}

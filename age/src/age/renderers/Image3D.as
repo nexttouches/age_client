@@ -415,7 +415,7 @@ package age.renderers
 			if (value != _scale)
 			{
 				_scale = value;
-				scaleX = value;
+				scaleX = (_direction & Direction.LEFT) ? -value : value;
 				scaleY = value;
 			}
 		}
