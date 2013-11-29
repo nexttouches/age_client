@@ -35,8 +35,6 @@ package age.data.objectStates
 
 		/**
 		 * constructor
-		 * @param sequence 当前是第几下 attack
-		 * @param nextState 攻击完毕后自动进入该状态
 		 */
 		public function AttackState(info:ObjectInfo)
 		{
