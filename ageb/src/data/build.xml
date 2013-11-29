@@ -39,6 +39,7 @@
 	<property name="bin"
 		location="${project.dir}/bin"/>
 
+	<mkdir dir="${bin}"/>
 	<!-- 构建数 -->
 	<buildnumber file="${bin}/build.number"/>
 

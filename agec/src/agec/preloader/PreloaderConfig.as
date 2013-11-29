@@ -11,7 +11,7 @@ package agec.preloader
 		/**
 		 * 默认资源根目录
 		 */
-		public static const DEFAULT_ROOT_PATH:String = "../../test_assets/bin/";
+		public static const DEFAULT_ROOT_PATH:String = "../bin";
 
 		/**
 		 * 默认加载器路径

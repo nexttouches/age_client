@@ -173,7 +173,7 @@ package age.renderers
 		 */
 		protected function projectY_ignoreY(y:Number, z:Number):Number
 		{
-			return origProjectY(0, z);
+			return origProjectY(y * 0.2, z);
 		}
 
 		/**
