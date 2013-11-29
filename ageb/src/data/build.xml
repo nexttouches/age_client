@@ -32,14 +32,15 @@
 			pattern="yyyy-MM-dd HH:mm:ss"/>
 	</tstamp>
 
-	<!-- 构建数 -->
-	<buildnumber file="build.number"/>
 
 	<!-- src 和 bin -->
 	<property name="src"
 		location="${project.dir}/src"/>
 	<property name="bin"
 		location="${project.dir}/bin"/>
+
+	<!-- 构建数 -->
+	<buildnumber file="${bin}/build.number"/>
 
 	<!-- =================================
 		  target: main
