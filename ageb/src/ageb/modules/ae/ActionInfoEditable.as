@@ -42,6 +42,11 @@ package ageb.modules.ae
 		}
 
 		/**
+		 * 添加图层时广播
+		 */
+		public var onAddLayer:Signal = new Signal(FrameLayerInfoEditable);
+
+		/**
 		 * 添加图层
 		 * @param info
 		 *
@@ -50,7 +55,14 @@ package ageb.modules.ae
 		{
 			info.parent = this;
 			layersVectorList.addItem(info);
+			onAddLayer.dispatch(info);
+			onLayersChange.dispatch();
 		}
+
+		/**
+		 * 删除图层时调用
+		 */
+		public var onRemoveLayer:Signal = new Signal(FrameLayerInfo);
 
 		/**
 		 * 删除图层
@@ -62,6 +74,7 @@ package ageb.modules.ae
 			assert(info.parent == this, "info.parent 不为当前动作");
 			layersVectorList.removeItem(info);
 			info.parent = null;
+			onRemoveLayer.dispatch(info);
 		}
 
 		/**

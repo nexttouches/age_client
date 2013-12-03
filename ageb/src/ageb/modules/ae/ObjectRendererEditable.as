@@ -81,6 +81,8 @@ package ageb.modules.ae
 
 			if (actionInfo)
 			{
+				actionInfo.onAddLayer.remove(onAddLayer);
+				actionInfo.onRemoveLayer.remove(onRemoveLayer);
 				actionInfo.onLayersChange.remove(onLayersChange);
 
 				for (i = 0, n = actionInfo.numLayers; i < n; i++)
@@ -111,6 +113,8 @@ package ageb.modules.ae
 
 			if (actionInfo)
 			{
+				actionInfo.onAddLayer.add(onAddLayer);
+				actionInfo.onRemoveLayer.add(onRemoveLayer);
 				actionInfo.onLayersChange.add(onLayersChange);
 
 				for (i = 0, n = actionInfo.numLayers; i < n; i++)
@@ -121,6 +125,28 @@ package ageb.modules.ae
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
+		private function onAddLayer(info:FrameLayerInfoEditable):void
+		{
+			trace(info);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function onRemoveLayer(info:FrameLayerInfoEditable):void
+		{
+			trace(info);
+		}
+
+		/**
+		 * @private
+		 *
+		 */
 		private function onLayersChange():void
 		{
 			validateNow();
