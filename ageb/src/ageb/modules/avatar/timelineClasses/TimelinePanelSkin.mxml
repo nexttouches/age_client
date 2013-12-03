@@ -364,7 +364,7 @@ in accordance with the terms of the license agreement accompanying it.
 									value="1"/>
 								<fx:Object 
 									label="朝右"
-									value="0"/>
+									value="32"/>
 							</s:ArrayList>
 						</s:dataProvider>
 					</s:ButtonBar>
