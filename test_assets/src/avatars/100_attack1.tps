@@ -130,6 +130,8 @@
         </struct>
         <key>fileList</key>
         <array>
+<filename>D:\age\age_client\test_assets\src\avatars\null.png</filename>
+<filename>D:\age\age_client\test_assets\src\avatars\null.png</filename>
 <filename>D:\age\age_client\test_assets\src\avatars\100\attack1\0.png</filename>
 <filename>D:\age\age_client\test_assets\src\avatars\100\attack1\1.png</filename>
 <filename>D:\age\age_client\test_assets\src\avatars\100\attack1\2.png</filename>
