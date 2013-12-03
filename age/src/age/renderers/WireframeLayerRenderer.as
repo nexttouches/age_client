@@ -209,12 +209,16 @@ package age.renderers
 			}
 		}
 
+		private var box:Box = new Box();
+
 		public function validate():void
 		{
 			if (_frameInfo && _frameInfo.keyframe.box)
 			{
 				// 取关键帧的 box
-				const box:Box = _frameInfo.keyframe.box;
+				const originBox:Box = _frameInfo.keyframe.box.clone1();
+				box.direction = Direction.RIGHT;
+				box.setTo(originBox.x, originBox.y, originBox.z, originBox.width, originBox.height, originBox.depth, originBox.pivot.x, originBox.pivot.y, originBox.z);
 				box.direction = _direction;
 				// 取出所有顶点用于绘制
 				const vertices:Vector.<Vector3D> = box.vertices.concat();
@@ -223,7 +227,7 @@ package age.renderers
 
 				for (i = 0; i < vertices.length; i++)
 				{
-					vertices[i] = vertices[i].add(position);
+					vertices[i].incrementBy(position);
 					// 投影到 2D 坐标系后，再交给 Quad 画线
 					points[i] = new Point(vertices[i].x, _projectY(vertices[i].y, vertices[i].z));
 				}
@@ -267,7 +271,7 @@ package age.renderers
 		public function set direction(value:int):void
 		{
 			_direction = value;
-			currentFrame = _currentFrame
+			validate();
 		}
 
 		private var _position:Vector3D = new Vector3D;
