@@ -44,6 +44,16 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		}
 
 		/**
+		 * 返回 info.selectedKeyframes
+		 * @return
+		 *
+		 */
+		protected function get keyframes():Vector.<FrameInfoEditable>
+		{
+			return info.selectedKeyframes;
+		}
+
+		/**
 		 * 当前文档
 		 * @return
 		 *

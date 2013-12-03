@@ -24,6 +24,8 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 			add(new InsertKeyframeMenu);
 			add(new InsertEmptyKeyframeMenu);
 			add(new RemoveKeyframeMenu);
+			addSeparator();
+			add(new CopyFromAvatarSizeMenu);
 			super();
 		}
 
