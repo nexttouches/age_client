@@ -44,12 +44,13 @@ package age.pad
 		public function advanceTime(time:Number):void
 		{
 			const now:int = getTimer();
-			// 方向键使用频率最高，先收集一下
+			// 先收集一下使用频率较高的键
 			const isLeft:Boolean = ShortcutUtil.isDown(config.left)
 			const isRight:Boolean = ShortcutUtil.isDown(config.right);
 			const isFront:Boolean = ShortcutUtil.isDown(config.front);
 			const isBack:Boolean = ShortcutUtil.isDown(config.back);
 			const isJump:Boolean = ShortcutUtil.isDown(config.jump);
+			// 后跳
 			const isBackstep:Boolean = ShortcutUtil.isDown(config.backstep);
 			const direction:int //
 				= (isLeft ? Direction.LEFT : 0) // 朝左
@@ -76,8 +77,8 @@ package age.pad
 				{
 					newState = o.createState(JumpState);
 				}
-				// 攻击	
-				else if (ShortcutUtil.isDown(config.attack) || now - ShortcutUtil.getKeyDownTime(config.attack) < 150)
+				// 攻击（第一下）
+				else if (ShortcutUtil.isDown(config.attack))
 				{
 					if (o.state is JumpState)
 					{
@@ -88,6 +89,15 @@ package age.pad
 						newState = o.createState(AttackState);
 					}
 				}
+				// 连续攻击
+				else if (now - ShortcutUtil.getKeyDownTime(config.attack) < config.attackTimeout)
+				{
+					if (o.state is AttackState || o.state is JumpAttackState)
+					{
+						newState = o.state;
+					}
+				}
+				// 移动
 				else if (direction != 0)
 				{
 					if ((isLeft && ShortcutUtil.getInterval(config.left) < config.runTimeout) // 左

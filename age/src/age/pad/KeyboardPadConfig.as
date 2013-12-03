@@ -52,6 +52,11 @@ package age.pad
 		public var runTimeout:uint = 200;
 
 		/**
+		 * 连续攻击时按 <tt>attack</tt> 键的延迟
+		 */
+		public var attackTimeout:uint = 150;
+
+		/**
 		 * constructor
 		 *
 		 */

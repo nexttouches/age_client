@@ -24,8 +24,8 @@ package age.data.objectStates
 
 		/**
 		 * 记录当前第几下，默认 0<br>
-		 * apply 时，该值设置到 1<br>
-		 * cancle 时，该值设置到 0
+		 * 每攻击一次 +1<br>
+		 * 调用 cancle 时，该值设置到 0
 		 */
 		private var index:int = 0;
 
