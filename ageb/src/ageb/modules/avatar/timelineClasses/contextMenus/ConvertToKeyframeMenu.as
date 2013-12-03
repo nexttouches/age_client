@@ -22,10 +22,10 @@ package ageb.modules.avatar.timelineClasses.contextMenus
 		}
 
 		/**
-		* @inheritDoc
-		* @param event
-		*
-		*/
+		 * @inheritDoc
+		 * @param event
+		 *
+		 */
 		override protected function onSelect(event:Event):void
 		{
 			new ChangeFrameIsKeyframe(doc, frames, true).execute();

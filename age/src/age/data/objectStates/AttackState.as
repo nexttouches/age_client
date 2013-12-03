@@ -48,6 +48,7 @@ package age.data.objectStates
 		 */
 		override public function canSwitch(newState:AbstractObjectState):Boolean
 		{
+			// 允许强制切换到新状态
 			if (newState.isForce)
 			{
 				isContinue = false;

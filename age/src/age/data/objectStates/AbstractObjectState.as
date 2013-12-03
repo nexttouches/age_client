@@ -6,7 +6,7 @@ package age.data.objectStates
 	import nt.lib.reflect.Type;
 
 	/**
-	 * 对象状态
+	 * 对象状态基类，提供了操作对象的一些公用方法
 	 * @author zhanghaocong
 	 *
 	 */
@@ -61,7 +61,7 @@ package age.data.objectStates
 
 		/**
 		 * 从当前状态切换到指定新状态时调用<br>
-		 * 抽象类 AbstractObjectState 的该方法总是返回 true
+		 * 请注意：抽象类 AbstractObjectState 的该方法之默认实现总是返回 true
 		 * @param newState 新状态
 		 * @return 如果可以切换就返回 true，否则返回 false
 		 *
