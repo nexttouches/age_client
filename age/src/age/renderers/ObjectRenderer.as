@@ -287,7 +287,7 @@ package age.renderers
 			// 清理工作
 			if (actionInfo)
 			{
-				removeAllLayerRenderers(info.isShowGhost);
+				removeAllLayerRenderers(info ? info.isShowGhost : true);
 				avatarID = null;
 				actionName = null;
 			}
