@@ -34,6 +34,11 @@ package age.data
 			state = createState(IdleState);
 		}
 
+		/**
+		 * 如果 _state 实现了 IAnimatable，该值为 _state，否则为 null
+		 */
+		private var stateAnimatable:IAnimatable;
+
 		private var _state:AbstractObjectState;
 
 		/**
@@ -59,6 +64,7 @@ package age.data
 					_state.cancel();
 				}
 				_state = value;
+				stateAnimatable = _state as IAnimatable;
 
 				if (_state)
 				{
@@ -393,9 +399,10 @@ package age.data
 		[Inline]
 		final public function advanceTime(time:Number):void
 		{
-			if (_state is IAnimatable)
+			// 检查状态是否也需要 advanceTime
+			if (stateAnimatable)
 			{
-				IAnimatable(_state).advanceTime(time);
+				stateAnimatable.advanceTime(time);
 			}
 			// 计算速度和位置
 			velocity.x += acceleration.x * time;
@@ -409,7 +416,7 @@ package age.data
 		}
 
 		/**
-		 * 从 JSON 反序列化
+		 * 从 JSON 导入数据
 		 * @param raw
 		 *
 		 */
@@ -1218,5 +1225,9 @@ package age.data
 		 * 下一次切换动作时，是否显示鬼影
 		 */
 		public var isShowGhost:Boolean;
+
+		public var hitBox:Box = new Box();
+
+		public var attackBox:Box = new Box();
 	}
 }
