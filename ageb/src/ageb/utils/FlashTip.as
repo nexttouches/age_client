@@ -62,12 +62,13 @@ package ageb.utils
 				tip = new FlashTip();
 				tip.text = message;
 				PopUpManager.addPopUp(tip, Modules.getInstance().root, false);
-				tip.y = (tip.parent.height - tip.height) * 0.33;
 			}
 			else
 			{
 				tip.text += "\n" + message;
 			}
+			tip.validateNow();
+			tip.y = tip.stage.stageHeight - tip.height;
 			tip.x = (tip.parent.width - tip.width) / 2;
 		}
 	}
