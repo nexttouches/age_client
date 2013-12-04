@@ -14,6 +14,7 @@
 			import ageb.utils.FlashTip;
 			import nt.assets.Asset;
 			import starling.events.EnterFrameEvent;
+			import starling.textures.ConcreteTexture;
 
 			private var frameCount:int = 0;
 
@@ -39,7 +40,7 @@
 
 				if (totalTime > 1.0)
 				{
-					updateText(frameCount / totalTime, System.totalMemory * 0.000000954, drawCount - 2, Asset.vram * 0.000000954); // DRW: ignore self
+					updateText(frameCount / totalTime, System.totalMemory * 0.000000954, drawCount - 2, ConcreteTexture.totalVRam * 0.000000954); // DRW: ignore self
 					frameCount = totalTime = 0;
 				}
 			}

@@ -489,11 +489,6 @@ package nt.assets
 				}, 20);
 			}
 		}
-
-		/**
-		 * 资源占用的显存
-		 */
-		public static var vram:uint = 0;
 	}
 }
 

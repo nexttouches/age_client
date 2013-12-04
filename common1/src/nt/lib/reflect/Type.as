@@ -155,6 +155,21 @@ package nt.lib.reflect
 			return properties[name];
 		}
 
+		/**
+		 * 获得指定的 Accessor
+		 * @param name
+		 * @return
+		 *
+		 */
+		public function getAccessor(name:String):Accessor
+		{
+			return accessors[name];
+		}
+
+		/**
+		 * @private
+		 *
+		 */
 		private function parseVariables():void
 		{
 			var list:XMLList = typeInfo.factory.variable;
@@ -345,7 +360,7 @@ package nt.lib.reflect
 
 			for (var p:String in writableProperties)
 			{
-				if (excludes && excludes.indexOf(p) > -1)
+				if (getProperty(p).getMetadata("Transient") || (excludes && excludes.indexOf(p) > -1))
 				{
 					continue;
 				}

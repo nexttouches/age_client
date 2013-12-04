@@ -107,7 +107,6 @@ package age.data
 						try
 						{
 							texture = Texture.fromBitmapData(bitmapData, false, false, 1);
-							Asset.vram += vram;
 						}
 						catch (error:Error)
 						{
@@ -149,14 +148,13 @@ package age.data
 				enterDebugger();
 			}
 			_state = AssetState.DISPOSED;
-			Asset.vram -= vram;
 
 			if (_textureAtlas)
 			{
 				_textureAtlas.dispose();
 				_textureAtlas = null;
 			}
-			texture.root.onRestore = null;
+			texture.dispose();
 			texture = null;
 			texturesCache = null;
 			super.dispose();

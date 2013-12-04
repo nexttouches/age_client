@@ -319,5 +319,16 @@ package ageb.modules.ae
 		{
 			texture = _atlas + "#" + _src;
 		}
+
+		/**
+		 * JSON 序列化时自动调用
+		 * @param k
+		 * @return
+		 *
+		 */
+		public function toJSON(k:*):Object
+		{
+			return Type.of(this).superType.toObject(this);
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package age.data
 {
+	import nt.lib.reflect.Type;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -155,7 +156,7 @@ package age.data
 			{
 				for (var key:String in raw)
 				{
-					if (hasOwnProperty(key)) // 选择性无视错误 :D
+					if (hasOwnProperty(key) && Type.of(this).writableProperties[key]) // 选择性无视错误 :D
 					{
 						this[key] = raw[key];
 					}
