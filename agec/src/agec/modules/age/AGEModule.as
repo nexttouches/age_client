@@ -64,6 +64,15 @@ package agec.modules.age
 			me.pad = new KeyboardPad;
 			sceneRenderer.info = info;
 			info.charLayer.addObject(me);
+
+			for (var i:int = 0; i < 0; i++)
+			{
+				me = new ObjectInfo();
+				me.avatarID = "100";
+				me.position.setTo(Math.random() * info.width, 0, Math.random() * info.depth);
+				//me.pad = new KeyboardPad;
+				info.charLayer.addObject(me);
+			}
 		}
 
 		/**

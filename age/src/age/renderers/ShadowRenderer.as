@@ -25,7 +25,7 @@ package age.renderers
 			super();
 			// 正片叠底
 			blendMode = BlendMode.MULTIPLY;
-			uniqueIndex += ZIndexHelper.SHADOW_OFFSET;
+			//uniqueIndex += ZIndexHelper.SHADOW_OFFSET;
 		}
 
 		/**
@@ -35,7 +35,8 @@ package age.renderers
 		 */
 		override public function get zIndex():int
 		{
-			return position.z * ZIndexHelper.Z_RANGE + uniqueIndex;
+			return int.MAX_VALUE - 100 + uniqueIndex;
+			//return position.z * ZIndexHelper.Z_RANGE + uniqueIndex;
 		}
 
 		private var _size:Box;

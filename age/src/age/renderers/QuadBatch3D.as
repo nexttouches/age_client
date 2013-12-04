@@ -1,36 +1,25 @@
 package age.renderers
 {
 	import flash.errors.IllegalOperationError;
-	import flash.filters.GlowFilter;
 	import flash.geom.Vector3D;
-	import age.data.AvatarInfo;
-	import age.data.Box;
+	import starling.display.QuadBatch;
 	import starling.events.Event;
-	import starling.text.TextField;
-	import starling.utils.HAlign;
 
 	/**
-	 * 名字渲染器
+	 * 实现了 IDisplayObject3D 接口的 QuadBatch
 	 * @author zhanghaocong
 	 *
 	 */
-	public class NameRenderer extends TextField implements IArrangeable, IDisplayObject3D
+	public class QuadBatch3D extends QuadBatch implements IDisplayObject3D
 	{
 		/**
-		 * 当 info 为 null 时，渲染的默认大小
-		 */
-		public static const DEFAULT_SIZE:Box = new Box(0, 0, 0, 100, 200, 100, 0.5, 0, 0.5);
-
-		/**
-		 * 创建一个新的 NameRenderer
+		 * constructor
 		 *
 		 */
-		public function NameRenderer()
+		public function QuadBatch3D()
 		{
-			super(200, 18, "", "微软雅黑", 10, 0xff00ff);
-			nativeFilters = [ new GlowFilter(0, 1, 2, 2, 10)];
-			pivotX = 100;
-			hAlign = HAlign.CENTER;
+			super();
+			uniqueIndex = ZIndexHelper.getUniqueZIndex();
 			addEventListener(Event.ADDED_TO_STAGE, onAdd);
 		}
 
@@ -43,39 +32,16 @@ package age.renderers
 			projectY = SceneRenender(parent.parent).projectY;
 		}
 
+		protected var uniqueIndex:int;
+
 		/**
 		 * @inheritDoc
+		 * @return
 		 *
 		 */
 		public function get zIndex():int
 		{
-			return position.z - 1;
-		}
-
-		private var _info:AvatarInfo;
-
-		/**
-		 * 设置或获取 AvatarInfo
-		 *
-		 */
-		public function get info():AvatarInfo
-		{
-			return _info;
-		}
-
-		public function set info(value:AvatarInfo):void
-		{
-			_info = value;
-			// 刷坐标
-			validatePosition();
-			text = info ? info.id : "null";
-		}
-
-		override public function dispose():void
-		{
-			_projectY = null;
-			_info = null;
-			super.dispose();
+			return position.z * ZIndexHelper.Z_RANGE;
 		}
 
 		private var _position:Vector3D = new Vector3D;
@@ -149,8 +115,8 @@ package age.renderers
 			{
 				return;
 			}
-			super.x = int(position.x);
-			super.y = int(_projectY(position.y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), position.z));
+			super.x = position.x;
+			super.y = _projectY(position.y, position.z);
 		}
 
 		/**
@@ -160,7 +126,7 @@ package age.renderers
 		[Inline]
 		final protected function validatePositionX():void
 		{
-			super.x = int(position.x);
+			super.x = position.x;
 		}
 
 		/**
@@ -174,7 +140,7 @@ package age.renderers
 			{
 				return;
 			}
-			super.y = int(_projectY(position.y + 18 + (_info ? _info.size.height : DEFAULT_SIZE.height), position.z));
+			super.y = _projectY(position.y, position.z);
 		}
 
 		private var _projectY:Function;
@@ -216,7 +182,7 @@ package age.renderers
 			throw new IllegalOperationError("不允许从外部设置该属性，要设置坐标，请使用 position 属性");
 		}
 
-		private var _scale:Number;
+		private var _scale:Number = 1;
 
 		/**
 		 * @inheritDoc
@@ -230,9 +196,41 @@ package age.renderers
 
 		public function set scale(value:Number):void
 		{
-			_scale = value;
-			scaleX = value;
-			scaleY = value;
+			if (value != _scale)
+			{
+				_scale = value;
+				scaleX = value;
+				scaleY = value;
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function dispose():void
+		{
+			_projectY = null;
+			super.dispose();
+		}
+
+		/**
+		 * 标记 visible 是否已经锁定<br>
+		 * 一旦锁定，将不能操作 visible 属性
+		 */
+		public var isVisibleLocked:Boolean = false;
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function set visible(value:Boolean):void
+		{
+			if (isVisibleLocked)
+			{
+				return;
+			}
+			super.visible = value;
 		}
 	}
 }

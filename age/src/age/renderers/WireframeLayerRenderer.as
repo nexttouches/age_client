@@ -7,15 +7,36 @@ package age.renderers
 	import age.data.FrameLayerInfo;
 
 	/**
-	 * 线框渲染器
+	 * 线框渲染器。一共有 8 根线，分别放在 frontQB 和 backQB 中进行批处理。
 	 * @author zhanghaocong
 	 *
 	 */
 	public class WireframeLayerRenderer implements IDisplayObject3D, IDirectionRenderer
 	{
+		/**
+		 * 将根据图层名字设置框颜色，默认是白色
+		 */
 		private var COLORS:Object = { hitBox: 0x00ff00, attackBox: 0xff0000, DEFAULT: 0xffffff };
 
-		private var color:uint;
+		/**
+		 * 前面的框
+		 */
+		private var frontQB:QuadBatch3D = new QuadBatch3D();
+
+		/**
+		 * 后面的框
+		 */
+		private var backQB:QuadBatch3D = new QuadBatch3D();
+
+		/**
+		 * 所有线（其中 0~3 会放在 frontQB，4~7 则在 backQB）
+		 */
+		private var rects:Vector.<Rect> = new Vector.<Rect>(8);
+
+		/**
+		 * 当前线框的颜色（默认是 <tt>COLORS.DEFAULT</tt>）
+		 */
+		private var color:uint = COLORS.DEFAULT;
 
 		/**
 		 * constructor
@@ -56,28 +77,40 @@ package age.renderers
 			}
 		}
 
-		public function drawLine(index:int, v:Vector3D, width:Number, height:Number, alpha:Number = 1):void
-		{
-			if (quads[index] == null)
-			{
-				quads[index] = new Wireframe(0, 0, color);
-				quads[index].alpha = alpha * DEFAULT_ALPHA;
-			}
-			const q:Quad3D = quads[index];
-
-			if (parent && !q.parent)
-			{
-				parent.addChild(q);
-			}
-			q.draw(width, height);
-			q.position = v;
-			q.visible = true;
-		}
-
 		/**
-		* 所有子渲染器
-		*/
-		public var quads:Vector.<Quad3D> = new Vector.<Quad3D>(8);
+		 * 根据参数绘制线
+		 * @param index
+		 * @param width
+		 * @param height
+		 * @param alpha
+		 *
+		 */
+		public function drawLine(index:int, x:Number, y:Number, width:Number, height:Number, alpha:Number = 1):void
+		{
+			if (!rects[index])
+			{
+				rects[index] = new Rect(width, height);
+			}
+			else
+			{
+				rects[index].setTo(width, height);
+			}
+			const r:Rect = rects[index] as Rect;
+			r.x = x;
+			r.y = y;
+			r.alpha = alpha;
+			r.color = color;
+			r.visible = true;
+
+			if (index < 4)
+			{
+				frontQB.addQuad(r);
+			}
+			else
+			{
+				backQB.addQuad(r);
+			}
+		}
 
 		private var _parent:LayerRenderer;
 
@@ -100,27 +133,15 @@ package age.renderers
 
 				if (_parent)
 				{
-					for (i = 0; i < quads.length; i++)
-					{
-						if (!quads[i])
-						{
-							continue;
-						}
-						_parent.removeChild(quads[i]);
-					}
+					_parent.removeChild(frontQB);
+					_parent.removeChild(backQB);
 				}
 				_parent = value;
 
 				if (_parent)
 				{
-					for (i = 0; i < quads.length; i++)
-					{
-						if (!quads[i])
-						{
-							continue;
-						}
-						_parent.addChild(quads[i]);
-					}
+					_parent.addChild(frontQB);
+					_parent.addChild(backQB);
 					projectY = _parent.info.parent.projectY;
 				}
 			}
@@ -142,7 +163,7 @@ package age.renderers
 		{
 			if (_info)
 			{
-				color = 0;
+				color = COLORS.DEFAULT;
 			}
 			_info = value;
 
@@ -175,6 +196,10 @@ package age.renderers
 
 		private var _scale:Number = 1;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function get scale():Number
 		{
 			return _scale;
@@ -211,6 +236,10 @@ package age.renderers
 
 		private var box:Box = new Box();
 
+		/**
+		 * 重绘框
+		 *
+		 */
 		public function validate():void
 		{
 			if (_frameInfo && _frameInfo.keyframe.box)
@@ -227,32 +256,27 @@ package age.renderers
 
 				for (i = 0; i < vertices.length; i++)
 				{
-					vertices[i].incrementBy(position);
 					// 投影到 2D 坐标系后，再交给 Quad 画线
 					points[i] = new Point(vertices[i].x, _projectY(vertices[i].y, vertices[i].z));
 				}
+				// reset 批处理
+				frontQB.reset();
+				backQB.reset();
 				// front
-				drawLine(0, vertices[0], points[1].x - points[0].x, 1);
-				drawLine(1, vertices[1], 1, points[2].y - points[1].y);
-				drawLine(2, vertices[2], points[3].x - points[2].x, 1);
-				drawLine(3, vertices[3], 1, points[0].y - points[3].y);
-				// back
-				drawLine(4, vertices[4], points[5].x - points[4].x, 1, 0.3);
-				drawLine(5, vertices[5], 1, points[6].y - points[5].y, 0.3);
-				drawLine(6, vertices[6], points[7].x - points[6].x, 1, 0.3);
-				drawLine(7, vertices[7], 1, points[0].y - points[7].y, 0.3);
+				drawLine(0, 0, 0, box.width, 1); // 下
+				drawLine(1, box.width, 0, 1, -box.height); // 右
+				drawLine(2, box.width, -box.height, -box.width, 1); // 上
+				drawLine(3, 0, -box.height, 1, box.height); // 左
+					// back
+					//drawLine(4, 0, 0, box.width, 1);
+					//drawLine(5, box.width, 0, 1, box.height);
+					//drawLine(6, box.width, box.height, -box.width, 1);
+					//drawLine(7, 0, box.height, 1, -box.height);
 			}
 			else
 			{
-				for (i = 0; i < quads.length; i++)
-				{
-					const q:Quad3D = quads[i];
-
-					if (q)
-					{
-						q.removeFromParent();
-					}
-				}
+				frontQB.visible = false;
+				backQB.visible = false;
 			}
 		}
 
@@ -288,7 +312,8 @@ package age.renderers
 		public function set position(value:Vector3D):void
 		{
 			_position = value;
-			validate();
+			frontQB.position = value;
+			backQB.position = value;
 		}
 
 		/**
@@ -301,7 +326,8 @@ package age.renderers
 		public function setPosition(x:Number, y:Number, z:Number):void
 		{
 			position.setTo(x, y, z);
-			validate();
+			frontQB.position.setTo(x, y, z);
+			backQB.position.setTo(x, y, z);
 		}
 
 		/**
@@ -311,7 +337,8 @@ package age.renderers
 		public function setX(value:Number):void
 		{
 			position.x = value;
-			validate();
+			frontQB.position.x = value;
+			backQB.position.x = value;
 		}
 
 		/**
@@ -321,7 +348,8 @@ package age.renderers
 		public function setY(value:Number):void
 		{
 			position.y = value;
-			validate();
+			frontQB.position.y = value;
+			backQB.position.y = value;
 		}
 
 		/**
@@ -331,7 +359,8 @@ package age.renderers
 		public function setZ(value:Number):void
 		{
 			position.z = value;
-			validate();
+			frontQB.position.z = value;
+			backQB.position.z = value;
 		}
 
 		private var _projectY:Function;
@@ -348,7 +377,8 @@ package age.renderers
 		public function set projectY(value:Function):void
 		{
 			_projectY = value;
-			validate();
+			frontQB.projectY = value;
+			backQB.projectY = value;
 		}
 	}
 }

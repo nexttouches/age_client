@@ -39,7 +39,7 @@ package age.renderers
 			alpha = 0.2;
 			touchable = true;
 			addEventListener(Event.ADDED_TO_STAGE, onAdd);
-			uniqueIndex += uniqueIndex += ZIndexHelper.MOUSE_RESPONDER_OFFSET;
+			uniqueIndex += ZIndexHelper.MOUSE_RESPONDER_OFFSET;
 		}
 
 		private function onAdd():void
@@ -150,6 +150,10 @@ package age.renderers
 			return _onRollOut ||= new Signal(ObjectRenderer);
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function set touchable(value:Boolean):void
 		{
 			super.touchable = value;
@@ -164,6 +168,10 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		protected function onTouch(event:TouchEvent):void
 		{
 			var t:Touch = event.getTouch(this);
@@ -215,6 +223,10 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		override public function get zIndex():int
 		{
 			return position.z * ZIndexHelper.Z_RANGE + uniqueIndex;

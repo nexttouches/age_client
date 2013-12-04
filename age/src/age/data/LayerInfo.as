@@ -321,6 +321,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get scaledWidth():Number
 		{
 			if (!parent)
@@ -335,6 +336,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get scaledHeight():Number
 		{
 			if (!parent)
@@ -349,6 +351,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get scaledDepth():Number
 		{
 			if (!parent)
@@ -363,6 +366,7 @@ package age.data
 		 * @return
 		 *
 		 */
+		[Transient]
 		public function get index():int
 		{
 			if (!parent)
