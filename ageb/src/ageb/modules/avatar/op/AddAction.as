@@ -64,6 +64,11 @@ package ageb.modules.avatar.op
 			layer.name = "animation1";
 			layer.addFrame(new FrameInfoEditable({ isKeyframe: true }));
 			target.addLayer(layer);
+			layer = new FrameLayerInfoEditable(null, target);
+			layer.type = FrameLayerType.VIRTUAL;
+			layer.name = "hitBox";
+			layer.addFrame(new FrameInfoEditable({ isKeyframe: true, box: avatar.size.toJSON(null)}));
+			target.addLayer(layer);
 			target.updateNumFrames();
 		}
 
