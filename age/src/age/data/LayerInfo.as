@@ -222,7 +222,7 @@ package age.data
 		}
 
 		/**
-		 * 添加 ObjectInfoEditable 对应的渲染器
+		 * 添加对象
 		 * @param info
 		 *
 		 */
@@ -251,7 +251,7 @@ package age.data
 		}
 
 		/**
-		 * 删除 ObjectInfoEditable 对应的渲染器
+		 * 删除对象
 		 * @param info
 		 *
 		 */
