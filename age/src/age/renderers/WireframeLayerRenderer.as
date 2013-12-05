@@ -1,6 +1,5 @@
 package age.renderers
 {
-	import flash.geom.Point;
 	import flash.geom.Vector3D;
 	import age.data.Box;
 	import age.data.FrameInfo;
@@ -245,33 +244,30 @@ package age.renderers
 			if (_frameInfo && _frameInfo.keyframe.box)
 			{
 				// 取关键帧的 box
-				const originBox:Box = _frameInfo.keyframe.box.clone1();
-				box.direction = Direction.RIGHT;
-				box.setTo(originBox.x, originBox.y, originBox.z, originBox.width, originBox.height, originBox.depth, originBox.pivot.x, originBox.pivot.y, originBox.z);
-				box.direction = _direction;
-				// 取出所有顶点用于绘制
-				const vertices:Vector.<Vector3D> = box.vertices.concat();
-				var i:int, n:int;
-				var points:Vector.<Point> = new Vector.<Point>(vertices.length, true);
-
-				for (i = 0; i < vertices.length; i++)
-				{
-					// 投影到 2D 坐标系后，再交给 Quad 画线
-					points[i] = new Point(vertices[i].x, _projectY(vertices[i].y, vertices[i].z));
-				}
+				box = _frameInfo.keyframe.box;
 				// reset 批处理
 				frontQB.reset();
 				backQB.reset();
+				// 设置 pivot
+				const pivotX:Number = box.pivot.x * box.width;
+				const pivotY:Number = box.pivot.y * box.height;
+				const pivotZ:Number = box.pivot.z * box.depth;
+				frontQB.pivotX = pivotX;
+				frontQB.pivotY = pivotY;
+				backQB.pivotX = pivotX;
+				backQB.pivotY = pivotY;
+				frontQB.zOffset = pivotZ + box.z - box.depth;
+				backQB.zOffset = pivotZ + box.z;
 				// front
-				drawLine(0, 0, 0, box.width, 1); // 下
-				drawLine(1, box.width, 0, 1, -box.height); // 右
-				drawLine(2, box.width, -box.height, -box.width, 1); // 上
-				drawLine(3, 0, -box.height, 1, box.height); // 左
-					// back
-					//drawLine(4, 0, 0, box.width, 1);
-					//drawLine(5, box.width, 0, 1, box.height);
-					//drawLine(6, box.width, box.height, -box.width, 1);
-					//drawLine(7, 0, box.height, 1, -box.height);
+				drawLine(0, box.x, box.y, box.width, 1); // 下
+				drawLine(1, box.width + box.x, box.y, 1, -box.height); // 右
+				drawLine(2, box.width + box.x, -box.height + box.y, -box.width, 1); // 上
+				drawLine(3, box.x, -box.height + box.y, 1, box.height); // 左
+				// back
+				drawLine(4, box.x, box.y, box.width, 1, 0.3); // 下
+				drawLine(5, box.width + box.x, box.y, 1, -box.height, 0.3); // 右
+				drawLine(6, box.width + box.x, -box.height + box.y, -box.width, 1, 0.3); // 上
+				drawLine(7, box.x, -box.height + box.y, 1, box.height, 0.3); // 左
 			}
 			else
 			{
@@ -295,7 +291,8 @@ package age.renderers
 		public function set direction(value:int):void
 		{
 			_direction = value;
-			validate();
+			frontQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
+			backQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
 		}
 
 		private var _position:Vector3D = new Vector3D;

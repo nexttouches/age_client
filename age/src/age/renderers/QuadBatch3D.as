@@ -116,7 +116,7 @@ package age.renderers
 				return;
 			}
 			super.x = position.x;
-			super.y = _projectY(position.y, position.z);
+			super.y = _projectY(position.y, position.z + zOffset);
 		}
 
 		/**
@@ -140,7 +140,7 @@ package age.renderers
 			{
 				return;
 			}
-			super.y = _projectY(position.y, position.z);
+			super.y = _projectY(position.y, position.z + zOffset);
 		}
 
 		private var _projectY:Function;
@@ -231,6 +231,25 @@ package age.renderers
 				return;
 			}
 			super.visible = value;
+		}
+
+		private var _zOffset:Number = 0;
+
+		/**
+		 * 设置或获取 z 偏移
+		 */
+		public function get zOffset():Number
+		{
+			return _zOffset;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set zOffset(value:Number):void
+		{
+			_zOffset = value;
+			validatePositionYZ();
 		}
 	}
 }
