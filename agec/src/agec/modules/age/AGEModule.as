@@ -103,12 +103,10 @@ package agec.modules.age
 
 				// 没有扩展名视为文件夹
 				if (ext == "")
-				{
-					// 不处理
+				{ // 不处理
 				}
-				// 识别为贴图集
 				else if (ext == "xml")
-				{
+				{ // 识别为贴图集
 					TextureAtlasConfig.addAtlas(path.replace(/\.xml/ig, ""), XML(file.getContentAsString()));
 				}
 				else if (ext == "txt")

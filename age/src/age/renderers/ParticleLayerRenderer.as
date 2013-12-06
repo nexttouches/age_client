@@ -40,7 +40,7 @@ package age.renderers
 		}
 
 		/**
-		 * @private
+		 * 被添加到舞台时调用，此时初始化 projectY
 		 *
 		 */
 		private function onAdd():void
@@ -69,6 +69,7 @@ package age.renderers
 					// TODO 此处要设置使用外部贴图
 			}
 
+			// 有 info 时才添加到 Jugger
 			if (_info)
 			{
 				layerIndex = _info.index;
@@ -259,7 +260,7 @@ package age.renderers
 			}
 
 			if (_box)
-			{
+			{ // 有 _box，我们做一些偏移
 				emitterX = position.x + (_direction & Direction.RIGHT ? _box.x : -_box.x);
 				emitterY = _projectY(position.y + _box.y, position.z + _box.z);
 			}
@@ -269,25 +270,49 @@ package age.renderers
 			}
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private static var helperVector:Vector3D = new Vector3D;
 
+		/**
+		 * @private
+		 *
+		 */
 		private static var helperPoint:Point = new Point;
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetDispose(asset:IAsset):void
 		{
 			// TODO Auto Generated method stub
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetLoadComplete(asset:IAsset):void
 		{
 			// TODO Auto Generated method stub
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetLoadError(asset:IAsset):void
 		{
 			// TODO Auto Generated method stub
 		}
 
+		/**
+		 * @inheritDoc
+		 *
+		 */
 		public function onAssetLoadProgress(asset:IAsset, bytesLoaded:uint, bytesTotal:uint):void
 		{
 			// TODO Auto Generated method stub
