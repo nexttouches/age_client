@@ -84,7 +84,7 @@ package ageb.modules.ae
 		 */
 		private function onFramesChange(layer:FrameLayerInfoEditable):void
 		{
-			currentFrame = currentFrame;
+			validate();
 		}
 	}
 }

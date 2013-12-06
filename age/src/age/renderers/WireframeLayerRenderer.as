@@ -233,19 +233,29 @@ package age.renderers
 			}
 		}
 
-		private var box:Box = new Box();
+		private var _box:Box;
 
 		/**
-		 * 重绘框
+		 * 设置或获取本次要绘制的框
+		 * @return
 		 *
 		 */
-		public function validate():void
+		public function get box():Box
 		{
-			if (_frameInfo && _frameInfo.keyframe.box)
+			return _box;
+		}
+
+		public function set box(value:Box):void
+		{
+			if (_box)
 			{
-				// 取关键帧的 box
-				box = _frameInfo.keyframe.box;
-				// reset 批处理
+				frontQB.visible = false;
+				backQB.visible = false;
+			}
+			_box = value; // reset 批处理
+
+			if (_box)
+			{
 				frontQB.reset();
 				backQB.reset();
 				// 设置 pivot
@@ -269,10 +279,22 @@ package age.renderers
 				drawLine(6, box.width + box.x, -box.height + box.y, -box.width, 1, 0.3); // 上
 				drawLine(7, box.x, -box.height + box.y, 1, box.height, 0.3); // 左
 			}
+		}
+
+		/**
+		 * 重绘框
+		 *
+		 */
+		public function validate():void
+		{
+			if (_frameInfo && _frameInfo.keyframe.box)
+			{
+				// 取关键帧的 box
+				box = _frameInfo.keyframe.box;
+			}
 			else
 			{
-				frontQB.visible = false;
-				backQB.visible = false;
+				box = null;
 			}
 		}
 
