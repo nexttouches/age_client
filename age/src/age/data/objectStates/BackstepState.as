@@ -26,6 +26,11 @@ package age.data.objectStates
 		 */
 		override public function canSwitch(newState:AbstractObjectState):Boolean
 		{
+			// 重复设置 BackstepState 时，要将 isShowGhost 关闭 
+			if (newState == this)
+			{
+				info.isShowGhost = false;
+			}
 			return info.position.y <= 0;
 		}
 

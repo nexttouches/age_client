@@ -874,8 +874,7 @@ package age.data
 		}
 
 		/**
-		 * 设置或获取 fps。
-		 * 修改该值将同时修改 defaultFrameDuration, durations, startTimes
+		 * 设置或获取 fps。修改该值将同时修改 defaultFrameDuration, durations, startTimes
 		 * @return
 		 *
 		 */
@@ -942,7 +941,11 @@ package age.data
 			}
 		}
 
-		/** Removes the frame at a certain ID. The successors will move down. */
+		/**
+		 * 删除指定帧
+		 * @param frameID
+		 *
+		 */
 		public function removeFrameAt(frameID:int):void
 		{
 			if (frameID < 0 || frameID >= numFrames)
