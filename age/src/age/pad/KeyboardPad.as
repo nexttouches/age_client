@@ -65,7 +65,7 @@ package age.pad
 				// 更新旧状态
 				o.state.direction = direction;
 				// 新状态
-				var newState:AbstractObjectState;
+				var newState:AbstractObjectState = null;
 
 				// 后跳
 				if (isBackstep)
