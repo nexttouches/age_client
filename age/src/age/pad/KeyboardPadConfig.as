@@ -56,6 +56,18 @@ package age.pad
 		 */
 		public var attackTimeout:uint = 150;
 
+		public var skill1:uint = Keyboard.U;
+
+		public var skill2:uint = Keyboard.I;
+
+		public var skill3:uint = Keyboard.O;
+
+		public var skill4:uint = Keyboard.P;
+
+		public var skill5:uint = Keyboard.LEFTBRACKET;
+
+		public var skill6:uint = Keyboard.RIGHTBRACKET;
+
 		/**
 		 * constructor
 		 *
