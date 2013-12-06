@@ -210,8 +210,6 @@ package age.renderers
 			validate();
 		}
 
-		private var DEFAULT_ALPHA:Number = 0.8;
-
 		private var _frameInfo:FrameInfo;
 
 		/**
