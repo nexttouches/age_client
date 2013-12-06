@@ -9,6 +9,7 @@ package agec.modules.age
 	import age.data.SceneInfo;
 	import age.data.TextureAtlasConfig;
 	import age.pad.KeyboardPad;
+	import age.pad.Pad;
 	import age.renderers.SceneRenender;
 	import deng.fzip.FZip;
 	import deng.fzip.FZipFile;
@@ -57,11 +58,12 @@ package agec.modules.age
 		 */
 		private function test():void
 		{
+			var pad:Pad = new KeyboardPad;
 			var info:SceneInfo = SceneInfo.get("0").fork("0_copy");
 			var me:ObjectInfo = new ObjectInfo();
 			me.avatarID = "100";
 			me.position.setTo(info.width / 2, 0, info.depth / 2);
-			me.pad = new KeyboardPad;
+			me.pad = pad;
 			sceneRenderer.info = info;
 			info.charLayer.addObject(me);
 
@@ -70,7 +72,7 @@ package agec.modules.age
 				me = new ObjectInfo();
 				me.avatarID = "100";
 				me.position.setTo(Math.random() * info.width, 0, Math.random() * info.depth);
-				//me.pad = new KeyboardPad;
+				//me.pad = pad;
 				info.charLayer.addObject(me);
 			}
 		}
