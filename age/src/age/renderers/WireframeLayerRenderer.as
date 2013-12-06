@@ -99,7 +99,6 @@ package age.renderers
 			r.y = y;
 			r.alpha = alpha;
 			r.color = color;
-			r.visible = true;
 
 			if (index < 4)
 			{
@@ -128,8 +127,6 @@ package age.renderers
 		{
 			if (_parent != value)
 			{
-				var i:int;
-
 				if (_parent)
 				{
 					_parent.removeChild(frontQB);
