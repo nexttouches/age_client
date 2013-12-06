@@ -242,6 +242,11 @@ package age.data
 
 		private var _width:Number = 0;
 
+		/**
+		 * width
+		 * @return
+		 *
+		 */
 		[Inline]
 		final public function get width():Number
 		{
@@ -257,6 +262,11 @@ package age.data
 
 		private var _height:Number = 0;
 
+		/**
+		 * height
+		 * @return
+		 *
+		 */
 		[Inline]
 		final public function get height():Number
 		{
@@ -272,6 +282,11 @@ package age.data
 
 		private var _depth:Number = 0;
 
+		/**
+		 * depth
+		 * @return
+		 *
+		 */
 		[Inline]
 		final public function get depth():Number
 		{
@@ -285,6 +300,20 @@ package age.data
 			validateZ();
 		}
 
+		/**
+		 * 设置 Box 到指定属性
+		 * @param x
+		 * @param y
+		 * @param z
+		 * @param width
+		 * @param height
+		 * @param depth
+		 * @param pivotX
+		 * @param pivotY
+		 * @param pivotZ
+		 * @param rotationX
+		 *
+		 */
 		public function setTo(x:Number, y:Number, z:Number, width:Number, height:Number, depth:Number, pivotX:Number = NaN, pivotY:Number = NaN, pivotZ:Number = NaN, rotationX:Number = NaN):void
 		{
 			if (!isNaN(pivotX))
@@ -342,7 +371,82 @@ package age.data
 		 */
 		public function intersection(b:Box):Box
 		{
-			var result:Box;
+			if (!intersect(b))
+			{
+				return null;
+			}
+			var p:Vector3D;
+			var vertices:Vector.<Vector3D>;
+			var i:int;
+			var veticesIntersection:Array = new Array();
+			vertices = this.vertices;
+
+			for (i = 0; i < vertices.length; i++)
+			{
+				p = vertices[i];
+
+				if (b.isInBox(p.x, p.y, p.z))
+				{
+					veticesIntersection.push(p);
+				}
+			}
+			vertices = b.vertices;
+
+			for (i = 0; i < vertices.length; i++)
+			{
+				p = vertices[i];
+
+				if (isInBox(p.x, p.y, p.z))
+				{
+					veticesIntersection.push(p);
+				}
+			}
+			var newArray:Array = veticesIntersection.sortOn([ "z", "y", "z" ], Array.NUMERIC);
+			var plbf:Vector3D = newArray[0];
+			var prtb:Vector3D = newArray[newArray.length - 1];
+			var box:Box = new Box(plbf.x, plbf.y, plbf.z, prtb.x, prtb.y, prtb.z);
+			return box;
+		}
+
+		/**
+		 * 检查点是否在 Box 内
+		 * @param x
+		 * @param y
+		 * @param z
+		 * @return
+		 *
+		 */
+		public function isInBox(x:Number, y:Number, z:Number):Boolean
+		{
+			var result:Boolean = true;
+
+			do
+			{
+				if (x < lower.x || x > upper.x)
+				{
+					result = false;
+				}
+
+				if (!result)
+				{
+					break;
+				}
+
+				if (y < lower.y || y > upper.y)
+				{
+					result = false;
+				}
+
+				if (!result)
+				{
+					break;
+				}
+
+				if (z < lower.z || z > upper.z)
+				{
+					result = false;
+				}
+			} while (false);
 			return result;
 		}
 
@@ -352,8 +456,33 @@ package age.data
 		 * @return
 		 *
 		 */
-		public function intersect(b:Box):Boolean
+		public function intersect(otherBox:Box):Boolean
 		{
+			var p:Vector3D;
+			var vetices:Vector.<Vector3D>;
+			var i:int;
+			vetices = this.vertices;
+
+			for (i = 0; i < vetices.length; i++)
+			{
+				p = vetices[i];
+
+				if (otherBox.isInBox(p.x, p.y, p.z))
+				{
+					return true;
+				}
+			}
+			vetices = otherBox.vertices;
+
+			for (i = 0; i < vetices.length; i++)
+			{
+				p = vetices[i];
+
+				if (this.isInBox(p.x, p.y, p.z))
+				{
+					return true;
+				}
+			}
 			return false;
 		}
 
