@@ -1,6 +1,7 @@
 package age.data.objectStates
 {
 	import flash.errors.IllegalOperationError;
+	import flash.utils.Dictionary;
 	import age.data.ObjectInfo;
 	import age.renderers.Direction;
 	import nt.lib.reflect.Type;
@@ -39,7 +40,23 @@ package age.data.objectStates
 		public function AbstractObjectState(info:ObjectInfo)
 		{
 			this.info = info;
-			name = Type.of(this).shortname.replace(/State/g, "").toLowerCase();
+			name = getName(this["constructor"]);
+		}
+
+		/**
+		 * 状态名缓存
+		 */
+		private static var nameCache:Dictionary = new Dictionary;
+
+		/**
+		 * 获得状态名字
+		 * @param stateClass
+		 * @return
+		 *
+		 */
+		private static function getName(stateClass:Class):String
+		{
+			return nameCache[stateClass] ||= Type.of(stateClass).shortname.replace(/State/g, "").toLowerCase();
 		}
 
 		/**
