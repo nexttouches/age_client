@@ -22,12 +22,12 @@ package age.data
 	public class Box
 	{
 		/**
-		 * 左下角
+		 * 左下角，一般是 (0, 0, 0)
 		 */
 		public var lower:Vector3D = new Vector3D;
 
 		/**
-		 * 右上角
+		 * 右上角，一般是场景大小
 		 */
 		public var upper:Vector3D = new Vector3D;
 
