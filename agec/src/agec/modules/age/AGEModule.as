@@ -66,8 +66,9 @@ package agec.modules.age
 			me.pad = pad;
 			sceneRenderer.info = info;
 			info.charLayer.addObject(me);
+			const n:int = 0;
 
-			for (var i:int = 0; i < 50; i++)
+			for (var i:int = 0; i < n; i++)
 			{
 				me = new ObjectInfo();
 				me.avatarID = "100";

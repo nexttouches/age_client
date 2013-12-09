@@ -562,6 +562,30 @@ package age.data
 			_x = lower.x + _width * pivot.x;
 			_y = lower.y + _height * pivot.y;
 			_z = lower.z + _depth * pivot.z;
+			_vertices = null;
+		}
+
+		/**
+		 * 通过 3 个 Vector3D 设定当前 Box
+		 * @param lower
+		 * @param upper
+		 * @param pivot
+		 * @return
+		 *
+		 */
+		public function fromVector3D(lower:Vector3D, upper:Vector3D, pivot:Vector3D)
+		{
+			this.lower = lower;
+			this.upper = upper;
+			this.pivot = pivot;
+			// 根据 lower 和 upper 反推出宽高坐标
+			_width = upper.x - lower.x;
+			_height = upper.y - lower.y;
+			_depth = upper.z - lower.z;
+			_x = lower.x + _width * pivot.x;
+			_y = lower.y + _height * pivot.y;
+			_z = lower.z + _depth * pivot.z;
+			_vertices = null;
 		}
 
 		private var _direction:int = Direction.RIGHT;
@@ -612,6 +636,19 @@ package age.data
 		public function clone1():Box
 		{
 			return new Box(x, y, z, width, height, depth, pivot.x, pivot.y, pivot.z);
+		}
+
+		/**
+		 * 设置坐标
+		 * @param position
+		 *
+		 */
+		public function setPosition(position:Vector3D):void
+		{
+			_x = position.x;
+			_y = position.y;
+			_z = position.z;
+			validate();
 		}
 	}
 }

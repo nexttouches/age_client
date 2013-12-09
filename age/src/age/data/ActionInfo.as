@@ -11,6 +11,22 @@ package age.data
 	 */
 	public class ActionInfo
 	{
+		public static const ATTACK_BOX:String = "attackBox";
+
+		public static const HIT_BOX:String = "hitBox";
+
+		/**
+		 * 储存名为 "hitBox" 图层的引用
+		 */
+		[Transient]
+		public var hitBoxLayer:FrameLayerInfo;
+
+		/**
+		 * 储存名为 "attackBox" 图层的引用
+		 */
+		[Transient]
+		public var attackBoxLayer:FrameLayerInfo;
+
 		/**
 		 * 动作的资源将以此关键字进行打包（未实现）
 		 */
@@ -22,8 +38,9 @@ package age.data
 		public var name:String
 
 		/**
-		 * 参考帧率
+		 * 参考帧率（默认值 1）
 		 */
+		[Export(exclude=1)]
 		public var fps:int = 1;
 
 		/**
@@ -213,6 +230,7 @@ package age.data
 			}
 			// 省略了 numFrames 字段
 			updateNumFrames();
+			updateLayerFlags();
 		}
 
 		[Inline]
@@ -295,6 +313,7 @@ package age.data
 			{
 				layers.push(layer);
 			}
+			updateLayerFlags();
 		}
 
 		/**
@@ -309,6 +328,39 @@ package age.data
 			// 如 atlas 和 name 一样就不导出了
 			export(this, result, "atlas", name);
 			return result;
+		}
+
+		/**
+		 * 更新一些图层相关的标记
+		 *
+		 */
+		public function updateLayerFlags():void
+		{
+			attackBoxLayer = null;
+			hitBoxLayer = null;
+
+			for (var i:int = 0, n:int = numLayers; i < n; i++)
+			{
+				const fli:FrameLayerInfo = layers[i];
+
+				if (!attackBoxLayer)
+				{
+					if (fli.name == ATTACK_BOX)
+					{
+						attackBoxLayer = fli;
+						continue;
+					}
+				}
+
+				if (!hitBoxLayer)
+				{
+					if (fli.name == HIT_BOX)
+					{
+						hitBoxLayer = fli;
+						continue;
+					}
+				}
+			}
 		}
 	}
 }

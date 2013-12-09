@@ -22,18 +22,17 @@ package age.data
 	public class LayerInfo implements IAnimatable
 	{
 		/**
-			* 创建一个新的 LayerInfo
-			* @param raw
-			* @param parent
-			*
-			*/
+		 * 创建一个新的 LayerInfo
+		 * @param raw
+		 * @param parent
+		 *
+		 */
 		public function LayerInfo(raw:Object = null, parent:SceneInfo = null)
 		{
 			this.parent = parent;
 
 			if (raw)
 			{
-				this.parent = parent;
 				scrollRatio = raw.scrollRatio ? raw.scrollRatio : 1;
 				type = raw.type;
 				isVisible = (isVisible in raw) ? raw.isVisible : true;

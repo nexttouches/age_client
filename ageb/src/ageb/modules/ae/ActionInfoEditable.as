@@ -55,6 +55,7 @@ package ageb.modules.ae
 		{
 			info.parent = this;
 			layersVectorList.addItem(info);
+			updateLayerFlags();
 			onAddLayer.dispatch(info);
 			onLayersChange.dispatch();
 		}
@@ -74,6 +75,7 @@ package ageb.modules.ae
 			assert(info.parent == this, "info.parent 不为当前动作");
 			layersVectorList.removeItem(info);
 			info.parent = null;
+			updateLayerFlags();
 			onRemoveLayer.dispatch(info);
 		}
 
@@ -95,6 +97,7 @@ package ageb.modules.ae
 			// 直接设置 layersVectorList.source = layers 会导致组件刷新出问题
 			// 这里先 new 一个新的 VectorList
 			layersVectorList = new VectorList(layers);
+			updateLayerFlags();
 			onLayersChange.dispatch();
 			updateNumFrames();
 		}

@@ -24,6 +24,11 @@ package age.data
 	public class ObjectInfo
 	{
 		/**
+		 * 指示当前 ObjectInfo 的被击区域，可以用来处理碰撞
+		 */
+		public var hitBox:Box = new Box;
+
+		/**
 		 * 创建一个新的 ObjectInfo
 		 *
 		 */
@@ -35,7 +40,18 @@ package age.data
 		}
 
 		/**
-		 * 如果 _state 实现了 IAnimatable，该值为 _state，否则为 null
+		 * 标记是否计算 elasticity
+		 */
+		public var isElasticityEnabled:Boolean = false;
+
+		/**
+		 * 下一次切换动作时，是否显示鬼影。true 显示 false 不显示<br>
+		 * 这里的鬼影是指切换动作时将保留上一动作的当前帧并淡出
+		 */
+		public var isShowGhost:Boolean;
+
+		/**
+		 * 该值总是储存 _state as IAnimatable 的值
 		 */
 		private var stateAnimatable:IAnimatable;
 
@@ -46,7 +62,7 @@ package age.data
 		 */
 		[Transient]
 		[Inline]
-		public function get state():AbstractObjectState
+		final public function get state():AbstractObjectState
 		{
 			return _state;
 		}
@@ -199,6 +215,7 @@ package age.data
 		public function set x(value:Number):void
 		{
 			position.x = value;
+			hitBox.x = value;
 		}
 
 		/**
@@ -215,6 +232,7 @@ package age.data
 		public function set y(value:Number):void
 		{
 			position.y = value;
+			hitBox.y = value;
 		}
 
 		/**
@@ -231,6 +249,7 @@ package age.data
 		public function set z(value:Number):void
 		{
 			position.z = value;
+			hitBox.z = value;
 		}
 
 		private var _onAvatarIDChange:Signal;
@@ -413,6 +432,8 @@ package age.data
 			position.z += velocity.z * time;
 			// 执行更新 currentFrame 逻辑
 			updateCurrentFrame(time);
+			// 根据当前帧刷新 hitBox
+			hitBox.setPosition(position);
 		}
 
 		/**
@@ -611,7 +632,20 @@ package age.data
 					{
 						_onCurrentFrameChange.dispatch(this);
 					}
+					// 更新 hitBox 如果动作有该图层
+					const ai:ActionInfo = actionInfo;
 
+					if (ai.hitBoxLayer)
+					{
+						// TODO 更新 hitBox
+						// hitBox.fromVector3D();
+					}
+
+					if (ai.attackBoxLayer)
+					{
+					}
+
+					//hitBox.fromVector3D();
 					if (breakAfterFrame)
 					{
 						break;
@@ -1218,19 +1252,5 @@ package age.data
 				_pad.addObject(this);
 			}
 		}
-
-		/**
-		 * 标记是否计算 elasticity
-		 */
-		public var isElasticityEnabled:Boolean = false;
-
-		/**
-		 * 下一次切换动作时，是否显示鬼影
-		 */
-		public var isShowGhost:Boolean;
-
-		public var hitBox:Box = new Box();
-
-		public var attackBox:Box = new Box();
 	}
 }
