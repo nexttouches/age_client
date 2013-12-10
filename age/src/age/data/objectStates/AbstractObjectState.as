@@ -77,7 +77,7 @@ package age.data.objectStates
 		}
 
 		/**
-		 * 从当前状态切换到指定新状态时调用<br>
+		 * 从当前状态切换到<strong>新状态</strong>时调用<br>
 		 * 请注意：抽象类 AbstractObjectState 的该方法之默认实现总是返回 true
 		 * @param newState 新状态
 		 * @return 如果可以切换就返回 true，否则返回 false

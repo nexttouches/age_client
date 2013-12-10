@@ -919,7 +919,8 @@ package age.renderers
 			// 线框
 			for (i = 0, n = wireframes.length; i < n; i++)
 			{
-				wireframes[i].currentFrame = currentFrame;
+				//wireframes[i].currentFrame = currentFrame;
+				wireframes[i].box = info.hitBox;
 			}
 		}
 
@@ -1144,6 +1145,10 @@ package age.renderers
 
 			for (var i:int = 0, n:int = renderers.length; i < n; i++)
 			{
+				if (renderers[i] is WireframeLayerRenderer)
+				{
+					continue;
+				}
 				renderers[i].position = position;
 			}
 		}

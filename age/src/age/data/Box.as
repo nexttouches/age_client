@@ -369,44 +369,44 @@ package age.data
 		 * @return
 		 *
 		 */
-		public function intersection(b:Box):Box
+		public function intersection(other:Box):Box
 		{
-			if (!intersect(b))
+			if (!intersect(other))
 			{
 				return null;
 			}
-			var p:Vector3D;
+			var v:Vector3D;
 			var vertices:Vector.<Vector3D>;
 			var i:int;
-			var veticesIntersection:Array = new Array();
+			var intersections:Array = new Array();
 			vertices = this.vertices;
 
 			for (i = 0; i < vertices.length; i++)
 			{
-				p = vertices[i];
+				v = vertices[i];
 
-				if (b.isInBox(p.x, p.y, p.z))
+				if (other.isInBox(v.x, v.y, v.z))
 				{
-					veticesIntersection.push(p);
+					intersections.push(v);
 				}
 			}
-			vertices = b.vertices;
+			vertices = other.vertices;
 
 			for (i = 0; i < vertices.length; i++)
 			{
-				p = vertices[i];
+				v = vertices[i];
 
-				if (isInBox(p.x, p.y, p.z))
+				if (isInBox(v.x, v.y, v.z))
 				{
-					veticesIntersection.push(p);
+					intersections.push(v);
 				}
 			}
-			var xIndexs:Array = veticesIntersection.sortOn("x", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
-			var yIndexs:Array = veticesIntersection.sortOn("y", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
-			var zIndexs:Array = veticesIntersection.sortOn("z", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
-			const lastIndex:int = veticesIntersection.length - 1;
+			var xIndexs:Array = intersections.sortOn("x", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
+			var yIndexs:Array = intersections.sortOn("y", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
+			var zIndexs:Array = intersections.sortOn("z", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
+			const lastIndex:int = intersections.length - 1;
 			var box:Box = new Box();
-			box.fromVector3D(new Vector3D(veticesIntersection[xIndexs[0]].x, veticesIntersection[yIndexs[0]].y, veticesIntersection[zIndexs[0]].z), new Vector3D(veticesIntersection[xIndexs[lastIndex]].x, veticesIntersection[yIndexs[lastIndex]].y, veticesIntersection[zIndexs[lastIndex]].z), new Vector3D(0.5, 0.5, 0.5));
+			box.fromVector3D(new Vector3D(intersections[xIndexs[0]].x, intersections[yIndexs[0]].y, intersections[zIndexs[0]].z), new Vector3D(intersections[xIndexs[lastIndex]].x, intersections[yIndexs[lastIndex]].y, intersections[zIndexs[lastIndex]].z), new Vector3D(0.5, 0.5, 0.5));
 			return box;
 		}
 
@@ -460,27 +460,31 @@ package age.data
 		 */
 		public function intersect(otherBox:Box):Boolean
 		{
-			var p:Vector3D;
-			var vetices:Vector.<Vector3D>;
-			var i:int;
-			vetices = this.vertices;
-
-			for (i = 0; i < vetices.length; i++)
+			if (_width == 0 && _height == 0 && _depth == 0)
 			{
-				p = vetices[i];
+				return false;
+			}
+			var v:Vector3D;
+			var buffer:Vector.<Vector3D>;
+			var i:int;
+			buffer = this.vertices;
 
-				if (otherBox.isInBox(p.x, p.y, p.z))
+			for (i = 0; i < buffer.length; i++)
+			{
+				v = buffer[i];
+
+				if (otherBox.isInBox(v.x, v.y, v.z))
 				{
 					return true;
 				}
 			}
-			vetices = otherBox.vertices;
+			buffer = otherBox.vertices;
 
-			for (i = 0; i < vetices.length; i++)
+			for (i = 0; i < buffer.length; i++)
 			{
-				p = vetices[i];
+				v = buffer[i];
 
-				if (this.isInBox(p.x, p.y, p.z))
+				if (this.isInBox(v.x, v.y, v.z))
 				{
 					return true;
 				}

@@ -29,6 +29,11 @@ package age.data
 		public var hitBox:Box = new Box;
 
 		/**
+		 * 指示当前 ObjectInfo 的攻击区域，可以用来处理碰撞
+		 */
+		public var attackBox:Box = new Box;
+
+		/**
 		 * 创建一个新的 ObjectInfo
 		 *
 		 */
@@ -649,29 +654,51 @@ package age.data
 						}
 						else
 						{
-							box.width = 0;
-							box.height = 0;
-							box.depth = 0;
+							hitBox.width = 0;
+							hitBox.height = 0;
+							hitBox.depth = 0;
 						}
 					}
+					else
+					{
+						hitBox.width = 0;
+						hitBox.height = 0;
+						hitBox.depth = 0;
+					}
 					hitBox.setPosition(position);
-					frameLayerInfo = ai.hitBoxLayer;
+					frameLayerInfo = ai.attackBoxLayer;
 
 					if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
 					{
-						// TODO 更新 attackBox
-						// hitBox.fromBox(frameLayerInfo.frames[_currentFrame].box);
-					}
+						box = frameLayerInfo.frames[_currentFrame].keyframe.box;
 
-					//hitBox.fromVector3D();
+						if (box)
+						{
+							attackBox.fromBox(box);
+						}
+						else
+						{
+							attackBox.width = 0;
+							attackBox.height = 0;
+							attackBox.depth = 0;
+						}
+					}
+					else
+					{
+						attackBox.width = 0;
+						attackBox.height = 0;
+						attackBox.depth = 0;
+					}
+					attackBox.setPosition(position);
+
+					// attackBox.direction = _direction;
 					if (breakAfterFrame)
 					{
 						break;
 					}
 				}
 
-				// 特别情况：
-				// 正好等于最后一帧
+				// 特别情况：正好等于最后一帧。可以广播 onLastFrame
 				if (currentFrame == finalFrame && currentTime == totalTime)
 				{
 					dispatchLastFrameEvent = hasLastFrameListener;

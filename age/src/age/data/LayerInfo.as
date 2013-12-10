@@ -22,6 +22,16 @@ package age.data
 	public class LayerInfo implements IAnimatable
 	{
 		/**
+		 * 所有攻击者
+		 */
+		public var attackObjects:Vector.<ObjectInfo> = new Vector.<ObjectInfo>;
+
+		/**
+		 * 所有被击者
+		 */
+		public var hitObjects:Vector.<ObjectInfo> = new Vector.<ObjectInfo>;
+
+		/**
 		 * 创建一个新的 LayerInfo
 		 * @param raw
 		 * @param parent
@@ -150,6 +160,46 @@ package age.data
 		 */
 		public var objects:Vector.<ObjectInfo> = new Vector.<ObjectInfo>;
 
+		/**
+		 * 添加一个攻击对象
+		 * @param info
+		 *
+		 */
+		public function addAttackObject(info:ObjectInfo):void
+		{
+			attackObjects.push(info);
+		}
+
+		/**
+		 * 删除一个攻击对象
+		 * @param info
+		 *
+		 */
+		public function removeAttackObject(info:ObjectInfo):void
+		{
+			attackObjects.splice(attackObjects.indexOf(info), 1);
+		}
+
+		/**
+		 * 添加一个被击对象
+		 * @param info
+		 *
+		 */
+		public function addHitObject(info:ObjectInfo):void
+		{
+			hitObjects.push(info);
+		}
+
+		/**
+		 * 删除一个被击对象
+		 * @param info
+		 *
+		 */
+		public function removeHitObject(info:ObjectInfo):void
+		{
+			hitObjects.splice(hitObjects.indexOf(info), 1);
+		}
+
 		private var _onIsVisibleChange:Signal;
 
 		/**
@@ -229,6 +279,8 @@ package age.data
 		{
 			info.parent = this;
 			objects.push(info);
+			addAttackObject(info);
+			addHitObject(info);
 
 			if (_onAddObject)
 			{
@@ -492,15 +544,31 @@ package age.data
 				}
 				// 是否已静止
 				o.isSticky = o.velocity.equals(ZERO_VELOCITY);
+			}
 
-				// 检查碰撞
-				if (i == 0)
+			// 检查碰撞过程
+			// 遍历 attackObjects，然后逐个与 hitObjects 检查碰撞
+			for (i = 0, n = attackObjects.length; i < n; i++)
+			{
+				// 准备一些变量
+				var j:int, m:int, ao:ObjectInfo, ho:ObjectInfo;
+				ao = attackObjects[i];
+
+				for (j = 0, m = hitObjects.length; j < m; j++)
 				{
-					const collide:Box = o.hitBox.intersection(objects[1].hitBox);
+					ho = hitObjects[j];
 
+					// 特别情况：跳过自己
+					if (ho == ao)
+					{
+						continue;
+					}
+					const collide:Box = ao.attackBox.intersection(ho.hitBox);
+
+					//trace(ho.position);
 					if (collide)
 					{
-						trace(collide.width, collide.height, collide.depth);
+						trace(collide.x, collide.y, collide.z);
 					}
 				}
 			}
