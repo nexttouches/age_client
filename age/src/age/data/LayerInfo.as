@@ -492,6 +492,17 @@ package age.data
 				}
 				// 是否已静止
 				o.isSticky = o.velocity.equals(ZERO_VELOCITY);
+
+				// 检查碰撞
+				if (i == 0)
+				{
+					const collide:Box = o.hitBox.intersection(objects[1].hitBox);
+
+					if (collide)
+					{
+						trace(collide.width, collide.height, collide.depth);
+					}
+				}
 			}
 		}
 	}

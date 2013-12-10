@@ -632,17 +632,35 @@ package age.data
 					{
 						_onCurrentFrameChange.dispatch(this);
 					}
-					// 更新 hitBox 如果动作有该图层
 					const ai:ActionInfo = actionInfo;
+					var frameInfo:FrameInfo;
+					var frameLayerInfo:FrameLayerInfo;
+					var box:Box;
+					// 更新 hitBox
+					frameLayerInfo = ai.hitBoxLayer;
 
-					if (ai.hitBoxLayer)
+					if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
 					{
-						// TODO 更新 hitBox
-						// hitBox.fromVector3D();
+						box = frameLayerInfo.frames[_currentFrame].keyframe.box;
+
+						if (box)
+						{
+							hitBox.fromBox(box);
+						}
+						else
+						{
+							box.width = 0;
+							box.height = 0;
+							box.depth = 0;
+						}
 					}
+					hitBox.setPosition(position);
+					frameLayerInfo = ai.hitBoxLayer;
 
-					if (ai.attackBoxLayer)
+					if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
 					{
+						// TODO 更新 attackBox
+						// hitBox.fromBox(frameLayerInfo.frames[_currentFrame].box);
 					}
 
 					//hitBox.fromVector3D();

@@ -401,10 +401,12 @@ package age.data
 					veticesIntersection.push(p);
 				}
 			}
-			var newArray:Array = veticesIntersection.sortOn([ "z", "y", "z" ], Array.NUMERIC);
-			var plbf:Vector3D = newArray[0];
-			var prtb:Vector3D = newArray[newArray.length - 1];
-			var box:Box = new Box(plbf.x, plbf.y, plbf.z, prtb.x, prtb.y, prtb.z);
+			var xIndexs:Array = veticesIntersection.sortOn("x", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
+			var yIndexs:Array = veticesIntersection.sortOn("y", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
+			var zIndexs:Array = veticesIntersection.sortOn("z", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
+			const lastIndex:int = veticesIntersection.length - 1;
+			var box:Box = new Box();
+			box.fromVector3D(new Vector3D(veticesIntersection[xIndexs[0]].x, veticesIntersection[yIndexs[0]].y, veticesIntersection[zIndexs[0]].z), new Vector3D(veticesIntersection[xIndexs[lastIndex]].x, veticesIntersection[yIndexs[lastIndex]].y, veticesIntersection[zIndexs[lastIndex]].z), new Vector3D(0.5, 0.5, 0.5));
 			return box;
 		}
 
@@ -555,14 +557,7 @@ package age.data
 				// 默认原点是中心
 				pivot.setTo(0.5, 0.5, 0.5);
 			}
-			// 根据 lower 和 upper 反推出宽高坐标
-			_width = upper.x - lower.x;
-			_height = upper.y - lower.y;
-			_depth = upper.z - lower.z;
-			_x = lower.x + _width * pivot.x;
-			_y = lower.y + _height * pivot.y;
-			_z = lower.z + _depth * pivot.z;
-			_vertices = null;
+			restoreOtherProps();
 		}
 
 		/**
@@ -573,12 +568,34 @@ package age.data
 		 * @return
 		 *
 		 */
-		public function fromVector3D(lower:Vector3D, upper:Vector3D, pivot:Vector3D)
+		public function fromVector3D(lower:Vector3D, upper:Vector3D, pivot:Vector3D):void
 		{
-			this.lower = lower;
-			this.upper = upper;
-			this.pivot = pivot;
-			// 根据 lower 和 upper 反推出宽高坐标
+			this.lower.copyFrom(lower);
+			this.upper.copyFrom(upper);
+			this.pivot.copyFrom(pivot);
+			restoreOtherProps();
+		}
+
+		/**
+		 * 从另一个 Box 更新数据
+		 * @param box
+		 *
+		 */
+		public function fromBox(box:Box):void
+		{
+			lower.copyFrom(box.lower);
+			upper.copyFrom(box.upper);
+			pivot.copyFrom(box.pivot);
+			_direction = box.direction;
+			restoreOtherProps();
+		}
+
+		/**
+		 * 根据 lower 和 upper 反推出宽高坐标
+		 */
+		[Inline]
+		final protected function restoreOtherProps():void
+		{
 			_width = upper.x - lower.x;
 			_height = upper.y - lower.y;
 			_depth = upper.z - lower.z;
@@ -592,7 +609,7 @@ package age.data
 
 		/**
 		 * 设置或获取方向，默认朝右
-		 * @see ae.renderers.Direction
+		 * @see age.renderers.Direction
 		 * @return
 		 *
 		 */

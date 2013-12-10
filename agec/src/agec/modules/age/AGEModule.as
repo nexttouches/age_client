@@ -66,7 +66,7 @@ package agec.modules.age
 			me.pad = pad;
 			sceneRenderer.info = info;
 			info.charLayer.addObject(me);
-			const n:int = 0;
+			const n:int = 1;
 
 			for (var i:int = 0; i < n; i++)
 			{
