@@ -9,7 +9,7 @@ package age.renderers
 	public interface IDirectionRenderer
 	{
 		/**
-		 * 设置或获取方向
+		 * 设置或获取方向，默认是 Direction.RIGHT
 		 * @see Direction
 		 * @return
 		 *

@@ -547,7 +547,7 @@ package age.data
 			}
 
 			// 检查碰撞过程
-			// 遍历 attackObjects，然后逐个与 hitObjects 检查碰撞
+			// 先遍历 attackObjects，然后逐个与 hitObjects 检查碰撞
 			for (i = 0, n = attackObjects.length; i < n; i++)
 			{
 				// 准备一些变量
@@ -565,7 +565,6 @@ package age.data
 					}
 					const collide:Box = ao.attackBox.intersection(ho.hitBox);
 
-					//trace(ho.position);
 					if (collide)
 					{
 						trace(collide.x, collide.y, collide.z);

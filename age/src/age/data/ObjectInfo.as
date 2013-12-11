@@ -691,7 +691,6 @@ package age.data
 					}
 					attackBox.setPosition(position);
 
-					// attackBox.direction = _direction;
 					if (breakAfterFrame)
 					{
 						break;

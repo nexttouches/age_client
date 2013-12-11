@@ -934,7 +934,7 @@ package age.renderers
 			assert(!_isDisposed, "不能重复释放资源");
 			// 解除关联的 ObjectInfo
 			info = null;
-			// 设置 container 为 null 之后会自动从 juggler 删除
+			// 设置 parent = null 后将自动从 juggler 删除
 			parent = null;
 
 			// 释放所有子渲染器：

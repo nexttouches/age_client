@@ -364,7 +364,7 @@ package age.data
 		}
 
 		/**
-		 * 判断两个 Box 是否相交并返回相交部分，如果不相交返回 null
+		 * 获得与指定 Box 的相交部分，如果没有相交则返回 null
 		 * @param b
 		 * @return
 		 *
@@ -630,10 +630,26 @@ package age.data
 			if (_direction != value)
 			{
 				_direction = value;
-				lower.x = -lower.x;
-				upper.x = -upper.x;
+				validateDirection();
 				_vertices = null
 			}
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function validateDirection():void
+		{
+			const pivotX:Number = pivot.x * _width;
+			const pivotY:Number = pivot.y * _height;
+			const pivotZ:Number = pivot.z * _depth;
+			lower.x = _x - pivotX;
+			lower.y = _y - pivotY;
+			lower.z = _z - pivotZ;
+			upper.x = _x - pivotX + _width;
+			upper.y = _y - pivotY + _height;
+			upper.z = _z - pivotZ + _depth;
 		}
 
 		/**

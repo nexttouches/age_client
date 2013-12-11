@@ -264,6 +264,7 @@ package age.renderers
 				frontQB.zOffset = pivotZ + box.z - box.depth;
 				backQB.zOffset = pivotZ + box.z;
 				// front
+				trace(box.lower, box.upper);
 				drawLine(0, box.x, box.y, box.width, 1); // 下
 				drawLine(1, box.width + box.x, box.y, 1, -box.height); // 右
 				drawLine(2, box.width + box.x, -box.height + box.y, -box.width, 1); // 上
@@ -308,8 +309,8 @@ package age.renderers
 		public function set direction(value:int):void
 		{
 			_direction = value;
-			frontQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
-			backQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
+//			frontQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
+//			backQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
 		}
 
 		private var _position:Vector3D = new Vector3D;
@@ -340,8 +341,8 @@ package age.renderers
 		public function setPosition(x:Number, y:Number, z:Number):void
 		{
 			position.setTo(x, y, z);
-			frontQB.position.setTo(x, y, z);
-			backQB.position.setTo(x, y, z);
+			frontQB.position.setTo(0, 0, 0);
+			backQB.position.setTo(0, 0, 0);
 		}
 
 		/**
