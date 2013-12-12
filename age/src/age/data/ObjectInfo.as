@@ -689,6 +689,7 @@ package age.data
 						attackBox.height = 0;
 						attackBox.depth = 0;
 					}
+					attackBox.direction = _direction;
 					attackBox.setPosition(position);
 
 					if (breakAfterFrame)

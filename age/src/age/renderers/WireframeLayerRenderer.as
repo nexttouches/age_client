@@ -1,5 +1,6 @@
 package age.renderers
 {
+	import flash.geom.Point;
 	import flash.geom.Vector3D;
 	import age.data.Box;
 	import age.data.FrameInfo;
@@ -13,19 +14,18 @@ package age.renderers
 	public class WireframeLayerRenderer implements IDisplayObject3D, IDirectionRenderer
 	{
 		/**
+		 * constructor
+		 *
+		 */
+		public function WireframeLayerRenderer()
+		{
+		}
+
+		/**
 		 * 将根据图层名字设置框颜色，默认是白色
 		 */
-		private var COLORS:Object = { hitBox: 0x00ff00, attackBox: 0xff0000, DEFAULT: 0xffffff };
-
-		/**
-		 * 前面的框
-		 */
-		private var frontQB:QuadBatch3D = new QuadBatch3D();
-
-		/**
-		 * 后面的框
-		 */
-		private var backQB:QuadBatch3D = new QuadBatch3D();
+		private static var COLORS:Object = { hitBox: 0x00ff00, attackBox: 0xff0000,
+				DEFAULT: 0xffffff };
 
 		/**
 		 * 所有线（其中 0~3 会放在 frontQB，4~7 则在 backQB）
@@ -36,14 +36,6 @@ package age.renderers
 		 * 当前线框的颜色（默认是 <tt>COLORS.DEFAULT</tt>）
 		 */
 		private var color:uint = COLORS.DEFAULT;
-
-		/**
-		 * constructor
-		 *
-		 */
-		public function WireframeLayerRenderer()
-		{
-		}
 
 		private var _currentFrame:int;
 
@@ -78,36 +70,30 @@ package age.renderers
 
 		/**
 		 * 根据参数绘制线
-		 * @param index
-		 * @param width
-		 * @param height
-		 * @param alpha
+		 * @param index 第几根
+		 * @param position 初始位置
+		 * @param width 宽
+		 * @param height 高
+		 * @param alpha 透明度
 		 *
 		 */
-		public function drawLine(index:int, x:Number, y:Number, width:Number, height:Number, alpha:Number = 1):void
+		public function drawLine(index:int, position:Vector3D, width:Number, height:Number, alpha:Number = 1):void
 		{
+//			trace("[DRAWLINE] index: " + index + " (" + position + ", " + width + ", " + height + ")");
+
 			if (!rects[index])
 			{
 				rects[index] = new Rect(width, height);
+				_parent.addChild(rects[index]);
 			}
 			else
 			{
 				rects[index].setTo(width, height);
 			}
 			const r:Rect = rects[index] as Rect;
-			r.x = x;
-			r.y = y;
+			r.position = position;
 			r.alpha = alpha;
 			r.color = color;
-
-			if (index < 4)
-			{
-				frontQB.addQuad(r);
-			}
-			else
-			{
-				backQB.addQuad(r);
-			}
 		}
 
 		private var _parent:LayerRenderer;
@@ -125,20 +111,35 @@ package age.renderers
 		 */
 		public function set parent(value:LayerRenderer):void
 		{
+			var i:int, n:int = rects.length;
+
 			if (_parent != value)
 			{
 				if (_parent)
 				{
-					_parent.removeChild(frontQB);
-					_parent.removeChild(backQB);
+					for (i = 0; i < n; i++)
+					{
+						if (rects[i])
+						{
+							rects[i].projectY = null;
+							rects[i].removeFromParent();
+						}
+					}
 				}
 				_parent = value;
 
 				if (_parent)
 				{
-					_parent.addChild(frontQB);
-					_parent.addChild(backQB);
 					projectY = _parent.info.parent.projectY;
+
+					for (i = 0; i < n; i++)
+					{
+						if (rects[i])
+						{
+							rects[i].projectY = _projectY;
+							_parent.addChild(rects[i]);
+						}
+					}
 				}
 			}
 		}
@@ -242,38 +243,40 @@ package age.renderers
 
 		public function set box(value:Box):void
 		{
+			var i:int, n:int = rects.length;
+
 			if (_box)
 			{
-				frontQB.visible = false;
-				backQB.visible = false;
+				for (i = 0; i < n; i++)
+				{
+					if (rects[i])
+					{
+						rects[i].visible = false;
+					}
+				}
 			}
 			_box = value; // reset 批处理
 
 			if (_box)
 			{
-				frontQB.reset();
-				backQB.reset();
-				// 设置 pivot
-				const pivotX:Number = box.pivot.x * box.width;
-				const pivotY:Number = box.pivot.y * box.height;
 				const pivotZ:Number = box.pivot.z * box.depth;
-				frontQB.pivotX = pivotX;
-				frontQB.pivotY = pivotY;
-				backQB.pivotX = pivotX;
-				backQB.pivotY = pivotY;
-				frontQB.zOffset = pivotZ + box.z - box.depth;
-				backQB.zOffset = pivotZ + box.z;
-				// front
-				trace(box.lower, box.upper);
-				drawLine(0, box.x, box.y, box.width, 1); // 下
-				drawLine(1, box.width + box.x, box.y, 1, -box.height); // 右
-				drawLine(2, box.width + box.x, -box.height + box.y, -box.width, 1); // 上
-				drawLine(3, box.x, -box.height + box.y, 1, box.height); // 左
-				// back
-				drawLine(4, box.x, box.y, box.width, 1, 0.3); // 下
-				drawLine(5, box.width + box.x, box.y, 1, -box.height, 0.3); // 右
-				drawLine(6, box.width + box.x, -box.height + box.y, -box.width, 1, 0.3); // 上
-				drawLine(7, box.x, -box.height + box.y, 1, box.height, 0.3); // 左
+				const vertices:Vector.<Vector3D> = box.vertices;
+				const points:Vector.<Point> = new Vector.<Point>(vertices.length);
+
+				for (i = 0, n = vertices.length; i < n; i++)
+				{
+					points[i] = new Point(vertices[i].x, _projectY(vertices[i].y, vertices[i].z));
+				}
+				// 绘制 front
+				drawLine(0, vertices[0], points[1].x - points[0].x, 1); // 下
+				drawLine(1, vertices[1], 1, points[2].y - points[1].y); // 右
+				drawLine(2, vertices[2], points[3].x - points[2].x, 1); // 上
+				drawLine(3, vertices[3], 1, points[1].y - points[3].y); // 左
+				// 绘制 back
+				drawLine(4, vertices[4], points[5].x - points[4].x, 1, 0.3); // 下
+				drawLine(5, vertices[5], 1, points[6].y - points[5].y, 0.3); // 右
+				drawLine(6, vertices[6], points[7].x - points[6].x, 1, 0.3); // 上
+				drawLine(7, vertices[7], 1, points[4].y - points[7].y, 0.3); // 左
 			}
 		}
 
@@ -327,8 +330,6 @@ package age.renderers
 		public function set position(value:Vector3D):void
 		{
 			_position = value;
-			frontQB.position = value;
-			backQB.position = value;
 		}
 
 		/**
@@ -341,8 +342,6 @@ package age.renderers
 		public function setPosition(x:Number, y:Number, z:Number):void
 		{
 			position.setTo(x, y, z);
-			frontQB.position.setTo(0, 0, 0);
-			backQB.position.setTo(0, 0, 0);
 		}
 
 		/**
@@ -352,8 +351,6 @@ package age.renderers
 		public function setX(value:Number):void
 		{
 			position.x = value;
-			frontQB.position.x = value;
-			backQB.position.x = value;
 		}
 
 		/**
@@ -363,8 +360,6 @@ package age.renderers
 		public function setY(value:Number):void
 		{
 			position.y = value;
-			frontQB.position.y = value;
-			backQB.position.y = value;
 		}
 
 		/**
@@ -374,8 +369,6 @@ package age.renderers
 		public function setZ(value:Number):void
 		{
 			position.z = value;
-			frontQB.position.z = value;
-			backQB.position.z = value;
 		}
 
 		private var _projectY:Function;
@@ -392,8 +385,6 @@ package age.renderers
 		public function set projectY(value:Function):void
 		{
 			_projectY = value;
-			frontQB.projectY = value;
-			backQB.projectY = value;
 		}
 	}
 }

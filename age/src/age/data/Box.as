@@ -21,13 +21,27 @@ package age.data
 	 */
 	public class Box
 	{
+		public static const BOX_SURFACE_FRONT:Number = 0;
+
+		public static const BOX_SURFACE_BACK:Number = 1;
+
+		public static const BOX_SURFACE_POS_LEFT:Number = 0;
+
+		public static const BOX_SURFACE_POS_RIGHT:Number = 1;
+
+		public static const BOX_SURFACE_POS_BOTTOM:Number = 0;
+
+		public static const BOX_SURFACE_POS_TOP:Number = 1;
+
+		public static const BOX_SURFACE_POS_CENTER:Number = 1;
+
 		/**
 		 * 左下角，一般是 (0, 0, 0)
 		 */
 		public var lower:Vector3D = new Vector3D;
 
 		/**
-		 * 右上角，一般是场景大小
+		 * 右上角
 		 */
 		public var upper:Vector3D = new Vector3D;
 
@@ -139,14 +153,17 @@ package age.data
 		[Inline]
 		final protected function validate():void
 		{
-			validateX();
-			validateY();
-			validateZ();
+			validateDirection();
+		/*validateX();
+		validateY();
+		validateZ();*/
 		}
 
 		[Inline]
 		final protected function validateX():void
 		{
+			validateDirection();
+			return;
 			lower.x = _x - _width * pivot.x;
 			upper.x = _x + _width * (1 - pivot.x);
 
@@ -159,6 +176,8 @@ package age.data
 		[Inline]
 		final protected function validateY():void
 		{
+			validateDirection();
+			return;
 			lower.y = _y - _height * pivot.y;
 			upper.y = _y + _height * (1 - pivot.y);
 
@@ -171,6 +190,8 @@ package age.data
 		[Inline]
 		final protected function validateZ():void
 		{
+			validateDirection();
+			return;
 			lower.z = _z - _depth * pivot.z;
 			upper.z = _z + _depth * (1 - pivot.z);
 
@@ -492,20 +513,6 @@ package age.data
 			return false;
 		}
 
-		public static const BOX_SURFACE_FRONT:Number = 0;
-
-		public static const BOX_SURFACE_BACK:Number = 1;
-
-		public static const BOX_SURFACE_POS_LEFT:Number = 0;
-
-		public static const BOX_SURFACE_POS_RIGHT:Number = 1;
-
-		public static const BOX_SURFACE_POS_BOTTOM:Number = 0;
-
-		public static const BOX_SURFACE_POS_TOP:Number = 1;
-
-		public static const BOX_SURFACE_POS_CENTER:Number = 1;
-
 		/**
 		 * 根据 pivot 获得顶点
 		 * @param pivotX
@@ -644,12 +651,22 @@ package age.data
 			const pivotX:Number = pivot.x * _width;
 			const pivotY:Number = pivot.y * _height;
 			const pivotZ:Number = pivot.z * _depth;
-			lower.x = _x - pivotX;
 			lower.y = _y - pivotY;
 			lower.z = _z - pivotZ;
-			upper.x = _x - pivotX + _width;
 			upper.y = _y - pivotY + _height;
 			upper.z = _z - pivotZ + _depth;
+
+			if (_direction & Direction.RIGHT)
+			{
+				lower.x = _x - _width * pivot.x;
+				upper.x = _x + _width * (1 - pivot.x);
+			}
+			else
+			{
+				lower.x = _x - -_width * pivot.x;
+				upper.x = _x + -_width * (1 - pivot.x);
+			}
+			// assert(lower.x <= upper.x);
 		}
 
 		/**

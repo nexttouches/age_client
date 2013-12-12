@@ -1,13 +1,12 @@
 package age.renderers
 {
-	import starling.display.Quad;
 
 	/**
 	 * 矩形
 	 * @author zhanghaocong
 	 *
 	 */
-	public class Rect extends Quad
+	public class Rect extends Quad3D
 	{
 		/**
 		 * constructor
