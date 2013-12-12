@@ -20,8 +20,7 @@ package age.renderers
 	import starling.filters.FragmentFilter;
 
 	/**
-	 * ObjectRenderer 是 ObjectInfo 的渲染器<br>
-	 * 内部使用了多种类型的渲染器
+	 * ObjectRenderer 是 ObjectInfo 的渲染器
 	 * @author zhanghaocong
 	 *
 	 */
@@ -86,11 +85,11 @@ package age.renderers
 
 		/**
 		 * 获得当前 ObjectRenderer 代表的 displayObject，用于计算鼠标之类的逻辑<br>
-		 * 如有需求，子类可以覆盖该方法，以实现自己的位置判断
+		 * 可以实现这样的需求：子类覆盖方法，更换默认的鼠标占位<br>
 		 * 默认返回 mouseRespoder
 		 * @see #mouseResponder
+		 * @return mouseRespoder
 		 */
-		[Inline]
 		public function get displayObject():DisplayObject
 		{
 			return mouseResponder;
