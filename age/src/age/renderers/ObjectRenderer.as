@@ -81,6 +81,11 @@ package age.renderers
 			addRenderer(mouseResponder);
 			// 固定图层数为 3
 			numNativeRenderers = 3;
+
+			if (AGE.config.isDebugMode && AGE.config.isShowWireframe)
+			{
+				numNativeRenderers += 2;
+			}
 		}
 
 		/**
@@ -133,6 +138,10 @@ package age.renderers
 		 * </ul>
 		 */
 		protected var shadowRenderer:ShadowRenderer;
+
+		protected var hitBoxRenderer:WireframeLayerRenderer;
+
+		protected var attackBoxRenderer:WireframeLayerRenderer;
 
 		/**
 		 * 所有子渲染器
