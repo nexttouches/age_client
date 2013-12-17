@@ -80,17 +80,20 @@ package age.renderers
 		public function drawLine(index:int, position:Vector3D, width:Number, height:Number, alpha:Number = 1):void
 		{
 //			trace("[DRAWLINE] index: " + index + " (" + position + ", " + width + ", " + height + ")");
-
 			if (!rects[index])
 			{
 				rects[index] = new Rect(width, height);
-				_parent.addChild(rects[index]);
 			}
 			else
 			{
 				rects[index].setTo(width, height);
 			}
 			const r:Rect = rects[index] as Rect;
+
+			if (!r.parent && _parent)
+			{
+				_parent.addChild(rects[index]);
+			}
 			r.position = position;
 			r.alpha = alpha;
 			r.color = color;
@@ -244,18 +247,7 @@ package age.renderers
 		public function set box(value:Box):void
 		{
 			var i:int, n:int = rects.length;
-
-			if (_box)
-			{
-				for (i = 0; i < n; i++)
-				{
-					if (rects[i])
-					{
-						rects[i].visible = false;
-					}
-				}
-			}
-			_box = value; // reset 批处理
+			_box = value;
 
 			if (_box)
 			{
@@ -277,6 +269,16 @@ package age.renderers
 				drawLine(5, vertices[5], 1, points[6].y - points[5].y, 0.3); // 右
 				drawLine(6, vertices[6], points[7].x - points[6].x, 1, 0.3); // 上
 				drawLine(7, vertices[7], 1, points[4].y - points[7].y, 0.3); // 左
+			}
+			else
+			{
+				for (i = 0; i < n; i++)
+				{
+					if (rects[i])
+					{
+						rects[i].removeFromParent();
+					}
+				}
 			}
 		}
 
@@ -312,8 +314,6 @@ package age.renderers
 		public function set direction(value:int):void
 		{
 			_direction = value;
-//			frontQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
-//			backQB.scaleX = _direction & Direction.RIGHT ? 1 : -1
 		}
 
 		private var _position:Vector3D = new Vector3D;

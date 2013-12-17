@@ -11,21 +11,31 @@ package age.data
 	 */
 	public class ActionInfo
 	{
+		/**
+		 * attackBox 图层名常量
+		 * @see #attackBoxLayer
+		 */
 		public static const ATTACK_BOX:String = "attackBox";
 
+		/**
+		 * hitBox 图层名常量
+		 * @see #hitBoxLayer
+		 */
 		public static const HIT_BOX:String = "hitBox";
 
 		/**
-		 * 储存名为 "hitBox" 图层的引用
-		 */
-		[Transient]
-		public var hitBoxLayer:FrameLayerInfo;
-
-		/**
 		 * 储存名为 "attackBox" 图层的引用
+		 * @see #ATTACK_BOX
 		 */
 		[Transient]
 		public var attackBoxLayer:FrameLayerInfo;
+
+		/**
+		 * 储存名为 "hitBox" 图层的引用
+		 * @see #HIT_BOX
+		 */
+		[Transient]
+		public var hitBoxLayer:FrameLayerInfo;
 
 		/**
 		 * 动作的资源将以此关键字进行打包（未实现）

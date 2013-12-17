@@ -9,6 +9,7 @@ package age.renderers
 	import age.data.FrameLayerInfo;
 	import age.data.FrameLayerType;
 	import age.data.ObjectInfo;
+	import age.data.VirtualLayerName;
 	import age.filters.SolidColorFilter;
 	import nt.lib.util.IDisposable;
 	import nt.lib.util.assert;
@@ -27,6 +28,16 @@ package age.renderers
 	public class ObjectRenderer implements IDirectionRenderer, IDisposable, IAnimatable, ITouchable
 	{
 		/**
+		 * constructor
+		 *
+		 */
+		public function ObjectRenderer()
+		{
+			super();
+			setupNativeRenderers();
+		}
+
+		/**
 		 * 当前渲染中的 avatarID
 		 */
 		protected var avatarID:String;
@@ -43,29 +54,13 @@ package age.renderers
 		public var isAutoPlay:Boolean = true;
 
 		/**
-		 * zsort 时使用的唯一索引，用于避免闪烁
-		 */
-		public var uniqueIndex:int;
-
-		/**
-		 * 标记当前内置渲染器的数目
+		 * 记录当前内置渲染器的数目
 		 */
 		protected var numNativeRenderers:int;
 
 		/**
-		 * constructor
-		 *
-		 */
-		public function ObjectRenderer()
-		{
-			super();
-			setupNativeRenderers();
-			uniqueIndex = ZIndexHelper.getUniqueZIndex();
-		}
-
-		/**
 		 * 初始化几个固定图层<br>
-		 * 子类可以继承，以便创建更多固定图层
+		 * 子类可以覆盖他以便创建更多固定图层
 		 *
 		 */
 		protected function setupNativeRenderers():void
@@ -82,8 +77,13 @@ package age.renderers
 			// 固定图层数为 3
 			numNativeRenderers = 3;
 
+			// 根据情况打开线框
 			if (AGE.config.isDebugMode && AGE.config.isShowWireframe)
 			{
+				attackBoxRenderer = new wireframeLayerRendererClass();
+				addRenderer(attackBoxRenderer);
+				hitBoxRenderer = new wireframeLayerRendererClass();
+				addRenderer(hitBoxRenderer);
 				numNativeRenderers += 2;
 			}
 		}
@@ -139,19 +139,20 @@ package age.renderers
 		 */
 		protected var shadowRenderer:ShadowRenderer;
 
+		/**
+		 * hitBox 渲染器
+		 */
 		protected var hitBoxRenderer:WireframeLayerRenderer;
 
+		/**
+		 * attackBox 渲染器
+		 */
 		protected var attackBoxRenderer:WireframeLayerRenderer;
 
 		/**
 		 * 所有子渲染器
 		 */
 		public var renderers:Vector.<IDisplayObject3D> = new Vector.<IDisplayObject3D>();
-
-		/**
-		 * 所有线框渲染器
-		 */
-		public var wireframes:Vector.<WireframeLayerRenderer> = new Vector.<WireframeLayerRenderer>;
 
 		/**
 		 * 所有动画渲染器
@@ -416,11 +417,22 @@ package age.renderers
 					particles.push(plr);
 					addRenderer(plr);
 				}
-				else if (info.type == FrameLayerType.VIRTUAL)
+				else if (info.type == FrameLayerType.VIRTUAL && AGE.config.isShowWireframe)
 				{
-					const wlr:WireframeLayerRenderer = new wireframeLayerRendererClass();
-					wlr.info = info;
-					addWireframe(wlr);
+					// 现已由 hitBoxRenderer 和 attackBoxRenderer 进行渲染，以下是旧代码
+					// ====================================================
+					// const wlr:WireframeLayerRenderer = new wireframeLayerRendererClass();
+					// wlr.info = info;
+					// addWireframe(wlr);
+					// ====================================================
+					if (info.name == VirtualLayerName.ATTACK_BOX)
+					{
+						attackBoxRenderer.info = info;
+					}
+					else if (info.name == VirtualLayerName.HIT_BOX)
+					{
+						hitBoxRenderer.info = info;
+					}
 				}
 			}
 			validateDirection();
@@ -436,7 +448,6 @@ package age.renderers
 		 */
 		protected function addWireframe(wlr:WireframeLayerRenderer):void
 		{
-			wireframes.push(wlr);
 			addRenderer(wlr);
 			wlr.parent = _parent;
 		}
@@ -483,13 +494,6 @@ package age.renderers
 					// TOOD 放回对象池
 			}
 			sounds.length = 0;
-
-			for (i = 0, n = wireframes.length; i < n; i++)
-			{
-				wireframes[i].dispose();
-					// TOOD 放回对象池
-			}
-			wireframes.length = 0;
 			// 只保留固定渲染器
 			renderers.length = numNativeRenderers;
 		}
@@ -893,10 +897,7 @@ package age.renderers
 		[Inline]
 		private function playSound(currentFrame:int):void
 		{
-			var i:int, n:int;
-
-			// 播放声音
-			for (i = 0, n = sounds.length; i < n; i++)
+			for (var i:int = 0, n:int = sounds.length; i < n; i++)
 			{
 				sounds[i].currentFrame = currentFrame;
 			}
@@ -924,11 +925,11 @@ package age.renderers
 				animations[i].currentFrame = currentFrame;
 			}
 
-			// 线框
-			for (i = 0, n = wireframes.length; i < n; i++)
+			// 更新线框
+			if (AGE.config.isShowWireframe)
 			{
-				//wireframes[i].currentFrame = currentFrame;
-				wireframes[i].box = info.hitBox;
+				attackBoxRenderer.box = _info.attackBox;
+				hitBoxRenderer.box = _info.hitBox;
 			}
 		}
 
@@ -955,7 +956,6 @@ package age.renderers
 			animations = null;
 			sounds = null;
 			particles = null;
-			wireframes = null;
 
 			// 最后广播下 dispose
 			if (_onDispose)

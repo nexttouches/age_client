@@ -126,7 +126,7 @@ package ageb.modules.document
 			// 检查 stdout 最后一段是否是 Nothing to …… 之后才进行黑白处理
 			if (stdout.lastIndexOf(NOT_CHANGED) != stdout.length - NOT_CHANGED.length - 1)
 			{
-				// 处理成黑白图
+				// 以下指令将利用 ImageMagick 处理成黑白图
 				im.execute(new <String>[ //
 						   "-verbose", tpParams.textureFileName, // 输入路径
 						   "-threshold", "100%%", // 设置 threshold

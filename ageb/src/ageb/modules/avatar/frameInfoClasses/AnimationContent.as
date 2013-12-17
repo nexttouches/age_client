@@ -144,6 +144,10 @@ package ageb.modules.avatar.frameInfoClasses
 			return true;
 		}
 
+		/**
+		 * @private
+		 *
+		 */
 		private function onBrowseComplete(files:*):void
 		{
 			// 单个打开的情况下不是数组，做个兼容

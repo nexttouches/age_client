@@ -37,6 +37,7 @@ package ageb.modules.ae
 		public function startEngine():void
 		{
 			isEngineReady = true;
+			AGE.config.isShowWireframe = true;
 			AGE.paddingTop = 60;
 			AGE.onStart.addOnce(function():void
 			{

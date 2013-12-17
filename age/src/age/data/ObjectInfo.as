@@ -437,8 +437,75 @@ package age.data
 			position.z += velocity.z * time;
 			// 执行更新 currentFrame 逻辑
 			updateCurrentFrame(time);
-			// 根据当前帧刷新 hitBox
+			// 执行更新 hitBox 和 attackBox
+			updateBoxes();
+		}
+
+		/**
+		 * @private
+		 *
+		 */
+		private function updateBoxes():void
+		{
+			const ai:ActionInfo = actionInfo;
+
+			if (!ai)
+			{
+				return;
+			}
+			var frameInfo:FrameInfo;
+			var frameLayerInfo:FrameLayerInfo;
+			var box:Box;
+			// 更新 hitBox
+			frameLayerInfo = ai.hitBoxLayer;
+
+			if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
+			{
+				box = frameLayerInfo.frames[_currentFrame].keyframe.box;
+
+				if (box)
+				{
+					hitBox.fromBox(box);
+				}
+				else
+				{
+					hitBox.width = 0;
+					hitBox.height = 0;
+					hitBox.depth = 0;
+				}
+			}
+			else
+			{
+				hitBox.width = 0;
+				hitBox.height = 0;
+				hitBox.depth = 0;
+			}
 			hitBox.setPosition(position);
+			frameLayerInfo = ai.attackBoxLayer;
+
+			if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
+			{
+				box = frameLayerInfo.frames[_currentFrame].keyframe.box;
+
+				if (box)
+				{
+					attackBox.fromBox(box);
+				}
+				else
+				{
+					attackBox.width = 0;
+					attackBox.height = 0;
+					attackBox.depth = 0;
+				}
+			}
+			else
+			{
+				attackBox.width = 0;
+				attackBox.height = 0;
+				attackBox.depth = 0;
+			}
+			attackBox.direction = _direction;
+			attackBox.setPosition(position);
 		}
 
 		/**
@@ -637,60 +704,6 @@ package age.data
 					{
 						_onCurrentFrameChange.dispatch(this);
 					}
-					const ai:ActionInfo = actionInfo;
-					var frameInfo:FrameInfo;
-					var frameLayerInfo:FrameLayerInfo;
-					var box:Box;
-					// 更新 hitBox
-					frameLayerInfo = ai.hitBoxLayer;
-
-					if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
-					{
-						box = frameLayerInfo.frames[_currentFrame].keyframe.box;
-
-						if (box)
-						{
-							hitBox.fromBox(box);
-						}
-						else
-						{
-							hitBox.width = 0;
-							hitBox.height = 0;
-							hitBox.depth = 0;
-						}
-					}
-					else
-					{
-						hitBox.width = 0;
-						hitBox.height = 0;
-						hitBox.depth = 0;
-					}
-					hitBox.setPosition(position);
-					frameLayerInfo = ai.attackBoxLayer;
-
-					if (frameLayerInfo && frameLayerInfo.numFrames > _currentFrame)
-					{
-						box = frameLayerInfo.frames[_currentFrame].keyframe.box;
-
-						if (box)
-						{
-							attackBox.fromBox(box);
-						}
-						else
-						{
-							attackBox.width = 0;
-							attackBox.height = 0;
-							attackBox.depth = 0;
-						}
-					}
-					else
-					{
-						attackBox.width = 0;
-						attackBox.height = 0;
-						attackBox.depth = 0;
-					}
-					attackBox.direction = _direction;
-					attackBox.setPosition(position);
 
 					if (breakAfterFrame)
 					{

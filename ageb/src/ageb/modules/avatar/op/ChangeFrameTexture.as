@@ -6,6 +6,7 @@ package ageb.modules.avatar.op
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.document.Document;
 	import ageb.utils.FileUtil;
+	import ageb.utils.ImageUtil;
 	import nt.assets.util.URLUtil;
 
 	/**
@@ -24,6 +25,11 @@ package ageb.modules.avatar.op
 		 * 要替换的贴图源文件列表 （将拷贝进 <code>folder</code> 如不在 folder 下）
 		 */
 		private var sources:Vector.<File>;
+
+		/**
+		 * 新的贴图大小（Point），以 FrameInfoEditable 为 key
+		 */
+		private var sizes:Dictionary = new Dictionary;
 
 		/**
 		 * 新的贴图属性（字符串），以 FrameInfoEditable 为 key
@@ -82,9 +88,9 @@ package ageb.modules.avatar.op
 				info.texture = textures[info];
 
 				// 也需要初始化 box
-				if (!info.box)
+				if (!info.box || info.box.isZero)
 				{
-					info.setBox(new Box);
+					info.setBox(new Box(0, 0, 0, sizes[info].x, sizes[info].y));
 				}
 			}
 		}
@@ -147,6 +153,7 @@ package ageb.modules.avatar.op
 					const source:File = sources.length > i ? sources[i] : sources[sources.length - 1];
 					const texture:String = avatarID + "_" + actionName + "#" + URLUtil.getFilename(source.name);
 					textures[info] = texture;
+					sizes[info] = ImageUtil.getImageSize(source);
 				}
 				else
 				{

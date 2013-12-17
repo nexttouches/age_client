@@ -153,52 +153,46 @@ package age.data
 		[Inline]
 		final protected function validate():void
 		{
-			validateDirection();
-		/*validateX();
-		validateY();
-		validateZ();*/
+			validateX();
+			validateY();
+			validateZ();
 		}
 
 		[Inline]
 		final protected function validateX():void
 		{
-			validateDirection();
-			return;
-			lower.x = _x - _width * pivot.x;
-			upper.x = _x + _width * (1 - pivot.x);
-
-			if (_vertices)
+			if (_direction & Direction.RIGHT)
 			{
-				_vertices = null;
+				lower.x = _x - _width * pivot.x;
+				upper.x = _x + _width * (1 - pivot.x);
+			}
+			else
+			{
+				lower.x = _x - -_width * pivot.x;
+				upper.x = _x + -_width * (1 - pivot.x);
 			}
 		}
 
 		[Inline]
 		final protected function validateY():void
 		{
-			validateDirection();
-			return;
-			lower.y = _y - _height * pivot.y;
-			upper.y = _y + _height * (1 - pivot.y);
-
-			if (_vertices)
-			{
-				_vertices = null;
-			}
+			const pivotY:Number = pivot.y * _height;
+			const pivotZ:Number = pivot.z * _depth;
+			lower.y = _y - pivotY;
+			lower.z = _z - pivotZ;
+			upper.y = _y - pivotY + _height;
+			upper.z = _z - pivotZ + _depth;
 		}
 
 		[Inline]
 		final protected function validateZ():void
 		{
-			validateDirection();
-			return;
-			lower.z = _z - _depth * pivot.z;
-			upper.z = _z + _depth * (1 - pivot.z);
-
-			if (_vertices)
-			{
-				_vertices = null;
-			}
+			const pivotY:Number = pivot.y * _height;
+			const pivotZ:Number = pivot.z * _depth;
+			lower.y = _y - pivotY;
+			lower.z = _z - pivotZ;
+			upper.y = _y - pivotY + _height;
+			upper.z = _z - pivotZ + _depth;
 		}
 
 		private var _x:Number = 0;
@@ -505,7 +499,7 @@ package age.data
 			{
 				v = buffer[i];
 
-				if (this.isInBox(v.x, v.y, v.z))
+				if (isInBox(v.x, v.y, v.z))
 				{
 					return true;
 				}
@@ -637,36 +631,8 @@ package age.data
 			if (_direction != value)
 			{
 				_direction = value;
-				validateDirection();
-				_vertices = null
+				validateX();
 			}
-		}
-
-		/**
-		 * @private
-		 *
-		 */
-		private function validateDirection():void
-		{
-			const pivotX:Number = pivot.x * _width;
-			const pivotY:Number = pivot.y * _height;
-			const pivotZ:Number = pivot.z * _depth;
-			lower.y = _y - pivotY;
-			lower.z = _z - pivotZ;
-			upper.y = _y - pivotY + _height;
-			upper.z = _z - pivotZ + _depth;
-
-			if (_direction & Direction.RIGHT)
-			{
-				lower.x = _x - _width * pivot.x;
-				upper.x = _x + _width * (1 - pivot.x);
-			}
-			else
-			{
-				lower.x = _x - -_width * pivot.x;
-				upper.x = _x + -_width * (1 - pivot.x);
-			}
-			// assert(lower.x <= upper.x);
 		}
 
 		/**
@@ -703,6 +669,16 @@ package age.data
 			_y = position.y;
 			_z = position.z;
 			validate();
+		}
+
+		/**
+		 * 如果 width height depth 都为 0，返回 true，否则返回 false
+		 * @return
+		 *
+		 */
+		public function get isZero():Boolean
+		{
+			return _width == 0 && _height == 0 && _depth == 0;
 		}
 	}
 }
