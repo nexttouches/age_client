@@ -17,9 +17,7 @@ package ageb.modules.document
 	import ageb.modules.ae.SceneInfoEditable;
 	import ageb.modules.avatar.AvatarDocumentView;
 	import ageb.utils.FileUtil;
-	import nt.assets.Asset;
 	import nt.assets.AssetConfig;
-	import nt.assets.AssetInfo;
 
 	/**
 	 * Avatar 文档

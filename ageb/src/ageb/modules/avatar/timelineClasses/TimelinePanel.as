@@ -4,6 +4,7 @@ package ageb.modules.avatar.timelineClasses
 	import flash.events.MouseEvent;
 	import spark.components.Button;
 	import spark.components.ButtonBar;
+	import spark.components.CheckBox;
 	import spark.components.ComboBox;
 	import spark.components.TextInput;
 	import spark.events.IndexChangeEvent;
@@ -15,6 +16,7 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.ae.FrameInfoEditable;
 	import ageb.modules.avatar.op.AddAction;
 	import ageb.modules.avatar.op.AddFrameLayer;
+	import ageb.modules.avatar.op.ChangeActionAtlas;
 	import ageb.modules.avatar.op.ChangeActionFPS;
 	import ageb.modules.avatar.op.RemoveAction;
 	import ageb.modules.avatar.op.RemoveFrameLayer;
@@ -23,7 +25,6 @@ package ageb.modules.avatar.timelineClasses
 	import ageb.modules.avatar.supportClasses.AvatarDocumentPanel;
 	import ageb.modules.document.Document;
 	import nt.lib.util.assert;
-	import ageb.modules.avatar.op.ChangeActionAtlas;
 
 	/**
 	 * 时间轴面板
@@ -33,6 +34,8 @@ package ageb.modules.avatar.timelineClasses
 	public class TimelinePanel extends AvatarDocumentPanel
 	{
 
+		// ↓全是皮肤组件
+		// =========================================================
 		[SkinPart(required="true")]
 		public var actionsField:ComboBox;
 
@@ -79,11 +82,10 @@ package ageb.modules.avatar.timelineClasses
 		public var removeLayerButton:Button;
 
 		[SkinPart(required="true")]
-		public var atlasField:TextInput;
+		public var publishAsAvatarID:CheckBox;
 
-		[SkinPart(required="true")]
-		public var setAtlasAsActionNameButton:Button;
-
+		// =========================================================
+		// ↑全是皮肤组件
 		/**
 		 * 创建一个新的 TimelinePanel
 		 *
@@ -117,16 +119,15 @@ package ageb.modules.avatar.timelineClasses
 			addActionButton.addEventListener(MouseEvent.CLICK, addActionButton_onClick);
 			removeActionButton.addEventListener(MouseEvent.CLICK, removeActionButton_onClick);
 			renameActionButton.addEventListener(MouseEvent.CLICK, renameActionButton_onClick);
-			setAtlasAsActionNameButton.addEventListener(MouseEvent.CLICK, setAtlasAsActionNameButton_onClick);
+			publishAsAvatarID.addEventListener(Event.CHANGE, publishAsAvatarID_onChange);
 		}
 
 		/**
 		 * @private
 		 *
 		 */
-		protected function setAtlasAsActionNameButton_onClick(event:MouseEvent):void
+		protected function publishAsAvatarID_onChange(event:Event):void
 		{
-			new ChangeActionAtlas(doc, atlasField.text).execute();
 		}
 
 		/**

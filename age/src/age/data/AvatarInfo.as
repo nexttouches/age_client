@@ -1,7 +1,6 @@
 package age.data
 {
 	import flash.system.Capabilities;
-	import nt.lib.util.assert;
 
 	/**
 	 * AvatarInfo 储存了一套角色的所有动作、大小等基本信息
