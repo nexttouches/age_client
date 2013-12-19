@@ -23,7 +23,7 @@ package ageb.utils
 		/**
 		 * 假设 f 是 png 文件，这里可以返回 png 的大小
 		 * @param f
-		 * @return 一个 Point，x 代表宽，y 代表高度
+		 * @return 一个 Point，x 代表宽，y 代表高度。如果 <tt>f</tt> 不是 PNG 文件则返回 null
 		 *
 		 */
 		public static function getImageSize(f:File):Point
