@@ -37,10 +37,15 @@ package age.data
 		[Transient]
 		public var hitBoxLayer:FrameLayerInfo;
 
+		protected var _atlas:String;
+
 		/**
-		 * 动作的资源将以此关键字进行打包（未实现）
+		 * 动作的资源将以此关键字进行打包
 		 */
-		public var atlas:String;
+		public function get atlas():String
+		{
+			return _atlas ||= parent.id + "_" + name;
+		}
 
 		/**
 		 * 名字
@@ -200,12 +205,10 @@ package age.data
 			restore(s, this, "numFrames");
 			restore(s, this, "name");
 			restore(s, this, "fps");
-			restore(s, this, "atlas");
 
-			// 为 atlas 设置默认值
-			if (!atlas)
+			if (s.atlas)
 			{
-				atlas = name;
+				_atlas = s.atlas;
 			}
 
 			// 检查 fps 有效性
@@ -238,7 +241,6 @@ package age.data
 			{
 				layers.push(new frameLayerInfoClass(raw.layers[i], this));
 			}
-			// 省略了 numFrames 字段
 			updateNumFrames();
 			updateLayerFlags();
 		}

@@ -375,7 +375,7 @@ package ageb.modules.ae
 		{
 			if (value != atlas)
 			{
-				atlas = value;
+				_atlas = value;
 				onAtlasChange.dispatch();
 			}
 		}

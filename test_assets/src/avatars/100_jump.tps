@@ -130,9 +130,9 @@
         </struct>
         <key>fileList</key>
         <array>
-<filename>D:\age\age_client\test_assets\src\avatars\100\jump\125.png</filename>
-<filename>D:\age\age_client\test_assets\src\avatars\100\jump\126.png</filename>
-<filename>D:\age\age_client\test_assets\src\avatars\100\jump\127.png</filename>
+<filename>C:\Users\zhanghaocong\AppData\Local\Temp\fla5ED5.tmp\100_jump_125.png</filename>
+<filename>C:\Users\zhanghaocong\AppData\Local\Temp\fla5ED5.tmp\100_jump_126.png</filename>
+<filename>C:\Users\zhanghaocong\AppData\Local\Temp\fla5ED5.tmp\100_jump_127.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

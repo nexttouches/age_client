@@ -22,7 +22,7 @@ package ageb.modules.job
 		}
 
 		/**
-		 * 当前 Job 对应的 *.tps 文件储存的位置
+		 * 当前 Job 对应的 *.tps 文件
 		 */
 		public var tps:File;
 

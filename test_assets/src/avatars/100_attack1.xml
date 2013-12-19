@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:357b5274be7fd390407a4faefb8a8f76:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:c88c363314a77ed48e1df0b3297a9082:1/1$ -->
 <TextureAtlas imagePath="100_attack1.png">
-    <SubTexture name="0" x="82" y="4" width="72" height="108" frameX="-188" frameY="-230" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="1" x="4" y="4" width="72" height="108" frameX="-188" frameY="-230" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="2" x="160" y="4" width="68" height="108" frameX="-193" frameY="-230" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="3" x="234" y="4" width="94" height="94" frameX="-201" frameY="-244" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="4" x="670" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="5" x="586" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="6" x="502" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="7" x="418" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="8" x="334" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_0" x="82" y="4" width="72" height="108" frameX="-188" frameY="-230" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_1" x="4" y="4" width="72" height="108" frameX="-188" frameY="-230" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_2" x="160" y="4" width="68" height="108" frameX="-193" frameY="-230" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_3" x="234" y="4" width="94" height="94" frameX="-201" frameY="-244" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_4" x="670" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_5" x="586" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_6" x="502" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_7" x="418" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_attack1_8" x="334" y="4" width="78" height="90" frameX="-201" frameY="-249" frameWidth="500" frameHeight="500"/>
 </TextureAtlas>

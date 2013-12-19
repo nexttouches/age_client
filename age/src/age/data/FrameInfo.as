@@ -156,7 +156,7 @@ package age.data
 			{
 				var s:Array = texture.split("#");
 				texturePath = s[0];
-				textureName = s[1];
+				textureName = s[0] + "_" + s[1];
 			}
 		}
 

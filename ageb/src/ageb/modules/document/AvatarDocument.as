@@ -5,10 +5,10 @@ package ageb.modules.document
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.geom.Vector3D;
-	import age.data.ActionInfo;
 	import age.data.AvatarInfo;
 	import age.data.ObjectType;
 	import age.data.SceneInfo;
+	import ageb.modules.ae.ActionInfoEditable;
 	import ageb.modules.ae.AvatarInfoEditable;
 	import ageb.modules.ae.BGInfoEditable;
 	import ageb.modules.ae.IParent;
@@ -175,9 +175,24 @@ package ageb.modules.document
 		 */
 		override public function preview():void
 		{
-			for each (var actionInfo:ActionInfo in avatar.actions)
+			/*for each (var actionInfo:ActionInfo in avatar.actions)
 			{
-				modules.job.addJob(new PublishActionJob(actionInfo));
+			modules.job.addJob(new PublishActionJob(actionInfo));
+			}*/
+			var atlases:Object = {};
+
+			for each (var actionInfo:ActionInfoEditable in avatar.actions)
+			{
+				if (!(actionInfo.atlas in atlases))
+				{
+					atlases[actionInfo.atlas] = new Vector.<ActionInfoEditable>;
+				}
+				atlases[actionInfo.atlas].push(actionInfo);
+			}
+
+			for (var atlasName:String in atlases)
+			{
+				modules.job.addJob(new PublishAvatarJob(atlasName, atlases[atlasName]));
 			}
 		}
 	}

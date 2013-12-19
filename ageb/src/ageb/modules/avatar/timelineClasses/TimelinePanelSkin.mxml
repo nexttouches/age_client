@@ -45,7 +45,6 @@ in accordance with the terms of the license agreement accompanying it.
 	<fx:Script fb:purpose="styling">
 		<![CDATA[
 			import mx.core.FlexVersion;
-			import ageb.skins.SmallIconButtonSkin;
 
 			/* Define the skin elements that should not be colorized.
 			For panel, border and title background are skinned, but the content area, background, border, and title text are not. */
@@ -368,8 +367,16 @@ in accordance with the terms of the license agreement accompanying it.
 							</s:ArrayList>
 						</s:dataProvider>
 					</s:ButtonBar>
-					<s:CheckBox id="publishAsAvatarID"
-						label="按 AvatarID 打包"/>
+					<s:Label 
+						fontWeight="bold"
+						text="打包"/>
+					<s:TextInput id="atlasField"
+						width="100"
+						color="0x66b3ff"/>
+					<s:Button id="setAtlasAsActionNameButton"
+						label="设置为动作名"/>
+					<s:Button id="setAtlasAsAvatarIDButton"
+						label="设置为 AvatarID"/>
 				</s:Group>
 			</s:Group>
 

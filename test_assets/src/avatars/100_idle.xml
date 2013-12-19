@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:4dfb83cf12b865c0ea8ba8725413e3f9:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:1d8e2eb26e0029f825e38cf68243ee03:1/1$ -->
 <TextureAtlas imagePath="100_idle.png">
-    <SubTexture name="176" x="4" y="376" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="177" x="4" y="252" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="178" x="4" y="128" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
-    <SubTexture name="179" x="4" y="4" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_idle_176" x="4" y="376" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_idle_177" x="4" y="252" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_idle_178" x="4" y="128" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
+    <SubTexture name="100_idle_179" x="4" y="4" width="46" height="118" frameX="-207" frameY="-223" frameWidth="500" frameHeight="500"/>
 </TextureAtlas>

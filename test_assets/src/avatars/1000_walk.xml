@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:3007f877bdadb4491befcafd8b566375:1/1$ -->
-<TextureAtlas imagePath="1000_walk.png">
-    <SubTexture name="0" x="4" y="4" width="55" height="86"/>
-</TextureAtlas>
