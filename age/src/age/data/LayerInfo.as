@@ -565,6 +565,7 @@ package age.data
 					}
 					const collide:Box = ao.attackBox.intersection(ho.hitBox);
 
+					// 这里碰撞了
 					if (collide)
 					{
 						trace(collide.x, collide.y, collide.z);

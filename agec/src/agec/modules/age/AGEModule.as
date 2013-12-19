@@ -136,6 +136,7 @@ package agec.modules.age
 		private function AGE_onStart():void
 		{
 			// 更新相机
+			AGE.config.isShowWireframe = true;
 			AGE.camera.scene = sceneRenderer;
 			AGE.camera.center = new Point(AGE.stageWidth * 0.5, AGE.stageHeight * 0.5);
 			AGE.camera.isLimitBounds = false;

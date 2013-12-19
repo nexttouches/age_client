@@ -13,6 +13,10 @@ package ageb.utils
 	 */
 	public class FileUtil
 	{
+		/**
+		 * constructor
+		 *
+		 */
 		public function FileUtil()
 		{
 		}
@@ -31,7 +35,7 @@ package ageb.utils
 		/**
 		 * 根据路径获得一个 File，如出现任何错误，将返回 ifFail
 		 * @param nativePath 完整路径
-		 * @param ifFail 可选，失败时返回的 File
+		 * @param ifFail 可选，失败时返回的 File。默认是 File.desktopDirectory
 		 * @return
 		 *
 		 */
