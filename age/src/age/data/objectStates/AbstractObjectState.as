@@ -2,6 +2,8 @@ package age.data.objectStates
 {
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
+	import age.data.Box;
 	import age.data.ObjectInfo;
 	import age.renderers.Direction;
 	import nt.lib.reflect.Type;
@@ -19,7 +21,7 @@ package age.data.objectStates
 		public var isForce:Boolean = false;
 
 		/**
-		 * 状态名字。自动通过反射获取并且全小写
+		 * 状态名字。该字段将自动通过反射获取并且全小写
 		 */
 		public var name:String;
 
@@ -32,6 +34,16 @@ package age.data.objectStates
 		 * 当前状态的操作对象
 		 */
 		protected var info:ObjectInfo;
+
+		/**
+		 * 设置或获取攻击间隔（单位秒）。默认为 Infinity，也就是只能攻击一次
+		 */
+		public var attackInterval:Number = Infinity;
+
+		/**
+		 * 记录本次攻击到的对象（键是 ObjectInfo，值是攻击的时间）
+		 */
+		public var attackedObjects:Dictionary = new Dictionary();
 
 		/**
 		 * constructor
@@ -74,6 +86,7 @@ package age.data.objectStates
 		 */
 		public function cancel():void
 		{
+			emptyAttackedObjects();
 		}
 
 		/**
@@ -179,6 +192,68 @@ package age.data.objectStates
 		{
 			info.velocity.x = 0;
 			info.velocity.z = 0;
+		}
+
+		/**
+		 * 当攻击某对象时，将自动调用该方法
+		 * @param object 碰撞的对象
+		 * @param intersection 相交的 Box
+		 * @return 本次攻击是否有效
+		 */
+		public function onAttack(target:ObjectInfo, intersection:Box):Boolean
+		{
+			if (canAttack(target))
+			{
+				doAttack(target);
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * 被某对象攻击时，将自动调用该方法
+		 * @param by
+		 * @param intersection
+		 *
+		 */
+		public function onHit(by:ObjectInfo, intersection:Box):void
+		{
+		}
+
+		/**
+		 * 通过检查 attackInterval 确定是否可以攻击
+		 * @param target
+		 * @return
+		 *
+		 */
+		public function canAttack(target:ObjectInfo):Boolean
+		{
+			if (target in attackedObjects)
+			{
+				trace(attackedObjects[target] + attackInterval, getTimer());
+				return attackedObjects[target] + attackInterval <= getTimer();
+			}
+			return true;
+		}
+
+		/**
+		 * 攻击指定对象
+		 * @param target
+		 * @return
+		 *
+		 */
+		public function doAttack(target:ObjectInfo):void
+		{
+			attackedObjects[target] = getTimer();
+		}
+
+		/**
+		 * 清空 attackedObjects 列表
+		 *
+		 */
+		final public function emptyAttackedObjects():void
+		{
+			attackedObjects = new Dictionary();
 		}
 	}
 }

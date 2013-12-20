@@ -1,5 +1,6 @@
 package age.data.objectStates
 {
+	import flash.utils.getTimer;
 	import age.data.ObjectInfo;
 	import age.renderers.Direction;
 
@@ -73,6 +74,8 @@ package age.data.objectStates
 		 */
 		private function attack():void
 		{
+			emptyAttackedObjects();
+
 			if (index >= MAX_INDEX)
 			{
 				index = 0;
@@ -148,10 +151,21 @@ package age.data.objectStates
 		 */
 		override public function cancel():void
 		{
+			super.cancel();
 			index = 0;
 			isContinue = false;
 			info.onLastFrame.remove(onLastFrame);
 			info.onCurrentFrameChange.remove(onCurrentFrameChange);
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 */
+		override public function doAttack(target:ObjectInfo):void
+		{
+			super.doAttack(target);
+			trace(index + " Hit");
 		}
 	}
 }

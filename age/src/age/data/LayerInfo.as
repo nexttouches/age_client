@@ -563,12 +563,15 @@ package age.data
 					{
 						continue;
 					}
-					const collide:Box = ao.attackBox.intersection(ho.hitBox);
+					const intersection:Box = ao.attackBox.intersection(ho.hitBox);
 
-					// 这里碰撞了
-					if (collide)
+					if (intersection)
 					{
-						trace(collide.x, collide.y, collide.z);
+						if (ao.state.onAttack(ho, intersection))
+						{
+							ho.state.onHit(ao, intersection);
+								// TODO 显示命中特效
+						}
 					}
 				}
 			}

@@ -3,6 +3,7 @@ package agec.modules.age
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.sampler.getSize;
 	import age.AGE;
 	import age.data.AvatarInfo;
 	import age.data.ObjectInfo;
