@@ -573,6 +573,9 @@ package age.data
 								// TODO 显示命中特效
 						}
 					}
+					else
+					{
+					}
 				}
 			}
 		}

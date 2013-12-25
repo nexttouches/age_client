@@ -168,8 +168,8 @@ package age.data
 			}
 			else
 			{
-				lower.x = _x - -_width * pivot.x;
-				upper.x = _x + -_width * (1 - pivot.x);
+				upper.x = _x - -_width * pivot.x;
+				lower.x = _x + -_width * (1 - pivot.x);
 			}
 		}
 
@@ -384,45 +384,25 @@ package age.data
 		 * @return
 		 *
 		 */
-		public function intersection(other:Box):Box
+		public function intersection(otherBox:Box):Box
 		{
-			if (!intersect(other))
+			if (!intersect(otherBox))
 			{
 				return null;
 			}
-			var v:Vector3D;
-			var vertices:Vector.<Vector3D>;
-			var i:int;
-			var intersections:Array = new Array();
-			vertices = this.vertices;
-
-			for (i = 0; i < vertices.length; i++)
-			{
-				v = vertices[i];
-
-				if (other.isInBox(v.x, v.y, v.z))
-				{
-					intersections.push(v);
-				}
-			}
-			vertices = other.vertices;
-
-			for (i = 0; i < vertices.length; i++)
-			{
-				v = vertices[i];
-
-				if (isInBox(v.x, v.y, v.z))
-				{
-					intersections.push(v);
-				}
-			}
-			var xIndexs:Array = intersections.sortOn("x", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
-			var yIndexs:Array = intersections.sortOn("y", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
-			var zIndexs:Array = intersections.sortOn("z", Array.NUMERIC | Array.RETURNINDEXEDARRAY);
-			const lastIndex:int = intersections.length - 1;
-			var box:Box = new Box();
-			box.fromVector3D(new Vector3D(intersections[xIndexs[0]].x, intersections[yIndexs[0]].y, intersections[zIndexs[0]].z), new Vector3D(intersections[xIndexs[lastIndex]].x, intersections[yIndexs[lastIndex]].y, intersections[zIndexs[lastIndex]].z), new Vector3D(0.5, 0.5, 0.5));
-			return box;
+			const lower2:Vector3D = otherBox.lower;
+			const upper2:Vector3D = otherBox.upper;
+			var result:Box = new Box();
+			const resultLower:Vector3D = new Vector3D();
+			const resultUpper:Vector3D = new Vector3D();
+			resultLower.x = Math.max(lower.x, lower2.x);
+			resultUpper.x = Math.min(upper.x, upper2.x);
+			resultLower.y = Math.max(lower.y, lower2.y);
+			resultUpper.y = Math.min(upper.y, upper2.y);
+			resultLower.z = Math.max(lower.z, lower2.z);
+			resultUpper.z = Math.min(upper.z, upper2.z);
+			result.fromVector3D(resultLower, resultUpper, new Vector3D(0.5, 0.5, 0.5));
+			return result;
 		}
 
 		/**
@@ -435,36 +415,7 @@ package age.data
 		 */
 		public function isInBox(x:Number, y:Number, z:Number):Boolean
 		{
-			var result:Boolean = true;
-
-			do
-			{
-				if (x < lower.x || x > upper.x)
-				{
-					result = false;
-				}
-
-				if (!result)
-				{
-					break;
-				}
-
-				if (y < lower.y || y > upper.y)
-				{
-					result = false;
-				}
-
-				if (!result)
-				{
-					break;
-				}
-
-				if (z < lower.z || z > upper.z)
-				{
-					result = false;
-				}
-			} while (false);
-			return result;
+			return (x >= lower.x) && (x <= upper.x) && (y >= lower.y) && (y <= upper.y) && (z >= lower.z) && (z <= upper.z);
 		}
 
 		/**
@@ -475,36 +426,39 @@ package age.data
 		 */
 		public function intersect(otherBox:Box):Boolean
 		{
-			if (_width == 0 && _height == 0 && _depth == 0)
+			const lower2:Vector3D = otherBox.lower;
+			const upper2:Vector3D = otherBox.upper;
+
+			if (lower.x > upper2.x)
 			{
 				return false;
 			}
-			var v:Vector3D;
-			var buffer:Vector.<Vector3D>;
-			var i:int;
-			buffer = this.vertices;
 
-			for (i = 0; i < buffer.length; i++)
+			if (upper.x < lower2.x)
 			{
-				v = buffer[i];
-
-				if (otherBox.isInBox(v.x, v.y, v.z))
-				{
-					return true;
-				}
+				return false;
 			}
-			buffer = otherBox.vertices;
 
-			for (i = 0; i < buffer.length; i++)
+			if (lower.y > upper2.y)
 			{
-				v = buffer[i];
-
-				if (isInBox(v.x, v.y, v.z))
-				{
-					return true;
-				}
+				return false;
 			}
-			return false;
+
+			if (upper.y < lower2.y)
+			{
+				return false;
+			}
+
+			if (lower.z > upper2.z)
+			{
+				return false;
+			}
+
+			if (upper.z < lower2.z)
+			{
+				return false;
+			}
+			return true;
 		}
 
 		/**

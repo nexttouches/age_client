@@ -230,7 +230,6 @@ package age.data.objectStates
 		{
 			if (target in attackedObjects)
 			{
-				trace(attackedObjects[target] + attackInterval, getTimer());
 				return attackedObjects[target] + attackInterval <= getTimer();
 			}
 			return true;
