@@ -48,6 +48,26 @@ package age.data
 		}
 
 		/**
+		 * atlas 是否是默认值
+		 * @return
+		 *
+		 */
+		public function get isDefaultAtlas():Boolean
+		{
+			return atlas == defaultAtlas;
+		}
+
+		/**
+		 * 期待的默认 atlas
+		 * @return
+		 *
+		 */
+		public function get defaultAtlas():String
+		{
+			return parent.id + "_" + name;
+		}
+
+		/**
 		 * 名字
 		 */
 		public var name:String

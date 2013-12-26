@@ -77,6 +77,11 @@ package agec.modules.age
 				//me.pad = pad;
 				info.charLayer.addObject(me);
 			}
+			var slash:ObjectInfo = new ObjectInfo();
+			slash.avatarID = "hiteffects";
+			slash.actionName = "slashsmall1";
+			slash.position = me.position.clone();
+			info.charLayer.addObject(slash);
 		}
 
 		/**

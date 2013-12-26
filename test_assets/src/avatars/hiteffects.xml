@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:923418c26f96997135d5c69bfb07be27:1/1$ -->
+<!-- $TexturePacker:SmartUpdate:4d0e996828c55eb23ad30b087fb1dad3:1/1$ -->
 <TextureAtlas imagePath="hiteffects.png">
     <SubTexture name="hiteffects_slashlarge1_0" x="1536" y="4" width="132" height="120" frameX="-102" frameY="-107" frameWidth="336" frameHeight="336"/>
     <SubTexture name="hiteffects_slashlarge1_1" x="606" y="4" width="184" height="166" frameX="-75" frameY="-85" frameWidth="336" frameHeight="336"/>

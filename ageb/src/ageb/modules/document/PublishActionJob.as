@@ -68,8 +68,6 @@ package ageb.modules.document
 		 */
 		protected function prepareTPParams(l:FrameLayerInfo):void
 		{
-			l.fillFramesTexture();
-
 			for (var j:int = 0; j < l.frames.length; j++)
 			{
 				const frame:FrameInfo = l.frames[j];
