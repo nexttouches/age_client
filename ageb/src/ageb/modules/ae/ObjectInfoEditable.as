@@ -286,7 +286,7 @@ package ageb.modules.ae
 
 			if (actionInfo)
 			{
-				SyncInfoLoader.loadAtlasConfig(AvatarInfo.folder + "/" + avatarID + "_" + actionName);
+				SyncInfoLoader.loadAtlasConfig(AvatarInfo.folder + "/" + actionInfo.atlas);
 			}
 		}
 	}

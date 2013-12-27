@@ -1,5 +1,6 @@
 package age.data
 {
+	import flash.errors.IllegalOperationError;
 	import flash.media.Sound;
 	import age.age_internal;
 	import nt.assets.AssetGroup;
@@ -279,7 +280,7 @@ package age.data
 				{
 					continue;
 				}
-				const asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + keyframe.texturePath);
+				const asset:TextureAsset = getTextureAsset(keyframe);
 
 				// 检查是否有子贴图，为 null 或空字符串表示没有子贴图
 				if (keyframe.textureName && asset.textureAtlas)
@@ -380,7 +381,7 @@ package age.data
 					// 判断是否有贴图
 					if (frames[i].texture)
 					{
-						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].texturePath);
+						const asset:TextureAsset = getTextureAsset(frames[i]);
 						asset.useThumb = isTextureUseThumb;
 						addAsset(asset);
 					}
@@ -440,7 +441,7 @@ package age.data
 					// 判断是否有贴图
 					if (frames[i].texture)
 					{
-						var asset:TextureAsset = TextureAsset.get(AvatarInfo.folder + "/" + frames[i].texturePath);
+						var asset:TextureAsset = getTextureAsset(frames[i]);
 						asset.useThumb = isTextureUseThumb;
 						addAsset(asset);
 					}
@@ -580,6 +581,22 @@ package age.data
 		public function toString():String
 		{
 			return format("[{0}] name={1}, index={2}, type={3}", Type.of(this).shortname, name, index, type);
+		}
+
+		/**
+		 * 根据 FrameInfo 获得 TextureAsset
+		 * @param info
+		 * @return
+		 *
+		 */
+		protected function getTextureAsset(info:FrameInfo):TextureAsset
+		{
+			if (!parent)
+			{
+				throw new IllegalOperationError("缺少 parent，无法完成该操作");
+				return null;
+			}
+			return TextureAsset.get(AvatarInfo.folder + "/" + (parent.isDefaultAtlas ? info.texturePath : parent.atlas));
 		}
 	}
 }

@@ -1,8 +1,11 @@
 package ageb.modules.ae
 {
+	import flash.errors.IllegalOperationError;
 	import age.data.ActionInfo;
+	import age.data.AvatarInfo;
 	import age.data.FrameInfo;
 	import age.data.FrameLayerInfo;
+	import age.data.TextureAsset;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -294,5 +297,21 @@ package ageb.modules.ae
 		 * index 发生变化时广播
 		 */
 		public var onIndexChange:Signal = new Signal();
+
+		/**
+		 * 根据 FrameInfo 获得 TextureAsset
+		 * @param info
+		 * @return
+		 *
+		 */
+		override protected function getTextureAsset(info:FrameInfo):TextureAsset
+		{
+			if (!parent)
+			{
+				throw new IllegalOperationError("缺少 parent，无法完成该操作");
+				return null;
+			}
+			return TextureAsset.get(AvatarInfo.folder + "/" + info.texturePath);
+		}
 	}
 }
