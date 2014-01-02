@@ -111,7 +111,7 @@ package ageb.modules.ae
 		 * @param info
 		 *
 		 */
-		override public function addObject(info:ObjectInfo):void
+		override public function addObject(info:ObjectInfo, isAttackObject:Boolean = false, isHitObject:Boolean = false):void
 		{
 			objectsVectorList.addItem(info);
 			info.parent = this;

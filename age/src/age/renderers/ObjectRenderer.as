@@ -244,6 +244,7 @@ package age.renderers
 			if (_info)
 			{
 				advanceTime(0);
+				onDirectionChange();
 			}
 		}
 

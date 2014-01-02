@@ -355,6 +355,7 @@ package age.renderers
 			var r:ObjectRenderer = objects[info];
 			r.parent = null;
 			r.info = null;
+			r.dispose();
 			delete objects[info];
 		}
 

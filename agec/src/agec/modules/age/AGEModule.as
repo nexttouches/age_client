@@ -66,7 +66,7 @@ package agec.modules.age
 			me.position.setTo(info.width / 2, 0, info.depth / 2);
 			me.pad = pad;
 			sceneRenderer.info = info;
-			info.charLayer.addObject(me);
+			info.charLayer.addObject(me, true, true);
 			const n:int = 1;
 
 			for (var i:int = 0; i < n; i++)
@@ -75,13 +75,8 @@ package agec.modules.age
 				me.avatarID = "100";
 				me.position.setTo(Math.random() * info.width, 0, Math.random() * info.depth);
 				//me.pad = pad;
-				info.charLayer.addObject(me);
+				info.charLayer.addObject(me, true, true);
 			}
-			var slash:ObjectInfo = new ObjectInfo();
-			slash.avatarID = "hiteffects";
-			slash.actionName = "slashsmall1";
-			slash.position = me.position.clone();
-			info.charLayer.addObject(slash);
 		}
 
 		/**

@@ -380,7 +380,7 @@ package age.data
 
 		/**
 		 * 获得与指定 Box 的相交部分，如果没有相交则返回 null
-		 * @param b
+		 * @param otherBox
 		 * @return
 		 *
 		 */
@@ -392,7 +392,6 @@ package age.data
 			}
 			const lower2:Vector3D = otherBox.lower;
 			const upper2:Vector3D = otherBox.upper;
-			var result:Box = new Box();
 			const resultLower:Vector3D = new Vector3D();
 			const resultUpper:Vector3D = new Vector3D();
 			resultLower.x = Math.max(lower.x, lower2.x);
@@ -401,6 +400,7 @@ package age.data
 			resultUpper.y = Math.min(upper.y, upper2.y);
 			resultLower.z = Math.max(lower.z, lower2.z);
 			resultUpper.z = Math.min(upper.z, upper2.z);
+			var result:Box = new Box();
 			result.fromVector3D(resultLower, resultUpper, new Vector3D(0.5, 0.5, 0.5));
 			return result;
 		}
@@ -426,6 +426,11 @@ package age.data
 		 */
 		public function intersect(otherBox:Box):Boolean
 		{
+			// 任一 box 大小为 0 将不会相交
+			if (isZero || otherBox.isZero)
+			{
+				return false;
+			}
 			const lower2:Vector3D = otherBox.lower;
 			const upper2:Vector3D = otherBox.upper;
 
@@ -633,6 +638,36 @@ package age.data
 		public function get isZero():Boolean
 		{
 			return _width == 0 && _height == 0 && _depth == 0;
+		}
+
+		/**
+		 * 中心 x
+		 * @return
+		 *
+		 */
+		public function get centerX():Number
+		{
+			return lower.x + _width * 0.5;
+		}
+
+		/**
+		 * 中心 y
+		 * @return
+		 *
+		 */
+		public function get centerY():Number
+		{
+			return lower.y + _height * 0.5;
+		}
+
+		/**
+		 * 中心 z
+		 * @return
+		 *
+		 */
+		public function get centerZ():Number
+		{
+			return lower.z + _depth * 0.5;
 		}
 	}
 }

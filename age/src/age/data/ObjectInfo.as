@@ -269,7 +269,7 @@ package age.data
 			return _onAvatarIDChange ||= new Signal();
 		}
 
-		private var _avatarID:String;
+		protected var _avatarID:String;
 
 		/**
 		 * 设置或获取 Avatar ID
@@ -311,7 +311,7 @@ package age.data
 			return _onActionNameChange ||= new Signal();
 		}
 
-		private var _actionName:String;
+		protected var _actionName:String;
 
 		/**
 		 * 设置或获取 actionName
@@ -1134,7 +1134,7 @@ package age.data
 			return _onDirectionChange ||= new Signal();
 		}
 
-		private var _direction:int = Direction.RIGHT;
+		protected var _direction:int = Direction.RIGHT;
 
 		/**
 		 * 设置或获取方向

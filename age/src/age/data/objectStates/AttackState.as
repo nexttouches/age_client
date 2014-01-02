@@ -165,7 +165,6 @@ package age.data.objectStates
 		override public function doAttack(target:ObjectInfo):void
 		{
 			super.doAttack(target);
-			trace(index + " Hit");
 		}
 	}
 }

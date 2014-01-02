@@ -1,11 +1,16 @@
 package age.data
 {
+	import flash.debugger.enterDebugger;
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Vector3D;
 	import age.AGE;
+	import age.renderers.Direction;
 	import nt.assets.Asset;
+	import nt.lib.util.assert;
+	import nt.lib.util.callLater;
 	import org.osflash.signals.Signal;
 	import starling.animation.IAnimatable;
+	import starling.utils.rad2deg;
 
 	/**
 	 * LayerInfo 是场景图层信息<br>
@@ -275,12 +280,20 @@ package age.data
 		 * @param info
 		 *
 		 */
-		public function addObject(info:ObjectInfo):void
+		public function addObject(info:ObjectInfo, isAttackObject:Boolean = false, isHitObject:Boolean = false):void
 		{
 			info.parent = this;
 			objects.push(info);
-			addAttackObject(info);
-			addHitObject(info);
+
+			if (isAttackObject)
+			{
+				addAttackObject(info);
+			}
+
+			if (isHitObject)
+			{
+				addHitObject(info);
+			}
 
 			if (_onAddObject)
 			{
@@ -476,7 +489,7 @@ package age.data
 			const lower:Vector3D = parent.size.lower;
 			const upper:Vector3D = parent.size.upper;
 
-			for (i = 0, n = objects.length; i < n; i++)
+			for (i = 0; i < objects.length; i++)
 			{
 				o = objects[i];
 
@@ -570,11 +583,21 @@ package age.data
 						if (ao.state.onAttack(ho, intersection))
 						{
 							ho.state.onHit(ao, intersection);
-								// TODO 显示命中特效
+							const deg:Number = Math.atan2(intersection.y - ao.hitBox.centerY, intersection.x - ao.hitBox.centerX) * 180 / Math.PI;
+							// 攻击角度
+							const direction:int = (deg < 90 && deg > -90) ? Direction.LEFT : Direction.RIGHT;
+							var actionName:String;
+							trace(deg);
+
+							if ((deg <= 45 && deg >= 0) || (deg))
+							{
+								actionName = "slashsmall1";
+							}
+							assert(!!actionName);
+							var slash:SlashEffect = new SlashEffect(this, actionName, direction);
+							slash.position = new Vector3D(intersection.x, intersection.y, ho.z - 0.1);
+							addObject(slash);
 						}
-					}
-					else
-					{
 					}
 				}
 			}
